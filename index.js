@@ -14,8 +14,12 @@ program
   .description('A cli tool for MEVN stack.')
 
 program
-  .command('init <app_name>')
+  .command('init <appname>')
   .description('To init the project')
   .action(initcommand)
 
+program
+  .on('--help', () => {
+    // tables ..
+  })
 program.parse(process.argv)
