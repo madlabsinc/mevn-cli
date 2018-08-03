@@ -5,9 +5,18 @@
 const program = require('commander')
 
 const init = require('./lib/initlib')
+const models = require('./lib/modelslib')
+const controller = require('./lib/controllerlib')
+const routes = require('./lib/routeslib')
+const services = require('./lib/serviceslib')
+const utils = require('./lib/utilslib')
 
-// init function
 let initcommand = init.initfunction
+let modelscommand = models.modelsfunction
+let controllercommand = controller.controllerfunction
+let routescommand = routes.routesfunction
+let servicescommand = services.servicesfunction
+let utilscommand = utils.utilsfunction
 
 program
   .version('1.0.0', '-v --version')
@@ -19,7 +28,33 @@ program
   .action(initcommand)
 
 program
-  .on('--help', () => {
-    // tables ..
-  })
+  .command('controller <filename>')
+  .description('To create controller-file')
+  .action(controllercommand)
+
+program
+  .command('routes <filename>')
+  .description('To create router-file')
+  .action(routescommand)
+
+program
+  .command('services <filename>')
+  .description('To create services-file')
+  .action(servicescommand)
+
+program
+  .command('utils <filename>')
+  .description('To create utils-file')
+  .action(utilscommand)
+
+program
+  .command('models <filename>')
+  .description('To create utils-file')
+  .action(utilscommand)
+
+program
+  .command('run client')
+  .description('To create utils-file')
+  .action(utilscommand)
+
 program.parse(process.argv)
