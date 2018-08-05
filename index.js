@@ -50,7 +50,7 @@ program
 program
   .command('models <filename>')
   .description('To create utils-file')
-  .action(utilscommand)
+  .action(modelscommand)
 
 program
   .command('run client')
