@@ -4,12 +4,14 @@
 
 const program = require('commander')
 
-const init = require('./lib/initlib')
-const models = require('./lib/modelslib')
-const controller = require('./lib/controllerlib')
-const routes = require('./lib/routeslib')
-const services = require('./lib/serviceslib')
-const utils = require('./lib/utilslib')
+const init = require('./lib/commands/initlib')
+const models = require('./lib/commands/modelslib')
+const controller = require('./lib/commands/controllerlib')
+const routes = require('./lib/commands/routeslib')
+const services = require('./lib/commands/serviceslib')
+const utils = require('./lib/commands/utilslib')
+const client = require('./lib/run/client')
+const server = require('./lib/run/server')
 
 let initcommand = init.initfunction
 let modelscommand = models.modelsfunction
@@ -17,6 +19,8 @@ let controllercommand = controller.controllerfunction
 let routescommand = routes.routesfunction
 let servicescommand = services.servicesfunction
 let utilscommand = utils.utilsfunction
+let clientcommand = client.clientfunction
+let servercommand = server.serverfunction
 
 program
   .version('1.0.0', '-v --version')
@@ -49,12 +53,17 @@ program
 
 program
   .command('models <filename>')
-  .description('To create utils-file')
+  .description('To create models-file')
   .action(modelscommand)
 
 program
-  .command('run client')
-  .description('To create utils-file')
-  .action(utilscommand)
+  .command('run')
+  .description('To run client')
+  .action(clientcommand)
+
+program
+  .command('start')
+  .description('To run server')
+  .action(servercommand) 
 
 program.parse(process.argv)
