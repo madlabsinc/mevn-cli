@@ -6,21 +6,23 @@ const program = require('commander')
 
 const init = require('./lib/commands/initlib')
 const models = require('./lib/commands/modelslib')
-const controller = require('./lib/commands/controllerlib')
+const controllers = require('./lib/commands/controllerslib')
 const routes = require('./lib/commands/routeslib')
 const services = require('./lib/commands/serviceslib')
 const utils = require('./lib/commands/utilslib')
-const client = require('./lib/run/client')
+const runfile = require('./lib/run/runfile')
 const server = require('./lib/run/server')
+const client = require('./lib/run/client')
 
 let initcommand = init.initfunction
 let modelscommand = models.modelsfunction
-let controllercommand = controller.controllerfunction
+let controllerscommand = controllers.controllersfunction
 let routescommand = routes.routesfunction
 let servicescommand = services.servicesfunction
 let utilscommand = utils.utilsfunction
-let clientcommand = client.clientfunction
-let servercommand = server.serverfunction
+let runcommand = runfile.runfunction
+let runserver = server.serverfunction
+let runclient = client.clientfunction
 
 program
   .version('1.0.0', '-v --version')
@@ -32,9 +34,9 @@ program
   .action(initcommand)
 
 program
-  .command('controller <filename>')
-  .description('To create controller-file')
-  .action(controllercommand)
+  .command('controllers <filename>')
+  .description('To create controllers-file')
+  .action(controllerscommand)
 
 program
   .command('routes <filename>')
@@ -57,13 +59,18 @@ program
   .action(modelscommand)
 
 program
-  .command('run')
+  .command('client')
   .description('To run client')
-  .action(clientcommand)
+  .action(runclient)
 
 program
-  .command('start')
+  .command('server')
   .description('To run server')
-  .action(servercommand) 
+  .action(runserver)
+  
+program
+  .command('run')
+  .description('To run client and serevr')
+  .action(runcommand)  
 
 program.parse(process.argv)
