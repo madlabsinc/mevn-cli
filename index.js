@@ -8,8 +8,7 @@ const init = require('./lib/commands/initlib')
 const models = require('./lib/commands/modelslib')
 const controllers = require('./lib/commands/controllerslib')
 const routes = require('./lib/commands/routeslib')
-const services = require('./lib/commands/serviceslib')
-const utils = require('./lib/commands/utilslib')
+const config = require('./lib/commands/configlib')
 const runfile = require('./lib/run/runfile')
 const server = require('./lib/run/server')
 const client = require('./lib/run/client')
@@ -18,8 +17,7 @@ let initcommand = init.initfunction
 let modelscommand = models.modelsfunction
 let controllerscommand = controllers.controllersfunction
 let routescommand = routes.routesfunction
-let servicescommand = services.servicesfunction
-let utilscommand = utils.utilsfunction
+let configcommand = config.configfunction
 let runcommand = runfile.runfunction
 let runserver = server.serverfunction
 let runclient = client.clientfunction
@@ -44,14 +42,9 @@ program
   .action(routescommand)
 
 program
-  .command('services <filename>')
-  .description('To create services-file')
-  .action(servicescommand)
-
-program
-  .command('utils <filename>')
-  .description('To create utils-file')
-  .action(utilscommand)
+  .command('config <filename>')
+  .description('To create configuration file for database')
+  .action(configcommand)
 
 program
   .command('models <filename>')
