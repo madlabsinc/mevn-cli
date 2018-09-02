@@ -1,9 +1,8 @@
 
-# mern-cli
-[![Build Status](https://travis-ci.org/Madlabsinc/mevn-cli.svg?branch=v0.0.1)](https://travis-ci.org/Madlabsinc/mevn-cli)
+# mevn-cli
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-A CLI tool for getting started with MEVN stack. It offers a [super simple boilerplate project](https://github.com/Madlabsinc/mevn-boilerplate) and additional utilitis for building a cool MEVN app.
+A CLI tool for getting started with MEVN stack. It offers a [super simple boilerplate project](https://github.com/Madlabsinc/mevn-boilerplate) and additional utilitis for building a MEVN app.
 
 ```
 npm install -g mevn-cli
