@@ -34,10 +34,13 @@
     "cli-spinner": "^0.2.8",
     "cli-table": "^0.3.1",
     "commander": "^2.16.0",
+    "elegant-spinner": "^1.0.1",
     "figlet": "^1.2.0",
     "inquirer": "^6.0.0",
+    "log-update": "^2.3.0",
     "node-cmd": "^3.0.0",
     "robotjs": "^0.5.1",
     "shelljs": "^0.8.2"
-  }
+  },
+  "devDependencies": {}
 }
