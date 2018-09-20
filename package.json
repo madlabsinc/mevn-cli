@@ -25,7 +25,7 @@
     "express",
     "mongodb"
   ],
-  "author": "Alan Mathew <mathewalan83@gmail.com>, James George <jamesgeorge998001@gmail.com>",
+  "author": "Alan Mathew <mathewalan84@gmail.com>, James George <jamesgeorge998001@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/MadlabsInc/mevn-cli/issues"
