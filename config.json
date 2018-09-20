@@ -1,0 +1,6 @@
+[
+    {
+        "basic": "git clone https://github.com/MadlabsInc/mevn-boilerplate.git",
+        "pwa": "git clone https://github.com/MadlabsInc/mevn-pwa-boilerplate.git"
+    }
+]
