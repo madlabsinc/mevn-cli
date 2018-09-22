@@ -17,15 +17,19 @@ mevn-cli init appname
 ```
 Server Commands :-
 ```
-mevn-cli routes   //To create the routes-file(api)
-mevn-cli models   //To create the models-file(schema)
-mevn-cli controllers   //To create the controllers-file
-mevn-cli config   //To create the config-file
+command | description
+------- | -----------
+mevn-cli routes  | To create the routes-file(api)
+mevn-cli models  | To create the models-file(schema)
+mevn-cli controllers |  To create the controllers-file
+mevn-cli config  | To create the config-file
 ```
 General Commands :-
 ```
-mevn-cli server   //To run the server
-mevn-cli client   //To run the client
+command | dedscription
+-------------- |  ----------------
+mevn-cli server | To run the server
+mevn-cli client | To run the client
 ```
 
 ## Help and Version
