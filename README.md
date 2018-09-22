@@ -16,30 +16,30 @@ Initial Command :-
 mevn-cli init appname
 ```
 Server Commands :-
-```
+
 | command | description |
 | ------- | ----------- |
 | mevn-cli routes  | To create the routes-file(api) |
 | mevn-cli models  | To create the models-file(schema) |
 | mevn-cli controllers |  To create the controllers-file |
 | mevn-cli config  | To create the config-file |
-```
+
 General Commands :-
-```
+
 | command | description |
 | -------------- |  ---------------- |
 | mevn-cli server | To run the server |
 | mevn-cli client | To run the client |
-```
+
 
 ## Help and Version
 
-```
+
 | command | description
 | --- | --- |
 | mevn-cli -v | Check CLI version |
 | mevn-cli --help  | Get help and check usage |
-```
+
 
 ## License
 
