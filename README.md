@@ -9,7 +9,7 @@ To install the package :-
 npm install -g mevn-cli
 ```
 
-## Commands 
+## *Commands* 
 Initial Command :-
 ```
 mevn-cli init appname
@@ -31,7 +31,7 @@ General Commands :-
 | mevn-cli client | To run the client |
 
 
-## Help and Version
+## *Help and Version*
 
 
 | command | description
@@ -40,6 +40,6 @@ General Commands :-
 | mevn-cli --help  | Get help and check usage |
 
 
-## License
+## *License*
 
-MEVN is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+MEVN-cli is released under the [MIT License](http://www.opensource.org/licenses/MIT).
