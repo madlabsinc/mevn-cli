@@ -18,17 +18,17 @@ Server Commands :-
 
 | command | description |
 | ------- | ----------- |
-| mevn-cli routes  | To create the routes-file(api) |
-| mevn-cli models  | To create the models-file(schema) |
-| mevn-cli controllers |  To create the controllers-file |
-| mevn-cli config  | To create the config-file |
+| mevn-cli create:route  | To create the routes-file(api) |
+| mevn-cli create:model  | To create the models-file(schema) |
+| mevn-cli create:controller |  To create the controllers-file |
+| mevn-cli create:config  | To create the config-file |
 
 General Commands :-
 
 | command | description |
 | -------------- |  ---------------- |
-| mevn-cli server | To run the server |
-| mevn-cli client | To run the client |
+| mevn-cli run:server | To run the server |
+| mevn-cli run:client | To run the client |
 
 
 ## *Help and Version*

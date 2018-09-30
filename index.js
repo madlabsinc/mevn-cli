@@ -30,22 +30,22 @@ program
   .action(initcommand);
 
 program
-  .command('make:controllers')
+  .command('create:controller')
   .description('To create controllers-file')
   .action(controllerscommand);
 
 program
-  .command('make:routes')
+  .command('create:route')
   .description('To create router-file')
   .action(routescommand);
 
 program
-  .command('make:config')
+  .command('create:config')
   .description('To create configuration file for database')
   .action(configcommand);
 
 program
-  .command('make:models')
+  .command('create:model')
   .description('To create models-file')
   .action(modelscommand);
 
