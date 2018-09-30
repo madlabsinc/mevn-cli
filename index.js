@@ -30,32 +30,32 @@ program
   .action(initcommand);
 
 program
-  .command('controllers')
+  .command('make:controllers')
   .description('To create controllers-file')
   .action(controllerscommand);
 
 program
-  .command('routes')
+  .command('make:routes')
   .description('To create router-file')
   .action(routescommand);
 
 program
-  .command('config')
+  .command('make:config')
   .description('To create configuration file for database')
   .action(configcommand);
 
 program
-  .command('models')
+  .command('make:models')
   .description('To create models-file')
   .action(modelscommand);
 
 program
-  .command('client')
+  .command('run:client')
   .description('To run client')
   .action(runclient);
 
 program
-  .command('server')
+  .command('run:server')
   .description('To run server')
   .action(runserver);
 
