@@ -6,9 +6,9 @@ A CLI tool for getting started with MEVN stack. It offers a [super simple boiler
 
 **TL;DR:  Commands Sequence**
 
->npm install -g mern-cli
+>npm install -g mevn-cli
 
->mern init your_new_app
+>mevn init your_new_app
 
 >cd your_new_app
 
