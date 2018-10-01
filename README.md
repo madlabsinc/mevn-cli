@@ -1,7 +1,8 @@
 # Mevn-Cli
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-A CLI tool for getting started with MEVN stack. It offers a [super simple boilerplate project](https://github.com/Madlabsinc/mevn-boilerplate) and additional utilities for building a MEVN app. It helps out, beginner developers to easily create a template for their Web application development.
+A CLI tool for getting started with MEVN stack. It offers a [super simple boilerplate
+[https://github.com/Madlabsinc/mevn-boilerplateroject](https://github.com/Madlabsinc/mevn-pwa-boilerplate) and a [reliable boilerplate-pwa] for building a MEVN app. It helps out, beginner developers to easily create a template for their Web application development.
 
 ## Getting Started
 
