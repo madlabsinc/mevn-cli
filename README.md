@@ -4,6 +4,16 @@
 A CLI tool for getting started with MEVN stack. It offers a [super simple boilerplate]
 (https://github.com/Madlabsinc/mevn-boilerplate) and a [reliable boilerplate-pwa](https://github.com/Madlabsinc/mevn-pwa-boilerplate) for building a MEVN app. It helps out, beginner developers to easily create a template for their Web application development.
 
+**TL;DR:  Commands Sequence**
+
+>> npm install -g mern-cli
+>> mern init your_new_app
+>> cd your_new_app
+>> npm install
+>> npm start
+
+**If faced some issue, or not able to understand follow the following**
+---
 ## Getting Started
 
  Currently, this tool works on the Windows and Linux platform.
