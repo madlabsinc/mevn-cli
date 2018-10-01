@@ -1,8 +1,7 @@
 # Mevn-Cli
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-A CLI tool for getting started with MEVN stack. It offers a [super simple boilerplate]
-(https://github.com/Madlabsinc/mevn-boilerplate) and a [reliable boilerplate-pwa](https://github.com/Madlabsinc/mevn-pwa-boilerplate) for building a MEVN app. It helps out, beginner developers to easily create a template for their Web application development.
+A CLI tool for getting started with MEVN stack. It offers a [super simple boilerplate project](https://github.com/Madlabsinc/mevn-boilerplate) & a [reliable boilerplate pwa](https://github.com/MadlabsInc/mevn-pwa-boilerplate) and additional utilities for building a MEVN app. It helps out, beginner developers to easily create a template for their Web application development.
 
 ## Getting Started
 
@@ -11,7 +10,7 @@ A CLI tool for getting started with MEVN stack. It offers a [super simple boiler
 
 ### Prerequisites
 
-- Npm - it is a package manager for the JavaScript programming language.
+- npm - It is the package manager for node.
 - Node.js -Node.js is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.
 - Git - Git is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. It is primarily used for source code management in software development.
 
@@ -59,7 +58,7 @@ These commands are used to generate the code necessary for running a server.
 
 ## Features
 
-- This tool provides an easy way to build a web app by providing a super simple boilerplate project to build upon.  
+- This tool provides an easy way to build a web app by providing a super simple boilerplate project and a reliable boilerplate pwa to build upon.  
 - Its written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code.  
 - Mevn-Cli will automate the files and generate the codes necessary to start and run a server, API etc
