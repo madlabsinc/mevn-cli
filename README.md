@@ -40,9 +40,9 @@ These commands are used to generate the code necessary for running a server.
 
 | command | description |
 | ------- | ----------- |
-|``` mevn-cli create:routes ``` | To create the Routes-File(API) |
-|``` mevn-cli create:models ``` | To create the Models-File(SCHEMA) |
-|``` mevn-cli create:controllers``` |  To create the Controllers-File |
+|``` mevn-cli create:route ``` | To create the Routes-File(API) |
+|``` mevn-cli create:model ``` | To create the Models-File(SCHEMA) |
+|``` mevn-cli create:controller``` |  To create the Controllers-File |
 | ```mevn-cli create:config ``` | To create the Config-File |
 
 
