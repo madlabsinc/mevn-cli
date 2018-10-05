@@ -22,9 +22,11 @@ npm install -g mevn-cli
 ```
 
 ## Commands
-
-
-
+...
+   mevn-cli init <your_new_webapp>
+   mevn-cli run:client
+   mevn-cli run:server
+...
 
 ### Initial Command
 
