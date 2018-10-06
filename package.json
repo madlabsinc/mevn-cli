@@ -8,7 +8,9 @@
   },
   "bin": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "repository": {
     "type": "git",
@@ -44,5 +46,7 @@
     "node-cmd": "^3.0.0",
     "shelljs": "^0.8.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "vuepress": "^0.14.4"
+  }
 }
