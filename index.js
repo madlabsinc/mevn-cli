@@ -2,6 +2,7 @@
 
 'use strict'
 
+// Require Modules
 const program = require('commander');
 
 const init = require('./lib/commands/initlib');
@@ -13,6 +14,7 @@ const server = require('./lib/run/server');
 const client = require('./lib/run/client');
 const docker = require('./lib/container/docker');
 
+// Initialize Command variables
 let initcmd = init.initfn;
 let modelscmd = models.modelsfn;
 let controllerscmd = controllers.controllersfn;
@@ -22,6 +24,7 @@ let runserver = server.serverfn;
 let runclient = client.clientfn;
 let dockerize = docker.dockerfn;
 
+// Define Commands in CLI TOOL
 program
   .version('1.0.0', '-v --version')
   .description('A cli tool for MEVN stack.')
