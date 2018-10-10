@@ -44,7 +44,8 @@
     "inquirer": "^6.0.0",
     "log-update": "^2.3.0",
     "node-cmd": "^3.0.0",
-    "shelljs": "^0.8.2"
+    "shelljs": "^0.8.2",
+    "axios": "^0.18.0"
   },
   "devDependencies": {
     "vuepress": "^0.14.4"
