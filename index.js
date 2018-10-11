@@ -9,6 +9,7 @@ const initfn = require('./lib/commands/initlib');
 const modelsfn = require('./lib/commands/modelslib');
 const controllersfn = require('./lib/commands/controllerslib');
 const componentsfn = require('./lib/commands/componentslib');
+const addPackagefn = require('./lib/commands/addPackagelib');
 const routesfn = require('./lib/commands/routeslib');
 const configfn = require('./lib/commands/configlib');
 const serverfn = require('./lib/run/server');
@@ -59,6 +60,11 @@ program
   .command('create:model')
   .description('To create models-file')
   .action(modelsfn);
+
+program
+  .command('add:package')
+  .description('To add a new package to the project')
+  .action(addPackagefn)
 
 program
   .command('run:client')
