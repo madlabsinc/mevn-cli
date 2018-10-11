@@ -8,6 +8,7 @@ const program = require('commander');
 const initfn = require('./lib/commands/initlib');
 const modelsfn = require('./lib/commands/modelslib');
 const controllersfn = require('./lib/commands/controllerslib');
+const componentsfn = require('./lib/commands/componentslib');
 const routesfn = require('./lib/commands/routeslib');
 const configfn = require('./lib/commands/configlib');
 const serverfn = require('./lib/run/server');
@@ -38,6 +39,11 @@ program
   .command('create:controller')
   .description('To create controllers-file')
   .action(controllersfn);
+
+program
+  .command('create:component <componentname>')
+  .description('To create component file')
+  .action(componentsfn)
 
 program
   .command('create:route')
