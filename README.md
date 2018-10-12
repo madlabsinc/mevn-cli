@@ -72,8 +72,11 @@ Before contributing to this repository, please first discuss the change you wish
 1. Ensure you have no "dummy" files left, if you do simple add them to the bottom of the `.gitignore`.
 2. Fork and clone our repository.
 3. Make your life-changing changes.
-4. Commit and push your changes.
-5. Make a detailed pull request.
+4. Fire in ```sudo npm link``` to test everything works fine.
+5. Commit and push your changes.
+6. Make a detailed pull request.
+
+> After executing ```npm link``` , the mevn-cli command is available within your terminal globally.
 
 ### Why should I contribute?
 Contributing helps people and makes the world simply a better place, without contributors this project would cease to exist.

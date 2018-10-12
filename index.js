@@ -5,6 +5,7 @@
 // Require Modules
 const program = require('commander');
 
+// Initialize Command variables
 const initfn = require('./lib/commands/initlib');
 const modelsfn = require('./lib/commands/modelslib');
 const controllersfn = require('./lib/commands/controllerslib');
@@ -16,16 +17,6 @@ const serverfn = require('./lib/run/server');
 const clientfn = require('./lib/run/client');
 const dockerfn = require('./lib/container/docker');
 
-/* Initialize Command variables
-let initcmd = init.initfn;
-let modelscmd = models.modelsfn;
-let controllerscmd = controllers.controllersfn;
-let routescmd = routes.routesfn;
-let configcmd = config.configfn;
-let runserver = server.serverfn;
-let runclient = client.clientfn;
-let dockerize = docker.dockerfn;
-*/
 // Define Commands in CLI TOOL
 program
   .version('1.0.0', '-v --version')
