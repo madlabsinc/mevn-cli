@@ -34,7 +34,7 @@ program
 
 program
   .command('create:component <componentname>')
-  .description('To create component file')
+  .description('To create component-file')
   .action(componentsfn)
 
 program
