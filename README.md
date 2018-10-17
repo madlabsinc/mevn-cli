@@ -47,7 +47,7 @@ These commands are used to generate the code necessary for running a server.
 | ```mevn-cli add:package``` | To add additional packages as required. |
 
 
-### General Command
+### General Commands
  
  These are  commands to run the Client and Server
 
