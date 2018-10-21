@@ -44,18 +44,19 @@ These commands are used to generate the code necessary for running a server.
 |``` mevn-cli create:model ``` | To create the Models-File(SCHEMA) |
 |``` mevn-cli create:controller``` |  To create the Controllers-File |
 | ```mevn-cli create:config ``` | To create the Config-File | 
-| ```mevn-cli add:package``` | To add additional packages as required. |
 
 
 ### General Commands
  
- These are  commands to run the Client and Server
+ These are generic commands for the entire project.
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
 | ```mevn-cli run:server``` | To run the Server |
 | ```mevn-cli run:client``` | To run the Client |
-
+| ```mevn-cli add:package``` | To add additional packages as required |
+| ```mevn-cli create:component <component_name>``` | To create new components as required |
+| ```mevn-cli dockerize``` | To run the client and server in separate docker containers |
 
 ## Features
 
