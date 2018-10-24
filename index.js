@@ -16,6 +16,7 @@ const configfn = require('./lib/commands/configlib');
 const serverfn = require('./lib/run/server');
 const clientfn = require('./lib/run/client');
 const dockerfn = require('./lib/container/docker');
+const deployfn = require('./lib/deploy/dply');
 
 // Define Commands in CLI TOOL
 program
@@ -71,5 +72,10 @@ program
   .command('dockerize')
   .description('To dockerize the app')
   .action(dockerfn)  
+
+program 
+  .command('deploy')
+  .description('To deploy the app in Heroku')
+  .action(deployfn)  
 
 program.parse(process.argv);
