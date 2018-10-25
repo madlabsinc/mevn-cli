@@ -87,7 +87,7 @@ Contributing helps people and makes the world simply a better place, without con
 You can always write documentation, most repositories lack in it.
 
 ### What is next?
-Nothing! Your done and ready to get coding!
+Nothing! You're done and ready to get coding!
 
 
 ## Versioning And Help
