@@ -55,6 +55,60 @@ These commands are used to generate the code necessary for running a server.
 | ```mevn-cli create:component <component_name>``` | To create new components as required |
 | ```mevn-cli dockerize``` | To run the client and server in separate docker containers |
 
+## File Hierarchy
+
+  
+  | - __Mevn-Cli__- // all the tests for this module goes here
+      
+      | - lib // Sub components of this module
+            | - Commands
+              | - addPackagelib.js
+              | - componentslib.js
+              | - configlib.js
+              | - controllerlib.js
+              | - initlib.js
+              | - modelslib.js
+              | - routeslib.js
+              | - files
+                | - components
+                    | - component.vue
+                | - controllers
+                    | - user_controller.js
+                | - models
+                    | - user_schema.js
+                | - routes
+                    | - FacebookRoutes.js
+                    | - GoogleRoutes.js
+                    | - index.js
+                    | - index_with_passport.js
+                    | - index_with_social_media_auth.js
+                    | - TwitterRoutes.js
+                | - vuex
+                    | - store.js
+
+        | - container
+            | - docker.js
+
+        | - deploy
+            | - dply.js
+
+        | - external //sub components of this module
+            | - banner.js
+
+        | - Run // Sub components of this module
+            | - client.js
+            | - server.js
+
+        | - utils
+            | - createFile.js
+            | - fileOverwritePrompt.js
+
+    | - config.json
+    | - index.js
+    | - package-lock.json
+    | - package.json  
+
+
 ## Features
 
 - This tool provides an easy way to build a web app by providing a super simple boilerplate project and a reliable boilerplate pwa to build upon.  
