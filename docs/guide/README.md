@@ -1,6 +1,6 @@
 # Mevn CLI
 
-[[toc]]
+
 
 ## Getting started
 
