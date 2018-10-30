@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: images/hero.png
+heroImage: images/mevn-logo.jpg
 actionText: Get Started →
 actionLink: /guide/
 features:
