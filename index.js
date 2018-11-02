@@ -15,8 +15,9 @@ const routesfn = require('./lib/commands/routeslib');
 const configfn = require('./lib/commands/configlib');
 const serverfn = require('./lib/run/server');
 const clientfn = require('./lib/run/client');
-const dockerfn = require('./lib/container/docker');
-const deployfn = require('./lib/deploy/dply');
+const dockerfn = require('./lib/deploy/docker');
+const git_repofn = require('./lib/deploy/git_repo');
+const dplyfn = require('./lib/deploy/docker_dply');
 
 // Define Commands in CLI TOOL
 program
@@ -76,6 +77,10 @@ program
 program 
   .command('deploy')
   .description('To deploy the app in Heroku')
-  .action(deployfn)  
+  .action(docker-dplyfn)  
+program 
+  .command('create:git-repo')
+  .description('To create a gitub repository')
+  .action(git_repofn)
 
 program.parse(process.argv);
