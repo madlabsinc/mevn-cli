@@ -76,11 +76,11 @@ program
 
 program 
   .command('deploy')
-  .description('To deploy the app in Heroku')
+  .description('To deploy the app to Heroku')
   .action(docker-dplyfn)  
 program 
   .command('create:git-repo')
-  .description('To create a gitub repository')
+  .description(' To create a GitHub repository and fire the first commit')
   .action(git_repofn)
 
 program.parse(process.argv);
