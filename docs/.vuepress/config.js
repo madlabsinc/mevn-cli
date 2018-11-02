@@ -1,6 +1,6 @@
 module.exports = {
-    title: 'MEVN Cli',
-    description: 'Cli Tool to automate MEVN Stack',
+    title: 'MEVN CLI',
+    description: 'CLI Tool to automate MEVN Stack',
     themeConfig: {
         nav: [
             {text: 'Home', link: '/'},
