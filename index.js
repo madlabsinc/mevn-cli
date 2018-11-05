@@ -10,6 +10,7 @@ const initfn = require('./lib/commands/initlib');
 const modelsfn = require('./lib/commands/modelslib');
 const controllersfn = require('./lib/commands/controllerslib');
 const componentsfn = require('./lib/commands/componentslib');
+const codesplitfn = require('./lib/commands/codesplitlib');
 const addPackagefn = require('./lib/commands/addPackagelib');
 const routesfn = require('./lib/commands/routeslib');
 const configfn = require('./lib/commands/configlib');
@@ -37,7 +38,12 @@ program
 program
   .command('create:component <componentname>')
   .description('To create component-file')
-  .action(componentsfn)
+  .action(componentsfn);
+
+program
+  .command('codesplit <componentname>')
+  .description('To code split the required component')
+  .action(codesplitfn);  
 
 program
   .command('create:route')
