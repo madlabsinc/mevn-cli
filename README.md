@@ -56,6 +56,7 @@ These commands are used to generate the code necessary for running a server.
 | ```mevn-cli run:client``` | To run the Client |
 | ```mevn-cli add:package``` | To add additional packages as required |
 | ```mevn-cli create:component <component_name>``` | To create new components as required |
+| ```mevn-cli codesplit <component_name>``` | Laxy load components as required |
 | ```mevn-cli create:git-repo``` | To create a GitHub repository and fire the first commit |
 | ```mevn-cli dockerize``` | To run the client and server in separate docker containers |
 | ```mevn-cli deploy``` | To deploy the app to Heroku |
