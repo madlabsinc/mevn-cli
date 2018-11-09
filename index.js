@@ -6,6 +6,7 @@
 const program = require('commander');
 
 // Initialize Command variables
+const versionfn = require('./lib/commands/versionlib');
 const initfn = require('./lib/commands/initlib');
 const modelsfn = require('./lib/commands/modelslib');
 const controllersfn = require('./lib/commands/controllerslib');
@@ -21,9 +22,10 @@ const git_repofn = require('./lib/deploy/git_repo');
 const dplyfn = require('./lib/deploy/docker_dply');
 
 // Define Commands in CLI TOOL
+
 program
-  .version('1.0.0', '-v --version')
-  .description('A cli tool for MEVN stack.')
+.command('version')
+.action(versionfn);
 
 program
   .command('init <appname>')
