@@ -82,7 +82,7 @@ Before contributing to this repository, please first discuss the change you wish
 5. Commit and push your changes.
 6. Make a detailed pull request.
 
-> After executing ```npm link``` , the mevn-cli command is available within your terminal globally.
+> `npm link` creates a symlink in the global folder making `mevn-cli` command globally available within your local developmet environment
 
 ### Why should I contribute?
 Contributing helps people and makes the world simply a better place, without contributors this project would cease to exist.
