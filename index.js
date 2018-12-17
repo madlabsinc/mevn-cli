@@ -66,7 +66,7 @@ program
 program
   .command('add:package')
   .description('To add a new package to the project')
-  .action(addPackagefn)
+  .action(addPackagefn);
 
 program
   .command('run:client')
@@ -81,15 +81,16 @@ program
 program
   .command('dockerize')
   .description('To dockerize the app')
-  .action(dockerfn)
+  .action(dockerfn);
 
 program
   .command('deploy')
   .description('To deploy the app to Heroku')
-  .action(dplyfn)
+  .action(dplyfn);
+
 program
   .command('create:git-repo')
   .description('To create a GitHub repository and fire the first commit')
-  .action(git_repofn)
+  .action(git_repofn);
 
 program.parse(process.argv);
