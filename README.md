@@ -40,10 +40,10 @@ These commands are used to generate the code necessary for running a server.
 
 | command | description |
 | ------- | ----------- |
-|``` mevn-cli create:route ``` | To create the Routes-File(API) |
-|``` mevn-cli create:model ``` | To create the Models-File(SCHEMA) |
-|``` mevn-cli create:controller``` |  To create the Controllers-File |
-| ```mevn-cli create:config ``` | To create the Config-File |
+|` mevn-cli create:route ` | To create the Routes-File(API) |
+|` mevn-cli create:model ` | To create the Models-File(SCHEMA) |
+|` mevn-cli create:controller` |  To create the Controllers-File |
+| `mevn-cli create:config ` | To create the Config-File |
 
 
 ### General Commands
@@ -53,14 +53,14 @@ These commands are used to generate the code necessary for running a server.
 | command | description |                                                                                                
 | -------------- |  ---------------- |
 | `mevn-cli version` | Outputs version and local development environment information |
-| ```mevn-cli run:server``` | To run the Server |
-| ```mevn-cli run:client``` | To run the Client |
-| ```mevn-cli add:package``` | To add additional packages as required |
-| ```mevn-cli create:component <component_name>``` | To create new components as required |
-| ```mevn-cli codesplit <component_name>``` | Lazy load components as required |
-| ```mevn-cli create:git-repo``` | To create a GitHub repository and fire the first commit |
-| ```mevn-cli dockerize``` | To run the client and server in separate docker containers |
-| ```mevn-cli deploy``` | To deploy the app to Heroku |
+| `mevn-cli run:server` | To run the Server |
+| `mevn-cli run:client` | To run the Client |
+| `mevn-cli add:package` | To add additional packages as required |
+| `mevn-cli create:component <component_name>` | To create new components as required |
+| `mevn-cli codesplit <component_name>` | Lazy load components as required |
+| `mevn-cli create:git-repo` | To create a GitHub repository and fire the first commit |
+| `mevn-cli dockerize` | To run the client and server in separate docker containers |
+| `mevn-cli deploy` | To deploy the app to Heroku |
 
 ## Features
 
