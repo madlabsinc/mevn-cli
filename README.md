@@ -52,7 +52,7 @@ These commands are used to generate the code necessary for running a server.
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
-| `mevn-cli version` | Outputs mevn-cli version and local development environment information |
+| `mevn-cli version` | Outputs version and local development environment information |
 | ```mevn-cli run:server``` | To run the Server |
 | ```mevn-cli run:client``` | To run the Client |
 | ```mevn-cli add:package``` | To add additional packages as required |

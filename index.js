@@ -25,7 +25,7 @@ const dplyfn = require('./lib/deploy/docker_dply');
 
 program
   .command('version')
-  .description('Outputs mevn-cli version along with local development information')
+  .description('Outputs version along with local development environment information')
   .action(versionfn);
 
 program
