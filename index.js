@@ -89,7 +89,7 @@ program
   .action(dplyfn)
 program
   .command('create:git-repo')
-  .description(' To create a GitHub repository and fire the first commit')
+  .description('To create a GitHub repository and fire the first commit')
   .action(git_repofn)
 
 program.parse(process.argv);
