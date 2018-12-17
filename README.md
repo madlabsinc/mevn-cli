@@ -43,15 +43,16 @@ These commands are used to generate the code necessary for running a server.
 |``` mevn-cli create:route ``` | To create the Routes-File(API) |
 |``` mevn-cli create:model ``` | To create the Models-File(SCHEMA) |
 |``` mevn-cli create:controller``` |  To create the Controllers-File |
-| ```mevn-cli create:config ``` | To create the Config-File | 
+| ```mevn-cli create:config ``` | To create the Config-File |
 
 
 ### General Commands
- 
+
  These are generic commands for the entire project.
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
+| `mevn-cli version` | Outputs mevn-cli version and local development information |
 | ```mevn-cli run:server``` | To run the Server |
 | ```mevn-cli run:client``` | To run the Client |
 | ```mevn-cli add:package``` | To add additional packages as required |
@@ -71,7 +72,7 @@ These commands are used to generate the code necessary for running a server.
 
 ## Contributing
 
-Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change. 
+Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change.
 
 ### How do I contribute?
 1. Ensure you have no "dummy" files left, if you do simple add them to the bottom of the `.gitignore`.
