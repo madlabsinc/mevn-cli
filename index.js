@@ -24,8 +24,9 @@ const dplyfn = require('./lib/deploy/docker_dply');
 // Define Commands in CLI TOOL
 
 program
-.command('version')
-.action(versionfn);
+  .command('version')
+  .description('Outputs mevn-cli version along with local development information')
+  .action(versionfn);
 
 program
   .command('init <appname>')
@@ -45,7 +46,7 @@ program
 program
   .command('codesplit <componentname>')
   .description('To code split the required component')
-  .action(codesplitfn);  
+  .action(codesplitfn);
 
 program
   .command('create:route')
@@ -80,13 +81,13 @@ program
 program
   .command('dockerize')
   .description('To dockerize the app')
-  .action(dockerfn)  
+  .action(dockerfn)
 
-program 
+program
   .command('deploy')
   .description('To deploy the app to Heroku')
-  .action(dplyfn)  
-program 
+  .action(dplyfn)
+program
   .command('create:git-repo')
   .description(' To create a GitHub repository and fire the first commit')
   .action(git_repofn)
