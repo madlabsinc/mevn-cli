@@ -94,3 +94,9 @@ program
   .action(git_repofn);
 
 program.parse(process.argv);
+
+// Shows help if just mevn-cli is fired in
+
+if(!program.args.length){
+  program.help();
+}
