@@ -4,6 +4,7 @@
 
 // Require Modules
 const program = require('commander');
+const chalk = require('chalk');
 
 // Initialize Command variables
 const versionfn = require('./lib/commands/versionlib');
@@ -92,6 +93,14 @@ program
   .command('create:git-repo')
   .description('To create a GitHub repository and fire the first commit')
   .action(git_repofn);
+
+program
+  .arguments('<command>')
+  .action((cmd) => {
+    program.outputHelp()
+    console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`))
+    console.log()
+});  
 
 program.parse(process.argv);
 
