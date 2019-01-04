@@ -6,8 +6,11 @@
   "directories": {
     "lib": "lib"
   },
-  "bin": "./index.js",
+  "bin": {
+    "mevn": "./index.js"
+  },
   "scripts": {
+    "compile": "babel --presets env,stage-0 -d src/ lib/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
@@ -48,6 +51,9 @@
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1",
     "vuepress": "^0.14.4"
   }
 }
