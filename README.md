@@ -98,7 +98,7 @@ Nothing! You're done and ready to get coding!
 | command | description
 | --- | --- |
 | ```mevn version``` | Check CLI version |
-|``` mevn-cli --help ``` | Get help and check usage |
+|``` mevn --help ``` | Get help and check usage |
 
 ## License
 
