@@ -31,7 +31,7 @@ npm install -g mevn-cli
 This command Initialises the project.
 
 ```
-mevn-cli init appname
+mevn init appname
 ```
 
 ### Server Commands
@@ -40,10 +40,10 @@ These commands are used to generate the code necessary for running a server.
 
 | command | description |
 | ------- | ----------- |
-|` mevn-cli create:route ` | To create the Routes-File(API) |
-|` mevn-cli create:model ` | To create the Models-File(SCHEMA) |
-|` mevn-cli create:controller` |  To create the Controllers-File |
-| `mevn-cli create:config ` | To create the Config-File |
+|` mevn create:route ` | To create the Routes-File(API) |
+|` mevn create:model ` | To create the Models-File(SCHEMA) |
+|` mevn create:controller` |  To create the Controllers-File |
+| `mevn create:config ` | To create the Config-File |
 
 
 ### General Commands
@@ -52,15 +52,14 @@ These commands are used to generate the code necessary for running a server.
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
-| `mevn-cli version` | Outputs version and local development environment information |
-| `mevn-cli run:server` | To run the Server |
-| `mevn-cli run:client` | To run the Client |
-| `mevn-cli add:package` | To add additional packages as required |
-| `mevn-cli create:component <component_name>` | To create new components as required |
-| `mevn-cli codesplit <component_name>` | Lazy load components as required |
-| `mevn-cli create:git-repo` | To create a GitHub repository and fire the first commit |
-| `mevn-cli dockerize` | To run the client and server in separate docker containers |
-| `mevn-cli deploy` | To deploy the app to Heroku |
+| `mevn run:server` | To run the Server |
+| `mevn run:client` | To run the Client |
+| `mevn add:package` | To add additional packages as required |
+| `mevn create:component <component_name>` | To create new components as required |
+| `mevn codesplit <component_name>` | Lazy load components as required |
+| `mevn create:git-repo` | To create a GitHub repository and fire the first commit |
+| `mevn dockerize` | To run the client and server in separate docker containers |
+| `mevn deploy` | To deploy the app to Heroku |
 
 ## Features
 
@@ -82,7 +81,7 @@ Before contributing to this repository, please first discuss the change you wish
 5. Commit and push your changes.
 6. Make a detailed pull request.
 
-> `npm link` creates a symlink in the global folder making `mevn-cli` command globally available within your local developmet environment
+> `npm link` creates a symlink in the global folder making `mevn` command globally available within your local developmet environment
 
 ### Why should I contribute?
 Contributing helps people and makes the world simply a better place, without contributors this project would cease to exist.
@@ -98,7 +97,7 @@ Nothing! You're done and ready to get coding!
 
 | command | description
 | --- | --- |
-| ```mevn-cli -v``` | Check CLI version |
+| ```mevn version``` | Check CLI version |
 |``` mevn-cli --help ``` | Get help and check usage |
 
 ## License
