@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-'use strict'
+'use strict';
 
 // Require Modules
 const program = require('commander');
@@ -97,9 +97,9 @@ program
 program
   .arguments('<command>')
   .action((cmd) => {
-    program.outputHelp()
-    console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`))
-    console.log()
+    program.outputHelp();
+    console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
+    console.log();
 });  
 
 program.parse(process.argv);
