@@ -14,7 +14,7 @@
     "test": "node ./node_modules/mocha/bin/mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "lint": "jshint ."
+    "lint": "node ./node_modules/jshint/bin/jshint ./bin ./lib"
   },
   "repository": {
     "type": "git",
