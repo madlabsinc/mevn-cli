@@ -11,7 +11,7 @@
   },
   "scripts": {
     "compile": "babel --presets env,stage-0 -d src/ lib/",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./node_modules/mocha/bin/mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "lint": "jshint ."
@@ -56,6 +56,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",
     "jshint": "^2.9.7",
+    "mocha": "^5.2.0",
     "vuepress": "^0.14.4"
   }
 }
