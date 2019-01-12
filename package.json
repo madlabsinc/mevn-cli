@@ -13,7 +13,8 @@
     "compile": "babel --presets env,stage-0 -d src/ lib/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "lint": "jshint ."
   },
   "repository": {
     "type": "git",
