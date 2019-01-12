@@ -7,20 +7,20 @@ const program = require('commander');
 const chalk = require('chalk');
 
 // Initialize Command variables
-const versionfn = require('./lib/commands/versionlib');
-const initfn = require('./lib/commands/initlib');
-const modelsfn = require('./lib/commands/modelslib');
-const controllersfn = require('./lib/commands/controllerslib');
-const componentsfn = require('./lib/commands/componentslib');
-const codesplitfn = require('./lib/commands/codesplitlib');
-const addPackagefn = require('./lib/commands/addPackagelib');
-const routesfn = require('./lib/commands/routeslib');
-const configfn = require('./lib/commands/configlib');
-const serverfn = require('./lib/run/server');
-const clientfn = require('./lib/run/client');
-const dockerfn = require('./lib/deploy/docker');
-const git_repofn = require('./lib/deploy/git_repo');
-const dplyfn = require('./lib/deploy/docker_dply');
+const versionfn = require('../lib/commands/versionlib');
+const initfn = require('../lib/commands/initlib');
+const modelsfn = require('../lib/commands/modelslib');
+const controllersfn = require('../lib/commands/controllerslib');
+const componentsfn = require('../lib/commands/componentslib');
+const codesplitfn = require('../lib/commands/codesplitlib');
+const addPackagefn = require('../lib/commands/addPackagelib');
+const routesfn = require('../lib/commands/routeslib');
+const configfn = require('../lib/commands/configlib');
+const serverfn = require('../lib/run/server');
+const clientfn = require('../lib/run/client');
+const dockerfn = require('../lib/deploy/docker');
+const git_repofn = require('../lib/deploy/git_repo');
+const dplyfn = require('../lib/deploy/docker_dply');
 
 // Define Commands in CLI TOOL
 

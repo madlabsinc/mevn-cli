@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "bin": {
-    "mevn": "./index.js"
+    "mevn": "./bin/index.js"
   },
   "scripts": {
     "compile": "babel --presets env,stage-0 -d src/ lib/",
