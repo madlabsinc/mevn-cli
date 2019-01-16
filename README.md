@@ -1,4 +1,5 @@
 # Mevn-Cli
+[![Build Status](https://travis-ci.com/madlabsinc/mevn-cli.svg?branch=master)](https://travis-ci.com/madlabsinc/mevn-cli)
 [![npm version](https://badgen.net/npm/v/mevn-cli)](https://www.npmjs.com/package/mevn-cli)
 [![Downloads](https://badgen.net/npm/dm/mevn-cli)](https://www.npmjs.com/package/mevn-cli)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
