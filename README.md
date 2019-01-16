@@ -70,6 +70,9 @@ These commands are used to generate the code necessary for running a server.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code.  
 - Mevn-Cli will automate the files and generate the codes necessary to start and run a server, API etc
 
+## Demo
+
+[![asciicast](https://asciinema.org/a/hBxFqqnoOvxgLwiqfML0GWU14.svg)](https://asciinema.org/a/hBxFqqnoOvxgLwiqfML0GWU14)
 
 ## Contributing
 
