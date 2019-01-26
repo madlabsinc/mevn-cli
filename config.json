@@ -1,5 +1,6 @@
 {
     "basic": "git clone https://github.com/MadlabsInc/mevn-boilerplate.git",
     "pwa": "git clone https://github.com/MadlabsInc/mevn-pwa-boilerplate.git",
-    "graphql": "git clone https://github.com/MadlabsInc/mevn-graphql-boilerplate.git"
+    "graphql": "git clone https://github.com/MadlabsInc/mevn-graphql-boilerplate.git",
+    "nuxt": "git clone https://github.com/MadlabsInc/mevn-nuxt-boilerplate.git"
 }
