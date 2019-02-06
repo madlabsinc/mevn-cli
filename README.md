@@ -4,7 +4,12 @@
 [![Downloads](https://badgen.net/npm/dm/mevn-cli)](https://www.npmjs.com/package/mevn-cli)
 [![PRs Welcome](https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg)](https://github.com/madlabsinc/mevn-cli/pull/new)
 
-A CLI tool for getting started with MEVN stack. It offers a [super simple boilerplate project](https://github.com/Madlabsinc/mevn-boilerplate) & a [reliable boilerplate pwa](https://github.com/MadlabsInc/mevn-pwa-boilerplate) and additional utilities for building a MEVN app. It helps out, beginner developers to easily create a template for their Web application development.
+A CLI tool for getting started with MEVN stack. It offers various reliable boilerplates as given below and additional utilities for building a MEVN app. It helps out, beginner developers to easily create a template for their Web application development.
+
+- [Basic](https://github.com/Madlabsinc/mevn-boilerplate)
+- [Pwa](https://github.com/MadlabsInc/mevn-pwa-boilerplate)
+- [GraphQL](https://github.com/MadlabsInc/mevn-graphql-boilerplate) 
+- [Nuxt.js](https://github.com/MadlabsInc/mevn-nuxt-boilerplate) 
 
 ## Getting Started
 
@@ -77,7 +82,7 @@ These commands are used to generate the code necessary for running a server.
 
 ## Contributing
 
-Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change.
+Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change. Kindly have a look at the [Contributing Guidelines](https://github.com/madlabsinc/mevn-cli/wiki/Contributing-Guidelines) to know more regarding the codebase and project structure.
 
 ### How do I contribute?
 1. Ensure you have no "dummy" files left, if you do simple add them to the bottom of the `.gitignore`.
