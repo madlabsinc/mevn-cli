@@ -8,9 +8,9 @@ A CLI tool for getting started with MEVN stack. It offers a super simple boilerp
 
 ## Prerequisites
 
-- Npm - it is a package manager for the JavaScript programming language.
-- Node.js -Node.js is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.
-- Git - Git is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. It is primarily used for source code management in software development.
+- [**npm**](https://www.npmjs.com/) it is a package manager for the JavaScript programming language.
+- [**node.js**](https://nodejs.org/en/) is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.
+- [**git**](https://git-scm.com/) is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. It is primarily used for source code management in software development.
 
 ## Installing
 
@@ -122,7 +122,7 @@ These commands are used to generate the code necessary for running a server.
 Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change. 
 
 ### How do I contribute?
-1. Ensure you have no "dummy" files left, if you do simple add them to the bottom of the `.gitignore`.
+1. Ensure you have no "dummy" files left, if you do simply add them to the bottom of the `.gitignore`.
 2. Fork and clone our repository.
 3. Make your life-changing changes.
 4. Commit and push your changes.
@@ -135,7 +135,7 @@ Contributing helps people and makes the world simply a better place, without con
 You can always write documentation, most repositories lack in it.
 
 ### What is next?
-Nothing! Your done and ready to get coding!
+Nothing! You are done and ready to get coding!
 
 
 ## Versioning And Help
