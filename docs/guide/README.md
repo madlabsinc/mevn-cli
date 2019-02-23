@@ -57,56 +57,73 @@ These commands are used to generate the code necessary for running a server.
 
 ## File Hierarchy
 
-  
-  | - __Mevn-Cli__- // all the tests for this module goes here
-      
-      | - lib // Sub components of this module
-            | - Commands
-              | - addPackagelib.js
-              | - componentslib.js
-              | - configlib.js
-              | - controllerlib.js
-              | - initlib.js
-              | - modelslib.js
-              | - routeslib.js
-              | - files
-                | - components
-                    | - component.vue
-                | - controllers
-                    | - user_controller.js
-                | - models
-                    | - user_schema.js
-                | - routes
-                    | - FacebookRoutes.js
-                    | - GoogleRoutes.js
-                    | - index.js
-                    | - index_with_passport.js
-                    | - index_with_social_media_auth.js
-                    | - TwitterRoutes.js
-                | - vuex
-                    | - store.js
-
-        | - container
-            | - docker.js
-
-        | - deploy
-            | - dply.js
-
-        | - external //sub components of this module
-            | - banner.js
-
-        | - Run // Sub components of this module
+| - .github
+    | -config.yml
+| - bin
+    | - index.js
+| - docs
+    | - .vuepress
+        | - public
+            | - images
+                | - hero.png
+                | - mevn-logo.jpg
+        | - config.js
+    | - guide      
+        | - README.md
+    | - README.md
+| - lib 
+    | - commands
+        | - addPackagelib.js
+        | - codesplitlib.js
+        | - componentslib.js
+        | - configlib.js
+        | - controllerlib.js
+        | - initlib.js
+        | - modelslib.js
+        | - routeslib.js
+        | - versionlib.js
+    | - deploy
+        | - docker.js
+        | - docker_dply.js
+        | - git_repo.js
+    | - external
+        | - banner.js
+    | - files
+        | - components
+                | - component.vue
+            | - controllers
+                | - user_controller.js
+            | - models
+                | - user_schema.js
+            | - routes
+                | - FacebookRoutes.js
+                | - GoogleRoutes.js
+                | - TwitterRoutes.js
+                | - index.js
+                | - index_with_passport.js
+                | - index_with_social_media_auth.js
+            | - vuex
+                | - store.js
+        | - run
             | - client.js
             | - server.js
-
         | - utils
             | - createFile.js
             | - fileOverwritePrompt.js
-
-    | - config.json
-    | - index.js
-    | - package-lock.json
-    | - package.json  
+| - test
+    | - main_test.js
+| - .gitignore
+| - .jshintignore
+| - .jshintrc
+| - .travis.yml
+| - CHANGELOG.MD
+| - CODE_OF_CONDUCT.md
+| - LICENSE.md
+| - README.md
+| - config.json
+| - package-lock.json
+| - package.json 
+| - yarn.lock 
 
 
 ## Features
