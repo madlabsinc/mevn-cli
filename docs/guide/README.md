@@ -56,7 +56,7 @@ These commands are used to generate the code necessary for running a server.
 | ```mevn-cli dockerize``` | To run the client and server in separate docker containers |
 
 ## File Hierarchy
-
+```
 | - .github
     | -config.yml
 | - bin
@@ -124,7 +124,7 @@ These commands are used to generate the code necessary for running a server.
 | - package-lock.json
 | - package.json 
 | - yarn.lock 
-
+```
 
 ## Features
 
