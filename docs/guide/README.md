@@ -21,14 +21,14 @@ npm install -g mevn-cli
 ## Quickstart
 ```bash
 npm install -g mevn-cli
-mevn-cli init "Desired File Name" 
+mevn init "Desired File Name" 
 ```
 ### Initial Command
 
 This command Initialises the project.
 
 ```
-mevn-cli init appname
+mevn init appname
 ```
 
 ### Server Commands
@@ -37,10 +37,10 @@ These commands are used to generate the code necessary for running a server.
 
 | command | description |
 | ------- | ----------- |
-|``` mevn-cli create:route ``` | To create the Routes-File(API) |
-|``` mevn-cli create:model ``` | To create the Models-File(SCHEMA) |
-|``` mevn-cli create:controller``` |  To create the Controllers-File |
-| ```mevn-cli create:config ``` | To create the Config-File |
+|``` mevn create:route ``` | To create the Routes-File(API) |
+|``` mevn create:model ``` | To create the Models-File(SCHEMA) |
+|``` mevn create:controller``` |  To create the Controllers-File |
+| ```mevn create:config ``` | To create the Config-File |
 
 
 ### General Command
@@ -49,11 +49,11 @@ These commands are used to generate the code necessary for running a server.
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
-| ```mevn-cli run:server``` | To run the Server |
-| ```mevn-cli run:client``` | To run the Client |
-| ```mevn-cli add:package``` | To add additional packages as required |
-| ```mevn-cli create:component <component_name>``` | To create new components as required |
-| ```mevn-cli dockerize``` | To run the client and server in separate docker containers |
+| ```mevn run:server``` | To run the Server |
+| ```mevn run:client``` | To run the Client |
+| ```mevn add:package``` | To add additional packages as required |
+| ```mevn create:component <component_name>``` | To create new components as required |
+| ```mevn dockerize``` | To run the client and server in separate docker containers |
 
 ## File Hierarchy
 ```
@@ -159,5 +159,5 @@ Nothing! You are done and ready to get coding!
 
 | command | description
 | --- | --- |
-| ```mevn-cli -v``` | Check CLI version |
-|``` mevn-cli --help ``` | Get help and check usage |
+| ```mevn -v``` | Check CLI version |
+|``` mevn --help ``` | Get help and check usage |
