@@ -16,8 +16,8 @@ const codesplitfn = require('../lib/commands/codesplitlib');
 const addPackagefn = require('../lib/commands/addPackagelib');
 const routesfn = require('../lib/commands/routeslib');
 const configfn = require('../lib/commands/configlib');
-const serverfn = require('../lib/run/server');
-const clientfn = require('../lib/run/client');
+const { setupServer } = require('../lib/run/server');
+const { setupClient } = require('../lib/run/client');
 const dockerfn = require('../lib/deploy/docker');
 const git_repofn = require('../lib/deploy/git_repo');
 const dplyfn = require('../lib/deploy/docker_dply');
@@ -72,12 +72,12 @@ program
 program
   .command('run:client')
   .description('To run client')
-  .action(clientfn);
+  .action(setupClient);
 
 program
   .command('run:server')
   .description('To run server')
-  .action(serverfn);
+  .action(setupServer);
 
 program
   .command('dockerize')
@@ -100,7 +100,7 @@ program
     program.outputHelp();
     console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
     console.log();
-});  
+});
 
 program.parse(process.argv);
 
