@@ -7,67 +7,67 @@ const program = require('commander');
 const chalk = require('chalk');
 
 // Initialize Command variables
-const versionfn = require('../lib/commands/versionlib');
-const initfn = require('../lib/commands/initlib');
-const modelsfn = require('../lib/commands/modelslib');
-const controllersfn = require('../lib/commands/controllerslib');
-const componentsfn = require('../lib/commands/componentslib');
-const codesplitfn = require('../lib/commands/codesplitlib');
-const addPackagefn = require('../lib/commands/addPackagelib');
-const routesfn = require('../lib/commands/routeslib');
-const configfn = require('../lib/commands/configlib');
+const { versionInfo } = require('../lib/commands/version');
+const { initializeProject } = require('../lib/commands/init');
+const { generateModel } = require('../lib/commands/createModel');
+const { generateController } = require('../lib/commands/createController');
+const { createComponent } = require('../lib/commands/component');
+const { asyncRender } = require('../lib/commands/codesplit');
+const { addPackage } = require('../lib/commands/package');
+const { generateRoute } = require('../lib/commands/createRoute');
+const { generateConfig } = require('../lib/commands/createConfig');
 const { setupServer } = require('../lib/run/server');
 const { setupClient } = require('../lib/run/client');
-const dockerfn = require('../lib/deploy/docker');
-const git_repofn = require('../lib/deploy/git_repo');
-const dplyfn = require('../lib/deploy/docker_dply');
+const { dockerize } = require('../lib/deploy/docker');
+const { createRepo } = require('../lib/deploy/gitRepo');
+const { deploy } = require('../lib/deploy/herokuDeploy');
 
 // Define Commands in CLI TOOL
 
 program
   .command('version')
   .description('Outputs version along with local development environment information')
-  .action(versionfn);
+  .action(versionInfo);
 
 program
   .command('init <appname>')
   .description('To init the project')
-  .action(initfn);
+  .action(initializeProject);
 
 program
   .command('create:controller')
   .description('To create controllers-file')
-  .action(controllersfn);
+  .action(generateController);
 
 program
   .command('create:component <componentname>')
   .description('To create component-file')
-  .action(componentsfn);
+  .action(createComponent);
 
 program
   .command('codesplit <componentname>')
   .description('To code split the required component')
-  .action(codesplitfn);
+  .action(asyncRender);
 
 program
   .command('create:route')
   .description('To create router-file')
-  .action(routesfn);
+  .action(generateRoute);
 
 program
   .command('create:config')
   .description('To create configuration file for database')
-  .action(configfn);
+  .action(generateConfig);
 
 program
   .command('create:model')
   .description('To create models-file')
-  .action(modelsfn);
+  .action(generateModel);
 
 program
   .command('add:package')
   .description('To add a new package to the project')
-  .action(addPackagefn);
+  .action(addPackage);
 
 program
   .command('run:client')
@@ -82,17 +82,17 @@ program
 program
   .command('dockerize')
   .description('To dockerize the app')
-  .action(dockerfn);
+  .action(dockerize);
 
 program
   .command('deploy')
   .description('To deploy the app to Heroku')
-  .action(dplyfn);
+  .action(deploy);
 
 program
   .command('create:git-repo')
   .description('To create a GitHub repository and fire the first commit')
-  .action(git_repofn);
+  .action(createRepo);
 
 program
   .arguments('<command>')
