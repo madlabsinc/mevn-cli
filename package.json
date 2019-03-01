@@ -53,6 +53,7 @@
     "log-update": "^2.3.0",
     "node-cmd": "^3.0.0",
     "shelljs": "^0.8.2",
+    "util": "^0.11.1",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
