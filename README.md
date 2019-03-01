@@ -78,7 +78,7 @@ These commands are used to generate the code necessary for running a server.
 
 ## Demo
 
-[![Demo](https://asciinema.org/a/229342.svg)](https://asciinema.org/a/229342)
+[![Demo](https://asciinema.org/a/230916.svg)](https://asciinema.org/a/230916)
 
 ## Contributing
 
