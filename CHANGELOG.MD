@@ -5,19 +5,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.1.0]
-## Addded
-- `0584d59` - Update demo within Docs
+### Addded
+- [`0584d59`](https://github.com/madlabsinc/mevn-cli/commit/0584d59106333ad9ebffde2c9c3b972414d7b41e) Update demo within Docs
 
 ## [1.0.9]
-## Added
-- Fixed a bug such that a directory having same name as the boilerplate already exists in path #88
+### Added
+- Fixed a bug such that a directory having same name as the boilerplate already exists in path [#88](https://github.com/madlabsinc/mevn-cli/pull/88)
 
 ## [1.0.8]
-## Added
-- Fix for #86 - now you can find `mevn.json` within the new project being created
+### Added
+- Fix for [#86](https://github.com/madlabsinc/mevn-cli/pull/86) - now you can find `mevn.json` within the new project being created
 
 ## [1.0.5]
-## Added
+### Added
 - Fixed bug while fetching the Nuxt-js template
 - Other minor bug fixes
 
