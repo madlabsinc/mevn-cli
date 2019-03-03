@@ -1,4 +1,4 @@
 node_modules
 lib/templates/routes/*
 lib/utils/createFile.js
-lib/deploy/*
+lib/commands/deploy/*
