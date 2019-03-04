@@ -7,20 +7,20 @@ const program = require('commander');
 const chalk = require('chalk');
 
 // Initialize Command variables
-const { versionInfo } = require('../lib/commands/version');
-const { initializeProject } = require('../lib/commands/init');
-const { generateModel } = require('../lib/commands/createModel');
-const { generateController } = require('../lib/commands/createController');
-const { createComponent } = require('../lib/commands/component');
-const { asyncRender } = require('../lib/commands/codesplit');
-const { addPackage } = require('../lib/commands/package');
-const { generateRoute } = require('../lib/commands/createRoute');
-const { generateConfig } = require('../lib/commands/createConfig');
-const { setupServer } = require('../lib/run/server');
-const { setupClient } = require('../lib/run/client');
-const { dockerize } = require('../lib/deploy/docker');
-const { createRepo } = require('../lib/deploy/gitRepo');
-const { deploy } = require('../lib/deploy/herokuDeploy');
+const { versionInfo } = require('../lib/commands/basic/version');
+const { initializeProject } = require('../lib/commands/basic/init');
+const { generateModel } = require('../lib/commands/basic/createModel');
+const { generateController } = require('../lib/commands/basic/createController');
+const { createComponent } = require('../lib/commands/basic/component');
+const { asyncRender } = require('../lib/commands/basic/codesplit');
+const { addPackage } = require('../lib/commands/basic/package');
+const { generateRoute } = require('../lib/commands/basic/createRoute');
+const { generateConfig } = require('../lib/commands/basic/createConfig');
+const { setupServer } = require('../lib/commands/serve/server');
+const { setupClient } = require('../lib/commands/serve/client');
+const { dockerize } = require('../lib/commands/deploy/docker');
+const { createRepo } = require('../lib/commands/deploy/gitRepo');
+const { deploy } = require('../lib/commands/deploy/herokuDeploy');
 
 // Define Commands in CLI TOOL
 
