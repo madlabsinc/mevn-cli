@@ -73,43 +73,47 @@ These commands are used to generate the code necessary for running a server.
     | - README.md
 | - lib 
     | - commands
-        | - addPackagelib.js
-        | - codesplitlib.js
-        | - componentslib.js
-        | - configlib.js
-        | - controllerlib.js
-        | - initlib.js
-        | - modelslib.js
-        | - routeslib.js
-        | - versionlib.js
-    | - deploy
-        | - docker.js
-        | - docker_dply.js
-        | - git_repo.js
+        | - basic
+            | - codesplit.js
+            | - component.js
+            | - createConfig.js
+            | - createController.js
+            | - createModel.js
+            | - createRoute.js
+            | - init.js
+            | - package.js
+            | - version.js
+        | - deploy
+            | - docker.js
+            | - gitRepo.js
+            | - herokuDeploy.js
+        | - serve
+            | - client.js
+            | - launch.js
+            | - server.js
     | - external
         | - banner.js
-    | - files
+    | - templates
         | - components
                 | - component.vue
-            | - controllers
-                | - user_controller.js
-            | - models
-                | - user_schema.js
-            | - routes
-                | - FacebookRoutes.js
-                | - GoogleRoutes.js
-                | - TwitterRoutes.js
-                | - index.js
-                | - index_with_passport.js
-                | - index_with_social_media_auth.js
-            | - vuex
-                | - store.js
-        | - run
-            | - client.js
-            | - server.js
-        | - utils
-            | - createFile.js
-            | - fileOverwritePrompt.js
+        | - controllers
+            | - user_controller.js
+        | - models
+            | - user_schema.js
+        | - routes
+            | - FacebookRoutes.js
+            | - GoogleRoutes.js
+            | - TwitterRoutes.js
+            | - index.js
+            | - index_with_passport.js
+            | - index_with_social_media_auth.js
+        | - vuex
+            | - store.js
+    | - utils
+        | - createFile.js
+        | - fileOverwritePrompt.js
+        | - messages.js
+        | - projectConfig.js
 | - test
     | - main_test.js
 | - .gitignore
@@ -123,7 +127,6 @@ These commands are used to generate the code necessary for running a server.
 | - config.json
 | - package-lock.json
 | - package.json 
-| - yarn.lock 
 ```
 
 ## Features
