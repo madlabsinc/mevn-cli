@@ -25,22 +25,15 @@ A CLI tool for getting started with MEVN stack. It offers various reliable boile
 ### Installing
 
 To install the package:-
-```
-npm install -g mevn-cli
-```
+> npm install -g mevn-cli
 
 ## Commands
-
-
 
 
 ### Initial Command
 
 This command Initialises the project.
-
-```
-mevn init appname
-```
+> mevn init <app_name>
 
 ### Available Commands
 
