@@ -2,3 +2,4 @@ node_modules
 lib/templates/routes/*
 lib/utils/createFile.js
 lib/commands/deploy/*
+lib/commands/basic/generate.js
