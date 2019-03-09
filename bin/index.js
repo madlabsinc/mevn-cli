@@ -9,13 +9,10 @@ const chalk = require('chalk');
 // Initialize Command variables
 const { versionInfo } = require('../lib/commands/basic/version');
 const { initializeProject } = require('../lib/commands/basic/init');
-const { generateModel } = require('../lib/commands/basic/createModel');
-const { generateController } = require('../lib/commands/basic/createController');
+const { generateFile } = require('../lib/commands/basic/generate');
 const { createComponent } = require('../lib/commands/basic/component');
 const { asyncRender } = require('../lib/commands/basic/codesplit');
 const { addPackage } = require('../lib/commands/basic/package');
-const { generateRoute } = require('../lib/commands/basic/createRoute');
-const { generateConfig } = require('../lib/commands/basic/createConfig');
 const { setupServer } = require('../lib/commands/serve/server');
 const { setupClient } = require('../lib/commands/serve/client');
 const { dockerize } = require('../lib/commands/deploy/docker');
@@ -35,11 +32,6 @@ program
   .action(initializeProject);
 
 program
-  .command('create:controller')
-  .description('To create controllers-file')
-  .action(generateController);
-
-program
   .command('create:component <componentname>')
   .description('To create component-file')
   .action(createComponent);
@@ -50,19 +42,9 @@ program
   .action(asyncRender);
 
 program
-  .command('create:route')
-  .description('To create router-file')
-  .action(generateRoute);
-
-program
-  .command('create:config')
-  .description('To create configuration file for database')
-  .action(generateConfig);
-
-program
-  .command('create:model')
-  .description('To create models-file')
-  .action(generateModel);
+  .command('generate')
+  .description('To generate model, view, controller and DB config files')
+  .action(generateFile);
 
 program
   .command('add:package')
