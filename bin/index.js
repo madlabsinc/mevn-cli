@@ -43,7 +43,7 @@ program
 
 program
   .command('generate')
-  .description('To generate model, view, controller and DB config files')
+  .description('To generate model, route, controller and DB config files')
   .action(generateFile);
 
 program
