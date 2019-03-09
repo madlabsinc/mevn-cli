@@ -45,7 +45,7 @@
     "chalk": "^2.4.1",
     "clear": "^0.1.0",
     "cli-spinner": "^0.2.8",
-    "cli-table": "^0.3.1",
+    "cli-table3": "^0.5.1",
     "commander": "^2.16.0",
     "elegant-spinner": "^1.0.1",
     "figlet": "^1.2.0",
