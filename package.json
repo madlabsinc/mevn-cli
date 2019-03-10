@@ -1,6 +1,6 @@
 {
   "name": "mevn-cli",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "A cli tool for MEVN stack.",
   "main": "index.js",
   "directories": {
