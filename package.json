@@ -52,6 +52,7 @@
     "inquirer": "^6.0.0",
     "log-update": "^2.3.0",
     "node-cmd": "^3.0.0",
+    "opn": "^5.4.0",
     "shelljs": "^0.8.2",
     "validate-npm-package-name": "^3.0.0"
   },

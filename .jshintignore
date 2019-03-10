@@ -3,3 +3,4 @@ lib/templates/routes/*
 lib/utils/createFile.js
 lib/commands/deploy/*
 lib/commands/basic/generate.js
+lib/commands/serve/*

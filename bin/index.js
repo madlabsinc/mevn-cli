@@ -13,8 +13,7 @@ const { generateFile } = require('../lib/commands/basic/generate');
 const { createComponent } = require('../lib/commands/basic/component');
 const { asyncRender } = require('../lib/commands/basic/codesplit');
 const { addPackage } = require('../lib/commands/basic/package');
-const { setupServer } = require('../lib/commands/serve/server');
-const { setupClient } = require('../lib/commands/serve/client');
+const { setupProject } = require('../lib/commands/serve/setup');
 const { dockerize } = require('../lib/commands/deploy/docker');
 const { createRepo } = require('../lib/commands/deploy/gitRepo');
 const { deploy } = require('../lib/commands/deploy/herokuDeploy');
@@ -52,14 +51,9 @@ program
   .action(addPackage);
 
 program
-  .command('run:client')
-  .description('To run client')
-  .action(setupClient);
-
-program
-  .command('run:server')
-  .description('To run server')
-  .action(setupServer);
+  .command('serve')
+  .description('To serve client/server')
+  .action(setupProject);
 
 program
   .command('dockerize')
