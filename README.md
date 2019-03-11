@@ -59,7 +59,7 @@ This command Initialises the project.
 
 ## Demo
 
-[![Demo](https://asciinema.org/a/230916.svg)](https://asciinema.org/a/230916)
+[![Demo](https://asciinema.org/a/233020.svg)](https://asciinema.org/a/233020)
 
 ## Contributing
 
