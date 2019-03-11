@@ -41,8 +41,7 @@ This command Initialises the project.
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
-| `mevn run:server` | To run the Server |
-| `mevn run:client` | To run the Client |
+| `mevn serve` | To launch Client/Server parts as required |
 | `mevn add:package` | To add additional packages as required |
 | `mevn generate` | To generate model, route, controller, and DB config files |
 | `mevn create:component <component_name>` | To create new components as required |
