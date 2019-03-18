@@ -4,3 +4,4 @@ lib/utils/createFile.js
 lib/commands/deploy/*
 lib/commands/basic/generate.js
 lib/commands/serve/*
+lib/commands/basic/init.js
