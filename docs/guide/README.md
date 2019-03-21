@@ -31,29 +31,21 @@ This command Initialises the project.
 mevn init appname
 ```
 
-### Server Commands
 
-These commands are used to generate the code necessary for running a server.
-
-| command | description |
-| ------- | ----------- |
-|``` mevn create:route ``` | To create the Routes-File(API) |
-|``` mevn create:model ``` | To create the Models-File(SCHEMA) |
-|``` mevn create:controller``` |  To create the Controllers-File |
-| ```mevn create:config ``` | To create the Config-File |
-
-
-### General Command
+### Available Commands
  
  These are generic commands for the entire project.
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
-| ```mevn run:server``` | To run the Server |
-| ```mevn run:client``` | To run the Client |
+| ```mevn serve``` | To launch Client/Server parts as required |
 | ```mevn add:package``` | To add additional packages as required |
+| ```mevn generate``` | To generate model, route, controller, and DB config files |
 | ```mevn create:component <component_name>``` | To create new components as required |
+| ```mevn codesplit <component_name>``` | Lazy load components as required |
+| ```mevn create:git-repo``` | To create a GitHub repository and fire the first commit |
 | ```mevn dockerize``` | To run the client and server in separate docker containers |
+| ```mevn deploy``` | To deploy the app to Heroku |
 
 ## File Hierarchy
 ```
