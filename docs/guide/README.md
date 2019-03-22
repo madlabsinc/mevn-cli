@@ -68,10 +68,8 @@ mevn init appname
         | - basic
             | - codesplit.js
             | - component.js
-            | - createConfig.js
-            | - createController.js
-            | - createModel.js
             | - createRoute.js
+            | - generate.js
             | - init.js
             | - package.js
             | - version.js
@@ -80,9 +78,8 @@ mevn init appname
             | - gitRepo.js
             | - herokuDeploy.js
         | - serve
-            | - client.js
             | - launch.js
-            | - server.js
+            | - setup.js
     | - external
         | - banner.js
     | - templates
