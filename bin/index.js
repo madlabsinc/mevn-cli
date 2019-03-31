@@ -14,9 +14,7 @@ const { createComponent } = require('../lib/commands/basic/component');
 const { asyncRender } = require('../lib/commands/basic/codesplit');
 const { addPackage } = require('../lib/commands/basic/package');
 const { setupProject } = require('../lib/commands/serve/setup');
-const { dockerize } = require('../lib/commands/deploy/docker');
-const { createRepo } = require('../lib/commands/deploy/gitRepo');
-const { deploy } = require('../lib/commands/deploy/herokuDeploy');
+const { deploy } = require('../lib/commands/deploy/deploy');
 
 // Define Commands in CLI TOOL
 
@@ -56,19 +54,9 @@ program
   .action(setupProject);
 
 program
-  .command('dockerize')
-  .description('To dockerize the app')
-  .action(dockerize);
-
-program
   .command('deploy')
-  .description('To deploy the app to Heroku')
+  .description('To deploy the app to GitHub/Heroku or as a Docker container')
   .action(deploy);
-
-program
-  .command('create:git-repo')
-  .description('To create a GitHub repository and fire the first commit')
-  .action(createRepo);
 
 program
   .arguments('<command>')
@@ -76,12 +64,12 @@ program
     program.outputHelp();
     console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
     console.log();
-});
+  });
 
 program.parse(process.argv);
 
 // Shows help if just mevn-cli is fired in
 
-if(!program.args.length){
+if (!program.args.length) {
   program.help();
 }
