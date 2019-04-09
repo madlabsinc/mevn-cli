@@ -2,23 +2,22 @@
   "name": "mevn-cli",
   "version": "1.2.8",
   "description": "A cli tool for MEVN stack.",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
+  "main": "src/bin/index.js",
+  "files": [
+    "src"
+  ],
   "bin": {
-    "mevn": "./bin/index.js"
+    "mevn": "./src/bin/index.js"
   },
   "scripts": {
-    "compile": "babel --presets env,stage-0 -d src/ lib/",
+    "compile": "babel lib --out-dir src",
     "test": "node ./node_modules/mocha/bin/mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "lint": "node ./node_modules/jshint/bin/jshint ./bin ./lib"
   },
   "pre-commit": [
-    "lint",
-    "test"
+    "lint"
   ],
   "repository": {
     "type": "git",
@@ -57,9 +56,10 @@
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-0": "^6.24.1",
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/polyfill": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
     "jshint": "^2.9.7",
     "mocha": "^5.2.0",
     "pre-commit": "^1.2.2",
