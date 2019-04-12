@@ -15,5 +15,4 @@ exports.showBanner = () => {
     console.log(chalk.redBright(data));
     console.log(chalk.yellow('Tool for mevn stack.'));
   });
-
 };

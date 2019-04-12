@@ -22,42 +22,57 @@ let projectConfig;
 let showTables = () => {
   console.log(chalk.yellow('\n Available commands:-'));
 
-  availableCommands.push({
-    'mevn version': 'Current CLI version'
-  }, {
-      'mevn serve': 'To launch client/server'
-    }, {
-      'mevn add:package': 'Add additional packages'
-    }, {
-      'mevn generate': 'To generate config files'
-    }, {
-      'mevn create:component <name>': 'Create new components'
-    }, {
-      'mevn codesplit <name>': 'Lazy load components'
-    }, {
-      'mevn create:git-repo': 'Create a GitHub Repo'
-    }, {
-      'mevn dockerize': 'Launch within docker containers'
-    }, {
-      'mevn deploy': 'Deploy the app to Heroku'
-    });
+  availableCommands.push(
+    {
+      'mevn version': 'Current CLI version',
+    },
+    {
+      'mevn serve': 'To launch client/server',
+    },
+    {
+      'mevn add:package': 'Add additional packages',
+    },
+    {
+      'mevn generate': 'To generate config files',
+    },
+    {
+      'mevn create:component <name>': 'Create new components',
+    },
+    {
+      'mevn codesplit <name>': 'Lazy load components',
+    },
+    {
+      'mevn create:git-repo': 'Create a GitHub Repo',
+    },
+    {
+      'mevn dockerize': 'Launch within docker containers',
+    },
+    {
+      'mevn deploy': 'Deploy the app to Heroku',
+    },
+  );
   console.log(availableCommands.toString());
 
-  console.log(chalk.cyanBright(`\n\n Make sure that you've done ${chalk.greenBright(`cd ${projectName}`)}`));
+  console.log(
+    chalk.cyanBright(
+      `\n\n Make sure that you've done ${chalk.greenBright(
+        `cd ${projectName}`,
+      )}`,
+    ),
+  );
   console.log(chalk.redBright('\n warning:'));
   console.log(' Do not delete mevn.json file');
 };
 
-let fetchTemplate = async (template) => {
-
+let fetchTemplate = async template => {
   try {
     await validateInstallation('git');
 
-    let templateDir = 'mevn-boilerplate';
-    if (template !== 'basic') {
-      templateDir = `mevn-${template}-boilerplate`;
-    }
-    shell.exec(`${boilerplate[template]} ${projectName}`, { silent: true }, { async: true });
+    shell.exec(
+      `${boilerplate[template]} ${projectName}`,
+      { silent: true },
+      { async: true },
+    );
 
     let fetchSpinner = setInterval(() => {
       logUpdate('Fetching the boilerplate ' + chalk.cyan.bold.dim(frame()));
@@ -68,29 +83,41 @@ let fetchTemplate = async (template) => {
       clearInterval(fetchSpinner);
       logUpdate.clear();
       showTables();
-
     }, 5000);
 
-    fs.writeFileSync(`./${projectName}/mevn.json`, projectConfig.join('\n').toString());
+    fs.writeFileSync(
+      `./${projectName}/mevn.json`,
+      projectConfig.join('\n').toString(),
+    );
 
     if (template === 'nuxt') {
       setTimeout(() => {
-
         console.log('\n');
 
-        inquirer.prompt([{
-          name: 'mode',
-          type: 'list',
-          message: 'Choose your preferred mode',
-          choices: ['Universal', 'SPA']
-        }])
-          .then((choice) => {
+        inquirer
+          .prompt([
+            {
+              name: 'mode',
+              type: 'list',
+              message: 'Choose your preferred mode',
+              choices: ['Universal', 'SPA'],
+            },
+          ])
+          .then(choice => {
             if (choice.mode === 'Universal') {
-              let configFile = fs.readFileSync(`./${projectName}/nuxt.config.js`, 'utf8').toString().split('\n');
-              let index = configFile.indexOf(configFile.find(line => line.includes('mode')));
+              let configFile = fs
+                .readFileSync(`./${projectName}/nuxt.config.js`, 'utf8')
+                .toString()
+                .split('\n');
+              let index = configFile.indexOf(
+                configFile.find(line => line.includes('mode')),
+              );
               configFile[index] = ` mode: 'universal',`;
 
-              fs.writeFileSync(`./${projectName}/nuxt.config.js`, configFile.join('\n'));
+              fs.writeFileSync(
+                `./${projectName}/nuxt.config.js`,
+                configFile.join('\n'),
+              );
             }
             showTables();
           });
@@ -99,13 +126,9 @@ let fetchTemplate = async (template) => {
   } catch (error) {
     throw error;
   }
-
-
-
-
 };
 
-exports.initializeProject = (appName) => {
+exports.initializeProject = appName => {
   showBanner();
   console.log('\n');
 
@@ -114,10 +137,15 @@ exports.initializeProject = (appName) => {
   }, 50);
 
   setTimeout(() => {
-    const hasMultipleProjectNameArgs = process.argv[4] && !process.argv[4].startsWith('-');
+    const hasMultipleProjectNameArgs =
+      process.argv[4] && !process.argv[4].startsWith('-');
     // Validation for multiple directory names
     if (hasMultipleProjectNameArgs) {
-      console.log(chalk.red.bold('\n Kindly provide only one argument as the directory name!!'));
+      console.log(
+        chalk.red.bold(
+          '\n Kindly provide only one argument as the directory name!!',
+        ),
+      );
       process.exit(1);
     }
 
@@ -125,14 +153,16 @@ exports.initializeProject = (appName) => {
     if (!validationResult.validForNewPackages) {
       console.error(
         `Could not create a project called ${chalk.red(
-          `"${appName}"`
-        )} because of npm naming restrictions:`
+          `"${appName}"`,
+        )} because of npm naming restrictions:`,
       );
       process.exit(1);
     }
 
     if (fs.existsSync(appName)) {
-      console.error(chalk.red.bold(`\n Directory ${appName} already exists in path!`));
+      console.error(
+        chalk.red.bold(`\n Directory ${appName} already exists in path!`),
+      );
       process.exit(1);
     }
 
@@ -140,19 +170,21 @@ exports.initializeProject = (appName) => {
     logUpdate.clear();
     projectName = appName;
 
-    inquirer.prompt([{
-      name: 'template',
-      type: 'list',
-      message: 'Please select one',
-      choices: ['basic', 'pwa', 'graphql', 'Nuxt-js']
-
-    }])
-      .then((choice) => {
+    inquirer
+      .prompt([
+        {
+          name: 'template',
+          type: 'list',
+          message: 'Please select one',
+          choices: ['basic', 'pwa', 'graphql', 'Nuxt-js'],
+        },
+      ])
+      .then(choice => {
         projectConfig = [
           '{',
           `"name": "${appName}",`,
           `"template": "${choice.template}"`,
-          '}'
+          '}',
         ];
 
         if (choice.template === 'Nuxt-js') {
@@ -161,5 +193,4 @@ exports.initializeProject = (appName) => {
         fetchTemplate(choice.template);
       });
   }, 1000);
-
 };
