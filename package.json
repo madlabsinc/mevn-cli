@@ -2,19 +2,19 @@
   "name": "mevn-cli",
   "version": "1.2.8",
   "description": "A cli tool for MEVN stack.",
-  "main": "src/bin/index.js",
+  "main": "lib/bin/index.js",
   "files": [
-    "src"
+    "lib"
   ],
   "bin": {
-    "mevn": "./src/bin/index.js"
+    "mevn": "./lib/bin/index.js"
   },
   "scripts": {
-    "compile": "babel lib --out-dir src",
+    "compile": "babel src --out-dir lib",
     "test": "node ./node_modules/mocha/bin/mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "lint": "node ./node_modules/jshint/bin/jshint ./bin ./lib"
+    "lint": "node ./node_modules/jshint/bin/jshint ./src"
   },
   "pre-commit": [
     "lint"

@@ -8,7 +8,22 @@ const createFile = require('../../utils/createFile');
 const { showBanner } = require('../../external/banner');
 const { configFileExists } = require('../../utils/messages');
 
-let componentsFile = fs.readFileSync(__dirname + '/../../templates/components/component.vue', 'utf8');
+let componentTemplate = [ '<template >',
+  '</template>',
+  '',
+  '<script >',
+  '    export default {',
+  '        data() {',
+  '            return {',
+  '',
+  '            }',
+  '        },',
+  '    } ',
+  '</script>',
+  '',
+  '<style scoped >',
+  '',
+  '</style>' ];
 
 exports.createComponent = (componentName) => {
   showBanner();
@@ -17,7 +32,7 @@ exports.createComponent = (componentName) => {
     configFileExists();
 
     shell.cd('client/src/components');
-    createFile(componentName + '.vue', componentsFile, { flag: 'wx' }, (err) => {
+    createFile(componentName + '.vue', componentTemplate.join('\n'), { flag: 'wx' }, (err) => {
       if (err) throw err;
       console.log(chalk.green('\n File Created...!'));
     });
