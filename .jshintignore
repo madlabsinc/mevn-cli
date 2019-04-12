@@ -1,8 +1,8 @@
 node_modules
-lib/templates/routes/*
-lib/utils/createFile.js
-lib/commands/deploy/*
-lib/commands/basic/init.js
-lib/commands/basic/generate.js
-lib/commands/serve/*
-lib/utils/validations.js
+src/templates/routes/*
+src/utils/createFile.js
+src/commands/deploy/*
+src/commands/basic/init.js
+src/commands/basic/generate.js
+src/commands/serve/*
+src/utils/validations.js
