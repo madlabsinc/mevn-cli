@@ -3,25 +3,20 @@
 import express from 'express';
 import passport from 'passport';
 
-import { 
+import {
   createData,
   readData,
   updateData,
-  deleteData 
-}
-
-from '../controllers/user_controller';
+  deleteData,
+} from '../controllers/user_controller';
 
 const router = express.Router();
 
 router.configure(() => {
-    router.use(passport.initialize());
+  router.use(passport.initialize());
 });
 
-router.post('/login', 
-    passport.authenticate('local'),
-    createData
-);
+router.post('/login', passport.authenticate('local'), createData);
 
 router.get('/enter_api', readData);
 router.put('/enter_api/:id', updateData);

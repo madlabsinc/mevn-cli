@@ -1,13 +1,11 @@
 import express from 'express';
 
-import { 
+import {
   createData,
   readData,
   updateData,
-  deleteData 
-}
-
-from '../controllers/user_controller';
+  deleteData,
+} from '../controllers/user_controller';
 
 const router = express.Router();
 

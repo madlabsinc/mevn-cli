@@ -23,7 +23,9 @@ import { deploy } from '../commands/deploy/herokuDeploy';
 
 program
   .command('version')
-  .description('Outputs version along with local development environment information')
+  .description(
+    'Outputs version along with local development environment information',
+  )
   .action(versionInfo);
 
 program
@@ -71,18 +73,16 @@ program
   .description('To create a GitHub repository and fire the first commit')
   .action(createRepo);
 
-program
-  .arguments('<command>')
-  .action((cmd) => {
-    program.outputHelp();
-    console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
-    console.log();
+program.arguments('<command>').action(cmd => {
+  program.outputHelp();
+  console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
+  console.log();
 });
 
 program.parse(process.argv);
 
 // Shows help if just mevn-cli is fired in
 
-if(!program.args.length){
+if (!program.args.length) {
   program.help();
 }

@@ -3,12 +3,11 @@
 import fs from 'fs';
 import { showPrompt } from './fileOverwritePrompt.js';
 
-exports.createFile = (fileName, contents, flag = { flag: 'a' }, cb) => {
-
-  fs.writeFile(fileName, contents, flag, (err) => {
+const createFile = (fileName, contents, flag = { flag: 'a' }, cb) => {
+  fs.writeFile(fileName, contents, flag, err => {
     if (err) {
       if (err.code === 'EEXIST') {
-        showPrompt(fileName, (answers) => {
+        showPrompt(fileName, answers => {
           if (answers.overwriteFile) {
             createFile(fileName, contents, null, cb);
           }
@@ -19,3 +18,7 @@ exports.createFile = (fileName, contents, flag = { flag: 'a' }, cb) => {
     }
   });
 };
+
+Object.assign(exports, {
+  createFile,
+});
