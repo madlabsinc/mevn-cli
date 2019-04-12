@@ -1,8 +1,0 @@
-node_modules
-src/templates/routes/*
-src/utils/createFile.js
-src/commands/deploy/*
-src/commands/basic/init.js
-src/commands/basic/generate.js
-src/commands/serve/*
-src/utils/validations.js

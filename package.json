@@ -14,7 +14,7 @@
     "test": "node ./node_modules/mocha/bin/mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "lint": "node ./node_modules/jshint/bin/jshint ./src"
+    "lint": "node ./node_modules/eslint/bin/eslint ./src"
   },
   "pre-commit": [
     "lint"
@@ -60,7 +60,8 @@
     "@babel/core": "^7.4.3",
     "@babel/polyfill": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
-    "jshint": "^2.9.7",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
     "mocha": "^5.2.0",
     "pre-commit": "^1.2.2",
     "vuepress": "^0.14.4"
