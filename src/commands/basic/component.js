@@ -1,12 +1,12 @@
 'use strict';
 
-const fs = require('fs');
-const shell = require('shelljs');
-const chalk = require('chalk');
-const createFile = require('../../utils/createFile');
+import chalk from 'chalk';
+import fs from 'fs';
+import shell from 'shelljs';
 
-const { showBanner } = require('../../external/banner');
-const { configFileExists } = require('../../utils/messages');
+import { configFileExists } from '../../utils/messages';
+import { createFile } from '../../utils/createFile';
+import { showBanner } from '../../external/banner';
 
 let componentTemplate = [ '<template >',
   '</template>',

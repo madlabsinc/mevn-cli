@@ -1,15 +1,15 @@
 'use strict';
 
-const fs = require('fs');
-const shell = require('shelljs');
-const cmd = require('node-cmd');
-const inquirer = require('inquirer');
-const chalk = require('chalk');
-const logUpdate = require('log-update');
-const elegantSpinner = require('elegant-spinner');
+import chalk from 'chalk';
+import cmd from 'node-cmd';
+import elegantSpinner from 'elegant-spinner';
+import fs from 'fs';
+import inquirer from 'inquirer';
+import logUpdate from 'log-update';
+import shell from 'shelljs';
 
-const { showBanner } = require('../../external/banner');
-const { configFileExists } = require('../../utils/messages');
+import { configFileExists } from '../../utils/messages';
+import { showBanner } from '../../external/banner';
 
 let storeFile = fs.readFileSync(__dirname + '/../../templates/vuex/store.js', 'utf8');
 let frame = elegantSpinner();

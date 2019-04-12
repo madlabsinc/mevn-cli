@@ -1,8 +1,8 @@
 'use strict';
 
-const clear = require('clear');
-const figlet = require('figlet');
-const chalk = require('chalk');
+import clear from 'clear';
+import figlet from 'figlet';
+import chalk from 'chalk';
 
 exports.showBanner = () => {
   clear();

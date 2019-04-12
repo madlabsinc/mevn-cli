@@ -1,17 +1,17 @@
 'use strict';
 
-const chalk = require('chalk');
-const elegantSpinner = require('elegant-spinner');
-const fs = require('fs');
-const inquirer = require('inquirer');
-const logUpdate = require('log-update');
-const shell = require('shelljs');
-const Table = require('cli-table3');
-const validate = require('validate-npm-package-name');
+import chalk from 'chalk';
+import elegantSpinner from 'elegant-spinner';
+import fs from 'fs';
+import inquirer from 'inquirer';
+import logUpdate from 'log-update';
+import shell from 'shelljs';
+import Table from 'cli-table3';
+import validate from 'validate-npm-package-name';
 
-const boilerplate = require('../../../config.json');
-const { validateInstallation } = require('../../utils/validations');
-const { showBanner } = require('../../external/banner');
+import boilerplate from '../../../config.json';
+import { showBanner } from '../../external/banner';
+import { validateInstallation } from '../../utils/validations';
 
 let availableCommands = new Table();
 let frame = elegantSpinner();

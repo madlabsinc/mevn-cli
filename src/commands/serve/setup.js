@@ -1,12 +1,12 @@
 'use strict';
 
-const inquirer = require('inquirer');
-const shell = require('shelljs');
+import inquirer from 'inquirer';
+import shell from 'shelljs';
 
-const { appData } = require('../../utils/projectConfig');
-const { configFileExists } = require('../../utils/messages');
-const { serveProject } = require('./launch');
-const { showBanner } = require('../../external/banner');
+import { appData } from '../../utils/projectConfig';
+import { configFileExists } from '../../utils/messages';
+import { serveProject } from './launch';
+import { showBanner } from '../../external/banner';
 
 let projectTemplate;
 
@@ -28,7 +28,7 @@ exports.setupProject = () => {
       .then((data) => {
         projectTemplate = data.template;
       });
-      
+
       if (choice.side === 'client') {
         if (projectTemplate !== 'Nuxt-js') {
           shell.cd('client');

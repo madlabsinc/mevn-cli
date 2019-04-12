@@ -1,10 +1,10 @@
 'use strict';
 
-const chalk = require('chalk');
-const elegantSpinner = require('elegant-spinner');
-const logUpdate = require('log-update');
-const opn = require('opn');
-const shell = require('shelljs');
+import chalk from 'chalk';
+import elegantSpinner from 'elegant-spinner';
+import logUpdate from 'log-update';
+import opn from 'opn';
+import shell from 'shelljs';
 
 exports.serveProject = async (launchCmd, projectTemplate) => {
   let frame = elegantSpinner();

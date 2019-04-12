@@ -1,10 +1,10 @@
 'use strict';
 
-const fs = require('fs');
-const showPrompt = require('./fileOverwritePrompt.js');
+import fs from 'fs';
+import { showPrompt } from './fileOverwritePrompt.js';
 
-let createFile = (fileName, contents, flag = { flag: 'a' }, cb) => {
-  
+exports.createFile = (fileName, contents, flag = { flag: 'a' }, cb) => {
+
   fs.writeFile(fileName, contents, flag, (err) => {
     if (err) {
       if (err.code === 'EEXIST') {
@@ -19,5 +19,3 @@ let createFile = (fileName, contents, flag = { flag: 'a' }, cb) => {
     }
   });
 };
-
-module.exports = createFile;

@@ -1,16 +1,16 @@
 'use strict';
 
-const fs = require('fs');
-const shell = require('shelljs');
-const inquirer = require('inquirer');
-const chalk = require('chalk');
-const createFile = require('../../utils/createFile');
-const logUpdate = require('log-update');
-const elegantSpinner = require('elegant-spinner');
-const cmd = require('node-cmd');
+import chalk from 'chalk';
+import cmd from 'node-cmd';
+import elegantSpinner from 'elegant-spinner';
+import fs from 'fs';
+import inquirer from 'inquirer';
+import logUpdate from 'log-update';
+import shell from 'shelljs';
 
-const { showBanner } = require('../../external/banner');
-const { configFileExists } = require('../../utils/messages');
+import { createFile } from '../../utils/createFile';
+import { configFileExists } from '../../utils/messages';
+import { showBanner } from '../../external/banner';
 
 let routesPath = '/../../templates/routes/';
 let routesFile = fs.readFileSync(__dirname + '/../../templates/routes/index.js', 'utf8');

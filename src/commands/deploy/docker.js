@@ -1,13 +1,13 @@
 'use strict';
 
-const chalk = require('chalk');
-const shell = require('shelljs');
-const os = require('os');
-const inquirer = require('inquirer');
+import chalk from 'chalk';
+import inquirer from 'inquirer';
+import os from 'os';
+import shell from 'shelljs';
 
-const { configFileExists } = require('../../utils/messages');
-const { showBanner } = require('../../external/banner');
-const { validateInstallation } = require('../../utils/validations');
+import { configFileExists } from '../../utils/messages';
+import { showBanner } from '../../external/banner';
+import { validateInstallation } from '../../utils/validations';
 
 exports.dockerize = () => {
   showBanner();

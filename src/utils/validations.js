@@ -1,10 +1,10 @@
 'use strict';
 
-const shell = require('shelljs');
-const inquirer = require('inquirer');
+import inquirer from 'inquirer';
+import shell from 'shelljs';
 
-const { dependencyNotInstalled } = require('./messages');
-const { executeCommands } = require('../commands/deploy/herokuDeploy');
+import { dependencyNotInstalled } from './messages';
+import { executeCommands } from '../commands/deploy/herokuDeploy';
 
 // Determining host OS
 let isLinux = process.platform === 'linux';

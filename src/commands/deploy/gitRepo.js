@@ -1,12 +1,12 @@
 'use strict';
 
-const inquirer = require('inquirer');
-const shell = require('shelljs');
+import inquirer from 'inquirer';
+import shell from 'shelljs';
 
-const { appData } = require('../../utils/projectConfig');
-const { configFileExists } = require('../../utils/messages');
-const { showBanner } = require('../../external/banner');
-const { validateInstallation } = require('../../utils/validations');
+import { appData } from '../../utils/projectConfig';
+import { configFileExists } from '../../utils/messages';
+import { showBanner } from '../../external/banner';
+import { validateInstallation } from '../../utils/validations';
 
 let projectName;
 let deleteCommand; // Delete .git based on the platform
