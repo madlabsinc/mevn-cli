@@ -1,8 +1,7 @@
 'use strict';
 
-const fs = require('fs');
-
-const { configFileExists } = require('../utils/messages');
+import fs from 'fs';
+import { configFileExists } from '../utils/messages';
 
 exports.appData = () => {
   configFileExists();

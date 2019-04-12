@@ -1,12 +1,12 @@
 'use strict';
 
-const inquirer = require('inquirer');
-const os = require('os');
-const shell = require('shelljs');
+import inquirer from 'inquirer';
+import os from 'os';
+import shell from 'shelljs';
 
-const { appData } = require('../../utils/projectConfig');
-const { configFileExists, dependencyNotInstalled } = require('../../utils/messages');
-const { showBanner } = require('../../external/banner');
+import { appData } from '../../utils/projectConfig';
+import { configFileExists, dependencyNotInstalled } from '../../utils/messages';
+import { showBanner } from '../../external/banner';
 
 // Determining host OS
 let isLinux = process.platform === 'linux';

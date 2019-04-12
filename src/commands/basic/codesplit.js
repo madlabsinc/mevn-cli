@@ -1,11 +1,11 @@
 'use strict';
 
-const fs = require('fs');
-const chalk = require('chalk');
-const shell = require('shelljs');
+import chalk from 'chalk';
+import fs from 'fs';
+import shell from 'shelljs';
 
-const { showBanner } = require('../../external/banner');
-const { configFileExists } = require('../../utils/messages');
+import { configFileExists } from '../../utils/messages';
+import { showBanner } from '../../external/banner';
 
 exports.asyncRender = (componentName) => {
     showBanner();

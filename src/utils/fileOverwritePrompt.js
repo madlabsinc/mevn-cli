@@ -1,8 +1,8 @@
 'use strict';
 
-const inquirer = require('inquirer');
+import inquirer from 'inquirer';
 
-let showPrompt = (fileName, cb) => {
+exports.showPrompt = (fileName, cb) => {
   const defaultQuestion = [{
     type: 'confirm',
     name: 'overwriteFile',
@@ -12,5 +12,3 @@ let showPrompt = (fileName, cb) => {
 
   return inquirer.prompt(defaultQuestion).then(answer => cb(answer));
 };
-
-module.exports = showPrompt;

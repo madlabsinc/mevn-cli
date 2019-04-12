@@ -1,7 +1,7 @@
 'use strict';
 
-const chalk = require('chalk');
-const fs = require('fs');
+import chalk from 'chalk';
+import fs from 'fs';
 
 exports.configFileExists = () => {
   if (!fs.existsSync('./mevn.json')) {

@@ -1,17 +1,17 @@
 'use strict';
 
-const fs = require('fs');
-const shell = require('shelljs');
-const inquirer = require('inquirer');
-const chalk = require('chalk');
-const os = require('os');
+import chalk from 'chalk';
+import fs from 'fs';
+import inquirer from 'inquirer';
+import shell from 'shelljs';
+import os from 'os';
 
-const { appData } = require('../../utils/projectConfig');
-const { configFileExists } = require('../../utils/messages');
-const createFile = require('../../utils/createFile');
-const { generateRoute } = require('./createRoute');
-const { showBanner } = require('../../external/banner');
-const { templateIsGraphQL } = require('../../utils/messages');
+import { appData } from '../../utils/projectConfig';
+import { createFile } from '../../utils/createFile';
+import { configFileExists } from '../../utils/messages';
+import { generateRoute } from './createRoute';
+import { showBanner } from '../../external/banner';
+import { templateIsGraphQL } from '../../utils/messages';
 
 let generatedFileContent;
 let generatedFile;
