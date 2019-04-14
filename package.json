@@ -2,15 +2,16 @@
   "name": "mevn-cli",
   "version": "1.2.8",
   "description": "A cli tool for MEVN stack.",
-  "main": "lib/bin/index.js",
+  "main": "./bin/mevn.js",
   "files": [
+    "bin",
     "lib"
   ],
   "bin": {
-    "mevn": "./lib/bin/index.js"
+    "mevn": "./bin/mevn.js"
   },
   "scripts": {
-    "compile": "babel src --out-dir lib",
+    "compile": "babel src --out-dir lib --copy-files",
     "test": "node ./node_modules/mocha/bin/mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",

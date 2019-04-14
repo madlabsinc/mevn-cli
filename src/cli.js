@@ -8,16 +8,16 @@ import program from 'commander';
 import chalk from 'chalk';
 
 // Initialize Command variables
-import { versionInfo } from '../commands/basic/version';
-import { initializeProject } from '../commands/basic/init';
-import { generateFile } from '../commands/basic/generate';
-import { createComponent } from '../commands/basic/component';
-import { asyncRender } from '../commands/basic/codesplit';
-import { addPackage } from '../commands/basic/package';
-import { setupProject } from '../commands/serve/setup';
-import { dockerize } from '../commands/deploy/docker';
-import { createRepo } from '../commands/deploy/gitRepo';
-import { deploy } from '../commands/deploy/herokuDeploy';
+import { versionInfo } from './commands/basic/version';
+import { initializeProject } from './commands/basic/init';
+import { generateFile } from './commands/basic/generate';
+import { createComponent } from './commands/basic/component';
+import { asyncRender } from './commands/basic/codesplit';
+import { addPackage } from './commands/basic/package';
+import { setupProject } from './commands/serve/setup';
+import { dockerize } from './commands/deploy/docker';
+import { createRepo } from './commands/deploy/gitRepo';
+import { deploy } from './commands/deploy/herokuDeploy';
 
 // Define Commands in CLI TOOL
 
