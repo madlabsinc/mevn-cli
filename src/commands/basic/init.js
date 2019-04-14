@@ -9,7 +9,7 @@ import shell from 'shelljs';
 import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
 
-import boilerplate from '../../../config.json';
+import boilerplate from '../../config.json';
 import { showBanner } from '../../external/banner';
 import { validateInstallation } from '../../utils/validations';
 
