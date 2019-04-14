@@ -1,6 +1,7 @@
 {
   "presets": ["@babel/env"],
   "ignore": [
-    "test"
+    "test",
+    "src/templates"
   ]
 }
