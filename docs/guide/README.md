@@ -52,7 +52,7 @@ mevn init appname
 | - .github
     | -config.yml
 | - bin
-    | - index.js
+    | - mevn.js
 | - docs
     | - .vuepress
         | - public
@@ -63,7 +63,7 @@ mevn init appname
     | - guide      
         | - README.md
     | - README.md
-| - lib 
+| - src 
     | - commands
         | - basic
             | - codesplit.js
@@ -83,8 +83,6 @@ mevn init appname
     | - external
         | - banner.js
     | - templates
-        | - components
-                | - component.vue
         | - controllers
             | - user_controller.js
         | - models
