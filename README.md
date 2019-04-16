@@ -77,7 +77,7 @@ Before contributing to this repository, please first discuss the change you wish
 6. Commit and push your changes.
 7. Make a detailed pull request.
 
-> `npm link` creates a symlink in the global folder making the `mevn` command globally available within your local developmet environment
+> `npm link` creates a symlink in the global folder making the `mevn` command globally available within your local development environment
 
 ### Why should I contribute?
 Contributing helps people and makes the world simply a better place, without contributors this project would cease to exist.
