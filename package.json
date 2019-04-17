@@ -24,9 +24,9 @@
     }
   },
   "lint-staged": {
-  	"linters": {
-  		"src/**": "npm run lint"
-  	}
+    "linters": {
+      "src/**": "npm run lint"
+    }
   },
   "repository": {
     "type": "git",

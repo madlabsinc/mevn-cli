@@ -3,7 +3,7 @@
 const path = require('path'),
 { exec } = require('child_process');
 
-const rootCommand = path.join(process.cwd(), 'bin/index.js');
+const rootCommand = path.join(process.cwd(), 'bin/mevn.js');
 
 describe('mevn', () => {
 
