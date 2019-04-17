@@ -15,7 +15,8 @@
     "test": "node ./node_modules/mocha/bin/mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "lint": "node ./node_modules/eslint/bin/eslint ./src"
+    "lint": "node ./node_modules/eslint/bin/eslint ./src",
+    "lint:fix": "node ./node_modules/eslint/bin/eslint --fix ./src"
   },
   "pre-commit": [
     "lint"
