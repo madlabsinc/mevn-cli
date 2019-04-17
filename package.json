@@ -18,9 +18,16 @@
     "lint": "node ./node_modules/eslint/bin/eslint ./src",
     "lint:fix": "node ./node_modules/eslint/bin/eslint --fix ./src"
   },
-  "pre-commit": [
-    "lint"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+  	"linters": {
+  		"src/**": "npm run lint"
+  	}
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MadlabsInc/mevn-cli.git"
@@ -66,8 +73,9 @@
     "eslint": "^5.16.0",
     "eslint-config-prettier": "4.1.0",
     "eslint-plugin-prettier": "3.0.1",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5",
     "mocha": "^5.2.0",
-    "pre-commit": "^1.2.2",
     "vuepress": "^0.14.4"
   }
 }
