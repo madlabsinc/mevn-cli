@@ -9,6 +9,7 @@ import os from 'os';
 import { appData } from '../../utils/projectConfig';
 import { createFile } from '../../utils/createFile';
 import { configFileExists } from '../../utils/messages';
+import { deferExec } from '../../utils/defer';
 import { generateRoute } from './createRoute';
 import { showBanner } from '../../external/banner';
 import { templateIsGraphQL } from '../../utils/messages';
@@ -41,64 +42,58 @@ const getFileContent = fileToGenerate => {
   return fs.readFileSync(fileContent, 'utf8');
 };
 
-exports.generateFile = () => {
+exports.generateFile = async () => {
   showBanner();
   configFileExists();
 
-  setTimeout(async () => {
-    await appData().then(data => {
-      if (data.template === 'graphql') {
-        templateIsGraphQL();
+  await deferExec(200);
+  await appData().then(data => {
+    if (data.template === 'graphql') {
+      templateIsGraphQL();
+    }
+  });
+
+  inquirer
+    .prompt([
+      {
+        type: 'list',
+        name: 'file',
+        message: 'Choose the required file to be generated',
+        choices: ['config', 'model', 'route', 'controller'],
+      },
+    ])
+    .then(async userChoice => {
+      if (userChoice.file !== 'route') {
+        let workDir =
+          userChoice.file === 'config' ? 'config' : `${userChoice.file}s`;
+        process.chdir(`server/${workDir}`);
+
+        let removeCmd = os.type() === 'Windows_NT' ? 'del' : 'rm';
+        if (fs.existsSync('./default.js')) {
+          shell.exec(`${removeCmd} default.js`);
+        }
+
+        if (userChoice.file === 'config') {
+          await getDBConfigUrl();
+
+          const configFileContent = ['{', `  "url": "${configUrl}"`, '}'];
+
+          generatedFileContent = configFileContent.join('\n').toString();
+          generatedFile = './config.js';
+        } else {
+          generatedFileContent = getFileContent(userChoice.file);
+          generatedFile =
+            userChoice.file === 'controller'
+              ? './user_controller.js'
+              : './user_schema.js';
+        }
+
+        createFile(generatedFile, generatedFileContent, { flag: 'wx' }, err => {
+          if (err) throw err;
+          console.log(chalk.yellow('File Created...!'));
+        });
+      } else {
+        generateRoute();
       }
     });
-
-    inquirer
-      .prompt([
-        {
-          type: 'list',
-          name: 'file',
-          message: 'Choose the required file to be generated',
-          choices: ['config', 'model', 'route', 'controller'],
-        },
-      ])
-      .then(async userChoice => {
-        if (userChoice.file !== 'route') {
-          let workDir =
-            userChoice.file === 'config' ? 'config' : `${userChoice.file}s`;
-          process.chdir(`server/${workDir}`);
-
-          let removeCmd = os.type() === 'Windows_NT' ? 'del' : 'rm';
-          if (fs.existsSync('./default.js')) {
-            shell.exec(`${removeCmd} default.js`);
-          }
-
-          if (userChoice.file === 'config') {
-            await getDBConfigUrl();
-
-            const configFileContent = ['{', `  "url": "${configUrl}"`, '}'];
-
-            generatedFileContent = configFileContent.join('\n').toString();
-            generatedFile = './config.js';
-          } else {
-            generatedFileContent = getFileContent(userChoice.file);
-            generatedFile =
-              userChoice.file === 'controller'
-                ? './user_controller.js'
-                : './user_schema.js';
-          }
-
-          createFile(
-            generatedFile,
-            generatedFileContent,
-            { flag: 'wx' },
-            err => {
-              if (err) throw err;
-              console.log(chalk.yellow('File Created...!'));
-            },
-          );
-        } else {
-          generateRoute();
-        }
-      });
-  }, 200);
 };
