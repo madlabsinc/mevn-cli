@@ -2,7 +2,7 @@
 
 import ora from 'ora';
 
-export class Spinner {
+export default class Spinner {
   constructor(text) {
     this.text = text;
   }

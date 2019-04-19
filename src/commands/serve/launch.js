@@ -1,20 +1,18 @@
 'use strict';
 
 import chalk from 'chalk';
-import elegantSpinner from 'elegant-spinner';
-import logUpdate from 'log-update';
 import opn from 'opn';
 import shell from 'shelljs';
 
+import { deferExec } from '../../utils/defer';
+import Spinner from '../../utils/spinner';
+
 exports.serveProject = async (launchCmd, projectTemplate) => {
-  let frame = elegantSpinner();
-  let spinner = setInterval(() => {
-    logUpdate(
-      chalk.green.bold(
-        '\n Installing dependencies in the background. Hold on... ',
-      ) + chalk.cyan.bold.dim(frame()),
-    );
-  }, 50);
+  const installDepsSpinner = new Spinner(
+    'Installing dependencies in the background. Hold on...',
+  );
+  installDepsSpinner.start();
+
   let rootPath = 'http://localhost';
   let port;
 
@@ -24,8 +22,8 @@ exports.serveProject = async (launchCmd, projectTemplate) => {
     port = projectTemplate === 'graphql' ? '9000/graphql' : '9000/api';
   }
   shell.exec('npm install', { silent: true }, async err => {
-    clearInterval(spinner);
-    logUpdate.clear();
+    installDepsSpinner.stop();
+
     if (err) {
       console.log(
         chalk.red.bold(
@@ -34,6 +32,7 @@ exports.serveProject = async (launchCmd, projectTemplate) => {
       );
       process.exit(1);
     }
+
     console.log(chalk.green.bold(`You're all set.`));
     try {
       await require('child_process').exec(launchCmd);
@@ -45,8 +44,8 @@ exports.serveProject = async (launchCmd, projectTemplate) => {
     } catch (err) {
       throw err;
     }
-    setTimeout(() => {
-      opn(`${rootPath}:${port}`);
-    }, 3500);
+
+    await deferExec(3500);
+    opn(`${rootPath}:${port}`);
   });
 };

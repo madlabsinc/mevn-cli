@@ -12,7 +12,7 @@ import validate from 'validate-npm-package-name';
 import boilerplate from '../../config.json';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
-import { Spinner } from '../../utils/spinner';
+import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validations';
 
 let availableCommands = new Table();
