@@ -2,15 +2,15 @@
 
 import chalk from 'chalk';
 import cmd from 'node-cmd';
-import elegantSpinner from 'elegant-spinner';
 import fs from 'fs';
 import inquirer from 'inquirer';
-import logUpdate from 'log-update';
 import shell from 'shelljs';
 
 import { createFile } from '../../utils/createFile';
 import { configFileExists } from '../../utils/messages';
+import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
+import Spinner from '../../utils/spinner';
 
 let routesPath = '/../../templates/routes/';
 let routesFile = fs.readFileSync(
@@ -37,7 +37,6 @@ let googleRoutesFile = fs.readFileSync(
   `${__dirname}${routesPath}GoogleRoutes.js`,
   'utf8',
 );
-let frame = elegantSpinner();
 
 // Questions if user wants to use passport package
 // and social media for authentication
@@ -57,24 +56,21 @@ const socialMediaAuthQuestions = [
   },
 ];
 
-let callSpinner = withSocialMediaAuth => {
+let startSpinner = withSocialMediaAuth => {
   let message = withSocialMediaAuth
     ? 'Installing passport and social media authentication packages'
     : 'Installing passport package';
 
-  return setInterval(() => {
-    logUpdate(message + chalk.cyan.bold.dim(frame()));
-  }, 50);
+  return new Spinner(message);
 };
 
-let installPassportPackages = (withSocialMediaAuth, spinnerToClear) => {
+let installPassportPackages = (withSocialMediaAuth, spinner) => {
   let command = withSocialMediaAuth
     ? 'npm install passport passport-facebook passport-twitter passport-google-oauth'
     : 'npm install passport';
 
   cmd.get(`${command} --save-dev`, err => {
-    clearInterval(spinnerToClear);
-    logUpdate.clear();
+    spinner.stop();
 
     if (err) {
       console.log(
@@ -135,37 +131,37 @@ let installPassportPackages = (withSocialMediaAuth, spinnerToClear) => {
   });
 };
 
-exports.generateRoute = () => {
+exports.generateRoute = async () => {
   showBanner();
 
-  setTimeout(() => {
-    configFileExists();
-    console.log('\n');
+  await deferExec(1000);
+  configFileExists();
+  console.log('\n');
 
-    inquirer.prompt(questions).then(answer => {
-      if (answer.passportAuth) {
-        shell.cd('server');
-        // ask about social media authentication
-        inquirer
-          .prompt(socialMediaAuthQuestions)
-          .then(socialMediaAuthAnswer => {
-            let fetchSpinner = callSpinner(
-              socialMediaAuthAnswer.socialMediaAuth,
-            );
-            setTimeout(() => {
-              installPassportPackages(
-                socialMediaAuthAnswer.socialMediaAuth,
-                fetchSpinner,
-              );
-            }, 100);
-          });
-      } else {
-        shell.cd('server/routes');
-        createFile('./index.js', routesFile, { flag: 'wx' }, err => {
-          if (err) throw err;
-          console.log(chalk.yellow('File Created...!'));
+  inquirer.prompt(questions).then(answer => {
+    if (answer.passportAuth) {
+      shell.cd('server');
+      // ask about social media authentication
+      inquirer
+        .prompt(socialMediaAuthQuestions)
+        .then(async socialMediaAuthAnswer => {
+          let fetchSpinner = startSpinner(
+            socialMediaAuthAnswer.socialMediaAuth,
+          );
+          fetchSpinner.start();
+
+          await deferExec(100);
+          installPassportPackages(
+            socialMediaAuthAnswer.socialMediaAuth,
+            fetchSpinner,
+          );
         });
-      }
-    });
-  }, 1000);
+    } else {
+      shell.cd('server/routes');
+      createFile('./index.js', routesFile, { flag: 'wx' }, err => {
+        if (err) throw err;
+        console.log(chalk.yellow('File Created...!'));
+      });
+    }
+  });
 };
