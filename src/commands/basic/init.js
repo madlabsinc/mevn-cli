@@ -1,10 +1,8 @@
 'use strict';
 
 import chalk from 'chalk';
-import elegantSpinner from 'elegant-spinner';
 import fs from 'fs';
 import inquirer from 'inquirer';
-import logUpdate from 'log-update';
 import shell from 'shelljs';
 import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
@@ -16,7 +14,6 @@ import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validations';
 
 let availableCommands = new Table();
-let frame = elegantSpinner();
 
 let projectName;
 let projectConfig;
@@ -129,9 +126,9 @@ exports.initializeProject = async appName => {
   showBanner();
   console.log('\n');
 
-  let initialSpinner = setInterval(() => {
-    logUpdate('Initializing ' + chalk.cyan.bold.dim(frame()));
-  }, 50);
+  await deferExec(100);
+  const initialSpinner = new Spinner('Initializing');
+  initialSpinner.start();
 
   await deferExec(1000);
   const hasMultipleProjectNameArgs =
@@ -163,8 +160,7 @@ exports.initializeProject = async appName => {
     process.exit(1);
   }
 
-  clearInterval(initialSpinner);
-  logUpdate.clear();
+  initialSpinner.stop();
   projectName = appName;
 
   inquirer
