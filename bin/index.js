@@ -17,7 +17,7 @@ const { setupProject } = require('../lib/commands/serve/setup');
 const { dockerize } = require('../lib/commands/deploy/docker');
 const { createRepo } = require('../lib/commands/deploy/gitRepo');
 const { deploy } = require('../lib/commands/deploy/herokuDeploy');
-
+const { configureCommand } = require('../lib/commands/configure/configureCommand');
 // Define Commands in CLI TOOL
 
 program
@@ -69,6 +69,11 @@ program
   .command('create:git-repo')
   .description('To create a GitHub repository and fire the first commit')
   .action(createRepo);
+
+program
+  .command('configure')
+  .description('to change package manager, test runners and migrating to webpack4')
+  .action(configureCommand);
 
 program
   .arguments('<command>')

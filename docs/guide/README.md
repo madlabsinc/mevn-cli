@@ -91,6 +91,9 @@ These commands are used to generate the code necessary for running a server.
             | - client.js
             | - launch.js
             | - server.js
+        | - configure 
+            | - configureCommand.js
+            | - webpack4.js   
     | - external
         | - banner.js
     | - templates
