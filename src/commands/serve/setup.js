@@ -1,7 +1,6 @@
 'use strict';
 
 import inquirer from 'inquirer';
-import shell from 'shelljs';
 
 import { appData } from '../../utils/projectConfig';
 import { configFileExists } from '../../utils/messages';
@@ -26,19 +25,17 @@ exports.setupProject = async () => {
       },
     ])
     .then(async choice => {
-      let launchCmd = 'npm run dev';
-
       await appData().then(data => {
         projectTemplate = data.template;
       });
 
       if (choice.side === 'client') {
         if (projectTemplate !== 'Nuxt-js') {
-          shell.cd('client');
+          process.chdir('client');
         }
       } else {
-        shell.cd('server');
+        process.chdir('server');
       }
-      serveProject(launchCmd, projectTemplate);
+      serveProject(projectTemplate, choice.side);
     });
 };

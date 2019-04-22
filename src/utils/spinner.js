@@ -11,6 +11,10 @@ export default class Spinner {
     this.spinner = ora(this.text).start();
   }
 
+  info(text) {
+    this.spinner.info(text);
+  }
+
   succeed(text) {
     this.spinner.succeed(text);
   }
