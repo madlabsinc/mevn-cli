@@ -1,9 +1,9 @@
 'use strict';
 
 import chalk from 'chalk';
+import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
-import shell from 'shelljs';
 import os from 'os';
 
 import { appData } from '../../utils/projectConfig';
@@ -46,7 +46,8 @@ exports.generateFile = async () => {
   showBanner();
   configFileExists();
 
-  await deferExec(200);
+  await deferExec(100);
+
   await appData().then(data => {
     if (data.template === 'graphql') {
       templateIsGraphQL();
@@ -70,7 +71,7 @@ exports.generateFile = async () => {
 
         let removeCmd = os.type() === 'Windows_NT' ? 'del' : 'rm';
         if (fs.existsSync('./default.js')) {
-          shell.exec(`${removeCmd} default.js`);
+          execa.shellSync(`${removeCmd} default.js`);
         }
 
         if (userChoice.file === 'config') {
