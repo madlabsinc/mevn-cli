@@ -26,7 +26,7 @@ exports.setupProject = async () => {
       },
     ])
     .then(async choice => {
-      let launchCmd = choice.side === 'client' ? 'npm run dev' : 'npm start';
+      let launchCmd = 'npm run dev';
 
       await appData().then(data => {
         projectTemplate = data.template;
