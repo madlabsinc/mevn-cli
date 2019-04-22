@@ -21,7 +21,7 @@ npm install -g mevn-cli
 ## Quickstart
 ```bash
 npm install -g mevn-cli
-mevn init "Desired File Name" 
+mevn init "Desired File Name"
 ```
 ### Initial Command
 
@@ -33,7 +33,7 @@ mevn init appname
 
 
 ### Available Commands
- 
+
  These are generic commands for the entire project.
 
 | command | description |                                                                                                
@@ -43,7 +43,6 @@ mevn init appname
 | ```mevn generate``` | To generate model, route, controller, and DB config files |
 | ```mevn create:component <component_name>``` | To create new components as required |
 | ```mevn codesplit <component_name>``` | Lazy load components as required |
-| ```mevn create:git-repo``` | To create a GitHub repository and fire the first commit |
 | ```mevn dockerize``` | To run the client and server in separate docker containers |
 | ```mevn deploy``` | To deploy the app to Heroku |
 
@@ -63,7 +62,7 @@ mevn init appname
     | - guide      
         | - README.md
     | - README.md
-| - src 
+| - src
     | - commands
         | - basic
             | - codesplit.js
@@ -111,9 +110,8 @@ mevn init appname
 | - CODE_OF_CONDUCT.md
 | - LICENSE.md
 | - README.md
-| - config.json
 | - package-lock.json
-| - package.json 
+| - package.json
 ```
 
 ## Features
@@ -126,7 +124,7 @@ mevn init appname
 
 ## Contributing
 
-Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change. 
+Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change.
 
 ### How do I contribute?
 1. Ensure you have no "dummy" files left, if you do simply add them to the bottom of the `.gitignore`.
