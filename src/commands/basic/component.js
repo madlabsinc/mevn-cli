@@ -2,7 +2,6 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
-import shell from 'shelljs';
 
 import { configFileExists } from '../../utils/messages';
 import { createFile } from '../../utils/createFile';
@@ -31,11 +30,11 @@ let componentTemplate = [
 exports.createComponent = async componentName => {
   showBanner();
 
-  await deferExec(200);
+  await deferExec(100);
   configFileExists();
 
-  shell.cd('client/src/components');
-  createFile(
+  process.chdir('client/src/components');
+  await createFile(
     componentName + '.vue',
     componentTemplate.join('\n'),
     { flag: 'wx' },
@@ -45,7 +44,7 @@ exports.createComponent = async componentName => {
     },
   );
 
-  shell.cd('../router');
+  process.chdir('../router');
 
   let routesFile = fs
     .readFileSync('./index.js', 'utf8')
