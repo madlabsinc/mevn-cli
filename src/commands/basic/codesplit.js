@@ -2,7 +2,6 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
-import shell from 'shelljs';
 
 import { configFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
@@ -11,10 +10,10 @@ import { showBanner } from '../../external/banner';
 exports.asyncRender = async componentName => {
   showBanner();
 
-  await deferExec(200);
+  await deferExec(100);
   configFileExists();
 
-  shell.cd('client/src/router');
+  process.chdir('client/src/router');
 
   let componentNotFound = true;
   let routerFile = fs
