@@ -16,7 +16,6 @@ import { asyncRender } from './commands/basic/codesplit';
 import { addPackage } from './commands/basic/package';
 import { setupProject } from './commands/serve/setup';
 import { dockerize } from './commands/deploy/docker';
-import { createRepo } from './commands/deploy/gitRepo';
 import { deploy } from './commands/deploy/herokuDeploy';
 
 // Define Commands in CLI TOOL
@@ -67,11 +66,6 @@ program
   .command('deploy')
   .description('To deploy the app to Heroku')
   .action(deploy);
-
-program
-  .command('create:git-repo')
-  .description('To create a GitHub repository and fire the first commit')
-  .action(createRepo);
 
 program.arguments('<command>').action(cmd => {
   program.outputHelp();

@@ -6,7 +6,6 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
-
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
@@ -22,6 +21,13 @@ const boilerplate = {
   pwa: 'https://github.com/MadlabsInc/mevn-pwa-boilerplate.git',
   graphql: 'https://github.com/MadlabsInc/mevn-graphql-boilerplate.git',
   nuxt: 'https://github.com/MadlabsInc/mevn-nuxt-boilerplate.git',
+};
+
+const makeInitialCommit = async () => {
+  process.chdir(projectName);
+  await execa('git', ['init']);
+  await execa('git', ['add', '.']);
+  await execa('git', ['commit', '-m', 'Initial commit', '-m', 'From Mevn-CLI']);
 };
 
 let showTables = () => {
@@ -47,9 +53,6 @@ let showTables = () => {
       'mevn codesplit <name>': 'Lazy load components',
     },
     {
-      'mevn create:git-repo': 'Create a GitHub Repo',
-    },
-    {
       'mevn dockerize': 'Launch within docker containers',
     },
     {
@@ -65,11 +68,16 @@ let showTables = () => {
       )}`,
     ),
   );
-  console.log(chalk.redBright('\n warning:'));
-  console.log(' Do not delete mevn.json file');
+  console.log(
+    `${chalk.yellow.bold('\n Warning: ')} Do not delete the mevn.json file`,
+  );
+
+  let removeCmd = process.platform === 'win32' ? 'del' : 'rm -rf';
+  require('child_process').execSync(`${removeCmd} ${projectName}/.git`);
+  makeInitialCommit();
 };
 
-let fetchTemplate = async template => {
+const fetchTemplate = async template => {
   try {
     await validateInstallation('git');
 
@@ -82,10 +90,7 @@ let fetchTemplate = async template => {
       throw err;
     }
 
-    // await deferExec(5000);
-    console.log('\n');
     fetchSpinner.stop();
-    showTables();
 
     fs.writeFileSync(
       `./${projectName}/mevn.json`,
@@ -93,9 +98,7 @@ let fetchTemplate = async template => {
     );
 
     if (template === 'nuxt') {
-      console.log('\n');
-
-      inquirer
+      await inquirer
         .prompt([
           {
             name: 'mode',
@@ -110,6 +113,7 @@ let fetchTemplate = async template => {
               .readFileSync(`./${projectName}/nuxt.config.js`, 'utf8')
               .toString()
               .split('\n');
+
             let index = configFile.indexOf(
               configFile.find(line => line.includes('mode')),
             );
@@ -120,9 +124,9 @@ let fetchTemplate = async template => {
               configFile.join('\n'),
             );
           }
-          showTables();
         });
     }
+    showTables();
   } catch (error) {
     throw error;
   }
@@ -130,7 +134,6 @@ let fetchTemplate = async template => {
 
 exports.initializeProject = async appName => {
   showBanner();
-  console.log('\n');
 
   await deferExec(100);
   const initialSpinner = new Spinner('Initializing');
