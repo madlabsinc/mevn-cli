@@ -1,10 +1,9 @@
 'use strict';
 
 import chalk from 'chalk';
-import cmd from 'node-cmd';
+import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
-import shell from 'shelljs';
 
 import { createFile } from '../../utils/createFile';
 import { configFileExists } from '../../utils/messages';
@@ -64,84 +63,74 @@ let startSpinner = withSocialMediaAuth => {
   return new Spinner(message);
 };
 
-let installPassportPackages = (withSocialMediaAuth, spinner) => {
-  let command = withSocialMediaAuth
-    ? 'npm install passport passport-facebook passport-twitter passport-google-oauth'
-    : 'npm install passport';
+let installPassportPackages = async (withSocialMediaAuth, spinner) => {
+  let commandArgs = withSocialMediaAuth
+    ? 'install passport passport-facebook passport-twitter passport-google-oauth'
+    : 'install passport';
 
-  cmd.get(`${command} --save-dev`, err => {
-    spinner.stop();
+  try {
+    await execa('npm', commandArgs.split(' '));
+  } catch (err) {
+    spinner.fail(
+      `Something went wrong. Couldn't install the required package!`,
+    );
+    throw err;
+  }
 
-    if (err) {
-      console.log(
-        chalk.red.bold(
-          "Something went wrong. Couldn't install the required package!",
-        ),
-      );
-      process.exit(1);
-    }
+  spinner.succeed('Package added successfully');
+  process.chdir('routes');
 
-    console.log(chalk.green.bold('Package added successfully'));
-    shell.cd('routes');
-
-    if (withSocialMediaAuth) {
-      // create file with passport and social media authentication
-      createFile(
-        './index.js',
-        routesFileWithSocialMediaAuth,
-        { flag: 'wx' },
-        err => {
-          if (err) throw err;
-          console.log(chalk.yellow('File Created...!'));
-        },
-      );
-
-      // create files that have the configurations for the social media authentication
-      createFile(
-        './FacebookRoutes.js',
-        facebookRoutesFile,
-        { flag: 'wx' },
-        err => {
-          if (err) throw err;
-          console.log(chalk.yellow('File Created...!'));
-        },
-      );
-
-      createFile(
-        './TwitterRoutes.js',
-        twitterRoutesFile,
-        { flag: 'wx' },
-        err => {
-          if (err) throw err;
-          console.log(chalk.yellow('File Created...!'));
-        },
-      );
-
-      createFile('./GoogleRoutes.js', googleRoutesFile, { flag: 'wx' }, err => {
+  if (withSocialMediaAuth) {
+    // Create file with passport and social media auth configurations
+    createFile(
+      './index.js',
+      routesFileWithSocialMediaAuth,
+      { flag: 'wx' },
+      err => {
         if (err) throw err;
         console.log(chalk.yellow('File Created...!'));
-      });
-    } else {
-      // create file only with passport authentication
-      createFile('./index.js', routesFileWithPassPort, { flag: 'wx' }, err => {
+      },
+    );
+
+    // Create files that have the configurations for social media authentication
+    createFile(
+      './FacebookRoutes.js',
+      facebookRoutesFile,
+      { flag: 'wx' },
+      err => {
         if (err) throw err;
         console.log(chalk.yellow('File Created...!'));
-      });
-    }
-  });
+      },
+    );
+
+    createFile('./TwitterRoutes.js', twitterRoutesFile, { flag: 'wx' }, err => {
+      if (err) throw err;
+      console.log(chalk.yellow('File Created...!'));
+    });
+
+    createFile('./GoogleRoutes.js', googleRoutesFile, { flag: 'wx' }, err => {
+      if (err) throw err;
+      console.log(chalk.yellow('File Created...!'));
+    });
+  } else {
+    // Create file only with passport auth configuration
+    createFile('./index.js', routesFileWithPassPort, { flag: 'wx' }, err => {
+      if (err) throw err;
+      console.log(chalk.yellow('File Created...!'));
+    });
+  }
 };
 
 exports.generateRoute = async () => {
   showBanner();
 
-  await deferExec(1000);
+  await deferExec(400);
   configFileExists();
-  console.log('\n');
 
   inquirer.prompt(questions).then(answer => {
     if (answer.passportAuth) {
-      shell.cd('server');
-      // ask about social media authentication
+      process.chdir('server');
+      // Ask whether if he/she require social media auth configurations
       inquirer
         .prompt(socialMediaAuthQuestions)
         .then(async socialMediaAuthAnswer => {
@@ -157,7 +146,7 @@ exports.generateRoute = async () => {
           );
         });
     } else {
-      shell.cd('server/routes');
+      process.chdir('server/routes');
       createFile('./index.js', routesFile, { flag: 'wx' }, err => {
         if (err) throw err;
         console.log(chalk.yellow('File Created...!'));
