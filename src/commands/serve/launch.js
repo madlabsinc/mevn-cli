@@ -36,7 +36,7 @@ exports.serveProject = async (projectTemplate, side) => {
   launchSpinner.start();
 
   await require('child_process').spawn('npm', ['run', 'dev']);
-  await deferExec(4000);
+  await deferExec(6000);
   opn(`${rootPath}:${port}`);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };

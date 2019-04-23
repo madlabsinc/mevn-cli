@@ -7,7 +7,7 @@ import '@babel/polyfill';
 import program from 'commander';
 import chalk from 'chalk';
 
-// Initialize Command variables
+// Defining action handlers for respective commands
 import { versionInfo } from './commands/basic/version';
 import { initializeProject } from './commands/basic/init';
 import { generateFile } from './commands/basic/generate';
@@ -18,8 +18,7 @@ import { setupProject } from './commands/serve/setup';
 import { dockerize } from './commands/deploy/docker';
 import { deploy } from './commands/deploy/herokuDeploy';
 
-// Define Commands in CLI TOOL
-
+// Defining all the available commands
 program
   .command('version')
   .description(
@@ -75,8 +74,7 @@ program.arguments('<command>').action(cmd => {
 
 program.parse(process.argv);
 
-// Shows help if just mevn-cli is fired in
-
+// Shows up help if no arguments were provided
 if (!program.args.length) {
   program.help();
 }
