@@ -1,12 +1,13 @@
 'use strict';
 
 import chalk from 'chalk';
+import execa from 'execa';
 import os from 'os';
-import shell from 'shelljs';
 
 import { configFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
+import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validations';
 
 exports.dockerize = async () => {
@@ -16,18 +17,24 @@ exports.dockerize = async () => {
   configFileExists();
   await validateInstallation('docker');
 
-  // currently works on linux only
+  // Currently supports only the linux platform
   if (os.type() === 'Linux') {
-    console.log('\n');
-    shell.exec('sudo docker-compose up', err => {
-      if (err) {
-        console.log(chalk.red.bold('something went wrong!'));
-        process.exit(1);
-      } else {
-        console.log(
-          'You are all set...!\nserver:- localhost:9000\nclient:- localhost:8080',
-        );
-      }
-    });
+    const spinner = new Spinner(
+      'Sit back and relax while we set things up for you',
+    );
+    spinner.start();
+    try {
+      await execa('sudo', ['docker-compose', 'up']);
+    } catch (err) {
+      spinner.fail('Something went wrong');
+      throw err;
+    }
+
+    spinner.succeed('You are all set');
+    console.log(
+      chalk.green.bold(
+        '\n Services:\n server:- localhost:9000\n client:- localhost:8080',
+      ),
+    );
   }
 };
