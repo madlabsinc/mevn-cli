@@ -3,7 +3,6 @@
 import execa from 'execa';
 import opn from 'opn';
 
-import { deferExec } from '../../utils/defer';
 import Spinner from '../../utils/spinner';
 
 exports.serveProject = async (projectTemplate, side) => {
@@ -35,8 +34,6 @@ exports.serveProject = async (projectTemplate, side) => {
   );
   launchSpinner.start();
 
-  await require('child_process').spawn('npm', ['run', 'dev']);
-  await deferExec(6000);
-  opn(`${rootPath}:${port}`);
+  Promise.all([execa.shell('npm run dev'), opn(`${rootPath}:${port}`)]);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };
