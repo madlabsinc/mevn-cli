@@ -15,7 +15,7 @@ import { createComponent } from './commands/basic/component';
 import { asyncRender } from './commands/basic/codesplit';
 import { addPackage } from './commands/basic/package';
 import { setupProject } from './commands/serve/setup';
-import { dockerize } from './commands/deploy/docker';
+import { dockerize } from './commands/basic/docker';
 import { deploy } from './commands/deploy/herokuDeploy';
 
 // Defining all the available commands

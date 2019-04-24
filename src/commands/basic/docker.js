@@ -19,6 +19,12 @@ exports.dockerize = async () => {
 
   // Currently supports only the linux platform
   if (os.type() === 'Linux') {
+    try {
+      await require('child_process').exec('sudo -s');
+    } catch (err) {
+      throw err;
+    }
+
     const spinner = new Spinner(
       'Sit back and relax while we set things up for you',
     );
