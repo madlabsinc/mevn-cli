@@ -3,6 +3,7 @@
 import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
+import path from 'path';
 import inquirer from 'inquirer';
 import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
@@ -72,8 +73,8 @@ let showTables = () => {
     `${chalk.yellow.bold('\n Warning: ')} Do not delete the mevn.json file`,
   );
 
-  let removeCmd = process.platform === 'win32' ? 'del' : 'rm -rf';
-  require('child_process').execSync(`${removeCmd} ${projectName}/.git`);
+  let removeCmd = process.platform === 'win32' ? 'rmdir /s /q' : 'rm -rf';
+  execa.shellSync(`${removeCmd} ${path.join(projectName, '.git')}`);
   makeInitialCommit();
 };
 
