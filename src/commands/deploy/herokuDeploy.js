@@ -1,10 +1,10 @@
 'use strict';
 
+import { spawn } from 'child_process';
 import inquirer from 'inquirer';
-import os from 'os';
 import shell from 'shelljs';
 
-import { appData } from '../../utils/projectConfig';
+// import { appData } from '../../utils/projectConfig';
 import { configFileExists, dependencyNotInstalled } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
@@ -34,13 +34,50 @@ const validateInstallation = async () => {
   }
 };
 
+const exec = cmd => {
+  return new Promise(() => {
+    let args = cmd.split(/\s+/g);
+    let rootCmd = args[0];
+    let process = spawn(rootCmd, args.slice(1), { stdio: 'inherit' });
+    process.on('error', err => {
+      throw err;
+    });
+  });
+};
+
+const deployWithGit = async () => {
+  const buildCommands = ['heroku login'];
+  await Promise.all(
+    buildCommands.map(async cmd => {
+      await exec(cmd);
+    }),
+  );
+};
+
+const deployWithDocker = () => {
+  // TODO: Container Registry & Runtime (Docker deploys)
+};
+
 exports.deploy = async () => {
   showBanner();
 
-  deferExec(100);
+  await deferExec(100);
   configFileExists();
   await validateInstallation('heroku');
 
+  inquirer
+    .prompt([
+      {
+        name: 'mode',
+        type: 'list',
+        choices: ['Deploy with Git', 'Deploy with Docker'],
+        message: 'Choose your preferred mode',
+      },
+    ])
+    .then(choice => {
+      choice.mode === 'Deploy with Git' ? deployWithGit() : deployWithDocker();
+    });
+  /*
   let templateIsNuxt;
   await appData().then(data => {
     templateIsNuxt = data.template === 'Nuxt-js';
@@ -90,6 +127,7 @@ exports.deploy = async () => {
         throw err;
       }
     });
+*/
 };
 
 const installHerokuCLI = async () => {
