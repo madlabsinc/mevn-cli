@@ -1,6 +1,5 @@
 'use strict';
 
-import { spawn } from 'child_process';
 import inquirer from 'inquirer';
 import shell from 'shelljs';
 
@@ -34,22 +33,15 @@ const validateInstallation = async () => {
   }
 };
 
-const exec = cmd => {
-  return new Promise(() => {
-    let args = cmd.split(/\s+/g);
-    let rootCmd = args[0];
-    let process = spawn(rootCmd, args.slice(1), { stdio: 'inherit' });
-    process.on('error', err => {
-      throw err;
-    });
-  });
-};
-
 const deployWithGit = async () => {
-  const buildCommands = ['heroku login'];
-  await Promise.all(
+  const buildCommands = [
+    'heroku login',
+    'heroku create',
+    'git push heroku master',
+  ];
+  Promise.all(
     buildCommands.map(async cmd => {
-      await exec(cmd);
+      await shell.exec(cmd);
     }),
   );
 };
@@ -77,57 +69,6 @@ exports.deploy = async () => {
     .then(choice => {
       choice.mode === 'Deploy with Git' ? deployWithGit() : deployWithDocker();
     });
-  /*
-  let templateIsNuxt;
-  await appData().then(data => {
-    templateIsNuxt = data.template === 'Nuxt-js';
-  });
-
-  let serverPath = templateIsNuxt ? `/${process.cwd()}/server` : '../server';
-  let moveCmd = os.type() === 'Windows_NT' ? 'move' : 'mv';
-
-  if (!templateIsNuxt) {
-    shell.cd('client');
-  }
-
-  const buildCommands = [
-    'npm install',
-    'npm run build',
-    `${moveCmd} /${process.cwd()}/dist ${serverPath}`,
-    `sudo docker login --username=_ --password=$(heroku auth:token) registry.heroku.com`,
-  ];
-  await Promise.all(
-    buildCommands.map(cmd => {
-      shell.exec(cmd, { silent: true });
-    }),
-  ).catch(err => {
-    throw err;
-  });
-  shell.echo('\n Creating a heroku app');
-  await shell.exec('heroku create');
-
-  inquirer
-    .prompt([
-      {
-        name: 'appName',
-        type: 'input',
-        message: 'Please enter the name of heroku app(url)',
-      },
-    ])
-    .then(async userInput => {
-      try {
-        await shell.exec(
-          `sudo heroku container:push web -a ${userInput.appName}`,
-        );
-        await shell.exec(
-          `sudo heroku container:release web -a ${userInput.appName}`,
-        );
-        await shell.exec(`heroku open -a ${userInput.appName}`);
-      } catch (err) {
-        throw err;
-      }
-    });
-*/
 };
 
 const installHerokuCLI = async () => {
