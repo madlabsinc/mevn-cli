@@ -46,16 +46,22 @@ const exec = cmd => {
 };
 
 const deployWithGit = async () => {
-  const buildCommands = [
-    'heroku login',
-    'heroku create',
-    'git push heroku master',
-  ];
-  await exec(buildCommands[0]);
+  const commands = ['heroku login', 'heroku create', 'git push heroku master'];
+
+  await exec(commands[0]);
 };
 
-const deployWithDocker = () => {
-  // TODO: Container Registry & Runtime (Docker deploys)
+const deployWithDocker = async () => {
+  const commands = [
+    'heroku login',
+    'heroku container:login',
+    'heroku create',
+    'heroku container:push web',
+    'heroku container:release web',
+    'heroku open',
+  ];
+
+  await exec(commands[0]);
 };
 
 exports.deploy = async () => {
