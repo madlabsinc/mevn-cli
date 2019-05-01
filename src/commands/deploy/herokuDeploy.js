@@ -1,5 +1,6 @@
 'use strict';
 
+import { spawn } from 'child_process';
 import inquirer from 'inquirer';
 import shell from 'shelljs';
 
@@ -33,17 +34,24 @@ const validateInstallation = async () => {
   }
 };
 
+const exec = cmd => {
+  return new Promise((resolve, reject) => {
+    try {
+      spawn(cmd.split(' ')[0], cmd.split(' ').slice(1), { stdio: 'inherit' });
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
+
 const deployWithGit = async () => {
   const buildCommands = [
     'heroku login',
     'heroku create',
     'git push heroku master',
   ];
-  Promise.all(
-    buildCommands.map(async cmd => {
-      await shell.exec(cmd);
-    }),
-  );
+  await exec(buildCommands[0]);
 };
 
 const deployWithDocker = () => {
