@@ -10,6 +10,7 @@ import Spinner from './spinner';
 // Determining host OS
 let isLinux = process.platform === 'linux';
 let isWin = process.platform === 'win32';
+
 // Initialize the spinner
 const spinner = new Spinner();
 
@@ -30,8 +31,10 @@ exports.validateInstallation = async dependency => {
 
           if (dependency === 'git') {
             installGit();
-          } else {
+          } else if (dependency === 'docker') {
             installDocker();
+          } else {
+            installHerokuCLI();
           }
         } else {
           dependencyNotInstalled(dependency);
@@ -72,5 +75,22 @@ const installDocker = async () => {
     exec('apt install docker.io');
   } else {
     showInstallationInfo(spinner, urlMap[process.platform]);
+  }
+};
+
+const installHerokuCLI = async () => {
+  const url = 'https://devcenter.heroku.com/articles/heroku-cli';
+  if (isWin) {
+    showInstallationInfo(spinner, url);
+  } else {
+    const cmd = isLinux
+      ? 'snap install --classic heroku'
+      : ['brew tap heroku/brew', 'brew install heroku'];
+
+    if (!Array.isArray(cmd)) {
+      exec(cmd);
+    } else {
+      cmd.map(c => exec(c));
+    }
   }
 };

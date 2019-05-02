@@ -10,7 +10,7 @@ import validate from 'validate-npm-package-name';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
-import { validateInstallation } from '../../utils/validations';
+import { validateInstallation } from '../../utils/validate';
 
 let availableCommands = new Table();
 
