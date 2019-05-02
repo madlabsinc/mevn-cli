@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 
-exports.configFileExists = () => {
+exports.checkIfConfigFileExists = () => {
   if (!fs.existsSync('./mevn.json')) {
     console.log(
       chalk.cyanBright(`\n\n Make sure that you're within a valid MEVN project

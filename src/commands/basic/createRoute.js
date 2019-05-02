@@ -6,7 +6,7 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 
 import { createFile } from '../../utils/createFile';
-import { configFileExists } from '../../utils/messages';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
@@ -125,7 +125,7 @@ exports.generateRoute = async () => {
   showBanner();
 
   await deferExec(400);
-  configFileExists();
+  checkIfConfigFileExists();
 
   inquirer.prompt(questions).then(answer => {
     if (answer.passportAuth) {

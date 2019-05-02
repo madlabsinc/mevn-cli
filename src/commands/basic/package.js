@@ -4,7 +4,7 @@ import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
 
-import { configFileExists } from '../../utils/messages';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
@@ -31,8 +31,8 @@ exports.addPackage = async () => {
   showBanner();
 
   await deferExec(100);
-  configFileExists();
-  console.log('\n');
+  checkIfConfigFileExists();
+
   let questions = [
     {
       type: 'list',

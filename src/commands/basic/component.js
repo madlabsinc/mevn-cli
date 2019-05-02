@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 
-import { configFileExists } from '../../utils/messages';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import { createFile } from '../../utils/createFile';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
@@ -31,7 +31,7 @@ exports.createComponent = async componentName => {
   showBanner();
 
   await deferExec(100);
-  configFileExists();
+  checkIfConfigFileExists();
 
   process.chdir('client/src/components');
   await createFile(

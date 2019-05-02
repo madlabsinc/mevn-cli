@@ -8,7 +8,7 @@ import os from 'os';
 
 import { appData } from '../../utils/projectConfig';
 import { createFile } from '../../utils/createFile';
-import { configFileExists } from '../../utils/messages';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { generateRoute } from './createRoute';
 import { showBanner } from '../../external/banner';
@@ -44,9 +44,8 @@ const getFileContent = fileToGenerate => {
 
 exports.generateFile = async () => {
   showBanner();
-  configFileExists();
-
   await deferExec(100);
+  checkIfConfigFileExists();
 
   await appData().then(data => {
     if (data.template === 'graphql') {

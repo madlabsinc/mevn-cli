@@ -1,10 +1,11 @@
 'use strict';
 
 import fs from 'fs';
-import { configFileExists } from '../utils/messages';
+import { checkIfConfigFileExists } from '../utils/messages';
 
 exports.appData = () => {
-  configFileExists();
+  checkIfConfigFileExists();
+
   const data = fs.readFileSync(process.cwd() + '/mevn.json', 'utf8');
   return new Promise(resolve => {
     resolve(JSON.parse(data));
