@@ -27,15 +27,21 @@ let componentTemplate = [
   '</style>',
 ];
 
+const capitalize = str => {
+  return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
+};
+
 exports.createComponent = async componentName => {
   showBanner();
 
   await deferExec(100);
   checkIfConfigFileExists();
 
+  componentName = capitalize(componentName);
   process.chdir('client/src/components');
+
   await createFile(
-    componentName + '.vue',
+    `${componentName}.vue`,
     componentTemplate.join('\n'),
     { flag: 'wx' },
     err => {
@@ -54,10 +60,6 @@ exports.createComponent = async componentName => {
   // Setting path and corresponding config for the new route
   let componentPath = `'/${componentName.toLowerCase()}'`;
 
-  // Capitalizing first letter of the component
-  let component =
-    componentName.charAt(0).toUpperCase() +
-    componentName.substring(1, componentName.length);
   let componentImported = false;
 
   for (let index = 0; index < routesFile.length; index++) {
@@ -74,8 +76,8 @@ exports.createComponent = async componentName => {
       // Inserting new component route information as a new object within the routes array
       routesFile[index] = '\t{';
       routesFile[index + 1] = '\t path: ' + componentPath + ',';
-      routesFile[index + 2] = `\t name: '${component}',`;
-      routesFile[index + 3] = `\t component: ${component}`;
+      routesFile[index + 2] = `\t name: '${componentName}',`;
+      routesFile[index + 3] = `\t component: ${componentName}`;
       routesFile[index + 4] = '\t}';
 
       // Pushing all those closing brackets to the end inorder to make space
