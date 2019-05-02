@@ -5,7 +5,7 @@ import { spawn } from 'child_process';
 import inquirer from 'inquirer';
 
 // import { appData } from '../../utils/projectConfig';
-import { configFileExists } from '../../utils/messages';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import { validateInstallation } from '../../utils/validate';
@@ -44,7 +44,7 @@ exports.deploy = async () => {
   showBanner();
 
   await deferExec(100);
-  configFileExists();
+  checkIfConfigFileExists();
   await validateInstallation('heroku');
 
   inquirer

@@ -3,7 +3,7 @@
 import inquirer from 'inquirer';
 
 import { appData } from '../../utils/projectConfig';
-import { configFileExists } from '../../utils/messages';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { serveProject } from './launch';
 import { showBanner } from '../../external/banner';
@@ -12,9 +12,9 @@ let projectTemplate;
 
 exports.setupProject = async () => {
   showBanner();
-  configFileExists();
-
   await deferExec(200);
+  checkIfConfigFileExists();
+
   inquirer
     .prompt([
       {

@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 
-import { configFileExists } from '../../utils/messages';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 
@@ -11,7 +11,7 @@ exports.asyncRender = async componentName => {
   showBanner();
 
   await deferExec(100);
-  configFileExists();
+  checkIfConfigFileExists();
 
   process.chdir('client/src/router');
 

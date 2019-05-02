@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import execa from 'execa';
 import os from 'os';
 
-import { configFileExists } from '../../utils/messages';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
@@ -14,7 +14,7 @@ exports.dockerize = async () => {
   showBanner();
 
   await deferExec(100);
-  configFileExists();
+  checkIfConfigFileExists();
   await validateInstallation('docker');
 
   // Currently supports only the linux platform
