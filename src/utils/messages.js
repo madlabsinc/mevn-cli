@@ -36,3 +36,10 @@ exports.dependencyNotInstalled = dependency => {
   );
   process.exit(1);
 };
+
+exports.showInstallationInfo = (spinner, url) => {
+  const msg = `You need to download Git from the official downloads page: ${url}`;
+  typeof spinner !== 'undefined'
+    ? spinner.info(msg)
+    : console.log(chalk.cyanBright(msg));
+};
