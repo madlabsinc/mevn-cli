@@ -8,7 +8,7 @@ import { configFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
-import { validateInstallation } from '../../utils/validations';
+import { validateInstallation } from '../../utils/validate';
 
 exports.dockerize = async () => {
   showBanner();
