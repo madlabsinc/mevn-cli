@@ -27,7 +27,7 @@ let componentTemplate = [
   '</style>',
 ];
 
-const capitalize = str => {
+const toLowerCamelCase = str => {
   return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 };
 
@@ -37,7 +37,7 @@ exports.createComponent = async componentName => {
   await deferExec(100);
   checkIfConfigFileExists();
 
-  componentName = capitalize(componentName);
+  componentName = toLowerCamelCase(componentName);
   process.chdir('client/src/components');
 
   await createFile(
@@ -57,9 +57,37 @@ exports.createComponent = async componentName => {
     .toString()
     .split('\n');
 
-  // Setting path and corresponding config for the new route
-  let componentPath = `'/${componentName.toLowerCase()}'`;
+  // Setting path and corresponding config for the new route.
+  const componentPath = `'@/components/${componentName.toLowerCase()}'`;
+  const importComponent = `import ${componentName} from ${componentPath}`;
 
+  // Holds all the component path information defined within the routes config file.
+  let importPaths = [];
+  // To hold all the configurations that follows the import statements.
+  let postImportConfig = [];
+
+  // Fetching all the import statements
+  routesFile.some(item => {
+    if (item === '') return true;
+    importPaths.push(item);
+  });
+  importPaths.push(importComponent);
+  console.log(importPaths);
+
+  const index = routesFile.indexOf(routesFile.find(item => item === ''));
+  console.log(index);
+
+  // Fetching all the post import statements just above routes configuration.
+  routesFile.some(item => {
+    if (routesFile.indexOf(item) === 7) {
+      return true;
+    }
+    if (routesFile.indexOf(item) >= 3) {
+      postImportConfig.push(item);
+    }
+  });
+  console.log(postImportConfig);
+  /*
   let componentImported = false;
 
   for (let index = 0; index < routesFile.length; index++) {
@@ -90,4 +118,5 @@ exports.createComponent = async componentName => {
       throw err;
     }
   });
+  */
 };
