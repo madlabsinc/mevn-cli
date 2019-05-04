@@ -18,10 +18,10 @@ let projectName;
 let projectConfig;
 
 const boilerplate = {
-  basic: 'https://github.com/MadlabsInc/mevn-boilerplate.git',
-  pwa: 'https://github.com/MadlabsInc/mevn-pwa-boilerplate.git',
-  graphql: 'https://github.com/MadlabsInc/mevn-graphql-boilerplate.git',
-  nuxt: 'https://github.com/MadlabsInc/mevn-nuxt-boilerplate.git',
+  basic: 'https://github.com/madlabsinc/mevn-boilerplate.git',
+  pwa: 'https://github.com/madlabsinc/mevn-pwa-boilerplate.git',
+  graphql: 'https://github.com/madlabsinc/mevn-graphql-boilerplate.git',
+  nuxt: 'https://github.com/madlabsinc/mevn-nuxt-boilerplate.git',
 };
 
 const makeInitialCommit = async () => {
