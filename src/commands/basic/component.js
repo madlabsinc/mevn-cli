@@ -3,6 +3,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 
+import { appData } from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { createFile } from '../../utils/createFile';
 import { deferExec } from '../../utils/defer';
@@ -38,7 +39,11 @@ exports.createComponent = async componentName => {
   checkIfConfigFileExists();
 
   componentName = toLowerCamelCase(componentName);
-  process.chdir('client/src/components');
+
+  const { template } = await appData();
+  const componentPath =
+    template === 'Nuxt-js' ? 'pages' : 'client/src/components';
+  process.chdir(componentPath);
 
   await createFile(
     `${componentName}.vue`,
@@ -50,6 +55,9 @@ exports.createComponent = async componentName => {
     },
   );
 
+  // Nuxt-js automatically sets up the routing configurations
+  if (template === 'Nuxt-js') process.exit(1);
+
   process.chdir('../router');
 
   let routesFile = fs
@@ -57,9 +65,20 @@ exports.createComponent = async componentName => {
     .toString()
     .split('\n');
 
+  // Initial route configurations
+  let routes = [];
+  let routeConfig = {
+    path: '/',
+    name: '',
+    component: '',
+  };
+
+  routeConfig.name = template === 'pwa' ? 'Hello' : 'HelloWorld';
+  routeConfig.component = template === 'pwa' ? `Hello` : `HelloWorld`;
+
   // Setting path and corresponding config for the new route.
-  const componentPath = `'@/components/${componentName.toLowerCase()}'`;
-  const importComponent = `import ${componentName} from ${componentPath}`;
+  const componentImportPath = `'@/components/${componentName.toLowerCase()}'`;
+  const importComponent = `import ${componentName} from ${componentImportPath}`;
 
   // Holds all the component path information defined within the routes config file.
   let importPaths = [];
@@ -87,36 +106,15 @@ exports.createComponent = async componentName => {
     }
   });
   console.log(postImportConfig);
-  /*
-  let componentImported = false;
 
-  for (let index = 0; index < routesFile.length; index++) {
-    if (routesFile[index] === '' && !componentImported) {
-      routesFile[
-        index
-      ] = `import ${componentName} from '@/components/${componentName}'`;
-      componentImported = true;
-    }
+  // Filling up routes object entry for the respective component
+  routeConfig.path = `/${componentName.toLowerCase()}`;
+  routeConfig.name = componentName;
+  routeConfig.component = `${componentName}`;
 
-    if (routesFile[index] === '  ]') {
-      routesFile[index - 1] = '\t},';
+  // Pushing it to the routes array
+  routes.push(routeConfig);
 
-      // Inserting new component route information as a new object within the routes array
-      routesFile[index] = '\t{';
-      routesFile[index + 1] = '\t path: ' + componentPath + ',';
-      routesFile[index + 2] = `\t name: '${componentName}',`;
-      routesFile[index + 3] = `\t component: ${componentName}`;
-      routesFile[index + 4] = '\t}';
-
-      // Pushing all those closing brackets to the end inorder to make space
-      routesFile[index + 5] = ' ]';
-      routesFile[index + 6] = '})';
-    }
-  }
-  fs.writeFile('./index.js', routesFile.join('\n'), err => {
-    if (err) {
-      throw err;
-    }
-  });
-  */
+  const updatedRoutesConfig = [].concat(importPaths, postImportConfig, routes);
+  console.log(updatedRoutesConfig);
 };
