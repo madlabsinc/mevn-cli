@@ -10,7 +10,8 @@ import { appData } from '../../utils/projectConfig';
 import { createFile } from '../../utils/createFile';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { deferExec } from '../../utils/defer';
-import { generateRoute } from './createRoute';
+import { generateComponent } from './component';
+import { generateRoute } from './routes';
 import { showBanner } from '../../external/banner';
 import { templateIsGraphQL } from '../../utils/messages';
 
@@ -59,11 +60,19 @@ exports.generateFile = async () => {
         type: 'list',
         name: 'file',
         message: 'Choose the required file to be generated',
-        choices: ['config', 'model', 'route', 'controller'],
+        choices: ['component', 'config', 'model', 'route', 'controller'],
       },
     ])
     .then(async userChoice => {
-      if (userChoice.file !== 'route') {
+      // Defining action handlers.
+      const actionHandler = {
+        component: generateComponent,
+        route: generateRoute,
+      };
+
+      if (userChoice.file === 'component' || userChoice.file === 'route') {
+        actionHandler[userChoice.file]();
+      } else {
         let workDir =
           userChoice.file === 'config' ? 'config' : `${userChoice.file}s`;
         process.chdir(`server/${workDir}`);
@@ -92,8 +101,6 @@ exports.generateFile = async () => {
           if (err) throw err;
           console.log(chalk.yellow('File Created...!'));
         });
-      } else {
-        generateRoute();
       }
     });
 };
