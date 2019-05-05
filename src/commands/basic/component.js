@@ -70,7 +70,7 @@ exports.generateComponent = async () => {
     process.exit(1);
   }
 
-  fs.writeFileSync(`${componentName}.vue`, componentTemplate.join('\n'));
+  fs.writeFileSync(`./${componentName}.vue`, componentTemplate.join('\n'));
 
   // Nuxt-js automatically sets up the routing configurations
   if (template === 'Nuxt-js') process.exit(1);
