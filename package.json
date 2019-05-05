@@ -1,6 +1,6 @@
 {
   "name": "mevn-cli",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A cli tool for MEVN stack.",
   "main": "./bin/mevn.js",
   "files": [
