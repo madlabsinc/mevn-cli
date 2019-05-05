@@ -5,7 +5,6 @@ import fs from 'fs';
 
 import { appData } from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { createFile } from '../../utils/createFile';
 import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 
@@ -45,18 +44,41 @@ exports.createComponent = async componentName => {
     template === 'Nuxt-js' ? 'pages' : 'client/src/components';
   process.chdir(componentPath);
 
-  await createFile(
-    `${componentName}.vue`,
-    componentTemplate.join('\n'),
-    { flag: 'wx' },
-    err => {
-      if (err) throw err;
-      console.log(chalk.green('\n File Created...!'));
-    },
-  );
+  if (fs.existsSync(`${componentName}.vue`)) {
+    console.log(
+      chalk.cyan.bold(`\n Info: ${componentName}.vue already exists`),
+    );
+    process.exit(1);
+  }
+
+  fs.writeFileSync(`${componentName}.vue`, componentTemplate.join('\n'));
 
   // Nuxt-js automatically sets up the routing configurations
   if (template === 'Nuxt-js') process.exit(1);
+
+  let routeConfig = {
+    path: '/',
+    name: '',
+    component: '',
+  };
+
+  routeConfig.path = `/${componentName.toLowerCase()}`;
+  routeConfig.name = componentName;
+  routeConfig.component = `${componentName}`;
+
+  console.log(
+    chalk.cyan.bold(
+      `\n Kindly insert this object to the routes array within ${chalk.yellow.bold(
+        'src/router/index.js',
+      )}`,
+    ),
+  );
+  console.log(chalk.green.bold(`\n  {`));
+  Object.keys(routeConfig).map(key =>
+    console.log(chalk.green.bold(`\t${key}: ${routeConfig[key]}`)),
+  );
+  console.log(chalk.green.bold(`\n  }`));
+  /*
 
   process.chdir('../router');
 
@@ -67,6 +89,8 @@ exports.createComponent = async componentName => {
 
   // Initial route configurations
   let routes = [];
+  let routesData = [];
+
   let routeConfig = {
     path: '/',
     name: '',
@@ -91,21 +115,41 @@ exports.createComponent = async componentName => {
     importPaths.push(item);
   });
   importPaths.push(importComponent);
-  console.log(importPaths);
-
-  const index = routesFile.indexOf(routesFile.find(item => item === ''));
-  console.log(index);
 
   // Fetching all the post import statements just above routes configuration.
   routesFile.some(item => {
-    if (routesFile.indexOf(item) === 7) {
+    let index = routesFile.indexOf(item);
+    if (index === 7) {
       return true;
     }
-    if (routesFile.indexOf(item) >= 3) {
+    if (index >= 3) {
       postImportConfig.push(item);
     }
   });
-  console.log(postImportConfig);
+  // Fetching the route config object entries.
+  const routesIndex = routesFile.indexOf(
+    routesFile.find(item => item.includes('routes')),
+  );
+  routesFile.some(item => {
+    let index = routesFile.indexOf(item);
+    if (item === '  ]') {
+      return true;
+    }
+    if (index > routesIndex) {
+      routesData.push(item);
+    }
+  });
+
+  // Parsing the existing route config into `routes` array.
+  let route = '';
+  routesData.map(item => {
+    if (item === '    }' || item === '    },') {
+      routes.push(route);
+      // routes.push(item);
+    } else {
+      route += `${item}\n`;
+    }
+  });
 
   // Filling up routes object entry for the respective component
   routeConfig.path = `/${componentName.toLowerCase()}`;
@@ -113,8 +157,16 @@ exports.createComponent = async componentName => {
   routeConfig.component = `${componentName}`;
 
   // Pushing it to the routes array
-  routes.push(routeConfig);
+  routes.push(JSON.stringify(routeConfig));
 
-  const updatedRoutesConfig = [].concat(importPaths, postImportConfig, routes);
-  console.log(updatedRoutesConfig);
+  const updatedRoutes = [].concat(
+    importPaths,
+    postImportConfig,
+    ['  routes: ['],
+    routes,
+    ['})'],
+  );
+  console.log(updatedRoutes);
+  fs.writeFileSync('./index.js', updatedRoutes.join('\n'), 'utf8');
+*/
 };
