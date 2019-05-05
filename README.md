@@ -46,8 +46,7 @@ This command Initialises the project.
 | -------------- |  ---------------- |
 | `mevn serve` | To launch Client/Server parts as required |
 | `mevn add:package` | To add additional packages as required |
-| `mevn generate` | To generate model, route, controller, and DB config files |
-| `mevn create:component <component_name>` | To create new components as required |
+| `mevn generate` | To generate component, model, route, controller, and DB config files |
 | `mevn codesplit <component_name>` | Lazy load components as required |
 | `mevn dockerize` | To run the client and server in separate docker containers |
 | `mevn deploy` | To deploy the app to Heroku |

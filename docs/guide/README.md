@@ -40,8 +40,7 @@ mevn init appname
 | -------------- |  ---------------- |
 | ```mevn serve``` | To launch Client/Server parts as required |
 | ```mevn add:package``` | To add additional packages as required |
-| ```mevn generate``` | To generate model, route, controller, and DB config files |
-| ```mevn create:component <component_name>``` | To create new components as required |
+| ```mevn generate``` | To generate component, model, route, controller, and DB config files |
 | ```mevn codesplit <component_name>``` | Lazy load components as required |
 | ```mevn dockerize``` | To run the client and server in separate docker containers |
 | ```mevn deploy``` | To deploy the app to Heroku |
@@ -67,14 +66,13 @@ mevn init appname
         | - basic
             | - codesplit.js
             | - component.js
-            | - createRoute.js
+            | - docker.js
+            | - routes.js
             | - generate.js
             | - init.js
             | - package.js
             | - version.js
         | - deploy
-            | - docker.js
-            | - gitRepo.js
             | - herokuDeploy.js
         | - serve
             | - launch.js
@@ -97,14 +95,17 @@ mevn init appname
             | - store.js
     | - utils
         | - createFile.js
+        | - defer.js
         | - fileOverwritePrompt.js
         | - messages.js
         | - projectConfig.js
+        | - spinner.js
+        | - validate.js
 | - test
     | - main_test.js
 | - .gitignore
-| - .jshintignore
-| - .jshintrc
+| - .babelrc
+| - .eslintrc
 | - .travis.yml
 | - CHANGELOG.MD
 | - CODE_OF_CONDUCT.md
