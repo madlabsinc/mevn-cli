@@ -11,7 +11,6 @@ import chalk from 'chalk';
 import { versionInfo } from './commands/basic/version';
 import { initializeProject } from './commands/basic/init';
 import { generateFile } from './commands/basic/generate';
-import { createComponent } from './commands/basic/component';
 import { asyncRender } from './commands/basic/codesplit';
 import { addPackage } from './commands/basic/package';
 import { setupProject } from './commands/serve/setup';
@@ -30,11 +29,6 @@ program
   .command('init <appname>')
   .description('To init the project')
   .action(initializeProject);
-
-program
-  .command('create:component <componentname>')
-  .description('To create component-file')
-  .action(createComponent);
 
 program
   .command('codesplit <componentname>')
