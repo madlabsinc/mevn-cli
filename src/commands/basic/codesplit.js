@@ -15,39 +15,49 @@ exports.asyncRender = async componentName => {
 
   process.chdir('client/src/router');
 
-  let componentNotFound = true;
-  let routerFile = fs
+  let routesConfig = fs
     .readFileSync('./index.js', 'utf8')
     .toString()
     .split('\n');
-  for (let index = 0; index < routerFile.length; index++) {
-    // Checking whether the routes file already has the respective component
-    if (routerFile[index].includes(`${componentName}`)) {
-      //  Validating whether the respective component is already imported dynamically
-      if (routerFile[index].includes(`import ${componentName}`)) {
-        routerFile[
-          index
-        ] = `const ${componentName} = () => import('@/components/${componentName}')`;
-        componentNotFound = false;
-        break;
-      } else {
-        console.log(
-          chalk.redBright(
-            `\n ${componentName} component is already imported dynamically!`,
-          ),
-        );
-        process.exit(1);
-      }
-    }
-  }
-  if (!componentNotFound) {
-    fs.writeFile('./index.js', routerFile.join('\n'), err => {
-      if (err) {
-        throw err;
-      }
-    });
-  } else {
-    console.log(chalk.yellowBright('\n Make sure that the component exists!'));
+
+  const componentImportPath = `'@/components/${componentName}'`;
+
+  // Validates whether if the respective component was already imported dynamically.
+  const asyncIndex = routesConfig.indexOf(
+    routesConfig.find(
+      item =>
+        item ===
+        `const ${componentName} = () => import('@/components/${componentName}')`,
+    ),
+  );
+  if (asyncIndex !== -1) {
+    console.log(
+      chalk.cyan.bold(`\n ${componentName} is already imported dynamically`),
+    );
     process.exit(1);
   }
+
+  // Validating further.
+  const index = routesConfig.indexOf(
+    routesConfig.find(
+      item => item === `import ${componentName} from ${componentImportPath}`,
+    ),
+  );
+  if (index === -1) {
+    console.log(
+      `${chalk.cyan.bold(`\n There isn't a component named ${componentName}`)}`,
+    );
+    process.exit(1);
+  } else {
+    routesConfig[
+      index
+    ] = `const ${componentName} = () => import('@/components/${componentName}')`;
+  }
+
+  fs.writeFileSync('./index.js', routesConfig.join('\n'));
+  console.log(
+    chalk.green.bold(
+      `\n From now on ${componentName} will be rendered asynchronously`,
+    ),
+  );
 };
