@@ -96,7 +96,7 @@ exports.generateComponent = async () => {
   );
   console.log(
     chalk.green.bold(
-      `\n 1. import ${componentName} from ${componentPath} ${chalk.cyan.bold(
+      `\n 1. import ${componentName} from @/components/${componentName} ${chalk.cyan.bold(
         ' on the top.',
       )}`,
     ),
