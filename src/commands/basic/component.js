@@ -2,6 +2,7 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
+import inquirer from 'inquirer';
 
 import { appData } from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
@@ -31,11 +32,29 @@ const toLowerCamelCase = str => {
   return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 };
 
-exports.createComponent = async componentName => {
+const validateInput = componentName => {
+  if (componentName === '') {
+    console.log('Kindly provide a name');
+    return false;
+  } else {
+    return true;
+  }
+};
+
+exports.generateComponent = async () => {
   showBanner();
 
   await deferExec(100);
   checkIfConfigFileExists();
+
+  let { componentName } = await inquirer.prompt([
+    {
+      type: 'input',
+      name: 'componentName',
+      message: 'Kindly provide a name for the new component',
+      validate: validateInput,
+    },
+  ]);
 
   componentName = toLowerCamelCase(componentName);
 
@@ -66,19 +85,30 @@ exports.createComponent = async componentName => {
   routeConfig.name = componentName;
   routeConfig.component = `${componentName}`;
 
+  console.log(chalk.green.bold('\n File generated'));
+  console.log(chalk.cyan.bold(`\n Couple of things to be done further`));
   console.log(
     chalk.cyan.bold(
-      `\n Kindly insert this object to the routes array within ${chalk.yellow.bold(
-        'src/router/index.js',
+      `\n Insert the following content into ${chalk.bold.yellow(
+        'client/src/components/router/index.js',
       )}`,
     ),
   );
+  console.log(
+    chalk.green.bold(
+      `\n 1. import ${componentName} from ${componentPath} ${chalk.cyan.bold(
+        ' on the top.',
+      )}`,
+    ),
+  );
+  console.log(chalk.cyan.bold(`\n 2. Insert this object to the routes array.`));
   console.log(chalk.green.bold(`\n  {`));
   Object.keys(routeConfig).map(key =>
     console.log(chalk.green.bold(`\t${key}: ${routeConfig[key]}`)),
   );
   console.log(chalk.green.bold(`\n  }`));
-  /*
+};
+/*
 
   process.chdir('../router');
 
@@ -169,4 +199,3 @@ exports.createComponent = async componentName => {
   console.log(updatedRoutes);
   fs.writeFileSync('./index.js', updatedRoutes.join('\n'), 'utf8');
 */
-};
