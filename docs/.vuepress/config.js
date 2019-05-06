@@ -1,6 +1,6 @@
 module.exports = {
     title: 'MEVN CLI',
-    description: 'Light speed setup for MEVN(Mongo Express Vue Node) stack based webapps',
+    description: 'Light speed setup for MEVN stack based apps',
     themeConfig: {
         nav: [
             {text: 'Home', link: '/'},
