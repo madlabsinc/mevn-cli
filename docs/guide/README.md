@@ -21,20 +21,20 @@ npm install -g mevn-cli
 ## Quickstart
 ```bash
 npm install -g mevn-cli
-mevn init "Desired File Name"
+mevn init "appname"
 ```
 ### Initial Command
 
-This command Initialises the project.
+This command bootstraps a basic MEVN stack based template to work upon.
 
 ```
-mevn init appname
+mevn init <appname>
 ```
 
 
 ### Available Commands
 
- These are generic commands for the entire project.
+ `Mevn-CLI` offers the following set of commands:-
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
@@ -120,7 +120,7 @@ mevn init appname
 - This tool provides an easy way to build a web app by providing a super simple boilerplate project and a reliable boilerplate pwa to build upon.  
 - Its written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code.  
-- Mevn-Cli will automate the files and generate the codes necessary to start and run a server, API etc
+- `Mevn-CLI` will automate the files and generate the codes necessary to start and run a server, API etc
 
 
 ## Contributing
@@ -148,5 +148,5 @@ Nothing! You are done and ready to get coding!
 
 | command | description
 | --- | --- |
-| ```mevn -v``` | Check CLI version |
+| ```mevn version``` | Check CLI version |
 |``` mevn --help ``` | Get help and check usage |
