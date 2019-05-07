@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [c5f17e7](https://github.com/madlabsinc/mevn-cli/commit/c5f17e796bd37c53c4be73eec9973cb837799ecb) - Fixed the bugs with validating `git` installation
 
 
-##[1.2.7]
+## [1.2.7]
 ### Fixes
 > Prompts the user if the required dependencies to work with are not installed and proceeds with the installation as per choice.
 
@@ -58,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [788709c](https://github.com/madlabsinc/mevn-cli/commit/788709c089415d259d6d9a69fdfdd8a4b6265fd1)
 - [6ded326](https://github.com/madlabsinc/mevn-cli/commit/6ded326adb306b5c8bb6686deacacd914d3fb49f)
 
-##[1.2.5]
+### [1.2.5]
 ## Fixes
 - [1978efd](https://github.com/madlabsinc/mevn-cli/commit/1978efd84ab4a1de8bfcc5b6ad8c0b19a4b78afc) - Fixed the bug encountered while serving the template.
 
