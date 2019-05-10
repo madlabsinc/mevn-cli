@@ -7,17 +7,12 @@
 [![dependencies Status](https://david-dm.org/madlabsinc/mevn-cli/status.svg)](https://david-dm.org/madlabsinc/mevn-cli)
 [![devDependencies Status](https://david-dm.org/madlabsinc/mevn-cli/dev-status.svg)](https://david-dm.org/madlabsinc/mevn-cli?type=dev)
 
-A CLI tool for getting started with MEVN stack. It offers various reliable boilerplates as given below and additional utilities for building a MEVN app. It helps out, beginner developers to easily create a template for their Web application development.
+A CLI tool for getting started with the MEVN stack. It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
 
 - [Basic](https://github.com/Madlabsinc/mevn-boilerplate)
 - [Pwa](https://github.com/MadlabsInc/mevn-pwa-boilerplate)
 - [GraphQL](https://github.com/MadlabsInc/mevn-graphql-boilerplate)
 - [Nuxt.js](https://github.com/MadlabsInc/mevn-nuxt-boilerplate)
-
-## Getting Started
-
- Currently, this tool works on the Windows and Linux platform.
-
 
 ### Prerequisites
 
@@ -30,17 +25,13 @@ A CLI tool for getting started with MEVN stack. It offers various reliable boile
 To install the package:-
 > npm install -g mevn-cli
 
-## Commands
+### Quickstart
 
-
-### Initial Command
-
-This command Initialises the project.
-> mevn init <app_name>
+> mevn init <appname>
 
 ### Available Commands
 
- These are the various commands available for use.
+ `Mevn-CLI` offers the following set of commands:-
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
