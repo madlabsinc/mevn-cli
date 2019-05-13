@@ -6,6 +6,7 @@
 import '@babel/polyfill';
 import program from 'commander';
 import chalk from 'chalk';
+import envinfo from 'envinfo';
 import updateNotifier from 'update-notifier';
 
 // Defining action handlers for respective commands
@@ -57,6 +58,24 @@ program
   .command('deploy')
   .description('To deploy the app to Heroku')
   .action(deploy);
+
+program
+  .command('info')
+  .description('Shows debugging information about the local environment')
+  .action(() => {
+    console.log(chalk.bold('\nEnvironment Info:'));
+    envinfo
+      .run(
+        {
+          System: ['OS', 'CPU'],
+          Binaries: ['Node', 'Yarn', 'npm'],
+          Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
+          npmPackages: ['vue', 'vue-router', 'express', 'mongoose'],
+        },
+        { showNotFound: true },
+      )
+      .then(console.log);
+  });
 
 program.arguments('<command>').action(cmd => {
   program.outputHelp();
