@@ -23,6 +23,36 @@ const boilerplate = {
   nuxt: 'https://github.com/madlabsinc/mevn-nuxt-boilerplate.git',
 };
 
+const addLinterFeature = async (lint, template) => {
+  if (lint === 'none') {
+    console.log('\n');
+  } else {
+    if (template === 'nuxt') {
+      console.log(
+        'Installing ' + lint + ' for ' + template + ' template : server',
+      );
+      await process.chdir(`${projectName}/server`);
+      await execa.shell('npm install ' + lint);
+      await process.chdir('../..');
+    } else {
+      //server
+      console.log(
+        'Installing ' + lint + ' for ' + template + ' template : server',
+      );
+      await process.chdir(`${projectName}/server`);
+      await execa.shell('npm install ' + lint);
+      await process.chdir('../..');
+      //client
+      console.log(
+        'Installing ' + lint + ' for ' + template + ' template : client',
+      );
+      await process.chdir(`${projectName}/client`);
+      await execa.shell('npm install ' + lint);
+      await process.chdir('../..');
+    }
+  }
+};
+
 const makeInitialCommit = async () => {
   process.chdir(projectName);
   await execa('git', ['init']);
@@ -98,170 +128,23 @@ const fetchTemplate = async template => {
     );
 
     //Prompt for additional linter fearures
-    if (template) {
-      await inquirer
-        .prompt([
-          {
-            name: 'features',
-            type: 'list',
-            message: 'Please select your favourite linter',
-            choices: ['ESLint', 'JSLint', 'JSHint', 'Prettier', 'None'],
-          },
-        ])
-        .then(async option => {
-          try {
-            if (option.features === 'ESLint') {
-              if (template === 'nuxt') {
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : server',
-                );
-                await process.chdir(`${projectName}/server`);
-                await execa.shell('npm install eslint');
-                await process.chdir('../..');
-              } else {
-                //server
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : server',
-                );
-                await process.chdir(`${projectName}/server`);
-                await execa.shell('npm install eslint');
-                await process.chdir('../..');
-                //client
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : client',
-                );
-                await process.chdir(`${projectName}/client`);
-                await execa.shell('npm install eslint');
-                await process.chdir('../..');
-              }
-            } else if (option.features === 'JSLint') {
-              if (template === 'nuxt') {
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : server',
-                );
-                await process.chdir(`${projectName}/server`);
-                await execa.shell('npm install jslint');
-                await process.chdir('../..');
-              } else {
-                //server
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : server',
-                );
-                await process.chdir(`${projectName}/server`);
-                await execa.shell('npm install jslint');
-                await process.chdir('../..');
-                //client
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : client',
-                );
-                await process.chdir(`${projectName}/client`);
-                await execa.shell('npm install jslint');
-                await process.chdir('../..');
-              }
-            } else if (option.features === 'JSHint') {
-              if (template === 'nuxt') {
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : server',
-                );
-                await process.chdir(`${projectName}/server`);
-                await execa.shell('npm install jshint');
-                await process.chdir('../..');
-              } else {
-                //server
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : server',
-                );
-                await process.chdir(`${projectName}/server`);
-                await execa.shell('npm install jshint');
-                await process.chdir('../..');
-                //client
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : client',
-                );
-                await process.chdir(`${projectName}/client`);
-                await execa.shell('npm install jshint');
-                await process.chdir('../..');
-              }
-            } else if (option.features === 'Prettier') {
-              if (template === 'nuxt') {
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : server',
-                );
-                await process.chdir(`${projectName}/server`);
-                await execa.shell('npm install prettier');
-                await process.chdir('../..');
-              } else {
-                //server
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : server',
-                );
-                await process.chdir(`${projectName}/server`);
-                await execa.shell('npm install prettier');
-                await process.chdir('../..');
-                //client
-                console.log(
-                  'Installing ' +
-                    option.features +
-                    ' for ' +
-                    template +
-                    ' template : client',
-                );
-                await process.chdir(`${projectName}/client`);
-                await execa.shell('npm install prettier');
-                await process.chdir('../..');
-              }
-            } else if (option.features === 'None') {
-              console.log('\n');
-            }
-          } catch (err) {
-            throw err;
-          }
-        });
-    }
+    await inquirer
+      .prompt([
+        {
+          name: 'features',
+          type: 'list',
+          message: 'Please select your favourite linter',
+          choices: ['eslint', 'jslint', 'jshint', 'prettier', 'none'],
+        },
+      ])
+      .then(async option => {
+        try {
+          const lint = option.features;
+          await addLinterFeature(lint, template);
+        } catch (err) {
+          throw err;
+        }
+      });
 
     if (template === 'nuxt') {
       const { requirePwaSupport } = await inquirer.prompt([
