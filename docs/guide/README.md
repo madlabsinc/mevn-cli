@@ -37,6 +37,7 @@ mevn init <appname>
 | ```mevn codesplit <component_name>``` | Lazy load components as required |
 | ```mevn dockerize``` | To run the client and server in separate docker containers |
 | ```mevn deploy``` | To deploy the app to Heroku |
+| ```mevn info``` | Prints debugging information about the local environment |
 
 ## File Hierarchy
 ```
@@ -64,7 +65,6 @@ mevn init <appname>
             | - generate.js
             | - init.js
             | - package.js
-            | - version.js
         | - deploy
             | - herokuDeploy.js
         | - serve
@@ -141,5 +141,5 @@ Nothing! You are done and ready to get coding!
 
 | command | description
 | --- | --- |
-| ```mevn version``` | Check CLI version |
+| ```mevn -V, mevn --version``` | Check CLI version |
 |``` mevn --help ``` | Get help and check usage |
