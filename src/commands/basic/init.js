@@ -99,6 +99,24 @@ const fetchTemplate = async template => {
     );
 
     if (template === 'nuxt') {
+      await inquirer.prompt([{
+        name: 'pwa',
+        type: 'confirm',
+        message: 'Pwa support?'
+      }])
+      .then((answer) => {
+        if (answer.pwa) {
+          let configFile = JSON.parse(
+            fs.readFileSync(`./${projectName}/mevn.json`).toString(),
+          );
+          configFile['modules'] = '@nuxtjs/pwa';
+          fs.writeFileSync(
+            `./${projectName}/mevn.json`,
+            JSON.stringify(configFile),
+          );
+        }
+      })
+      
       await inquirer
         .prompt([
           {
