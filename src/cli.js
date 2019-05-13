@@ -61,7 +61,7 @@ program
 
 program
   .command('info')
-  .description('Shows debugging information about the local environment')
+  .description('Prints debugging information about the local environment')
   .action(() => {
     console.log(chalk.bold('\nEnvironment Info:'));
     envinfo
