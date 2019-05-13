@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.3]
+### API Changes
+
+- Suggest matching commands
+- New `info` command that prints local environment information
+- Use `-v, --version` switches and deprecate `version` command
+- Updated demo
+
 ## [1.4.1]
 ### Fixes
 - Fixed a minor bug (Showing up incorrect path). [0be5821](https://github.com/madlabsinc/mevn-cli/commit/0be5821355a76c680c9c503f2f19a9200be26832)
