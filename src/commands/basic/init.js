@@ -23,6 +23,36 @@ const boilerplate = {
   nuxt: 'https://github.com/madlabsinc/mevn-nuxt-boilerplate.git',
 };
 
+const addLinterFeature = async (lint, template) => {
+  if (lint === 'none') {
+    console.log('\n');
+  } else {
+    if (template === 'nuxt') {
+      console.log(
+        'Installing ' + lint + ' for ' + template + ' template : server',
+      );
+      await process.chdir(`${projectName}/server`);
+      await execa.shell('npm install ' + lint);
+      await process.chdir('../..');
+    } else {
+      //server
+      console.log(
+        'Installing ' + lint + ' for ' + template + ' template : server',
+      );
+      await process.chdir(`${projectName}/server`);
+      await execa.shell('npm install ' + lint);
+      await process.chdir('../..');
+      //client
+      console.log(
+        'Installing ' + lint + ' for ' + template + ' template : client',
+      );
+      await process.chdir(`${projectName}/client`);
+      await execa.shell('npm install ' + lint);
+      await process.chdir('../..');
+    }
+  }
+};
+
 const makeInitialCommit = async () => {
   process.chdir(projectName);
   await execa('git', ['init']);
@@ -96,6 +126,25 @@ const fetchTemplate = async template => {
       `./${projectName}/mevn.json`,
       projectConfig.join('\n').toString(),
     );
+
+    //Prompt for additional linter fearures
+    await inquirer
+      .prompt([
+        {
+          name: 'features',
+          type: 'list',
+          message: 'Please select your favourite linter',
+          choices: ['eslint', 'jslint', 'jshint', 'prettier', 'none'],
+        },
+      ])
+      .then(async option => {
+        try {
+          const lint = option.features;
+          await addLinterFeature(lint, template);
+        } catch (err) {
+          throw err;
+        }
+      });
 
     if (template === 'nuxt') {
       const { requirePwaSupport } = await inquirer.prompt([
