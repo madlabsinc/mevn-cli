@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Suggest matching commands
 - New `info` command that prints local environment information
-- Use `-v, --version` switches and deprecate `version` command
+- Use `-v, --version` options and deprecate `version` command
 - Updated demo
 
 ## [1.4.1]
