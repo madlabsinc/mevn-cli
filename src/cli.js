@@ -6,9 +6,9 @@
 import '@babel/polyfill';
 import program from 'commander';
 import chalk from 'chalk';
+import updateNotifier from 'update-notifier';
 
 // Defining action handlers for respective commands
-import { versionInfo } from './commands/basic/version';
 import { initializeProject } from './commands/basic/init';
 import { generateFile } from './commands/basic/generate';
 import { asyncRender } from './commands/basic/codesplit';
@@ -16,14 +16,12 @@ import { addPackage } from './commands/basic/package';
 import { setupProject } from './commands/serve/setup';
 import { dockerize } from './commands/basic/docker';
 import { deploy } from './commands/deploy/herokuDeploy';
+import pkg from '../package';
+
+updateNotifier({ pkg: pkg }).notify();
 
 // Defining all the available commands
-program
-  .command('version')
-  .description(
-    'Outputs version along with local development environment information',
-  )
-  .action(versionInfo);
+program.version(pkg.version).usage('<command> [options]');
 
 program
   .command('init <appname>')
