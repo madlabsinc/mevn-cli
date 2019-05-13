@@ -6,8 +6,12 @@
 import '@babel/polyfill';
 import program from 'commander';
 import chalk from 'chalk';
+import didYouMean from 'didyoumean';
 import envinfo from 'envinfo';
 import updateNotifier from 'update-notifier';
+
+// Setting edit distance to 60% of the input string's length
+didYouMean.threshold = 0.6;
 
 // Defining action handlers for respective commands
 import { initializeProject } from './commands/basic/init';
@@ -20,6 +24,17 @@ import { deploy } from './commands/deploy/herokuDeploy';
 import pkg from '../package';
 
 updateNotifier({ pkg: pkg }).notify();
+
+const suggestCommands = cmd => {
+  const availableCommands = program.commands.map(cmd => {
+    return cmd._name;
+  });
+
+  const suggestion = didYouMean(cmd, availableCommands);
+  if (suggestion) {
+    console.log(`  ` + chalk.red(`Did you mean ${chalk.yellow(suggestion)}?`));
+  }
+};
 
 // Defining all the available commands
 program.version(pkg.version).usage('<command> [options]');
@@ -81,6 +96,7 @@ program.arguments('<command>').action(cmd => {
   program.outputHelp();
   console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
   console.log();
+  suggestCommands(cmd);
 });
 
 program.parse(process.argv);
