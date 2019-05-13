@@ -55,7 +55,7 @@ mevn init <appname>
 
 ## Demo
 
-[![Demo](https://asciinema.org/a/233020.svg)](https://asciinema.org/a/233020)
+[![Demo](https://asciinema.org/a/245969.svg)](https://asciinema.org/a/245969)
 
 ## Contributing
 
