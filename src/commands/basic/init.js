@@ -99,24 +99,27 @@ const fetchTemplate = async template => {
     );
 
     if (template === 'nuxt') {
-      await inquirer.prompt([{
-        name: 'pwa',
-        type: 'confirm',
-        message: 'Pwa support?'
-      }])
-      .then((answer) => {
-        if (answer.pwa) {
-          let configFile = JSON.parse(
-            fs.readFileSync(`./${projectName}/mevn.json`).toString(),
-          );
-          configFile['modules'] = '@nuxtjs/pwa';
-          fs.writeFileSync(
-            `./${projectName}/mevn.json`,
-            JSON.stringify(configFile),
-          );
-        }
-      })
       
+      const {requirePwaSupport} = await inquirer
+        .prompt([
+          {
+            name: 'requirePwaSupport',
+            type: 'confirm',
+            message: 'Do you want to have pwa support in your application?',
+          },
+        ]);
+
+      if (requirePwaSupport) {
+        let configFile = JSON.parse(
+          fs.readFileSync(`./${projectName}/mevn.json`).toString(),
+        );
+        configFile['isPwa'] = true;
+        fs.writeFileSync(
+          `./${projectName}/mevn.json`,
+          JSON.stringify(configFile),
+        );
+      }
+
       await inquirer
         .prompt([
           {
