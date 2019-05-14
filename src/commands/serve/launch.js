@@ -2,8 +2,25 @@
 
 import execa from 'execa';
 import opn from 'opn';
+import fs from 'fs';
 
 import Spinner from '../../utils/spinner';
+
+const enablePwaSupport = async(template) => {
+  if (template === 'Nuxt-js') {
+    let configFile = JSON.parse(fs.readFileSync('mevn.json').toString());
+    if (configFile['isPwa']) {
+     // setup pwa support
+      execa('npm', ['install', '@nuxtjs/pwa']);
+      const nuxtConfigFile = fs.readFileSync('nuxt.config.js').toString().split('\n');
+      let index = nuxtConfigFile.indexOf(
+        nuxtConfigFile.find(line => line.includes('modules: [')),
+      );
+      nuxtConfigFile[index] = ` modules: ['@nuxtjs/pwa',`;
+      fs.writeFileSync('nuxt.config.js', nuxtConfigFile.join('\n'))  
+    }
+  }
+}
 
 exports.serveProject = async (projectTemplate, side) => {
   const installDepsSpinner = new Spinner(
@@ -21,6 +38,7 @@ exports.serveProject = async (projectTemplate, side) => {
   }
   try {
     await execa('npm', ['install']);
+    await enablePwaSupport(projectTemplate);
   } catch (err) {
     installDepsSpinner.fail(
       `Something went wrong. Couldn't install the dependencies!`,
