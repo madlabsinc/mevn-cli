@@ -1,28 +1,34 @@
 'use strict';
 
 import execa from 'execa';
-import opn from 'opn';
+import open from 'open';
 import fs from 'fs';
 
 import Spinner from '../../utils/spinner';
 
-const enablePwaSupport = async(template) => {
-  if (template === 'Nuxt-js') {
-    let configFile = JSON.parse(fs.readFileSync('mevn.json').toString());
-    if (configFile['isPwa']) {
-     // setup pwa support
-      execa('npm', ['install', '@nuxtjs/pwa']);
-      const nuxtConfigFile = fs.readFileSync('nuxt.config.js').toString().split('\n');
-      let index = nuxtConfigFile.indexOf(
-        nuxtConfigFile.find(line => line.includes('modules: [')),
-      );
-      nuxtConfigFile[index] = ` modules: ['@nuxtjs/pwa',`;
-      fs.writeFileSync('nuxt.config.js', nuxtConfigFile.join('\n'))  
+const configurePwaSupport = async () => {
+  let configFile = JSON.parse(fs.readFileSync('mevn.json').toString());
+  if (configFile['isPwa']) {
+    // Install the nuxt-pwa package.
+    try {
+      await execa('npm', ['install', '@nuxtjs/pwa']);
+    } catch (err) {
+      console.log(err);
+      process.exit(1);
     }
+    const nuxtConfigFile = fs
+      .readFileSync('nuxt.config.js')
+      .toString()
+      .split('\n');
+    let index = nuxtConfigFile.indexOf(
+      nuxtConfigFile.find(line => line.includes('modules: [')),
+    );
+    nuxtConfigFile[index] = ` modules: ['@nuxtjs/pwa',`;
+    fs.writeFileSync('nuxt.config.js', nuxtConfigFile.join('\n'));
   }
-}
+};
 
-exports.serveProject = async (projectTemplate, side) => {
+exports.serveProject = async (projectTemplate, templateDir) => {
   const installDepsSpinner = new Spinner(
     'Installing dependencies in the background. Hold on...',
   );
@@ -31,14 +37,14 @@ exports.serveProject = async (projectTemplate, side) => {
   let rootPath = 'http://localhost';
   let port;
 
-  if (side === 'client') {
+  if (templateDir === 'client') {
     port = projectTemplate === 'Nuxt-js' ? '3000' : '8080';
   } else {
     port = projectTemplate === 'graphql' ? '9000/graphql' : '9000/api';
   }
   try {
     await execa('npm', ['install']);
-    await enablePwaSupport(projectTemplate);
+    if (projectTemplate === 'Nuxt-js') await configurePwaSupport();
   } catch (err) {
     installDepsSpinner.fail(
       `Something went wrong. Couldn't install the dependencies!`,
@@ -52,6 +58,7 @@ exports.serveProject = async (projectTemplate, side) => {
   );
   launchSpinner.start();
 
-  Promise.all([execa.shell('npm run dev'), opn(`${rootPath}:${port}`)]);
+  require('child_process').spawn('npm', ['run', 'dev']);
+  await open(`${rootPath}:${port}`);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };

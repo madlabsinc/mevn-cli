@@ -99,15 +99,13 @@ const fetchTemplate = async template => {
     );
 
     if (template === 'nuxt') {
-      
-      const {requirePwaSupport} = await inquirer
-        .prompt([
-          {
-            name: 'requirePwaSupport',
-            type: 'confirm',
-            message: 'Do you want to have pwa support in your application?',
-          },
-        ]);
+      const { requirePwaSupport } = await inquirer.prompt([
+        {
+          name: 'requirePwaSupport',
+          type: 'confirm',
+          message: 'Do you want to have pwa support in your application?',
+        },
+      ]);
 
       if (requirePwaSupport) {
         let configFile = JSON.parse(
