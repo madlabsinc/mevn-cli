@@ -103,7 +103,7 @@ const fetchTemplate = async template => {
         {
           name: 'requirePwaSupport',
           type: 'confirm',
-          message: 'Do you want to have pwa support in your application?',
+          message: 'Do you require pwa support',
         },
       ]);
 
