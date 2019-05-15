@@ -23,32 +23,44 @@ const boilerplate = {
   nuxt: 'https://github.com/madlabsinc/mevn-nuxt-boilerplate.git',
 };
 
-const addLinterFeature = async (lint, template) => {
-  if (lint === 'none') {
+const configureLinter = async (linter, template) => {
+  if (linter === 'none') {
     console.log('\n');
   } else {
     if (template === 'nuxt') {
-      console.log(
-        'Installing ' + lint + ' for ' + template + ' template : server',
-      );
-      await process.chdir(`${projectName}/server`);
-      await execa.shell('npm install ' + lint);
-      await process.chdir('../..');
+      await fetchLinter('server', linter, template);
     } else {
-      //server
-      console.log(
-        'Installing ' + lint + ' for ' + template + ' template : server',
-      );
-      await process.chdir(`${projectName}/server`);
-      await execa.shell('npm install ' + lint);
-      await process.chdir('../..');
-      //client
-      console.log(
-        'Installing ' + lint + ' for ' + template + ' template : client',
-      );
-      await process.chdir(`${projectName}/client`);
-      await execa.shell('npm install ' + lint);
-      await process.chdir('../..');
+      await fetchLinter('client', linter, template);
+      await fetchLinter('server', linter, template);
+    }
+  }
+};
+
+const fetchLinter = async (side, linter, template) => {
+  console.log(`Installing  ${linter} for ${template} template : ${side}`);
+  await process.chdir(`${projectName}/${side}`);
+  await execa('npm', ['install', '--save', linter]);
+  await execa.shell('touch .' + linter + 'ignore');
+  await execa.shell('touch .' + linter + 'rc.js');
+  await process.chdir('../..');
+};
+
+const configurePrettier = async (linter, template) => {
+  if (linter === 'none') {
+    console('\n');
+  } else if (linter === 'eslint') {
+    if (template === 'nuxt') {
+      await fetchLinter('server', 'prettier-eslint', template);
+    } else {
+      await fetchLinter('client', 'prettier-eslint', template);
+      await fetchLinter('server', 'prettier-eslint', template);
+    }
+  } else {
+    if (template === 'nuxt') {
+      await fetchLinter('server', 'prettier', template);
+    } else {
+      await fetchLinter('client', 'prettier', template);
+      await fetchLinter('server', 'prettier', template);
     }
   }
 };
@@ -134,13 +146,24 @@ const fetchTemplate = async template => {
           name: 'features',
           type: 'list',
           message: 'Please select your favourite linter',
-          choices: ['eslint', 'jslint', 'jshint', 'prettier', 'none'],
+          choices: ['eslint', 'jslint', 'jshint', 'none'],
         },
       ])
       .then(async option => {
         try {
-          const lint = option.features;
-          await addLinterFeature(lint, template);
+          await configureLinter(option.features, template);
+          //Prompt for Prettier feature
+          const { wantPrettier } = await inquirer.prompt([
+            {
+              name: 'wantPrettier',
+              type: 'confirm',
+              message: 'Do you want Prettier?',
+            },
+          ]);
+
+          if (wantPrettier) {
+            await configurePrettier(option.features, template);
+          }
         } catch (err) {
           throw err;
         }
