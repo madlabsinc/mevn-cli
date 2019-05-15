@@ -7,11 +7,10 @@ import fs from 'fs';
 import Spinner from '../../utils/spinner';
 
 const configurePwaSupport = async templateDir => {
-  console.log(templateDir);
-  let configFile =
-    templateDir === 'client'
-      ? JSON.parse(fs.readFileSync('mevn.json').toString())
-      : JSON.parse(fs.readFileSync('../mevn.json').toString());
+  let path = templateDir === 'client' ? 'mevn.json' : '../mevn.json';
+
+  let configFile = JSON.parse(fs.readFileSync(path).toString());
+
   if (configFile['isPwa']) {
     // Install the nuxt-pwa package.
     try {
@@ -20,13 +19,18 @@ const configurePwaSupport = async templateDir => {
       console.log(err);
       process.exit(1);
     }
+
+    if (templateDir === 'server') process.chdir('../');
+
     const nuxtConfigFile = fs
       .readFileSync('nuxt.config.js')
       .toString()
       .split('\n');
+
     let index = nuxtConfigFile.indexOf(
       nuxtConfigFile.find(line => line.includes('modules: [')),
     );
+
     nuxtConfigFile[index] = ` modules: ['@nuxtjs/pwa',`;
     fs.writeFileSync('nuxt.config.js', nuxtConfigFile.join('\n'));
   }
@@ -56,6 +60,9 @@ exports.serveProject = async (projectTemplate, templateDir) => {
     throw err;
   }
   installDepsSpinner.succeed(`You're all set`);
+
+  if (templateDir === 'server' && projectTemplate === 'Nuxt-js')
+    process.chdir('server');
 
   const launchSpinner = new Spinner(
     'The default browser will open up in a while',
