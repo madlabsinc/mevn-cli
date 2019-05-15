@@ -6,9 +6,12 @@ import fs from 'fs';
 
 import Spinner from '../../utils/spinner';
 
-const configurePwaSupport = async (templateDir) => {
+const configurePwaSupport = async templateDir => {
   console.log(templateDir);
-  let configFile = templateDir === 'client' ? JSON.parse(fs.readFileSync('mevn.json').toString()) : JSON.parse(fs.readFileSync('../mevn.json').toString());
+  let configFile =
+    templateDir === 'client'
+      ? JSON.parse(fs.readFileSync('mevn.json').toString())
+      : JSON.parse(fs.readFileSync('../mevn.json').toString());
   if (configFile['isPwa']) {
     // Install the nuxt-pwa package.
     try {
