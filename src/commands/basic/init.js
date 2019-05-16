@@ -28,17 +28,19 @@ const configureLinter = async (linter, template) => {
     console.log('\n');
   } else {
     if (template === 'nuxt') {
-      await fetchLinter('server', linter, template);
+      await installLinter('server', linter, template);
     } else {
-      await fetchLinter('client', linter, template);
-      await fetchLinter('server', linter, template);
+      await installLinter('client', linter, template);
+      await installLinter('server', linter, template);
     }
   }
 };
 
-const fetchLinter = async (side, linter, template) => {
-  console.log(`Installing  ${linter} for ${template} template : ${side}`);
-  await process.chdir(`${projectName}/${side}`);
+const installLinter = async (templateDir, linter, template) => {
+  console.log(
+    `Installing  ${linter} for ${template} template : ${templateDir}`,
+  );
+  await process.chdir(`${projectName}/${templateDir}`);
   await execa('npm', ['install', '--save', linter]);
   await execa.shell('touch .' + linter + 'ignore');
   await execa.shell('touch .' + linter + 'rc.js');
@@ -50,17 +52,17 @@ const configurePrettier = async (linter, template) => {
     console('\n');
   } else if (linter === 'eslint') {
     if (template === 'nuxt') {
-      await fetchLinter('server', 'prettier-eslint', template);
+      await installLinter('server', 'prettier-eslint', template);
     } else {
-      await fetchLinter('client', 'prettier-eslint', template);
-      await fetchLinter('server', 'prettier-eslint', template);
+      await installLinter('client', 'prettier-eslint', template);
+      await installLinter('server', 'prettier-eslint', template);
     }
   } else {
     if (template === 'nuxt') {
-      await fetchLinter('server', 'prettier', template);
+      await installLinter('server', 'prettier', template);
     } else {
-      await fetchLinter('client', 'prettier', template);
-      await fetchLinter('server', 'prettier', template);
+      await installLinter('client', 'prettier', template);
+      await installLinter('server', 'prettier', template);
     }
   }
 };
@@ -153,15 +155,15 @@ const fetchTemplate = async template => {
         try {
           await configureLinter(option.features, template);
           //Prompt for Prettier feature
-          const { wantPrettier } = await inquirer.prompt([
+          const { requirePrettier } = await inquirer.prompt([
             {
-              name: 'wantPrettier',
+              name: 'requirePrettier',
               type: 'confirm',
-              message: 'Do you want Prettier?',
+              message: 'Do you require Prettier',
             },
           ]);
 
-          if (wantPrettier) {
+          if (requirePrettier) {
             await configurePrettier(option.features, template);
           }
         } catch (err) {
