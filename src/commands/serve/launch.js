@@ -67,9 +67,8 @@ exports.serveProject = async (projectTemplate, templateDir) => {
   const launchSpinner = new Spinner(
     'The default browser will open up in a while',
   );
-  launchSpinner.start();
 
-  require('child_process').spawn('npm', ['run', 'dev']);
-  await open(`${rootPath}:${port}`);
+  launchSpinner.start();
+  Promise.all([execa.shell('npm run dev'), open(`${rootPath}:${port}`)]);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };
