@@ -154,9 +154,6 @@ const fetchTemplate = async template => {
 exports.initializeProject = async appName => {
   await showBanner();
 
-  const initialSpinner = new Spinner('Initializing');
-  initialSpinner.start();
-
   const hasMultipleProjectNameArgs =
     process.argv[4] && !process.argv[4].startsWith('-');
 
@@ -186,8 +183,7 @@ exports.initializeProject = async appName => {
     );
     process.exit(1);
   }
-
-  initialSpinner.stop();
+  
   projectName = appName;
 
   inquirer
