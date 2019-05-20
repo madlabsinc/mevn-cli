@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://github.com/madlabsinc/mevn-cli/blob/master/assets/mevn-logo.jpg" width="350">
+<img src="https://i.imgur.com/NV51t84.jpg" width="350px">
 </p>
 
 # Mevn-CLI
