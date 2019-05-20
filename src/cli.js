@@ -80,15 +80,12 @@ program
   .action(() => {
     console.log(chalk.bold('\nEnvironment Info:'));
     envinfo
-      .run(
-        {
-          System: ['OS', 'CPU'],
-          Binaries: ['Node', 'Yarn', 'npm'],
-          Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
-          npmPackages: ['vue', 'vue-router', 'express', 'mongoose'],
-        },
-        { showNotFound: true },
-      )
+      .run({
+        System: ['OS', 'CPU'],
+        Binaries: ['Node', 'Yarn', 'npm'],
+        Browsers: ['Chrome', 'Edge', 'Firefox', 'Safari'],
+        npmGlobalPackages: ['mevn-cli'],
+      })
       .then(console.log);
   });
 
