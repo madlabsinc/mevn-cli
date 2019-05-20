@@ -2,35 +2,25 @@
 
 import chalk from 'chalk';
 import execa from 'execa';
-import os from 'os';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
 
 exports.dockerize = async () => {
-  showBanner();
-
-  await deferExec(100);
+  await showBanner();
   checkIfConfigFileExists();
   await validateInstallation('docker');
 
   // Currently supports only the linux platform
-  if (os.type() === 'Linux') {
-    try {
-      await require('child_process').exec('sudo -s');
-    } catch (err) {
-      throw err;
-    }
-
+  if (process.platform === 'linux') {
     const spinner = new Spinner(
       'Sit back and relax while we set things up for you',
     );
     spinner.start();
     try {
-      await execa('sudo', ['docker-compose', 'up']);
+      await execa.shell('sudo docker-compose up', { stdio: 'inherit' });
     } catch (err) {
       spinner.fail('Something went wrong');
       throw err;

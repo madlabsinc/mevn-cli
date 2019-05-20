@@ -9,7 +9,6 @@ import os from 'os';
 import { appData } from '../../utils/projectConfig';
 import { createFile } from '../../utils/createFile';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { deferExec } from '../../utils/defer';
 import { generateComponent } from './component';
 import { generateRoute } from './routes';
 import { showBanner } from '../../external/banner';
@@ -44,8 +43,7 @@ const getFileContent = fileToGenerate => {
 };
 
 exports.generateFile = async () => {
-  showBanner();
-  await deferExec(100);
+  await showBanner();
   checkIfConfigFileExists();
 
   await appData().then(data => {

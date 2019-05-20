@@ -7,7 +7,6 @@ import inquirer from 'inquirer';
 
 import { createFile } from '../../utils/createFile';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
 
@@ -122,9 +121,7 @@ let installPassportPackages = async (withSocialMediaAuth, spinner) => {
 };
 
 exports.generateRoute = async () => {
-  showBanner();
-
-  await deferExec(400);
+  await showBanner();
   checkIfConfigFileExists();
 
   inquirer.prompt(questions).then(answer => {
@@ -139,7 +136,6 @@ exports.generateRoute = async () => {
           );
           fetchSpinner.start();
 
-          await deferExec(100);
           installPassportPackages(
             socialMediaAuthAnswer.socialMediaAuth,
             fetchSpinner,
