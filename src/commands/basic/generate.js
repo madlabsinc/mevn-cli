@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
-import os from 'os';
 
 import { appData } from '../../utils/projectConfig';
 import { createFile } from '../../utils/createFile';
@@ -75,7 +74,7 @@ exports.generateFile = async () => {
           userChoice.file === 'config' ? 'config' : `${userChoice.file}s`;
         process.chdir(`server/${workDir}`);
 
-        let removeCmd = os.type() === 'Windows_NT' ? 'del' : 'rm';
+        let removeCmd = process.platform === 'win32' ? 'del' : 'rm';
         if (fs.existsSync('./default.js')) {
           execa.shellSync(`${removeCmd} default.js`);
         }
