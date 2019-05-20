@@ -183,7 +183,7 @@ exports.initializeProject = async appName => {
     );
     process.exit(1);
   }
-  
+
   projectName = appName;
 
   inquirer
