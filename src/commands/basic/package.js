@@ -5,7 +5,6 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
 
@@ -28,9 +27,7 @@ const installPackage = async packageToInstall => {
 };
 
 exports.addPackage = async () => {
-  showBanner();
-
-  await deferExec(100);
+  await showBanner();
   checkIfConfigFileExists();
 
   let questions = [

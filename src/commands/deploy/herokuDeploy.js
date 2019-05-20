@@ -4,7 +4,6 @@ import { spawn } from 'child_process';
 import inquirer from 'inquirer';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import { validateInstallation } from '../../utils/validate';
 
@@ -36,9 +35,7 @@ const deployWithDocker = async () => {
 };
 
 exports.deploy = async () => {
-  showBanner();
-
-  await deferExec(100);
+  await showBanner();
   checkIfConfigFileExists();
   await validateInstallation('heroku');
 

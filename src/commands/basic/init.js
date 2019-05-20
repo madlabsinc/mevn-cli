@@ -7,7 +7,6 @@ import path from 'path';
 import inquirer from 'inquirer';
 import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
-import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
@@ -153,13 +152,11 @@ const fetchTemplate = async template => {
 };
 
 exports.initializeProject = async appName => {
-  showBanner();
+  await showBanner();
 
-  await deferExec(100);
   const initialSpinner = new Spinner('Initializing');
   initialSpinner.start();
 
-  await deferExec(1000);
   const hasMultipleProjectNameArgs =
     process.argv[4] && !process.argv[4].startsWith('-');
 
@@ -198,7 +195,7 @@ exports.initializeProject = async appName => {
       {
         name: 'template',
         type: 'list',
-        message: 'Please select one',
+        message: 'Please select your template of choice',
         choices: ['basic', 'pwa', 'graphql', 'Nuxt-js'],
       },
     ])

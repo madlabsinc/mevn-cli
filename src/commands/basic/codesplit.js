@@ -4,13 +4,10 @@ import chalk from 'chalk';
 import fs from 'fs';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 
 exports.asyncRender = async componentName => {
-  showBanner();
-
-  await deferExec(100);
+  await showBanner();
   checkIfConfigFileExists();
 
   process.chdir('client/src/router');

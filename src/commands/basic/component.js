@@ -6,7 +6,6 @@ import inquirer from 'inquirer';
 
 import { appData } from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { deferExec } from '../../utils/defer';
 import { showBanner } from '../../external/banner';
 
 let componentTemplate = [
@@ -42,9 +41,7 @@ const validateInput = componentName => {
 };
 
 exports.generateComponent = async () => {
-  showBanner();
-
-  await deferExec(100);
+  await showBanner();
   checkIfConfigFileExists();
 
   let { componentName } = await inquirer.prompt([

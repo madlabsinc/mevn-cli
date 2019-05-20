@@ -1,18 +1,20 @@
 'use strict';
 
+import chalk from 'chalk';
 import clear from 'clear';
 import figlet from 'figlet';
-import chalk from 'chalk';
+import { promisify } from 'util';
 
-exports.showBanner = () => {
+const printTitle = promisify(figlet);
+
+exports.showBanner = async () => {
   clear();
-  figlet('Mevn-cli', (err, data) => {
-    if (err) {
-      console.log('Something went wrong...');
-      console.dir(err);
-      return;
-    }
+  try {
+    const data = await printTitle('Mevn-CLI');
     console.log(chalk.redBright(data));
-    console.log(chalk.yellow('Tool for mevn stack.'));
-  });
+    console.log(chalk.yellow(' Light speed setup for MEVN stack based apps.'));
+  } catch (err) {
+    console.err(err);
+    process.exit(1);
+  }
 };
