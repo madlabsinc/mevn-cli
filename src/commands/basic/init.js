@@ -162,6 +162,7 @@ exports.initializeProject = async appName => {
   await deferExec(1000);
   const hasMultipleProjectNameArgs =
     process.argv[4] && !process.argv[4].startsWith('-');
+
   // Validation for multiple directory names
   if (hasMultipleProjectNameArgs) {
     console.log(
