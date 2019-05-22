@@ -59,7 +59,7 @@ mevn init <appname>
 
 ## Demo
 
-[![Demo](https://asciinema.org/a/245969.svg)](https://asciinema.org/a/245969)
+[![Demo](https://asciinema.org/a/247675.svg)](https://asciinema.org/a/247675)
 
 ## Contributing
 
