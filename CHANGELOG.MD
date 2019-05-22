@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## v1.4.6
+
+### Fixes
+
+Minor bug fixes - (validate installation) 
+
+### Commits
+
+- [0da5058](https://github.com/madlabsinc/mevn-cli/commit/0da5058cc2c2ca890bf6e93102a33ee7cc971e14)
+- [f564f8f](https://github.com/madlabsinc/mevn-cli/commit/f564f8fca737749834f53cfa5b8fb9374877f7f7)
+
 ## v1.4.5
 
 ### Features
