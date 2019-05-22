@@ -43,24 +43,35 @@ exports.validateInstallation = async dependency => {
   }
 };
 
-const exec = async cmd => {
-  try {
-    await execa('apt get update');
-    await execa(cmd);
-  } catch (err) {
-    spinner.fail('Something went wrong');
-    throw err;
+exports.validateInput = componentName => {
+  if (!componentName) {
+    console.log(`Can't be empty!`);
+    return false;
+  } else {
+    return true;
   }
-  spinner.succeed(`You're good to go`);
+};
+
+const exec = async cmd => {
+  return new Promise(async reject => {
+    try {
+      await execa('apt get update', { stdio: 'inherit' });
+      await execa(cmd), { stdio: 'inherit' };
+    } catch (err) {
+      spinner.fail('Something went wrong');
+      reject(err);
+    }
+    spinner.succeed(`You're good to go`);
+  });
 };
 
 const installGit = async () => {
   const url = 'https://git-scm.com/download/win';
   if (isWin) {
-    showInstallationInfo(spinner, url);
+    showInstallationInfo('git', spinner, url);
   } else {
-    const packageMgr = isLinux ? 'apt' : 'git';
-    exec(`${packageMgr} install git`);
+    const packageMgr = isLinux ? 'apt' : 'brew';
+    await exec(`${packageMgr} install git`);
   }
 };
 
@@ -72,25 +83,26 @@ const installDocker = async () => {
   };
 
   if (isLinux) {
-    exec('apt install docker.io');
+    await exec('apt install docker.io');
   } else {
-    showInstallationInfo(spinner, urlMap[process.platform]);
+    showInstallationInfo('docker', spinner, urlMap[process.platform]);
   }
 };
 
 const installHerokuCLI = async () => {
   const url = 'https://devcenter.heroku.com/articles/heroku-cli';
   if (isWin) {
-    showInstallationInfo(spinner, url);
+    showInstallationInfo('heroku-cli', spinner, url);
   } else {
     const cmd = isLinux
       ? 'snap install --classic heroku'
       : ['brew tap heroku/brew', 'brew install heroku'];
 
     if (!Array.isArray(cmd)) {
-      exec(cmd);
+      await exec(cmd);
     } else {
-      cmd.map(c => exec(c));
+      await exec(cmd[1]);
+      await exec(cmd[2]);
     }
   }
 };

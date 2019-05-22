@@ -7,6 +7,7 @@ import inquirer from 'inquirer';
 import { appData } from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { showBanner } from '../../external/banner';
+import { validateInput } from '../../utils/validate';
 
 let componentTemplate = [
   '<template >',
@@ -29,15 +30,6 @@ let componentTemplate = [
 
 const toLowerCamelCase = str => {
   return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
-};
-
-const validateInput = componentName => {
-  if (componentName === '') {
-    console.log('Kindly provide a name');
-    return false;
-  } else {
-    return true;
-  }
 };
 
 exports.generateComponent = async () => {
