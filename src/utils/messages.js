@@ -6,8 +6,8 @@ import fs from 'fs';
 exports.checkIfConfigFileExists = () => {
   if (!fs.existsSync('./mevn.json')) {
     console.log(
-      chalk.cyanBright(`\n\n Make sure that you're within a valid MEVN project
-      \n${chalk.redBright('Error:')} No mevn.json file found
+      chalk.cyan.bold(`\n\n Make sure that you're within a valid MEVN project
+      \n${chalk.red.bold(' Error:')} No mevn.json file found
     `),
     );
     process.exit(1);
@@ -15,12 +15,12 @@ exports.checkIfConfigFileExists = () => {
 };
 
 exports.templateIsGraphQL = () => {
-  let msg = `GraphQL boilerplate doesn't include ${chalk.yellowBright(
+  let msg = `GraphQL boilerplate doesn't include ${chalk.yellow.bold(
     `model, route and controller`,
   )} directories!`;
   console.log(
-    chalk.redBright(
-      `\n Warning:- ${chalk.cyanBright(`${msg}
+    chalk.red.bold(
+      `\n Warning:- ${chalk.cyan.bold(`${msg}
     `)}`,
     ),
   );
@@ -29,7 +29,7 @@ exports.templateIsGraphQL = () => {
 
 exports.dependencyNotInstalled = dependency => {
   console.log(
-    chalk.redBright(`Warning:- ${chalk.cyanBright(
+    chalk.red.bold(`Warning:- ${chalk.cyan.bold(
       `${dependency} is required to be installed`,
     )}
     `),
@@ -37,9 +37,10 @@ exports.dependencyNotInstalled = dependency => {
   process.exit(1);
 };
 
-exports.showInstallationInfo = (spinner, url) => {
-  const msg = `You need to download Git from the official downloads page: ${url}`;
+exports.showInstallationInfo = (depCandidate, spinner, url) => {
+  const msg = `You need to download ${depCandidate} from the official downloads page: ${url}`;
   typeof spinner !== 'undefined'
     ? spinner.info(msg)
-    : console.log(chalk.cyanBright(msg));
+    : console.log(chalk.cyan.bold(msg));
+  process.exit(1);
 };

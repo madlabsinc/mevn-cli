@@ -13,24 +13,21 @@ exports.dockerize = async () => {
   checkIfConfigFileExists();
   await validateInstallation('docker');
 
-  // Currently supports only the linux platform
-  if (process.platform === 'linux') {
-    const spinner = new Spinner(
-      'Sit back and relax while we set things up for you',
-    );
-    spinner.start();
-    try {
-      await execa.shell('sudo docker-compose up', { stdio: 'inherit' });
-    } catch (err) {
-      spinner.fail('Something went wrong');
-      throw err;
-    }
-
-    spinner.succeed('You are all set');
-    console.log(
-      chalk.green.bold(
-        '\n Services:\n server:- localhost:9000\n client:- localhost:8080',
-      ),
-    );
+  const spinner = new Spinner(
+    'Sit back and relax while we set things up for you',
+  );
+  spinner.start();
+  try {
+    await execa.shell('sudo docker-compose up', { stdio: 'inherit' });
+  } catch (err) {
+    spinner.fail('Something went wrong');
+    throw err;
   }
+
+  spinner.succeed('You are all set');
+  console.log(
+    chalk.green.bold(
+      '\n Services:\n server:- localhost:9000\n client:- localhost:8080',
+    ),
+  );
 };

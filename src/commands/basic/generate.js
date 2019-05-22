@@ -12,6 +12,7 @@ import { generateComponent } from './component';
 import { generateRoute } from './routes';
 import { showBanner } from '../../external/banner';
 import { templateIsGraphQL } from '../../utils/messages';
+import { validateInput } from '../../utils/validate';
 
 let generatedFileContent;
 let generatedFile;
@@ -23,7 +24,8 @@ const getDBConfigUrl = async () => {
       {
         name: 'url',
         type: 'input',
-        message: 'Enter the url for the database : ',
+        message: 'Enter url for the database : ',
+        validate: validateInput,
       },
     ])
     .then(dbConfig => {
