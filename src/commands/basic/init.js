@@ -35,7 +35,7 @@ let showTables = () => {
 
   availableCommands.push(
     {
-      'mevn version': 'Current CLI version',
+      'mevn init': 'To bootstrap a MEVN webapp',
     },
     {
       'mevn serve': 'To launch client/server',
@@ -47,9 +47,6 @@ let showTables = () => {
       'mevn generate': 'To generate config files',
     },
     {
-      'mevn create:component <name>': 'Create new components',
-    },
-    {
       'mevn codesplit <name>': 'Lazy load components',
     },
     {
@@ -57,6 +54,9 @@ let showTables = () => {
     },
     {
       'mevn deploy': 'Deploy the app to Heroku',
+    },
+    {
+      'mevn info': 'Prints local environment information',
     },
   );
   console.log(availableCommands.toString());

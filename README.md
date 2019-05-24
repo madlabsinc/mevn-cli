@@ -42,6 +42,7 @@ mevn init <appname>
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
+| `mevn init` | To bootstrap a MEVN stack based boilerplate template of choice |
 | `mevn serve` | To launch Client/Server parts as required |
 | `mevn add:package` | To add additional packages as required |
 | `mevn generate` | To generate component, model, route, controller, and DB config files |
