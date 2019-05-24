@@ -24,7 +24,7 @@ Minor bug fixes - (validate installation)
 - `mevn deploy` works out of the box.
 - Slightly updated banner.
 
-### Breaking changes
+### Internal Changes
 
 - Use  [open](https://npmjs.com/package/open) instead of [opn](https://npmjs.com/package/opn) (deprecated).
 - Avoid the use of `os` module.
