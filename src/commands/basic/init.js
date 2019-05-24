@@ -33,23 +33,28 @@ const installLintUtility = async (cmd, templateDir) => {
   installSpinner.start();
 
   // Hop over to the client directory except for the case of Nuxt-js template
-  if (templateDir) process.chdir('client');
+  if (templateDir) {
+    process.chdir(path.resolve(projectName, 'client'));
+  } else {
+    process.chdir(path.resolve(projectName));
+  }
+
   try {
     await execa(cmd);
   } catch (err) {
     installSpinner.fail('Something went wrong');
-    throw err;
+    process.exit(1);
   }
 
   installSpinner.text = `Installing ${utility} for Server`;
 
   // Hop over to the server directory
-  process.chdir('../server');
+  process.chdir(path.resolve(projectName, 'server'));
   try {
     await execa(cmd);
   } catch (err) {
     installSpinner.fail('Something went wrong');
-    throw err;
+    process.exit(1);
   }
   installSpinner.succeed(`Succcessfully installed ${utility}`);
 };
@@ -62,11 +67,11 @@ const configureLintUtility = async (template, linter, requirePrettier) => {
   if (linter !== 'none')
     await installLintUtility(`npm i -D ${linter}`, templateDir);
 
-  // Install prettier.
-  await installLintUtility('npm i -D prettier', templateDir);
-
   // ToDo: Create and populate .{linter}rc and .{linter}ignore files
   if (requirePrettier) {
+    // Install prettier.
+    await installLintUtility('npm i -D prettier', templateDir);
+
     if (linter !== 'eslint') {
       // Configure prettier for jshint and jslint
     } else {
@@ -76,7 +81,7 @@ const configureLintUtility = async (template, linter, requirePrettier) => {
 };
 
 const makeInitialCommit = async () => {
-  process.chdir(projectName);
+  process.chdir(path.resolve(projectName));
   await execa('git', ['init']);
   await execa('git', ['add', '.']);
   await execa('git', ['commit', '-m', 'Initial commit', '-m', 'From Mevn-CLI']);
