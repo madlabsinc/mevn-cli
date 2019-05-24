@@ -23,46 +23,54 @@ const boilerplate = {
   nuxt: 'https://github.com/madlabsinc/mevn-nuxt-boilerplate.git',
 };
 
-const configureLinter = async (linter, template) => {
-  if (linter === 'none') {
-    console.log('\n');
-  } else {
-    if (template === 'nuxt') {
-      await installLinter('server', linter, template);
-    } else {
-      await installLinter('client', linter, template);
-      await installLinter('server', linter, template);
-    }
+const installLintUtility = async (cmd, templateDir) => {
+  const utility = cmd
+    .split(' ')
+    .slice(-1)
+    .pop();
+
+  const installSpinner = new Spinner(`Installing ${utility} for client`);
+  installSpinner.start();
+
+  // Hop over to the client directory except for the case of Nuxt-js template
+  if (templateDir) process.chdir('client');
+  try {
+    await execa(cmd);
+  } catch (err) {
+    installSpinner.fail('Something went wrong');
+    throw err;
   }
+
+  installSpinner.text = `Installing ${utility} for Server`;
+
+  // Hop over to the server directory
+  process.chdir('../server');
+  try {
+    await execa(cmd);
+  } catch (err) {
+    installSpinner.fail('Something went wrong');
+    throw err;
+  }
+  installSpinner.succeed(`Succcessfully installed ${utility}`);
 };
 
-const installLinter = async (templateDir, linter, template) => {
-  console.log(
-    `Installing  ${linter} for ${template} template : ${templateDir}`,
-  );
-  await process.chdir(`${projectName}/${templateDir}`);
-  await execa('npm', ['install', '--save', linter]);
-  await execa.shell('touch .' + linter + 'ignore');
-  await execa.shell('touch .' + linter + 'rc.js');
-  await process.chdir('../..');
-};
+const configureLintUtility = async (template, linter, requirePrettier) => {
+  let templateDir = '';
+  if (template !== 'Nuxt-js') templateDir = 'client';
 
-const configurePrettier = async (linter, template) => {
-  if (linter === 'none') {
-    console('\n');
-  } else if (linter === 'eslint') {
-    if (template === 'nuxt') {
-      await installLinter('server', 'prettier-eslint', template);
+  // Installs the linter of choice.
+  if (linter !== 'none')
+    await installLintUtility(`npm i -D ${linter}`, templateDir);
+
+  // Install prettier.
+  await installLintUtility('npm i -D prettier', templateDir);
+
+  // ToDo: Create and populate .{linter}rc and .{linter}ignore files
+  if (requirePrettier) {
+    if (linter !== 'eslint') {
+      // Configure prettier for jshint and jslint
     } else {
-      await installLinter('client', 'prettier-eslint', template);
-      await installLinter('server', 'prettier-eslint', template);
-    }
-  } else {
-    if (template === 'nuxt') {
-      await installLinter('server', 'prettier', template);
-    } else {
-      await installLinter('client', 'prettier', template);
-      await installLinter('server', 'prettier', template);
+      // Configure eslint-prettier presets.
     }
   }
 };
@@ -141,35 +149,26 @@ const fetchTemplate = async template => {
       projectConfig.join('\n').toString(),
     );
 
-    //Prompt for additional linter fearures
-    await inquirer
-      .prompt([
-        {
-          name: 'features',
-          type: 'list',
-          message: 'Please select your favourite linter',
-          choices: ['eslint', 'jslint', 'jshint', 'none'],
-        },
-      ])
-      .then(async option => {
-        try {
-          await configureLinter(option.features, template);
-          //Prompt for Prettier feature
-          const { requirePrettier } = await inquirer.prompt([
-            {
-              name: 'requirePrettier',
-              type: 'confirm',
-              message: 'Do you require Prettier',
-            },
-          ]);
+    // Prompts asking for the linter of choice and prettier support.
 
-          if (requirePrettier) {
-            await configurePrettier(option.features, template);
-          }
-        } catch (err) {
-          throw err;
-        }
-      });
+    const { linterOfChoice } = await inquirer.prompt([
+      {
+        name: 'linterOfChoice',
+        type: 'list',
+        message: 'Please select your favourite linter',
+        choices: ['eslint', 'jslint', 'jshint', 'none'],
+      },
+    ]);
+
+    const { requirePrettier } = await inquirer.prompt([
+      {
+        name: 'requirePrettier',
+        type: 'confirm',
+        message: 'Do you require Prettier',
+      },
+    ]);
+
+    await configureLintUtility(template, linterOfChoice, requirePrettier);
 
     if (template === 'nuxt') {
       const { requirePwaSupport } = await inquirer.prompt([
