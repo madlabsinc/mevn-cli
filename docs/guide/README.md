@@ -14,11 +14,15 @@ A CLI tool for getting started with the MEVN stack. It offers a super simple boi
 
 ## Installing
 
-> npm install -g mevn-cli`
+``` bash
+npm install -g mevn-cli
+```
 
 ## Quickstart
 
-> mevn init &lt;appname&gt;
+``` md
+mevn init <appname>
+```
 
 ## Available Commands
 

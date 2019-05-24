@@ -28,11 +28,14 @@ A CLI tool for getting started with the MEVN stack. It offers a super simple boi
 
 To install the package:-
 
-> npm install -g mevn-cli
+```sh
+npm install -g mevn-cli
+```
 
 ### Quickstart
-
-> mevn init &lt;appname&gt;
+```sh
+mevn init <appname>
+```
 
 ### Available Commands
 
