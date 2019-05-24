@@ -1,6 +1,9 @@
 module.exports = {
     title: 'MEVN CLI',
     description: 'Light speed setup for MEVN stack based apps',
+    head: [
+        ['link', { rel: 'icon', href: 'images/logo.png' }]
+    ],
     themeConfig: {
     	repo: 'madlabsinc/mevn-cli',
         nav: [
