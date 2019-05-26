@@ -40,7 +40,7 @@ const installLintUtility = async (cmd, templateDir) => {
   }
 
   try {
-    await execa(cmd);
+    await execa.shell(cmd);
   } catch (err) {
     installSpinner.fail('Something went wrong');
     process.exit(1);
@@ -48,10 +48,10 @@ const installLintUtility = async (cmd, templateDir) => {
 
   installSpinner.text = `Installing ${utility} for Server`;
 
-  // Hop over to the server directory
+  // Navigate to the server directory
   process.chdir(path.resolve(projectName, 'server'));
   try {
-    await execa(cmd);
+    await execa.shell(cmd);
   } catch (err) {
     installSpinner.fail('Something went wrong');
     process.exit(1);
