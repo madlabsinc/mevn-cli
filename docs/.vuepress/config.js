@@ -12,17 +12,17 @@ module.exports = {
         ],
         sidebar: {
             '/guide/': [{
-                title: 'Table Of Contents',
+                title: 'Guide',
                 collapsable: false,
                 children: [
                     '',
-                    '/guide/prerequisites.html',
-                    '/guide/install.html',
-                    '/guide/commands.html',
-                    '/guide/file-hierarchy.html',
-                    '/guide/features.html',
-                    '/guide/contributing.html',
-                    '/guide/versioning.html'
+                    'prerequisites',
+                    'install',
+                    'commands',
+                    'file-hierarchy',
+                    'features',
+                    'contributing',
+                    'versioning'
                 ]
             }],
         },
