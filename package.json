@@ -12,6 +12,7 @@
   },
   "scripts": {
     "compile": "gulp clean && babel src --out-dir lib --copy-files",
+    "compile:watch": "babel --watch src --out-dir lib --copy-files",
     "test": "mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
