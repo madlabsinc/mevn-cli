@@ -2,7 +2,7 @@
 title: 'Features'
 ---
 
-## Features
+# Features
 
 - This tool provides an easy way to build a web app by providing a super simple boilerplate project and a reliable boilerplate pwa to build upon.  
 - Its written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.

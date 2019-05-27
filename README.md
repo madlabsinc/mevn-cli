@@ -65,7 +65,7 @@ mevn init <appname>
 
 ## Contributing
 
-Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change. Kindly have a look at the [Contributing Guidelines](https://github.com/madlabsinc/mevn-cli/wiki/Contributing-Guidelines) to know more regarding the codebase and project structure.
+Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change. Take a look at the [Contributing Guidelines](https://github.com/madlabsinc/mevn-cli/wiki/Contributing-Guidelines) to get a better picture regarding the codebase and project structure.
 
 ### How do I contribute?
 1. Ensure you have no "dummy" files left, if you do then add them to the bottom of `.gitignore`.
