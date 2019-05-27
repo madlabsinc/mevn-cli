@@ -4,7 +4,7 @@ import execa from 'execa';
 import inquirer from 'inquirer';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../external/banner';
+import { showBanner } from '../../utils/banner';
 import { validateInstallation } from '../../utils/validate';
 
 const deployWithGit = async () => {

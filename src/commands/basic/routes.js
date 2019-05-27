@@ -7,7 +7,7 @@ import inquirer from 'inquirer';
 
 import { createFile } from '../../utils/createFile';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../external/banner';
+import { showBanner } from '../../utils/banner';
 import Spinner from '../../utils/spinner';
 
 let routesPath = '/../../templates/routes/';

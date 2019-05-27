@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 
 import { appData } from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../external/banner';
+import { showBanner } from '../../utils/banner';
 import { validateInput } from '../../utils/validate';
 
 let componentTemplate = [

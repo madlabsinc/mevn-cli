@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
 import { appData } from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { serveProject } from './launch';
-import { showBanner } from '../../external/banner';
+import { showBanner } from '../../utils/banner';
 
 let projectTemplate;
 

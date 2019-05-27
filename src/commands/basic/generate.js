@@ -11,7 +11,7 @@ import { checkIfConfigFileExists } from '../../utils/messages';
 import { generateComponent } from './component';
 import { generateRoute } from './routes';
 import { isWin } from '../../utils/constants';
-import { showBanner } from '../../external/banner';
+import { showBanner } from '../../utils/banner';
 import { templateIsGraphQL } from '../../utils/messages';
 import { validateInput } from '../../utils/validate';
 

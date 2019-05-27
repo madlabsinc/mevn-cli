@@ -9,7 +9,7 @@ import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
 
 import { isWin } from '../../utils/constants';
-import { showBanner } from '../../external/banner';
+import { showBanner } from '../../utils/banner';
 import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
 
@@ -75,7 +75,7 @@ let showTables = () => {
   );
 
   let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
-  execa.commandSync(`${removeCmd} ${path.join(projectName, '.git')}`);
+  execa.shellSync(`${removeCmd} ${path.join(projectName, '.git')}`);
   makeInitialCommit();
 };
 
