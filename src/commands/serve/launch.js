@@ -69,6 +69,6 @@ exports.serveProject = async (projectTemplate, templateDir) => {
   );
 
   launchSpinner.start();
-  Promise.all([execa.shell('npm run dev'), open(`${rootPath}:${port}`)]);
+  Promise.all([execa.command('npm run dev'), open(`${rootPath}:${port}`)]);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };

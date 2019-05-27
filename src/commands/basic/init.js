@@ -7,6 +7,8 @@ import path from 'path';
 import inquirer from 'inquirer';
 import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
+
+import { isWin } from '../../utils/constants';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
@@ -72,8 +74,8 @@ let showTables = () => {
     `${chalk.yellow.bold('\n Warning: ')} Do not delete the mevn.json file`,
   );
 
-  let removeCmd = process.platform === 'win32' ? 'rmdir /s /q' : 'rm -rf';
-  execa.shellSync(`${removeCmd} ${path.join(projectName, '.git')}`);
+  let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
+  execa.commandSync(`${removeCmd} ${path.join(projectName, '.git')}`);
   makeInitialCommit();
 };
 

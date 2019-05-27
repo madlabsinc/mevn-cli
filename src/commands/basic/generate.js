@@ -10,6 +10,7 @@ import { createFile } from '../../utils/createFile';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { generateComponent } from './component';
 import { generateRoute } from './routes';
+import { isWin } from '../../utils/constants';
 import { showBanner } from '../../external/banner';
 import { templateIsGraphQL } from '../../utils/messages';
 import { validateInput } from '../../utils/validate';
@@ -76,7 +77,7 @@ exports.generateFile = async () => {
           userChoice.file === 'config' ? 'config' : `${userChoice.file}s`;
         process.chdir(`server/${workDir}`);
 
-        let removeCmd = process.platform === 'win32' ? 'del' : 'rm';
+        let removeCmd = isWin ? 'del' : 'rm';
         if (fs.existsSync('./default.js')) {
           execa.shellSync(`${removeCmd} default.js`);
         }

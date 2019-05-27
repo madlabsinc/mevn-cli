@@ -12,11 +12,11 @@
   },
   "scripts": {
     "compile": "babel src --out-dir lib --copy-files",
-    "test": "node ./node_modules/mocha/bin/mocha test/main_test.js",
+    "test": "mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "lint": "node ./node_modules/eslint/bin/eslint ./src",
-    "lint:fix": "node ./node_modules/eslint/bin/eslint --fix ./src"
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src"
   },
   "husky": {
     "hooks": {

@@ -1,37 +1,27 @@
 'use strict';
 
-import { spawn } from 'child_process';
+import execa from 'execa';
 import inquirer from 'inquirer';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { showBanner } from '../../external/banner';
 import { validateInstallation } from '../../utils/validate';
 
-const exec = cmd => {
-  return new Promise(reject => {
-    try {
-      spawn(cmd.split(' ')[0], cmd.split(' ').slice(1), { stdio: 'inherit' });
-    } catch (err) {
-      reject(err);
-    }
-  });
-};
-
 const deployWithGit = async () => {
   // Commands to be executed inorder to deploy the webapp to Heroku via Git integration
-  await exec('heroku login');
-  await exec('heroku create');
-  await exec('git push heroku master');
+  await execa('heroku', ['login'], { stdio: 'inherit' });
+  await execa('heroku', ['create'], { stdio: 'inherit' });
+  await execa('git', ['push', 'heroku', 'master'], { stdio: 'inherit' });
 };
 
 const deployWithDocker = async () => {
   // Commands to be executed inorder to deploy the webapp to Heroku as a Docker container
-  await exec('heroku login');
-  await exec('heroku container:login');
-  await exec('heroku create');
-  await exec('heroku container:push web');
-  await exec('heroku container:release web');
-  await exec('heroku open');
+  await execa('heroku', ['login'], { stdio: 'inherit' });
+  await execa('heroku', ['container:login'], { stdio: 'inherit' });
+  await execa('heroku', ['create'], { stdio: 'inherit' });
+  await execa('heroku', ['container:push', 'web'], { stdio: 'inherit' });
+  await execa('heroku', ['container:release', 'web'], { stdio: 'inherit' });
+  await execa('heroku', ['open'], { stdio: 'inherit' });
 };
 
 exports.deploy = async () => {
