@@ -10,7 +10,7 @@ const printTitle = promisify(figlet);
 exports.showBanner = async () => {
   clear();
   try {
-    const data = await printTitle('Mevn-CLI');
+    const data = await printTitle('Mevn CLI');
     console.log(chalk.redBright(data));
     console.log(chalk.yellow(' Light speed setup for MEVN stack based apps.'));
   } catch (err) {

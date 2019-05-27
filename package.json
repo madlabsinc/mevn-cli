@@ -11,7 +11,7 @@
     "mevn": "./bin/mevn.js"
   },
   "scripts": {
-    "compile": "babel src --out-dir lib --copy-files",
+    "compile": "gulp clean && babel src --out-dir lib --copy-files",
     "test": "mocha test/main_test.js",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
@@ -73,9 +73,11 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "babel-eslint": "^10.0.1",
+    "del": "^4.1.1",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "4.1.0",
     "eslint-plugin-prettier": "3.0.1",
+    "gulp": "^4.0.2",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.5",
     "mocha": "^5.2.0",
