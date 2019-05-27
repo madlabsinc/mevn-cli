@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../external/banner';
+import { showBanner } from '../../utils/banner';
 
 exports.asyncRender = async componentName => {
   await showBanner();

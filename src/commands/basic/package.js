@@ -5,7 +5,7 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../external/banner';
+import { showBanner } from '../../utils/banner';
 import Spinner from '../../utils/spinner';
 
 let storeFile = fs.readFileSync(
