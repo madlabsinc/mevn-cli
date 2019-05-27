@@ -23,58 +23,90 @@ const boilerplate = {
   nuxt: 'https://github.com/madlabsinc/mevn-nuxt-boilerplate.git',
 };
 
-const installLintUtility = async (cmd, templateDir) => {
+// add lint and prettify scripts
+const addToScripts = (currentDir, side, linter) => {
+  side.map(item => {
+    const reqPath = `${currentDir}/${projectName}/${item}/package.json`.toString();
+    let configFile = JSON.parse(fs.readFileSync(reqPath).toString());
+    configFile['scripts'][
+      'lint'
+    ] = `node ./node_modules/${linter}/bin/${linter}`;
+    configFile['scripts']['prettify'] =
+      "prettier --single-quote --write '**/{*.js,*.jsx}'";
+    fs.writeFileSync(reqPath, JSON.stringify(configFile));
+    console.log(configFile);
+  });
+};
+
+// install utility (Linter and Prettier)
+const installLintUtility = async (template, cmd, templateDir) => {
   const utility = cmd
     .split(' ')
     .slice(-1)
     .pop();
 
-  const installSpinner = new Spinner(`Installing ${utility} for client`);
+  const installSpinner = new Spinner(`Installing ${utility} for server`);
   installSpinner.start();
 
-  // Hop over to the client directory except for the case of Nuxt-js template
+  // Hop over to the server directory except for the case of Nuxt-js template
   if (templateDir) {
-    process.chdir(path.resolve(process.cwd(), projectName, 'client'));
-  } else {
-    process.chdir(path.resolve(process.cwd(), projectName));
-  } 
+    process.chdir(path.resolve(projectName, templateDir));
+  }
+
   try {
     await execa.shell(cmd);
+    await execa.shell('touch .' + utility + 'ignore');
+    await execa.shell('touch .' + utility + 'rc.js');
   } catch (err) {
     installSpinner.fail('Something went wrong');
     process.exit(1);
   }
-
-  installSpinner.text = `Installing ${utility} for Server`;
-
-  // Navigate to the server directory
-  process.chdir(path.resolve(process.cwd(), projectName, 'server'));
-  try {
-    await execa.shell(cmd);
-  } catch (err) {
-    installSpinner.fail('Something went wrong');
-    process.exit(1);
+  if (template !== 'nuxt') {
+    installSpinner.text = `Installing ${utility} for client`;
+    // Navigate to the client directory except for the case of Nuxt-js template
+    process.chdir(path.resolve(`../../${projectName}`, 'client'));
+    try {
+      await execa.shell(cmd);
+      // Empty config files
+      await execa.shell('touch .' + utility + 'ignore');
+      await execa.shell('touch .' + utility + 'rc.js');
+    } catch (err) {
+      installSpinner.fail('Something went wrong');
+      process.exit(1);
+    }
   }
   installSpinner.succeed(`Succcessfully installed ${utility}`);
+
+  // Revert to Project Root path
+  process.chdir('../..');
 };
 
 const configureLintUtility = async (template, linter, requirePrettier) => {
-  let templateDir = '';
-  if (template !== 'nuxt') templateDir = 'client';
+  let templateDir = 'server';
 
   // Installs the linter of choice.
   if (linter !== 'none')
-    await installLintUtility(`npm i -D ${linter}`, templateDir);
+    await installLintUtility(template, `npm i -D ${linter}`, templateDir);
 
   // ToDo: Create and populate .{linter}rc and .{linter}ignore files
   if (requirePrettier) {
     // Install prettier.
-    await installLintUtility('npm i -D prettier', templateDir);
-
     if (linter !== 'eslint') {
       // Configure prettier for jshint and jslint
+      await installLintUtility(template, 'npm i -D prettier', templateDir);
     } else {
       // Configure eslint-prettier presets.
+      await installLintUtility(
+        template,
+        'npm i -D prettier-eslint',
+        templateDir,
+      );
+    }
+    // set up scripts
+    if (template === 'nuxt') {
+      await addToScripts(process.cwd(), ['server'], linter);
+    } else {
+      await addToScripts(process.cwd(), ['server', 'client'], linter);
     }
   }
 };
