@@ -15,14 +15,10 @@ module.exports = {
                 title: 'Guide',
                 collapsable: false,
                 children: [
-                    '',
-                    'prerequisites',
-                    'install',
+                    'installation',
                     'commands',
-                    'file-hierarchy',
                     'features',
-                    'contributing',
-                    'versioning'
+                    'contributing'
                 ]
             }],
         },

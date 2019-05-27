@@ -43,13 +43,13 @@ mevn init <appname>
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
-| mevn init | To bootstrap a MEVN stack based boilerplate template of choice |
-| mevn serve | To launch Client/Server parts as required |
-| mevn add:package | To add additional packages as required |
-| mevn generate | To generate component, model, route, controller, and DB config files |
+| mevn init | Bootstraps a MEVN stack based boilerplate template of choice |
+| mevn serve | Serves the client/server side template locally |
+| mevn add:package | Adds additional packages as required on the go |
+| mevn generate | Generates component, model, route, controller, and DB config files |
 | mevn codesplit &lt;name&gt; | Lazy load components as required |
-| mevn dockerize | To run the client and server in separate docker containers |
-| mevn deploy | To deploy the app to Heroku |
+| mevn dockerize | Serves the client and server in separate docker containers |
+| mevn deploy | Deploys the webapp to a cloud service of choice |
 | mevn info | Prints debugging information about the local environment |
 
 ## Features
@@ -90,10 +90,10 @@ Nothing! You're done and ready to get coding!
 
 ## Versioning And Help
 
-| command | description
+| option | description
 | --- | --- |
-| ```mevn -V, mevn --version``` | Check CLI version |
-|``` mevn --help ``` | Get help and check usage |
+| -V, --version | Check CLI version |
+| -h, --help | Get help and check usage |
 
 ## License
 
