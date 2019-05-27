@@ -6,6 +6,7 @@ import execa from 'execa';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { showBanner } from '../../external/banner';
 import Spinner from '../../utils/spinner';
+import { isWin } from '../../utils/constants';
 import { validateInstallation } from '../../utils/validate';
 
 exports.dockerize = async () => {
@@ -18,7 +19,11 @@ exports.dockerize = async () => {
   );
   spinner.start();
   try {
-    await execa.shell('sudo docker-compose up', { stdio: 'inherit' });
+    if (!isWin) {
+      await execa.command('sudo docker-compose up', { stdio: 'inherit' });
+    } else {
+      await execa.command('docker-compose up', { stdio: 'inherit' });
+    }
   } catch (err) {
     spinner.fail('Something went wrong');
     throw err;

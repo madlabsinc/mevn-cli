@@ -5,11 +5,8 @@ import inquirer from 'inquirer';
 import shell from 'shelljs';
 
 import { dependencyNotInstalled, showInstallationInfo } from './messages';
+import { isWin, isLinux } from './constants';
 import Spinner from './spinner';
-
-// Determining host OS
-let isLinux = process.platform === 'linux';
-let isWin = process.platform === 'win32';
 
 // Initialize the spinner
 const spinner = new Spinner();
