@@ -18,22 +18,18 @@ A CLI tool for getting started with the MEVN stack. It offers a super simple boi
 - [GraphQL](https://github.com/MadlabsInc/mevn-graphql-boilerplate)
 - [Nuxt.js](https://github.com/MadlabsInc/mevn-nuxt-boilerplate)
 
+## Installation
+
 ### Prerequisites
 
-- npm - It is the package manager for node.
-- Node.js -Node.js is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.
-- Git - Git is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. It is primarily used for source code management in software development.
+- [**npm**](https://www.npmjs.com/) it is a package manager for the JavaScript programming language.
+- [**node.js**](https://nodejs.org/en/) is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.
+- [**git**](https://git-scm.com/) is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. It is primarily used for source code management in software development.
 
-### Installing
+## Quickstart
 
-To install the package:-
-
-```sh
+``` bash
 npm install -g mevn-cli
-```
-
-### Quickstart
-```sh
 mevn init <appname>
 ```
 
@@ -54,10 +50,10 @@ mevn init <appname>
 
 ## Features
 
-- This tool provides an easy way to build a web app by providing a super simple boilerplate project and a reliable boilerplate pwa to build upon.  
+- It allows Developers to build webapps with ease in which all the local environment setup is being taken care of. All he/she has to do is to focus on writing actual code. 
 - Its written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code.  
-- Mevn-Cli will automate the files and generate the codes necessary to start and run a server, API etc
+- Mevn-CLI simplifies the entire workflow by generating boilerplate code as required, automating redundant tasks etc.
 
 ## Demo
 
