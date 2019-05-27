@@ -34,11 +34,10 @@ const installLintUtility = async (cmd, templateDir) => {
 
   // Hop over to the client directory except for the case of Nuxt-js template
   if (templateDir) {
-    process.chdir(path.resolve(projectName, 'client'));
+    process.chdir(path.resolve(process.cwd(), projectName, 'client'));
   } else {
-    process.chdir(path.resolve(projectName));
-  }
-
+    process.chdir(path.resolve(process.cwd(), projectName));
+  } 
   try {
     await execa.shell(cmd);
   } catch (err) {
@@ -49,7 +48,7 @@ const installLintUtility = async (cmd, templateDir) => {
   installSpinner.text = `Installing ${utility} for Server`;
 
   // Navigate to the server directory
-  process.chdir(path.resolve(projectName, 'server'));
+  process.chdir(path.resolve(process.cwd(), projectName, 'server'));
   try {
     await execa.shell(cmd);
   } catch (err) {
@@ -61,7 +60,7 @@ const installLintUtility = async (cmd, templateDir) => {
 
 const configureLintUtility = async (template, linter, requirePrettier) => {
   let templateDir = '';
-  if (template !== 'Nuxt-js') templateDir = 'client';
+  if (template !== 'nuxt') templateDir = 'client';
 
   // Installs the linter of choice.
   if (linter !== 'none')
