@@ -87,7 +87,7 @@ const showCommandList = () => {
 const fetchTemplate = async template => {
   await validateInstallation('git');
 
-  const fetchSpinner = new Spinner('Fetching the boilerplate');
+  const fetchSpinner = new Spinner('Fetching the boilerplate template');
   fetchSpinner.start();
   try {
     await execa(`git`, ['clone', boilerplate[template], projectName]);
