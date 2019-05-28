@@ -36,6 +36,7 @@ exports.deploy = async () => {
   await showBanner();
   checkIfConfigFileExists();
   await validateInstallation('heroku');
+  await validateInstallation('git');
 
   const { mode } = await inquirer.prompt([
     {
