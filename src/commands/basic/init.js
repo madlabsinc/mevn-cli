@@ -9,6 +9,11 @@ import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
 
 import { isWin } from '../../utils/constants';
+import {
+  directoryExistsInPath,
+  hasStrayArgs,
+  invalidProjectName,
+} from '../../utils/messages';
 import { showBanner } from '../../utils/banner';
 import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
@@ -32,7 +37,7 @@ const makeInitialCommit = async () => {
   await execa('git', ['commit', '-m', 'Initial commit', '-m', 'From Mevn-CLI']);
 };
 
-let showTables = () => {
+const showCommandList = () => {
   console.log(chalk.yellow('\n Available commands:-'));
 
   availableCommands.push(
@@ -80,77 +85,71 @@ let showTables = () => {
 };
 
 const fetchTemplate = async template => {
+  await validateInstallation('git');
+
+  const fetchSpinner = new Spinner('Fetching the boilerplate');
+  fetchSpinner.start();
   try {
-    await validateInstallation('git');
-
-    const fetchSpinner = new Spinner('Fetching the boilerplate');
-    fetchSpinner.start();
-    try {
-      await execa(`git`, ['clone', boilerplate[template], projectName]);
-    } catch (err) {
-      fetchSpinner.fail('Something went wrong');
-      throw err;
-    }
-
-    fetchSpinner.stop();
-
-    fs.writeFileSync(
-      `./${projectName}/mevn.json`,
-      projectConfig.join('\n').toString(),
-    );
-
-    if (template === 'nuxt') {
-      const { requirePwaSupport } = await inquirer.prompt([
-        {
-          name: 'requirePwaSupport',
-          type: 'confirm',
-          message: 'Do you require pwa support',
-        },
-      ]);
-
-      if (requirePwaSupport) {
-        let configFile = JSON.parse(
-          fs.readFileSync(`./${projectName}/mevn.json`).toString(),
-        );
-        configFile['isPwa'] = true;
-        fs.writeFileSync(
-          `./${projectName}/mevn.json`,
-          JSON.stringify(configFile),
-        );
-      }
-
-      await inquirer
-        .prompt([
-          {
-            name: 'mode',
-            type: 'list',
-            message: 'Choose your preferred mode',
-            choices: ['Universal', 'SPA'],
-          },
-        ])
-        .then(choice => {
-          if (choice.mode === 'Universal') {
-            let configFile = fs
-              .readFileSync(`./${projectName}/nuxt.config.js`, 'utf8')
-              .toString()
-              .split('\n');
-
-            let index = configFile.indexOf(
-              configFile.find(line => line.includes('mode')),
-            );
-            configFile[index] = ` mode: 'universal',`;
-
-            fs.writeFileSync(
-              `./${projectName}/nuxt.config.js`,
-              configFile.join('\n'),
-            );
-          }
-        });
-    }
-    showTables();
-  } catch (error) {
-    throw error;
+    await execa(`git`, ['clone', boilerplate[template], projectName]);
+  } catch (err) {
+    fetchSpinner.fail('Something went wrong');
+    throw err;
   }
+
+  fetchSpinner.stop();
+
+  fs.writeFileSync(
+    `./${projectName}/mevn.json`,
+    projectConfig.join('\n').toString(),
+  );
+
+  if (template === 'nuxt') {
+    const { requirePwaSupport } = await inquirer.prompt([
+      {
+        name: 'requirePwaSupport',
+        type: 'confirm',
+        message: 'Do you require pwa support',
+      },
+    ]);
+
+    if (requirePwaSupport) {
+      let configFile = JSON.parse(
+        fs.readFileSync(`./${projectName}/mevn.json`).toString(),
+      );
+      configFile['isPwa'] = true;
+      fs.writeFileSync(
+        `./${projectName}/mevn.json`,
+        JSON.stringify(configFile),
+      );
+    }
+
+    const { mode } = await inquirer.prompt([
+      {
+        name: 'mode',
+        type: 'list',
+        message: 'Choose your preferred mode',
+        choices: ['Universal', 'SPA'],
+      },
+    ]);
+
+    if (mode === 'Universal') {
+      let configFile = fs
+        .readFileSync(`./${projectName}/nuxt.config.js`, 'utf8')
+        .toString()
+        .split('\n');
+
+      let index = configFile.indexOf(
+        configFile.find(line => line.includes('mode')),
+      );
+      configFile[index] = ` mode: 'universal',`;
+
+      fs.writeFileSync(
+        `./${projectName}/nuxt.config.js`,
+        configFile.join('\n'),
+      );
+    }
+  }
+  showCommandList();
 };
 
 exports.initializeProject = async appName => {
@@ -161,53 +160,39 @@ exports.initializeProject = async appName => {
 
   // Validation for multiple directory names
   if (hasMultipleProjectNameArgs) {
-    console.log(
-      chalk.red.bold(
-        '\n Kindly provide only one argument as the directory name!!',
-      ),
-    );
-    process.exit(1);
+    hasStrayArgs();
   }
 
   const validationResult = validate(appName);
   if (!validationResult.validForNewPackages) {
-    console.error(
-      `Could not create a project called ${chalk.red(
-        `"${appName}"`,
-      )} because of npm naming restrictions:`,
-    );
-    process.exit(1);
+    invalidProjectName(appName);
   }
 
   if (fs.existsSync(appName)) {
-    console.error(
-      chalk.red.bold(`\n Directory ${appName} already exists in path!`),
-    );
-    process.exit(1);
+    directoryExistsInPath(appName);
   }
 
   projectName = appName;
 
-  inquirer
-    .prompt([
-      {
-        name: 'template',
-        type: 'list',
-        message: 'Please select your template of choice',
-        choices: ['basic', 'pwa', 'graphql', 'Nuxt-js'],
-      },
-    ])
-    .then(choice => {
-      projectConfig = [
-        '{',
-        `"name": "${appName}",`,
-        `"template": "${choice.template}"`,
-        '}',
-      ];
+  let { template } = await inquirer.prompt([
+    {
+      name: 'template',
+      type: 'list',
+      message: 'Please select your template of choice',
+      choices: ['basic', 'pwa', 'graphql', 'Nuxt-js'],
+    },
+  ]);
 
-      if (choice.template === 'Nuxt-js') {
-        choice.template = 'nuxt';
-      }
-      fetchTemplate(choice.template);
-    });
+  projectConfig = [
+    '{',
+    `"name": "${appName}",`,
+    `"template": "${template}"`,
+    '}',
+  ];
+
+  if (template === 'Nuxt-js') {
+    template = 'nuxt';
+  }
+
+  fetchTemplate(template);
 };
