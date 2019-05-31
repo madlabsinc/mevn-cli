@@ -39,12 +39,10 @@ const addToScripts = utility => {
     utility !== 'prettier-eslint' &&
     utility !== 'none'
   ) {
-    fileToBeWritten['scripts'][
-      'lint'
-    ] = `node ./node_modules/${utility}/bin/${utility}`;
+    fileToBeWritten['scripts']['lint'] = utility;
   } else {
     fileToBeWritten['scripts']['prettify'] =
-      "prettier --single-quote --write '**/{*.js,*.jsx}'";
+      "prettier --single-quote --write '**/*.js'";
   }
   fs.writeFileSync(
     path.resolve('package.json'),
