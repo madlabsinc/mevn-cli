@@ -1,5 +1,10 @@
 language: node_js
 node_js:
- - "node"
+ - 10
+ - 9
+ - 8
+install:
+  - "npm install"
 script:
 - "npm run lint"
+- "npm test"
