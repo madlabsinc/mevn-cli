@@ -3,10 +3,10 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
+import showBanner from 'node-banner';
 
-import { appData } from '../../utils/projectConfig';
+import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../utils/banner';
 import { validateInput } from '../../utils/validate';
 
 let componentTemplate = [
@@ -32,7 +32,7 @@ const toLowerCamelCase = str => {
   return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 };
 
-exports.generateComponent = async () => {
+const generateComponent = async () => {
   await showBanner();
   checkIfConfigFileExists();
 
@@ -97,3 +97,5 @@ exports.generateComponent = async () => {
   );
   console.log(chalk.green.bold(`\n  }`));
 };
+
+module.exports = generateComponent;

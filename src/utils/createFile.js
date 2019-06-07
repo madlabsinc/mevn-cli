@@ -1,7 +1,7 @@
 'use strict';
 
 import fs from 'fs';
-import { showPrompt } from './fileOverwritePrompt.js';
+import showPrompt from './fileOverwritePrompt.js';
 
 const createFile = (fileName, contents, flag = { flag: 'a' }, cb) => {
   fs.writeFile(fileName, contents, flag, err => {
@@ -19,6 +19,4 @@ const createFile = (fileName, contents, flag = { flag: 'a' }, cb) => {
   });
 };
 
-Object.assign(exports, {
-  createFile,
-});
+module.exports = createFile;

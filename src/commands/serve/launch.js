@@ -36,7 +36,7 @@ const configurePwaSupport = async templateDir => {
   }
 };
 
-exports.serveProject = async (projectTemplate, templateDir) => {
+const serveProject = async (projectTemplate, templateDir) => {
   const installDepsSpinner = new Spinner(
     'Installing dependencies in the background. Hold on...',
   );
@@ -72,3 +72,5 @@ exports.serveProject = async (projectTemplate, templateDir) => {
   Promise.all([execa.shell('npm run dev'), open(`${rootPath}:${port}`)]);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };
+
+module.exports = serveProject;

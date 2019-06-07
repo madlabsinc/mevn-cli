@@ -3,7 +3,7 @@
 import fs from 'fs';
 import { checkIfConfigFileExists } from '../utils/messages';
 
-exports.appData = () => {
+const appData = () => {
   checkIfConfigFileExists();
 
   const data = fs.readFileSync(process.cwd() + '/mevn.json', 'utf8');
@@ -11,3 +11,5 @@ exports.appData = () => {
     resolve(JSON.parse(data));
   });
 };
+
+module.exports = appData;

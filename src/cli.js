@@ -2,7 +2,7 @@
 
 'use strict';
 
-// Require Modules
+// Require Modules.
 import '@babel/polyfill';
 import program from 'commander';
 import chalk from 'chalk';
@@ -10,25 +10,23 @@ import didYouMean from 'didyoumean';
 import envinfo from 'envinfo';
 import updateNotifier from 'update-notifier';
 
-// Setting edit distance to 60% of the input string's length
+// Setting edit distance to 60% of the input string's length.
 didYouMean.threshold = 0.6;
 
-// Defining action handlers for respective commands
-import { initializeProject } from './commands/basic/init';
-import { generateFile } from './commands/basic/generate';
-import { asyncRender } from './commands/basic/codesplit';
-import { addPackage } from './commands/basic/package';
-import { setupProject } from './commands/serve/setup';
-import { dockerize } from './commands/basic/docker';
-import { deploy } from './commands/deploy/herokuDeploy';
+// Defining action handlers for respective commands.
+import initializeProject from './commands/basic/init';
+import generateFile from './commands/basic/generate';
+import asyncRender from './commands/basic/codesplit';
+import addPackage from './commands/basic/package';
+import setupProject from './commands/serve/setup';
+import dockerize from './commands/basic/docker';
+import deploy from './commands/deploy/herokuDeploy';
 import pkg from '../package';
 
 updateNotifier({ pkg: pkg }).notify();
 
 const suggestCommands = cmd => {
-  const availableCommands = program.commands.map(cmd => {
-    return cmd._name;
-  });
+  const availableCommands = program.commands.map(c => c._name);
 
   const suggestion = didYouMean(cmd, availableCommands);
   if (suggestion) {
@@ -36,7 +34,7 @@ const suggestCommands = cmd => {
   }
 };
 
-// Defining all the available commands
+// Defining all the available commands.
 program.version(pkg.version).usage('<command> [options]');
 
 program
@@ -98,7 +96,7 @@ program.arguments('<command>').action(cmd => {
 
 program.parse(process.argv);
 
-// Shows up help if no arguments were provided
+// Shows up help if no arguments were provided.
 if (!program.args.length) {
   program.help();
 }

@@ -11,7 +11,7 @@ import Spinner from './spinner';
 // Initialize the spinner
 const spinner = new Spinner();
 
-exports.validateInstallation = async dependency => {
+const validateInstallation = async dependency => {
   if (!shell.which(dependency)) {
     inquirer
       .prompt([
@@ -40,7 +40,7 @@ exports.validateInstallation = async dependency => {
   }
 };
 
-exports.validateInput = componentName => {
+const validateInput = componentName => {
   if (!componentName) {
     console.log(`Can't be empty!`);
     return false;
@@ -102,4 +102,9 @@ const installHerokuCLI = async () => {
       await exec(cmd[2]);
     }
   }
+};
+
+module.exports = {
+  validateInstallation,
+  validateInput,
 };

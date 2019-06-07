@@ -2,11 +2,11 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
+import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../utils/banner';
 
-exports.asyncRender = async componentName => {
+const asyncRender = async componentName => {
   await showBanner();
   checkIfConfigFileExists();
 
@@ -58,3 +58,5 @@ exports.asyncRender = async componentName => {
     ),
   );
 };
+
+module.exports = asyncRender;

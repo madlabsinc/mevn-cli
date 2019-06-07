@@ -2,14 +2,14 @@
 
 import chalk from 'chalk';
 import execa from 'execa';
+import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../utils/banner';
 import Spinner from '../../utils/spinner';
 import { isWin } from '../../utils/constants';
 import { validateInstallation } from '../../utils/validate';
 
-exports.dockerize = async () => {
+const dockerize = async () => {
   await showBanner();
   checkIfConfigFileExists();
   await validateInstallation('docker');
@@ -36,3 +36,5 @@ exports.dockerize = async () => {
     ),
   );
 };
+
+module.exports = dockerize;

@@ -2,9 +2,9 @@
 
 import execa from 'execa';
 import inquirer from 'inquirer';
+import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../utils/banner';
 import { validateInstallation } from '../../utils/validate';
 
 const deployWithGit = async () => {
@@ -32,7 +32,7 @@ const deployWithDocker = async () => {
   }
 };
 
-exports.deploy = async () => {
+const deploy = async () => {
   await showBanner();
   checkIfConfigFileExists();
   await validateInstallation('heroku');
@@ -49,3 +49,5 @@ exports.deploy = async () => {
 
   mode === 'Deploy with Git' ? deployWithGit() : deployWithDocker();
 };
+
+module.exports = deploy;

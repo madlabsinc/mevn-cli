@@ -5,6 +5,7 @@ import execa from 'execa';
 import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
+import showBanner from 'node-banner';
 import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
 
@@ -14,7 +15,6 @@ import {
   hasStrayArgs,
   invalidProjectName,
 } from '../../utils/messages';
-import { showBanner } from '../../utils/banner';
 import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
 
@@ -152,8 +152,8 @@ const fetchTemplate = async template => {
   showCommandList();
 };
 
-exports.initializeProject = async appName => {
-  await showBanner();
+const initializeProject = async appName => {
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
 
   const hasMultipleProjectNameArgs =
     process.argv[4] && !process.argv[4].startsWith('-');
@@ -196,3 +196,5 @@ exports.initializeProject = async appName => {
 
   fetchTemplate(template);
 };
+
+module.exports = initializeProject;

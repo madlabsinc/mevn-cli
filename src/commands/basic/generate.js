@@ -4,14 +4,14 @@ import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
+import showBanner from 'node-banner';
 
-import { appData } from '../../utils/projectConfig';
-import { createFile } from '../../utils/createFile';
+import appData from '../../utils/projectConfig';
+import createFile from '../../utils/createFile';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { generateComponent } from './component';
-import { generateRoute } from './routes';
+import generateComponent from './component';
+import generateRoute from './routes';
 import { isWin } from '../../utils/constants';
-import { showBanner } from '../../utils/banner';
 import { templateIsGraphQL } from '../../utils/messages';
 import { validateInput } from '../../utils/validate';
 
@@ -44,7 +44,7 @@ const getFileContent = fileToGenerate => {
   return fs.readFileSync(fileContent, 'utf8');
 };
 
-exports.generateFile = async () => {
+const generateFile = async () => {
   await showBanner();
   checkIfConfigFileExists();
 
@@ -104,3 +104,5 @@ exports.generateFile = async () => {
       }
     });
 };
+
+module.exports = generateFile;

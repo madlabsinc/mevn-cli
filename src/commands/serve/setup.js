@@ -1,15 +1,15 @@
 'use strict';
 
 import inquirer from 'inquirer';
+import showBanner from 'node-banner';
 
-import { appData } from '../../utils/projectConfig';
+import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { serveProject } from './launch';
-import { showBanner } from '../../utils/banner';
+import serveProject from './launch';
 
 let projectTemplate;
 
-exports.setupProject = async () => {
+const setupProject = async () => {
   await showBanner();
   checkIfConfigFileExists();
 
@@ -37,3 +37,5 @@ exports.setupProject = async () => {
       serveProject(projectTemplate, choice.side);
     });
 };
+
+module.exports = setupProject;

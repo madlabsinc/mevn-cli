@@ -4,10 +4,10 @@ import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
+import showBanner from 'node-banner';
 
-import { createFile } from '../../utils/createFile';
+import createFile from '../../utils/createFile';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../utils/banner';
 import Spinner from '../../utils/spinner';
 
 let routesPath = '/../../templates/routes/';
@@ -120,7 +120,7 @@ let installPassportPackages = async (withSocialMediaAuth, spinner) => {
   }
 };
 
-exports.generateRoute = async () => {
+const generateRoute = async () => {
   await showBanner();
   checkIfConfigFileExists();
 
@@ -150,3 +150,5 @@ exports.generateRoute = async () => {
     }
   });
 };
+
+module.exports = generateRoute;

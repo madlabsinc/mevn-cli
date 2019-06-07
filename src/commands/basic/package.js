@@ -3,9 +3,9 @@
 import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
+import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { showBanner } from '../../utils/banner';
 import Spinner from '../../utils/spinner';
 
 let storeFile = fs.readFileSync(
@@ -26,7 +26,7 @@ const installPackage = async packageToInstall => {
   fetchSpinner.succeed(`Successfully installed ${packageToInstall}`);
 };
 
-exports.addPackage = async () => {
+const addPackage = async () => {
   await showBanner();
   checkIfConfigFileExists();
 
@@ -137,3 +137,5 @@ exports.addPackage = async () => {
     }
   });
 };
+
+module.exports = addPackage;

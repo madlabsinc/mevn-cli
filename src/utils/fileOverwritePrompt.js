@@ -2,7 +2,7 @@
 
 import inquirer from 'inquirer';
 
-exports.showPrompt = (fileName, cb) => {
+const showPrompt = (fileName, cb) => {
   const defaultQuestion = [
     {
       type: 'confirm',
@@ -14,3 +14,5 @@ exports.showPrompt = (fileName, cb) => {
 
   return inquirer.prompt(defaultQuestion).then(answer => cb(answer));
 };
+
+module.exports = showPrompt;
