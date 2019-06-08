@@ -121,7 +121,7 @@ let installPassportPackages = async (withSocialMediaAuth, spinner) => {
 };
 
 const generateRoute = async () => {
-  await showBanner();
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   inquirer.prompt(questions).then(answer => {

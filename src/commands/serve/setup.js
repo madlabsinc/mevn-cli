@@ -10,7 +10,7 @@ import serveProject from './launch';
 let projectTemplate;
 
 const setupProject = async () => {
-  await showBanner();
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   inquirer

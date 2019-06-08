@@ -10,7 +10,7 @@ import { isWin } from '../../utils/constants';
 import { validateInstallation } from '../../utils/validate';
 
 const dockerize = async () => {
-  await showBanner();
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
   await validateInstallation('docker');
 
@@ -30,9 +30,10 @@ const dockerize = async () => {
   }
 
   spinner.succeed('You are all set');
+  console.log();
   console.log(
     chalk.green.bold(
-      '\n Services:\n server:- localhost:9000\n client:- localhost:8080',
+      ' Services:\n server:- localhost:9000\n client:- localhost:8080',
     ),
   );
 };

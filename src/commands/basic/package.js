@@ -27,7 +27,7 @@ const installPackage = async packageToInstall => {
 };
 
 const addPackage = async () => {
-  await showBanner();
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   let questions = [

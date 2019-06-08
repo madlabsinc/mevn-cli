@@ -45,7 +45,7 @@ const getFileContent = fileToGenerate => {
 };
 
 const generateFile = async () => {
-  await showBanner();
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   await appData().then(data => {

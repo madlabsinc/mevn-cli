@@ -7,7 +7,7 @@ import showBanner from 'node-banner';
 import { checkIfConfigFileExists } from '../../utils/messages';
 
 const asyncRender = async componentName => {
-  await showBanner();
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   process.chdir('client/src/router');
@@ -28,8 +28,9 @@ const asyncRender = async componentName => {
     ),
   );
   if (asyncIndex !== -1) {
+    console.log();
     console.log(
-      chalk.cyan.bold(`\n ${componentName} is already imported dynamically`),
+      chalk.cyan.bold(` ${componentName} is already imported dynamically`),
     );
     process.exit(1);
   }
@@ -41,8 +42,9 @@ const asyncRender = async componentName => {
     ),
   );
   if (index === -1) {
+    console.log();
     console.log(
-      `${chalk.cyan.bold(`\n There isn't a component named ${componentName}`)}`,
+      `${chalk.cyan.bold(` There isn't a component named ${componentName}`)}`,
     );
     process.exit(1);
   } else {
@@ -52,9 +54,10 @@ const asyncRender = async componentName => {
   }
 
   fs.writeFileSync('./index.js', routesConfig.join('\n'));
+  console.log();
   console.log(
     chalk.green.bold(
-      `\n From now on ${componentName} will be rendered asynchronously`,
+      ` From now on ${componentName} will be rendered asynchronously`,
     ),
   );
 };

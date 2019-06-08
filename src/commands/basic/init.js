@@ -37,8 +37,9 @@ const makeInitialCommit = async () => {
   await execa('git', ['commit', '-m', 'Initial commit', '-m', 'From Mevn-CLI']);
 };
 
-const showCommandList = () => {
-  console.log(chalk.yellow('\n Available commands:-'));
+const showCommandsList = () => {
+  console.log();
+  console.log(chalk.yellow(' Available commands:-'));
 
   availableCommands.push(
     {
@@ -68,15 +69,17 @@ const showCommandList = () => {
   );
   console.log(availableCommands.toString());
 
+  console.log();
+  console.log();
   console.log(
     chalk.cyanBright(
-      `\n\n Make sure that you've done ${chalk.greenBright(
-        `cd ${projectName}`,
-      )}`,
+      ` Make sure that you've done ${chalk.greenBright(`cd ${projectName}`)}`,
     ),
   );
+
+  console.log();
   console.log(
-    `${chalk.yellow.bold('\n Warning: ')} Do not delete the mevn.json file`,
+    `${chalk.yellow.bold(' Warning: ')} Do not delete the mevn.json file`,
   );
 
   let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
@@ -85,7 +88,7 @@ const showCommandList = () => {
 };
 
 const fetchTemplate = async template => {
-  await validateInstallation('git');
+  await validateInstallation('git help -g');
 
   const fetchSpinner = new Spinner('Fetching the boilerplate template');
   fetchSpinner.start();
@@ -149,7 +152,7 @@ const fetchTemplate = async template => {
       );
     }
   }
-  showCommandList();
+  showCommandsList();
 };
 
 const initializeProject = async appName => {

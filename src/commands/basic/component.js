@@ -9,7 +9,7 @@ import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { validateInput } from '../../utils/validate';
 
-let componentTemplate = [
+const componentTemplate = [
   '<template >',
   '</template>',
   '',
@@ -33,7 +33,7 @@ const toLowerCamelCase = str => {
 };
 
 const generateComponent = async () => {
-  await showBanner();
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   let { componentName } = await inquirer.prompt([
@@ -53,9 +53,8 @@ const generateComponent = async () => {
   process.chdir(componentPath);
 
   if (fs.existsSync(`${componentName}.vue`)) {
-    console.log(
-      chalk.cyan.bold(`\n Info: ${componentName}.vue already exists`),
-    );
+    console.log();
+    console.log(chalk.cyan.bold(` Info: ${componentName}.vue already exists`));
     process.exit(1);
   }
 
@@ -74,28 +73,39 @@ const generateComponent = async () => {
   routeConfig.name = componentName;
   routeConfig.component = `${componentName}`;
 
-  console.log(chalk.green.bold('\n File generated'));
-  console.log(chalk.cyan.bold(`\n Couple of things to be done further`));
+  console.log();
+  console.log(chalk.green.bold(' File generated'));
+  console.log();
+  console.log(chalk.cyan.bold(` Couple of things to be done further`));
+  console.log();
   console.log(
     chalk.cyan.bold(
-      `\n Insert the following content into ${chalk.bold.yellow(
+      ` Insert the following content into ${chalk.bold.yellow(
         'client/src/components/router/index.js',
       )}`,
     ),
   );
+
+  console.log();
   console.log(
     chalk.green.bold(
-      `\n 1. import ${componentName} from @/components/${componentName} ${chalk.cyan.bold(
+      ` 1. import ${componentName} from @/components/${componentName} ${chalk.cyan.bold(
         ' on the top.',
       )}`,
     ),
   );
-  console.log(chalk.cyan.bold(`\n 2. Insert this object to the routes array.`));
-  console.log(chalk.green.bold(`\n  {`));
+
+  console.log();
+  console.log(chalk.cyan.bold(` 2. Insert this object to the routes array.`));
+  console.log();
+  console.log(chalk.green.bold(`  {`));
+
   Object.keys(routeConfig).map(key =>
     console.log(chalk.green.bold(`\t${key}: ${routeConfig[key]}`)),
   );
-  console.log(chalk.green.bold(`\n  }`));
+
+  console.log();
+  console.log(chalk.green.bold(`  }`));
 };
 
 module.exports = generateComponent;

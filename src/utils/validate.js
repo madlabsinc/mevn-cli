@@ -2,18 +2,31 @@
 
 import execa from 'execa';
 import inquirer from 'inquirer';
-import shell from 'shelljs';
 
 import { dependencyNotInstalled, showInstallationInfo } from './messages';
 import { isWin, isLinux } from './constants';
 import Spinner from './spinner';
 
-// Initialize the spinner
+// Initialize the spinner.
 const spinner = new Spinner();
 
+// Helper method to validate installation.
+const dependencyIsInstalled = async dependency => {
+  let status;
+  try {
+    await execa.shell(dependency);
+    status = true;
+  } catch (err) {
+    status = false;
+  }
+  return status;
+};
+
 const validateInstallation = async dependency => {
-  if (!shell.which(dependency)) {
-    inquirer
+  const status = await dependencyIsInstalled(dependency);
+
+  if (!status) {
+    await inquirer
       .prompt([
         {
           type: 'confirm',
@@ -23,20 +36,22 @@ const validateInstallation = async dependency => {
       ])
       .then(async choice => {
         if (choice.installDependency) {
-          spinner.text = `Installing ${choice.installDependency}`;
+          spinner.text = `Installing ${dependency}`;
           spinner.start();
 
-          if (dependency === 'git') {
-            installGit();
+          if (dependency === 'git help -g') {
+            await installGit();
           } else if (dependency === 'docker') {
-            installDocker();
+            await installDocker();
           } else {
-            installHerokuCLI();
+            await installHerokuCLI();
           }
         } else {
           dependencyNotInstalled(dependency);
         }
       });
+  } else {
+    console.log(await dependencyIsInstalled(dependency));
   }
 };
 
@@ -50,15 +65,15 @@ const validateInput = componentName => {
 };
 
 const exec = async cmd => {
-  return new Promise(async reject => {
+  return new Promise(async () => {
     try {
-      await execa('apt get update', { stdio: 'inherit' });
-      await execa(cmd), { stdio: 'inherit' };
+      await execa.shell('sudo apt update', { stdio: 'inherit' });
+      await execa.shell(cmd), { stdio: 'inherit' };
+      spinner.succeed(`You're good to go`);
     } catch (err) {
       spinner.fail('Something went wrong');
-      reject(err);
+      throw err;
     }
-    spinner.succeed(`You're good to go`);
   });
 };
 

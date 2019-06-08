@@ -10,9 +10,11 @@ import { validateInstallation } from '../../utils/validate';
 const deployWithGit = async () => {
   // Commands to be executed inorder to deploy the webapp to Heroku via Git integration.
   try {
-    await execa('heroku', ['login'], { stdio: 'inherit' });
-    await execa('heroku', ['create'], { stdio: 'inherit' });
-    await execa('git', ['push', 'heroku', 'master'], { stdio: 'inherit' });
+    Promise.all([
+      await execa('heroku', ['login'], { stdio: 'inherit' }),
+      await execa('heroku', ['create'], { stdio: 'inherit' }),
+      await execa('git', ['push', 'heroku', 'master'], { stdio: 'inherit' }),
+    ]);
   } catch (err) {
     process.exit(1);
   }
@@ -21,22 +23,28 @@ const deployWithGit = async () => {
 const deployWithDocker = async () => {
   // Commands to be executed inorder to deploy the webapp to Heroku as a Docker container.
   try {
-    await execa('heroku', ['login'], { stdio: 'inherit' });
-    await execa('heroku', ['container:login'], { stdio: 'inherit' });
-    await execa('heroku', ['create'], { stdio: 'inherit' });
-    await execa('heroku', ['container:push', 'web'], { stdio: 'inherit' });
-    await execa('heroku', ['container:release', 'web'], { stdio: 'inherit' });
-    await execa('heroku', ['open'], { stdio: 'inherit' });
+    Promise.all([
+      await execa('heroku', ['login'], { stdio: 'inherit' }),
+      await execa('heroku', ['container:login'], { stdio: 'inherit' }),
+      await execa('heroku', ['create'], { stdio: 'inherit' }),
+      await execa('heroku', ['container:push', 'web'], { stdio: 'inherit' }),
+      await execa('heroku', ['container:release', 'web'], { stdio: 'inherit' }),
+      await execa('heroku', ['open'], { stdio: 'inherit' }),
+    ]);
   } catch (err) {
     process.exit(1);
   }
 };
 
 const deploy = async () => {
-  await showBanner();
+  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
-  await validateInstallation('heroku');
-  await validateInstallation('git');
+
+  await Promise.all([
+    await validateInstallation('heroku'),
+    await validateInstallation('git help -g'),
+    await validateInstallation('rb'),
+  ]);
 
   const { mode } = await inquirer.prompt([
     {
