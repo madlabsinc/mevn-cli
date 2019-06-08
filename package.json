@@ -1,6 +1,6 @@
 {
   "name": "mevn-cli",
-  "version": "1.4.8",
+  "version": "1.5.0",
   "description": "Light Speed setup for MEVN stack based apps.",
   "main": "./bin/mevn.js",
   "files": [
