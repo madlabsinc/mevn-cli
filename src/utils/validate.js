@@ -50,8 +50,6 @@ const validateInstallation = async dependency => {
           dependencyNotInstalled(dependency);
         }
       });
-  } else {
-    console.log(await dependencyIsInstalled(dependency));
   }
 };
 

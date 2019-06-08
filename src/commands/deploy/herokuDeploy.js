@@ -43,7 +43,6 @@ const deploy = async () => {
   await Promise.all([
     await validateInstallation('heroku'),
     await validateInstallation('git help -g'),
-    await validateInstallation('rb'),
   ]);
 
   const { mode } = await inquirer.prompt([
