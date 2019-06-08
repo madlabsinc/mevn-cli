@@ -1,7 +1,7 @@
 {
   "name": "mevn-cli",
   "version": "1.4.8",
-  "description": "A cli tool for MEVN stack.",
+  "description": "Light Speed setup for MEVN stack based apps.",
   "main": "./bin/mevn.js",
   "files": [
     "bin",
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MadlabsInc/mevn-cli.git"
+    "url": "git+https://github.com/madlabsinc/mevn-cli.git"
   },
   "keywords": [
     "node.js",
@@ -44,7 +44,7 @@
     "express",
     "mongodb"
   ],
-  "author": "Alan Mathew <mathewalan84@gmail.com>, James George <jamesgeorge998001@gmail.com>",
+  "author": "James George <jamesgeorge998001@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/MadlabsInc/mevn-cli/issues"
@@ -62,7 +62,6 @@
     "node-banner": "^1.2.0",
     "open": "^6.3.0",
     "ora": "^3.4.0",
-    "shelljs": "^0.8.2",
     "update-notifier": "^3.0.0",
     "validate-npm-package-name": "^3.0.0"
   },
