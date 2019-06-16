@@ -10,7 +10,8 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![dependencies Status](https://david-dm.org/madlabsinc/mevn-cli/status.svg)](https://david-dm.org/madlabsinc/mevn-cli)
 [![devDependencies Status](https://david-dm.org/madlabsinc/mevn-cli/dev-status.svg)](https://david-dm.org/madlabsinc/mevn-cli?type=dev)
-[![Mentioned in Awesome VuePress](https://awesome.re/mentioned-badge.svg)](https://github.com/ulivz/awesome-vuepress)
+[![Mentioned in Awesome-Vue](https://awesome.re/mentioned-badge.svg)](https://github.com/vuejs/awesome-vue)
+[![Mentioned in Awesome-VuePress](https://awesome.re/mentioned-badge.svg)](https://github.com/ulivz/awesome-vuepress)
 
 A CLI tool for getting started with the MEVN stack. It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
 
