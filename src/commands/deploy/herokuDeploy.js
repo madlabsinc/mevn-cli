@@ -7,6 +7,12 @@ import showBanner from 'node-banner';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { validateInstallation } from '../../utils/validate';
 
+/**
+ * Deploy to Heroku via Git integration
+ *
+ * @returns {Promise<void>}
+ */
+
 const deployWithGit = async () => {
   // Commands to be executed inorder to deploy the webapp to Heroku via Git integration.
   try {
@@ -19,6 +25,12 @@ const deployWithGit = async () => {
     process.exit(1);
   }
 };
+
+/**
+ * Deploy to Heroku with Docker
+ *
+ * @returns {Promise<void>}
+ */
 
 const deployWithDocker = async () => {
   // Commands to be executed inorder to deploy the webapp to Heroku as a Docker container.
@@ -35,6 +47,12 @@ const deployWithDocker = async () => {
     process.exit(1);
   }
 };
+
+/**
+ * Deploy the webapp to Heroku
+ *
+ * @returns {Promise<void>}
+ */
 
 const deploy = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');

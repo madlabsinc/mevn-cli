@@ -19,6 +19,12 @@ let generatedFileContent;
 let generatedFile;
 let configUrl;
 
+/**
+ * Get the DB url
+ *
+ * @returns {Promise<void>}
+ */
+
 const getDBConfigUrl = async () => {
   await inquirer
     .prompt([
@@ -34,6 +40,13 @@ const getDBConfigUrl = async () => {
     });
 };
 
+/**
+ * Reads the content from a given file
+ *
+ * @param {String} fileToGenerate - Name of the new file to be created
+ * @returns {String}
+ */
+
 const getFileContent = fileToGenerate => {
   let rootPath = `${__dirname}/../../templates`;
   let filePath =
@@ -43,6 +56,12 @@ const getFileContent = fileToGenerate => {
   let fileContent = rootPath + filePath;
   return fs.readFileSync(fileContent, 'utf8');
 };
+
+/**
+ * Generates a new file of choice
+ *
+ * @returns {Promise<void>}
+ */
 
 const generateFile = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');

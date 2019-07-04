@@ -30,12 +30,24 @@ const boilerplate = {
   nuxt: 'https://github.com/madlabsinc/mevn-nuxt-boilerplate.git',
 };
 
+/**
+ * Creates an initial local commit
+ *
+ * @returns {Promise<void>}
+ */
+
 const makeInitialCommit = async () => {
   process.chdir(projectName);
   await execa('git', ['init']);
   await execa('git', ['add', '.']);
   await execa('git', ['commit', '-m', 'Initial commit', '-m', 'From Mevn-CLI']);
 };
+
+/**
+ * Shows the list of available commands
+ *
+ * @returns {Void}
+ */
 
 const showCommandsList = () => {
   console.log();
@@ -86,6 +98,13 @@ const showCommandsList = () => {
   execa.shellSync(`${removeCmd} ${path.join(projectName, '.git')}`);
   makeInitialCommit();
 };
+
+/**
+ * Fetch the boilerplate template of choice
+ *
+ * @param {String} template - Boilerplate template of choice
+ * @returns {Promise<void>}
+ */
 
 const fetchTemplate = async template => {
   await validateInstallation('git help -g');
@@ -154,6 +173,13 @@ const fetchTemplate = async template => {
   }
   showCommandsList();
 };
+
+/**
+ * Bootstrap a basic MEVN stack based webapp
+ *
+ * @param {String} appName - Name of the project
+ * @returns {Promise<void>}
+ */
 
 const initializeProject = async appName => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');

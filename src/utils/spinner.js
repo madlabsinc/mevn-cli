@@ -4,6 +4,7 @@ import ora from 'ora';
 
 class Spinner {
   constructor(text) {
+    // private member
     this.text = text;
   }
 

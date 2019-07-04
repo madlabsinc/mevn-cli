@@ -28,9 +28,22 @@ const componentTemplate = [
   '</style>',
 ];
 
+/**
+ * Converts a given string into lower camel case
+ *
+ * @param {String} str - Text to be converted lower camel case
+ * @returns {String}
+ */
+
 const toLowerCamelCase = str => {
   return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 };
+
+/**
+ * Generates a Vue SFC
+ *
+ * @returns {Promise<void>}
+ */
 
 const generateComponent = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');

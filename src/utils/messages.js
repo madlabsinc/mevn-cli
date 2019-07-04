@@ -3,6 +3,12 @@
 import chalk from 'chalk';
 import fs from 'fs';
 
+/**
+ * Warns appropriately if the config file doesn't exist
+ *
+ * @returns {void}
+ */
+
 const checkIfConfigFileExists = () => {
   if (!fs.existsSync('./mevn.json')) {
     console.log(
@@ -13,6 +19,13 @@ const checkIfConfigFileExists = () => {
     process.exit(1);
   }
 };
+
+/**
+ * Warns appropriately if the template chosen was GraphQL
+ * where in which if the user opts to generate MVC files
+ *
+ * @returns {void}
+ */
 
 const templateIsGraphQL = () => {
   let msg = `GraphQL boilerplate doesn't include ${chalk.yellow.bold(
@@ -27,6 +40,13 @@ const templateIsGraphQL = () => {
   process.exit(1);
 };
 
+/**
+ * Warns appropriately if the respective dependency wasn't installed
+ *
+ * @param {String} dependency - The dependency to be installed
+ * @returns {void}
+ */
+
 const dependencyNotInstalled = dependency => {
   console.log(
     chalk.red.bold(`Warning:- ${chalk.cyan.bold(
@@ -37,13 +57,31 @@ const dependencyNotInstalled = dependency => {
   process.exit(1);
 };
 
+/**
+ * Shows installation information
+ *
+ * @param {String} depCandidate - The repective package to be installed
+ * @param {Spinner} spinner - The spinner instance
+ * @param {String} url - Official downloads page url
+ * @returns {any}
+ */
+
 const showInstallationInfo = (depCandidate, spinner, url) => {
   const msg = `You need to download ${depCandidate} from the official downloads page: ${url}`;
-  typeof spinner !== 'undefined'
-    ? spinner.info(msg)
-    : console.log(chalk.cyan.bold(msg));
+  if (typeof spinner === 'undefined') {
+    console.log(chalk.cyan.bold(msg));
+  } else {
+    spinner.info(msg);
+  }
   process.exit(1);
 };
+
+/**
+ * Warns appropriately if the project name is invalid
+ *
+ * @param {String} projectName - Name of the project
+ * @returns {Void}
+ */
 
 const invalidProjectName = projectName => {
   console.log(
@@ -56,6 +94,13 @@ const invalidProjectName = projectName => {
   process.exit(1);
 };
 
+/**
+ * Warns appropriately if the respective directory exists in path
+ *
+ * @param {String} projectName - Name of the project
+ * @returns {any}
+ */
+
 const directoryExistsInPath = projectName => {
   console.log(
     chalk.red.bold(
@@ -66,6 +111,12 @@ const directoryExistsInPath = projectName => {
   );
   process.exit(1);
 };
+
+/**
+ * Warns the user appropriately if multiple arguments were provided for the project name
+ *
+ * @returns {Void}
+ */
 
 const hasStrayArgs = () => {
   console.log(

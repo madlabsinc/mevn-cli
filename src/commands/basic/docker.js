@@ -9,6 +9,12 @@ import Spinner from '../../utils/spinner';
 import { isWin } from '../../utils/constants';
 import { validateInstallation } from '../../utils/validate';
 
+/**
+ * Launch the webapp locally within a Docker container
+ *
+ * @returns {Promise<void>}
+ */
+
 const dockerize = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();

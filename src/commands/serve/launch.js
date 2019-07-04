@@ -6,6 +6,13 @@ import fs from 'fs';
 
 import Spinner from '../../utils/spinner';
 
+/**
+ * Adds PWA support to Nuxt-js boilerplate template
+ *
+ * @param {String} templateDir - Choose between client/server side
+ * @returns {Promise<void>}
+ */
+
 const configurePwaSupport = async templateDir => {
   let path = templateDir === 'client' ? 'mevn.json' : '../mevn.json';
 
@@ -35,6 +42,14 @@ const configurePwaSupport = async templateDir => {
     fs.writeFileSync('nuxt.config.js', nuxtConfigFile.join('\n'));
   }
 };
+
+/**
+ * Serve the webapp locally
+ *
+ * @param {String} projectTemplate - Boilerplate template of choice
+ * @param {String} templateDir - Choose between client/server side
+ * @returns {Promise<void>}
+ */
 
 const serveProject = async (projectTemplate, templateDir) => {
   const installDepsSpinner = new Spinner(

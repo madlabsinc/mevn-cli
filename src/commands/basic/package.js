@@ -13,6 +13,13 @@ let storeFile = fs.readFileSync(
   'utf8',
 );
 
+/**
+ * Installs a package along with the spinner indicating progress
+ *
+ * @param {String} packageToInstall
+ * @returns {Promise<void>}
+ */
+
 const installPackage = async packageToInstall => {
   const fetchSpinner = new Spinner(`Installing ${packageToInstall} `);
   fetchSpinner.start();
@@ -25,6 +32,12 @@ const installPackage = async packageToInstall => {
   }
   fetchSpinner.succeed(`Successfully installed ${packageToInstall}`);
 };
+
+/**
+ * Choose additional packages to install on the go
+ *
+ * @returns {Promise<void>}
+ */
 
 const addPackage = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');

@@ -6,6 +6,13 @@ import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
 
+/**
+ * Lazy load components
+ *
+ * @param {String} componentName - Name of the component to be rendered asynchronously
+ * @returns {Promise<void>}
+ */
+
 const asyncRender = async componentName => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();

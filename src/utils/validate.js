@@ -10,7 +10,13 @@ import Spinner from './spinner';
 // Initialize the spinner.
 const spinner = new Spinner();
 
-// Helper method to validate installation.
+/**
+ * Helper method to validate installation.
+ *
+ * @param {String} dependency
+ * @returns {Promise<boolean>}
+ */
+
 const dependencyIsInstalled = async dependency => {
   let status;
   try {
@@ -21,6 +27,13 @@ const dependencyIsInstalled = async dependency => {
   }
   return status;
 };
+
+/**
+ * Validates installation
+ *
+ * @param {String} dependency
+ * @returns {Promise<boolean>}
+ */
 
 const validateInstallation = async dependency => {
   const status = await dependencyIsInstalled(dependency);
@@ -53,6 +66,13 @@ const validateInstallation = async dependency => {
   }
 };
 
+/**
+ * Validates user input
+ *
+ * @param {String} componentName
+ * @returns {Boolean}
+ */
+
 const validateInput = componentName => {
   if (!componentName) {
     console.log(`Can't be empty!`);
@@ -61,6 +81,13 @@ const validateInput = componentName => {
     return true;
   }
 };
+
+/**
+ * Exeutes respective shell command
+ *
+ * @param {String} cmd
+ * @returns {Promise<any>}
+ */
 
 const exec = async cmd => {
   return new Promise(async () => {
@@ -75,6 +102,12 @@ const exec = async cmd => {
   });
 };
 
+/**
+ * Triggers Git installation specific to the platform
+ *
+ * @returns{Promise<void>}
+ */
+
 const installGit = async () => {
   const url = 'https://git-scm.com/download/win';
   if (isWin) {
@@ -84,6 +117,12 @@ const installGit = async () => {
     await exec(`${packageMgr} install git`);
   }
 };
+
+/**
+ * Triggers Docker installation specific to the platform
+ *
+ * @returns{Promise<void>}
+ */
 
 const installDocker = async () => {
   const urlMap = {
@@ -98,6 +137,12 @@ const installDocker = async () => {
     showInstallationInfo('docker', spinner, urlMap[process.platform]);
   }
 };
+
+/**
+ * Triggers Heroku installation specific to the platform
+ *
+ * @returns{Promise<void>}
+ */
 
 const installHerokuCLI = async () => {
   const url = 'https://devcenter.heroku.com/articles/heroku-cli';

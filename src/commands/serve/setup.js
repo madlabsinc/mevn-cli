@@ -9,6 +9,12 @@ import serveProject from './launch';
 
 let projectTemplate;
 
+/**
+ * Prompts the user to choose between client/server side to be served locally
+ *
+ * @returns {Promise<void>}
+ */
+
 const setupProject = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();

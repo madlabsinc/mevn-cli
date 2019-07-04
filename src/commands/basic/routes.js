@@ -10,34 +10,33 @@ import createFile from '../../utils/createFile';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import Spinner from '../../utils/spinner';
 
-let routesPath = '/../../templates/routes/';
-let routesFile = fs.readFileSync(
+const routesPath = '/../../templates/routes/';
+const routesFile = fs.readFileSync(
   __dirname + '/../../templates/routes/index.js',
   'utf8',
 );
-let routesFileWithPassPort = fs.readFileSync(
+const routesFileWithPassPort = fs.readFileSync(
   __dirname + '/../../templates/routes/index_with_passport.js',
   'utf8',
 );
-let routesFileWithSocialMediaAuth = fs.readFileSync(
+const routesFileWithSocialMediaAuth = fs.readFileSync(
   `${__dirname}${routesPath}index_with_social_media_auth.js`,
   'utf8',
 );
-let facebookRoutesFile = fs.readFileSync(
+const facebookRoutesFile = fs.readFileSync(
   `${__dirname}${routesPath}FacebookRoutes.js`,
   'utf8',
 );
-let twitterRoutesFile = fs.readFileSync(
+const twitterRoutesFile = fs.readFileSync(
   `${__dirname}${routesPath}TwitterRoutes.js`,
   'utf8',
 );
-let googleRoutesFile = fs.readFileSync(
+const googleRoutesFile = fs.readFileSync(
   `${__dirname}${routesPath}GoogleRoutes.js`,
   'utf8',
 );
 
-// Questions if user wants to use passport package
-// and social media for authentication
+// Prompts the user for social media auth with passport middleware
 const questions = [
   {
     type: 'confirm',
@@ -54,15 +53,30 @@ const socialMediaAuthQuestions = [
   },
 ];
 
-let startSpinner = withSocialMediaAuth => {
-  let message = withSocialMediaAuth
+/**
+ * Returns a Spinner instance along with the respective text
+ *
+ * @param {Boolean} withSocialMediaAuth - Include social media auth
+ * @returns {Spinner} - Spinner instance
+ */
+
+const startSpinner = withSocialMediaAuth => {
+  const message = withSocialMediaAuth
     ? 'Installing passport and social media authentication packages'
     : 'Installing passport package';
 
   return new Spinner(message);
 };
 
-let installPassportPackages = async (withSocialMediaAuth, spinner) => {
+/**
+ * Install the necessary passport social media auth dependencies
+ *
+ * @param {Boolean} withSocialMediaAuth - Include social media auth
+ * @param {Spinner} spinner - Spinner instance
+ * @returns {Promise<void>}
+ */
+
+const installPassportPackages = async (withSocialMediaAuth, spinner) => {
   let commandArgs = withSocialMediaAuth
     ? 'install passport passport-facebook passport-twitter passport-google-oauth'
     : 'install passport';
@@ -119,6 +133,12 @@ let installPassportPackages = async (withSocialMediaAuth, spinner) => {
     });
   }
 };
+
+/**
+ * Generates routes file with the necessary CRUD operations boilerplate content
+ *
+ * @returns {Promise<void>}
+ */
 
 const generateRoute = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
