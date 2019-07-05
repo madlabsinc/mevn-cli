@@ -31,7 +31,7 @@ const componentTemplate = [
 /**
  * Converts a given string into lower camel case
  *
- * @param {String} str - Text to be converted lower camel case
+ * @param {String} str - Text to be converted
  * @returns {String}
  */
 
