@@ -1,24 +1,25 @@
 <p align="center">
-<img src="https://i.imgur.com/NV51t84.jpg" width="350px">
+	<a href="https://mevn.madhacks.co"><img src="https://i.imgur.com/NV51t84.jpg" width="350px" /></a>
 </p>
 
-# Mevn-CLI
-[![Build Status](https://travis-ci.com/madlabsinc/mevn-cli.svg?branch=master)](https://travis-ci.com/madlabsinc/mevn-cli)
-[![npm version](https://badgen.net/npm/v/mevn-cli)](https://www.npmjs.com/package/mevn-cli)
-[![Downloads](https://badgen.net/npm/dm/mevn-cli)](https://www.npmjs.com/package/mevn-cli)
-[![PRs Welcome](https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg)](https://github.com/madlabsinc/mevn-cli/pull/new)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![dependencies Status](https://david-dm.org/madlabsinc/mevn-cli/status.svg)](https://david-dm.org/madlabsinc/mevn-cli)
-[![devDependencies Status](https://david-dm.org/madlabsinc/mevn-cli/dev-status.svg)](https://david-dm.org/madlabsinc/mevn-cli?type=dev)
-[![Mentioned in Awesome-Vue](https://awesome.re/mentioned-badge.svg)](https://github.com/vuejs/awesome-vue)
-[![Mentioned in Awesome-VuePress](https://awesome.re/mentioned-badge.svg)](https://github.com/ulivz/awesome-vuepress)
+<p align="center">
+	<a href=""https://travis-ci.com/madlabsinc/mevn-cli><img src="https://travis-ci.com/madlabsinc/mevn-cli.svg?branch=master" alt="Build Status" /></a>
+	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/v/mevn-cli" alt="npm version" /></a>
+	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/dm/mevn-cli" alt="Downloads" /></a>
+	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
+	<a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" alt="code style: prettier" /></a>
+	<a href="https://david-dm.org/madlabsinc/mevn-cli"><img src="https://david-dm.org/madlabsinc/mevn-cli/status.svg" alt="dependencies Status" /></a>
+	<a href="https://david-dm.org/madlabsinc/mevn-cli?type=dev"><img src="https://david-dm.org/madlabsinc/mevn-cli/dev-status.svg" alt="devDependencies Status" /></a>
+	<a href="https://github.com/vuejs/awesome-vue"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-Vue" /></a>
+	<a href="https://github.com/ulivz/awesome-vuepress"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-VuePress" /></a>
+</p>
 
 A CLI tool for getting started with the MEVN stack. It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
 
-- [Basic](https://github.com/Madlabsinc/mevn-boilerplate)
-- [Pwa](https://github.com/MadlabsInc/mevn-pwa-boilerplate)
-- [GraphQL](https://github.com/MadlabsInc/mevn-graphql-boilerplate)
-- [Nuxt.js](https://github.com/MadlabsInc/mevn-nuxt-boilerplate)
+- [Basic](https://github.com/madlabsinc/mevn-boilerplate)
+- [Pwa](https://github.com/madlabsinc/mevn-pwa-boilerplate)
+- [GraphQL](https://github.com/madlabsinc/mevn-graphql-boilerplate)
+- [Nuxt.js](https://github.com/madlabsinc/mevn-nuxt-boilerplate)
 
 ## Installation
 
