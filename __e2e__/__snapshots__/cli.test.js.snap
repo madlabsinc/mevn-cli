@@ -66,3 +66,52 @@ exports[`shows up help if no arguments were passed 1`] = `
     deploy                     To deploy the app to Heroku
     info                       Prints debugging information about the local environment"
 `;
+
+exports[`suggests the matching command if the user makes a typo 1`] = `
+"
+  Usage: mevn <command> [options]
+
+  Options:
+
+    -V, --version              output the version number
+    -h, --help                 output usage information
+
+  Commands:
+
+    init <appname>             To init the project
+    codesplit <componentname>  To code split the required component
+    generate                   To generate model, route, controller and DB config files
+    add:package                To add a new package to the project
+    serve                      To serve client/server
+    dockerize                  To dockerize the app
+    deploy                     To deploy the app to Heroku
+    info                       Prints debugging information about the local environment
+  
+  Unknown command ini.
+
+  Did you mean init?"
+`;
+
+exports[`warns the user if an unknown command is passed 1`] = `
+"
+  Usage: mevn <command> [options]
+
+  Options:
+
+    -V, --version              output the version number
+    -h, --help                 output usage information
+
+  Commands:
+
+    init <appname>             To init the project
+    codesplit <componentname>  To code split the required component
+    generate                   To generate model, route, controller and DB config files
+    add:package                To add a new package to the project
+    serve                      To serve client/server
+    dockerize                  To dockerize the app
+    deploy                     To deploy the app to Heroku
+    info                       Prints debugging information about the local environment
+  
+  Unknown command junkcmd.
+"
+`;
