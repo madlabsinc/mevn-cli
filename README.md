@@ -8,8 +8,6 @@
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/dm/mevn-cli" alt="Downloads" /></a>
 	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
 	<a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" alt="code style: prettier" /></a>
-	<a href="https://david-dm.org/madlabsinc/mevn-cli"><img src="https://david-dm.org/madlabsinc/mevn-cli/status.svg" alt="dependencies Status" /></a>
-	<a href="https://david-dm.org/madlabsinc/mevn-cli?type=dev"><img src="https://david-dm.org/madlabsinc/mevn-cli/dev-status.svg" alt="devDependencies Status" /></a>
 	<a href="https://github.com/vuejs/awesome-vue"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-Vue" /></a>
 	<a href="https://github.com/ulivz/awesome-vuepress"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-VuePress" /></a>
 </p>
@@ -57,10 +55,6 @@ mevn init <appname>
 - Its written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code.  
 - Mevn-CLI simplifies the entire workflow by generating boilerplate code as required, automating redundant tasks etc.
-
-## Demo
-
-[![Demo](https://asciinema.org/a/248209.svg)](https://asciinema.org/a/248209)
 
 ## Contributing
 

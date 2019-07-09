@@ -17,10 +17,6 @@ title: 'Available Commands'
 | mevn deploy | Deploys the webapp to a cloud service of choice |
 | mevn info | Prints debugging information about the local environment |
 
-## Demo
-
-[![Demo](https://asciinema.org/a/248209.svg)](https://asciinema.org/a/248209)
-
 ## Versioning And Help
 
 | option | description
