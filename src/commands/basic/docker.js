@@ -25,10 +25,10 @@ const dockerize = async () => {
   );
   spinner.start();
   try {
-    if (!isWin) {
-      await execa.shell('sudo docker-compose up', { stdio: 'inherit' });
-    } else {
+    if (isWin) {
       await execa.shell('docker-compose up', { stdio: 'inherit' });
+    } else {
+      await execa.shell('sudo docker-compose up', { stdio: 'inherit' });
     }
   } catch (err) {
     spinner.fail('Something went wrong');
@@ -39,7 +39,7 @@ const dockerize = async () => {
   console.log();
   console.log(
     chalk.green.bold(
-      ' Services:\n server:- localhost:9000\n client:- localhost:8080',
+      ' Services:\n server:- http://localhost:9000\n client:- http://localhost:8080',
     ),
   );
 };

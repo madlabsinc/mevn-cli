@@ -3,10 +3,12 @@
 import chalk from 'chalk';
 import fs from 'fs';
 
+import appData from './projectConfig';
+
 /**
  * Warns appropriately if the config file doesn't exist
  *
- * @returns {void}
+ * @returns {Void}
  */
 
 const checkIfConfigFileExists = () => {
@@ -24,7 +26,7 @@ const checkIfConfigFileExists = () => {
  * Warns appropriately if the template chosen was GraphQL
  * where in which if the user opts to generate MVC files
  *
- * @returns {void}
+ * @returns {Void}
  */
 
 const templateIsGraphQL = () => {
@@ -41,10 +43,28 @@ const templateIsGraphQL = () => {
 };
 
 /**
+ * Warns appropriately if the template chosen was Nuxt-js
+ * for the respective cases
+ *
+ * @returns {Promise<void>}
+ */
+
+const checkIfTemplateIsNuxt = async () => {
+  const { template } = await appData();
+  if (template === 'Nuxt-js') {
+    console.log();
+    console.log(
+      chalk.red.bold(`You're having the Nuxt-js boilerplate template`),
+    );
+    process.exit(1);
+  }
+};
+
+/**
  * Warns appropriately if the respective dependency wasn't installed
  *
  * @param {String} dependency - The dependency to be installed
- * @returns {void}
+ * @returns {Void}
  */
 
 const dependencyNotInstalled = dependency => {
@@ -130,6 +150,7 @@ const hasStrayArgs = () => {
 module.exports = {
   checkIfConfigFileExists,
   templateIsGraphQL,
+  checkIfTemplateIsNuxt,
   dependencyNotInstalled,
   showInstallationInfo,
   invalidProjectName,

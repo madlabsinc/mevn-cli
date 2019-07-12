@@ -219,7 +219,7 @@ const initializeProject = async appName => {
 
   projectName = appName;
 
-  let { template } = await inquirer.prompt([
+  const { template } = await inquirer.prompt([
     {
       name: 'template',
       type: 'list',

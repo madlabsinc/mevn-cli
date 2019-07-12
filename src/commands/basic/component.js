@@ -35,9 +35,8 @@ const componentTemplate = [
  * @returns {String}
  */
 
-const toLowerCamelCase = str => {
-  return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
-};
+const toLowerCamelCase = str =>
+  str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 
 /**
  * Generates a Vue SFC
@@ -62,7 +61,7 @@ const generateComponent = async () => {
 
   const { template } = await appData();
   const componentPath =
-    template === 'Nuxt-js' ? 'pages' : 'client/src/components';
+    template === 'Nuxt-js' ? 'client/pages' : 'client/src/components';
   process.chdir(componentPath);
 
   if (fs.existsSync(`${componentName}.vue`)) {

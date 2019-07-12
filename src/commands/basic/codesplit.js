@@ -4,7 +4,10 @@ import chalk from 'chalk';
 import fs from 'fs';
 import showBanner from 'node-banner';
 
-import { checkIfConfigFileExists } from '../../utils/messages';
+import {
+  checkIfConfigFileExists,
+  checkIfTemplateIsNuxt,
+} from '../../utils/messages';
 
 /**
  * Lazy load components
@@ -15,7 +18,10 @@ import { checkIfConfigFileExists } from '../../utils/messages';
 
 const asyncRender = async componentName => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
-  checkIfConfigFileExists();
+  await checkIfConfigFileExists();
+
+  // Exit for the case of Nuxt-js boilerplate template
+  checkIfTemplateIsNuxt();
 
   process.chdir('client/src/router');
 

@@ -3,13 +3,17 @@
 import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
+import path from 'path';
 import showBanner from 'node-banner';
 
-import { checkIfConfigFileExists } from '../../utils/messages';
+import {
+  checkIfConfigFileExists,
+  checkIfTemplateIsNuxt,
+} from '../../utils/messages';
 import Spinner from '../../utils/spinner';
 
 let storeFile = fs.readFileSync(
-  __dirname + '/../../templates/vuex/store.js',
+  path.resolve(__dirname, '..', '..', 'templates/vuex/store.js'),
   'utf8',
 );
 
@@ -42,6 +46,9 @@ const installPackage = async packageToInstall => {
 const addPackage = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
+
+  // Exit for the case of Nuxt-js boilerplate template
+  await checkIfTemplateIsNuxt();
 
   let questions = [
     {
