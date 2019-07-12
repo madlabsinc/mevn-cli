@@ -35,7 +35,9 @@ const asyncRender = async componentName => {
   // Validates whether if the respective component was already imported dynamically.
   const asyncIndex = routesConfig.indexOf(
     routesConfig.find(
-      item => item === `component: () => import("./views/${componentName}")`,
+      item =>
+        item.trim() ===
+        `component: () => import("./views/${componentName}.vue")`,
     ),
   );
   if (asyncIndex !== -1) {
@@ -62,7 +64,7 @@ const asyncRender = async componentName => {
   } else {
     routesConfig[
       index
-    ] = `const ${componentName} = () => import('./views/${componentName}')`;
+    ] = `component: () => import("./views/${componentName}.vue")`;
   }
 
   fs.writeFileSync('./router.js', routesConfig.join('\n'));
