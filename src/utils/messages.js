@@ -2,6 +2,7 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
+import path from 'path';
 
 import appData from './projectConfig';
 
@@ -11,7 +12,7 @@ import appData from './projectConfig';
  * @returns {Void}
  */
 
-const checkIfConfigFileExists = () => {
+export const checkIfConfigFileExists = () => {
   if (!fs.existsSync('./mevn.json')) {
     console.log(
       chalk.cyan.bold(`\n\n Make sure that you're within a valid MEVN project
@@ -29,7 +30,7 @@ const checkIfConfigFileExists = () => {
  * @returns {Void}
  */
 
-const templateIsGraphQL = () => {
+export const templateIsGraphQL = () => {
   let msg = `GraphQL boilerplate doesn't include ${chalk.yellow.bold(
     `model, route and controller`,
   )} directories!`;
@@ -49,13 +50,29 @@ const templateIsGraphQL = () => {
  * @returns {Promise<void>}
  */
 
-const checkIfTemplateIsNuxt = async () => {
+export const checkIfTemplateIsNuxt = async () => {
   const { template } = await appData();
   if (template === 'Nuxt-js') {
     console.log();
     console.log(
-      chalk.red.bold(`You're having the Nuxt-js boilerplate template`),
+      chalk.red.bold(` You're having the Nuxt-js boilerplate template`),
     );
+    process.exit(1);
+  }
+};
+
+/**
+ * Warns appropriately if the boilerplate template
+ * doesn't include server directory
+ *
+ * @returns {Promise<void>}
+ */
+
+export const checkIfServerExists = async () => {
+  const { name } = await appData();
+  if (!fs.existsSync(path.resolve(process.cwd(), name, 'server'))) {
+    console.log();
+    console.log(chalk.red.bold(` You aren't having a FullStack-app template`));
     process.exit(1);
   }
 };
@@ -67,9 +84,9 @@ const checkIfTemplateIsNuxt = async () => {
  * @returns {Void}
  */
 
-const dependencyNotInstalled = dependency => {
+export const dependencyNotInstalled = dependency => {
   console.log(
-    chalk.red.bold(`Warning:- ${chalk.cyan.bold(
+    chalk.red.bold(` Warning:- ${chalk.cyan.bold(
       `${dependency} is required to be installed`,
     )}
     `),
@@ -86,8 +103,8 @@ const dependencyNotInstalled = dependency => {
  * @returns {any}
  */
 
-const showInstallationInfo = (depCandidate, spinner, url) => {
-  const msg = `You need to download ${depCandidate} from the official downloads page: ${url}`;
+export const showInstallationInfo = (depCandidate, spinner, url) => {
+  const msg = ` You need to download ${depCandidate} from the official downloads page: ${url}`;
   if (typeof spinner === 'undefined') {
     console.log(chalk.cyan.bold(msg));
   } else {
@@ -103,7 +120,7 @@ const showInstallationInfo = (depCandidate, spinner, url) => {
  * @returns {Void}
  */
 
-const invalidProjectName = projectName => {
+export const invalidProjectName = projectName => {
   console.log(
     chalk.red.bold(
       ` Error: Could not create a project called ${chalk.red(
@@ -121,7 +138,7 @@ const invalidProjectName = projectName => {
  * @returns {any}
  */
 
-const directoryExistsInPath = projectName => {
+export const directoryExistsInPath = projectName => {
   console.log(
     chalk.red.bold(
       `\n Error: Directory ${chalk.cyan.bold(
@@ -138,22 +155,11 @@ const directoryExistsInPath = projectName => {
  * @returns {Void}
  */
 
-const hasStrayArgs = () => {
+export const hasStrayArgs = () => {
   console.log(
     chalk.red.bold(
       '\n Error: Kindly provide only one argument as the directory name!!',
     ),
   );
   process.exit(1);
-};
-
-module.exports = {
-  checkIfConfigFileExists,
-  templateIsGraphQL,
-  checkIfTemplateIsNuxt,
-  dependencyNotInstalled,
-  showInstallationInfo,
-  invalidProjectName,
-  directoryExistsInPath,
-  hasStrayArgs,
 };

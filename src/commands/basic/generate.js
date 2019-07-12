@@ -8,7 +8,10 @@ import showBanner from 'node-banner';
 
 import appData from '../../utils/projectConfig';
 import createFile from '../../utils/createFile';
-import { checkIfConfigFileExists } from '../../utils/messages';
+import {
+  checkIfConfigFileExists,
+  checkIfServerExists,
+} from '../../utils/messages';
 import generateComponent from './component';
 import generateRoute from './routes';
 import { isWin } from '../../utils/constants';
@@ -67,11 +70,8 @@ const generateFile = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  await appData().then(data => {
-    if (data.template === 'graphql') {
-      templateIsGraphQL();
-    }
-  });
+  const { template } = await appData();
+  if (template === 'graphql') templateIsGraphQL();
 
   inquirer
     .prompt([
@@ -88,6 +88,8 @@ const generateFile = async () => {
         component: generateComponent,
         route: generateRoute,
       };
+      // Check if the boilerplate includes a server directory
+      if (userChoice.file !== 'component') await checkIfServerExists();
 
       if (userChoice.file === 'component' || userChoice.file === 'route') {
         actionHandler[userChoice.file]();

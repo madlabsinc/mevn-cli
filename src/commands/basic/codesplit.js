@@ -23,21 +23,19 @@ const asyncRender = async componentName => {
   // Exit for the case of Nuxt-js boilerplate template
   checkIfTemplateIsNuxt();
 
-  process.chdir('client/src/router');
+  process.chdir('client/src');
 
   let routesConfig = fs
-    .readFileSync('./index.js', 'utf8')
+    .readFileSync('./router.js', 'utf8')
     .toString()
     .split('\n');
 
-  const componentImportPath = `'@/components/${componentName}'`;
+  const componentImportPath = `"./views/${componentName}.vue";`;
 
   // Validates whether if the respective component was already imported dynamically.
   const asyncIndex = routesConfig.indexOf(
     routesConfig.find(
-      item =>
-        item ===
-        `const ${componentName} = () => import('@/components/${componentName}')`,
+      item => item === `component: () => import("./views/${componentName}")`,
     ),
   );
   if (asyncIndex !== -1) {
@@ -54,6 +52,7 @@ const asyncRender = async componentName => {
       item => item === `import ${componentName} from ${componentImportPath}`,
     ),
   );
+
   if (index === -1) {
     console.log();
     console.log(
@@ -63,10 +62,10 @@ const asyncRender = async componentName => {
   } else {
     routesConfig[
       index
-    ] = `const ${componentName} = () => import('@/components/${componentName}')`;
+    ] = `const ${componentName} = () => import('./views/${componentName}')`;
   }
 
-  fs.writeFileSync('./index.js', routesConfig.join('\n'));
+  fs.writeFileSync('./router.js', routesConfig.join('\n'));
   console.log();
   console.log(
     chalk.green.bold(

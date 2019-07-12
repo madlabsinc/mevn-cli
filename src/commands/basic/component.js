@@ -67,13 +67,13 @@ const generateComponent = async () => {
   if (fs.existsSync(`${componentName}.vue`)) {
     console.log();
     console.log(chalk.cyan.bold(` Info: ${componentName}.vue already exists`));
-    process.exit(1);
+    return;
   }
 
   fs.writeFileSync(`./${componentName}.vue`, componentTemplate.join('\n'));
 
   // Nuxt-js automatically sets up the routing configurations
-  if (template === 'Nuxt-js') process.exit(1);
+  if (template === 'Nuxt-js') return;
 
   let routeConfig = {
     path: '/',

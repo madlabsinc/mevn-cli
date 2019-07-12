@@ -7,7 +7,10 @@ import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 
 import createFile from '../../utils/createFile';
-import { checkIfConfigFileExists } from '../../utils/messages';
+import {
+  checkIfConfigFileExists,
+  checkIfServerExists,
+} from '../../utils/messages';
 import Spinner from '../../utils/spinner';
 
 const routesPath = '/../../templates/routes/';
@@ -143,6 +146,7 @@ const installPassportPackages = async (withSocialMediaAuth, spinner) => {
 const generateRoute = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
+  await checkIfServerExists();
 
   inquirer.prompt(questions).then(answer => {
     if (answer.passportAuth) {
