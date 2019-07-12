@@ -11,8 +11,8 @@
     "mevn": "./bin/mevn.js"
   },
   "scripts": {
-    "compile": "gulp clean && babel src --out-dir lib --copy-files",
-    "compile:watch": "babel --watch src --out-dir lib --copy-files",
+    "build": "gulp clean && babel src --out-dir lib --copy-files && gulp copy",
+    "build:watch": "babel --watch src --out-dir lib --copy-files",
     "test": "jest",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",

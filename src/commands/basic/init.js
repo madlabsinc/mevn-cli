@@ -9,6 +9,7 @@ import showBanner from 'node-banner';
 import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
 
+import copyDirSync from '../../utils/fs';
 import { isWin } from '../../utils/constants';
 import {
   directoryExistsInPath,
@@ -126,7 +127,7 @@ const fetchTemplate = async templateBranch => {
     `./${projectName}/mevn.json`,
     projectConfig.join('\n').toString(),
   );
-
+  // Prompt the user whether he/she requires pwa support
   if (templateBranch === 'nuxt') {
     const { requirePwaSupport } = await inquirer.prompt([
       {
@@ -135,7 +136,7 @@ const fetchTemplate = async templateBranch => {
         message: 'Do you require pwa support',
       },
     ]);
-
+    // Write to mevn.json in order to keep track while installing dependencies
     if (requirePwaSupport) {
       let configFile = JSON.parse(
         fs.readFileSync(`./${projectName}/mevn.json`).toString(),
@@ -146,7 +147,7 @@ const fetchTemplate = async templateBranch => {
         JSON.stringify(configFile),
       );
     }
-
+    // Choose between Universal/SPA mode
     const { mode } = await inquirer.prompt([
       {
         name: 'mode',
@@ -155,7 +156,7 @@ const fetchTemplate = async templateBranch => {
         choices: ['Universal', 'SPA'],
       },
     ]);
-
+    // Update the config file (nuxt.config.js)
     if (mode === 'Universal') {
       let configFile = fs
         .readFileSync(`./${projectName}/client/nuxt.config.js`, 'utf8')
@@ -172,6 +173,19 @@ const fetchTemplate = async templateBranch => {
         configFile.join('\n'),
       );
     }
+  }
+
+  // Show up a suitable prompt whether if the user requires a Full stack application (Express.js)
+  const { requireServer } = await inquirer.prompt({
+    name: 'requireServer',
+    type: 'confirm',
+    message: 'Do you require server side template (Express.js)',
+  });
+  // Copy server side template files to the destination as required
+  if (requireServer) {
+    const source = path.resolve(__dirname, '..', '..', 'templates/server');
+    const dest = path.resolve(process.cwd(), projectName);
+    copyDirSync(source, dest);
   }
   showCommandsList();
 };
