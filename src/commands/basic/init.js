@@ -23,13 +23,6 @@ let availableCommands = new Table();
 let projectName;
 let projectConfig;
 
-const boilerplate = {
-  basic: 'https://github.com/madlabsinc/mevn-boilerplate.git',
-  pwa: 'https://github.com/madlabsinc/mevn-pwa-boilerplate.git',
-  graphql: 'https://github.com/madlabsinc/mevn-graphql-boilerplate.git',
-  nuxt: 'https://github.com/madlabsinc/mevn-nuxt-boilerplate.git',
-};
-
 /**
  * Creates an initial local commit
  *
@@ -102,17 +95,26 @@ const showCommandsList = () => {
 /**
  * Fetch the boilerplate template of choice
  *
- * @param {String} template - Boilerplate template of choice
+ * @param {String} template - The branch which corresponds to the respective boilerplate template
  * @returns {Promise<void>}
  */
 
-const fetchTemplate = async template => {
+const fetchTemplate = async templateBranch => {
   await validateInstallation('git help -g');
+  // Boilerplate templates are available within a single repository
+  const repoUrl = 'https://github.com/madlabsinc/mevn-starter-templates';
 
   const fetchSpinner = new Spinner('Fetching the boilerplate template');
   fetchSpinner.start();
   try {
-    await execa(`git`, ['clone', boilerplate[template], projectName]);
+    await execa('git', [
+      'clone',
+      repoUrl,
+      '--branch',
+      templateBranch,
+      '--single-branch',
+      projectName,
+    ]);
   } catch (err) {
     fetchSpinner.fail('Something went wrong');
     throw err;
@@ -125,7 +127,7 @@ const fetchTemplate = async template => {
     projectConfig.join('\n').toString(),
   );
 
-  if (template === 'nuxt') {
+  if (templateBranch === 'nuxt') {
     const { requirePwaSupport } = await inquirer.prompt([
       {
         name: 'requirePwaSupport',
@@ -156,7 +158,7 @@ const fetchTemplate = async template => {
 
     if (mode === 'Universal') {
       let configFile = fs
-        .readFileSync(`./${projectName}/nuxt.config.js`, 'utf8')
+        .readFileSync(`./${projectName}/client/nuxt.config.js`, 'utf8')
         .toString()
         .split('\n');
 
@@ -166,7 +168,7 @@ const fetchTemplate = async template => {
       configFile[index] = ` mode: 'universal',`;
 
       fs.writeFileSync(
-        `./${projectName}/nuxt.config.js`,
+        `./${projectName}/client/nuxt.config.js`,
         configFile.join('\n'),
       );
     }
@@ -218,12 +220,16 @@ const initializeProject = async appName => {
     `"template": "${template}"`,
     '}',
   ];
+  // Holds the branch corresponding to the respective boilerplate template
+  let templateBranch = template;
 
-  if (template === 'Nuxt-js') {
-    template = 'nuxt';
+  if (template === 'basic') {
+    templateBranch = 'master';
+  } else if (template === 'Nuxt-js') {
+    templateBranch = 'nuxt';
   }
 
-  fetchTemplate(template);
+  fetchTemplate(templateBranch);
 };
 
 module.exports = initializeProject;
