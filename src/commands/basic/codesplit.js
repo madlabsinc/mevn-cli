@@ -71,7 +71,7 @@ const asyncRender = async componentName => {
     routesConfig[index] = '';
     routesConfig[
       componentNameIndex + 1
-    ] = `\t  component: () => import("./views/${componentName}.vue")`;
+    ] = `\t\t  component: () => import("./views/${componentName}.vue")`;
   }
 
   fs.writeFileSync('./router.js', routesConfig.join('\n'));

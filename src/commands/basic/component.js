@@ -101,26 +101,19 @@ const generateComponent = async () => {
     routesConfig.find(item => item.trim() === ']'),
   );
 
-  routesConfig[routesArrayEndsWithIndex - 1] = '\t},';
+  routesConfig[routesArrayEndsWithIndex - 1] = '\t\t},';
 
-  routesConfig.splice(routesArrayEndsWithIndex, 0, '\t{');
-  routesConfig.splice(
-    routesArrayEndsWithIndex + 1,
-    0,
-    `\t  path: "/${componentName.toLowerCase()}",`,
-  );
-  routesConfig.splice(
-    routesArrayEndsWithIndex + 2,
-    0,
-    `\t  name: "${componentName.toLowerCase()}",`,
-  );
-  routesConfig.splice(
-    routesArrayEndsWithIndex + 3,
-    0,
-    `\t  component: ${componentName}`,
-  );
-  routesConfig.splice(routesArrayEndsWithIndex + 4, 0, '\t}');
+  const routeConfigToAppend = [
+    '\t\t{',
+    `\t\t  path: "/${componentName.toLowerCase()}",`,
+    `\t\t  name: "${componentName.toLowerCase()}",`,
+    `\t\t  component: ${componentName}`,
+    '\t\t}',
+  ];
 
+  routeConfigToAppend.forEach((config, index) =>
+    routesConfig.splice(routesArrayEndsWithIndex + index, 0, config),
+  );
   fs.writeFileSync('./router.js', routesConfig.join('\n'));
   /*
   let routeConfig = {
