@@ -11,6 +11,10 @@ import { validateInput } from '../../utils/validate';
 
 const componentTemplate = [
   '<template >',
+  '<center>',
+  '<br />',
+  '<h1> SFC </h1>',
+  '</center>',
   '</template>',
   '',
   '<script >',
@@ -61,7 +65,7 @@ const generateComponent = async () => {
 
   const { template } = await appData();
   const componentPath =
-    template === 'Nuxt-js' ? 'client/pages' : 'client/src/components';
+    template === 'Nuxt-js' ? 'client/pages' : 'client/src/views';
   process.chdir(componentPath);
 
   if (fs.existsSync(`${componentName}.vue`)) {
@@ -81,8 +85,8 @@ const generateComponent = async () => {
     component: '',
   };
 
-  routeConfig.path = `/${componentName.toLowerCase()}`;
-  routeConfig.name = componentName;
+  routeConfig.path = `"/${componentName.toLowerCase()}"`;
+  routeConfig.name = `"${componentName.toLowerCase()}"`;
   routeConfig.component = `${componentName}`;
 
   console.log();
@@ -93,7 +97,7 @@ const generateComponent = async () => {
   console.log(
     chalk.cyan.bold(
       ` Insert the following content into ${chalk.bold.yellow(
-        'client/src/components/router/index.js',
+        'client/src/router.js',
       )}`,
     ),
   );
@@ -101,7 +105,7 @@ const generateComponent = async () => {
   console.log();
   console.log(
     chalk.green.bold(
-      ` 1. import ${componentName} from @/components/${componentName} ${chalk.cyan.bold(
+      ` 1. import ${componentName} from ./views/${componentName} ${chalk.cyan.bold(
         ' on the top.',
       )}`,
     ),
