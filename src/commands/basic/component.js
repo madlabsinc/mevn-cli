@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
+import path from 'path';
 
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
@@ -79,6 +80,49 @@ const generateComponent = async () => {
   // Nuxt-js automatically sets up the routing configurations
   if (template === 'Nuxt-js') return;
 
+  process.chdir(path.join(process.cwd(), '..'));
+
+  let routesConfig = fs
+    .readFileSync('./router.js', 'utf8')
+    .toString()
+    .split('\n');
+
+  const postImportIndex = routesConfig.indexOf(
+    routesConfig.find(item => item === ''),
+  );
+
+  routesConfig[
+    postImportIndex
+  ] = `import ${componentName} from "./views/${componentName}.vue";`;
+
+  routesConfig.splice(postImportIndex + 1, 0, '');
+
+  const routesArrayEndsWithIndex = routesConfig.indexOf(
+    routesConfig.find(item => item.trim() === ']'),
+  );
+
+  routesConfig[routesArrayEndsWithIndex - 1] = '\t},';
+
+  routesConfig.splice(routesArrayEndsWithIndex, 0, '\t{');
+  routesConfig.splice(
+    routesArrayEndsWithIndex + 1,
+    0,
+    `\t  path: "/${componentName.toLowerCase()}",`,
+  );
+  routesConfig.splice(
+    routesArrayEndsWithIndex + 2,
+    0,
+    `\t  name: "${componentName.toLowerCase()}",`,
+  );
+  routesConfig.splice(
+    routesArrayEndsWithIndex + 3,
+    0,
+    `\t  component: ${componentName}`,
+  );
+  routesConfig.splice(routesArrayEndsWithIndex + 4, 0, '\t}');
+
+  fs.writeFileSync('./router.js', routesConfig.join('\n'));
+  /*
   let routeConfig = {
     path: '/',
     name: '',
@@ -122,6 +166,7 @@ const generateComponent = async () => {
 
   console.log();
   console.log(chalk.green.bold(`  }`));
+  */
 };
 
 module.exports = generateComponent;
