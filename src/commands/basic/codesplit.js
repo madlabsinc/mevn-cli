@@ -54,6 +54,12 @@ const asyncRender = async componentName => {
       item => item === `import ${componentName} from ${componentImportPath}`,
     ),
   );
+  // Find the index corresponding to name: ${componentName}.vue
+  const componentNameIndex = routesConfig.indexOf(
+    routesConfig.find(
+      item => item.trim() === `name: "${componentName.toLowerCase()}",`,
+    ),
+  );
 
   if (index === -1) {
     console.log();
@@ -62,9 +68,10 @@ const asyncRender = async componentName => {
     );
     process.exit(1);
   } else {
+    routesConfig[index] = '';
     routesConfig[
-      index
-    ] = `component: () => import("./views/${componentName}.vue")`;
+      componentNameIndex + 1
+    ] = `\t  component: () => import("./views/${componentName}.vue")`;
   }
 
   fs.writeFileSync('./router.js', routesConfig.join('\n'));
