@@ -42,7 +42,7 @@ const asyncRender = async () => {
     }
   });
 
-  // Warn the user if the list is empty
+  // Warns the user if the list is empty
   if (!availableComponents.length) {
     console.log();
     console.log(
@@ -53,6 +53,7 @@ const asyncRender = async () => {
     return;
   }
 
+  // Allow the user to choose his component of choice
   const { componentName } = await inquirer.prompt({
     name: 'componentName',
     type: 'list',
@@ -84,6 +85,7 @@ const asyncRender = async () => {
   // Remove old import statement
   routesConfig.splice(regularImportIndex, 1);
 
+  // Write back the updated route-config
   fs.writeFileSync('./router.js', routesConfig.join('\n'));
   console.log();
   console.log(

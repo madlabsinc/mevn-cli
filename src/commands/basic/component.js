@@ -91,18 +91,23 @@ const generateComponent = async () => {
     routesConfig.find(item => item === ''),
   );
 
+  // Add an import statement at the respective place
   routesConfig[
     postImportIndex
   ] = `import ${componentName} from "./views/${componentName}.vue";`;
 
+  // Include a new line to compensate the previous addition
   routesConfig.splice(postImportIndex + 1, 0, '');
 
+  // Fetch the index corresponding to route-config array closing bracket
   const routesArrayEndsWithIndex = routesConfig.indexOf(
     routesConfig.find(item => item.trim() === ']'),
   );
 
+  // Append a comma (},) to the previous component route-config delimiter
   routesConfig[routesArrayEndsWithIndex - 1] = '\t},';
 
+  // Route config for generated component
   const routeConfigToAppend = [
     '\t{',
     `\t  path: "/${componentName.toLowerCase()}",`,
@@ -111,10 +116,12 @@ const generateComponent = async () => {
     '\t}',
   ];
 
+  // Append the route config for newly created component
   routeConfigToAppend.forEach((config, index) =>
     routesConfig.splice(routesArrayEndsWithIndex + index, 0, config),
   );
 
+  // Write back the updated config
   fs.writeFileSync('./router.js', routesConfig.join('\n'));
 };
 
