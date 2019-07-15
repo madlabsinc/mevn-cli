@@ -102,6 +102,7 @@ const showCommandsList = () => {
 
 const fetchTemplate = async templateBranch => {
   await validateInstallation('git help -g');
+
   // Boilerplate templates are available within a single repository
   const repoUrl = 'https://github.com/madlabsinc/mevn-starter-templates';
 
@@ -127,6 +128,7 @@ const fetchTemplate = async templateBranch => {
     `./${projectName}/mevn.json`,
     projectConfig.join('\n').toString(),
   );
+
   // Prompt the user whether he/she requires pwa support
   if (templateBranch === 'nuxt') {
     const { requirePwaSupport } = await inquirer.prompt([
@@ -136,6 +138,7 @@ const fetchTemplate = async templateBranch => {
         message: 'Do you require pwa support',
       },
     ]);
+
     // Write to mevn.json in order to keep track while installing dependencies
     if (requirePwaSupport) {
       let configFile = JSON.parse(
@@ -147,6 +150,7 @@ const fetchTemplate = async templateBranch => {
         JSON.stringify(configFile),
       );
     }
+
     // Choose between Universal/SPA mode
     const { mode } = await inquirer.prompt([
       {
@@ -156,6 +160,7 @@ const fetchTemplate = async templateBranch => {
         choices: ['Universal', 'SPA'],
       },
     ]);
+
     // Update the config file (nuxt.config.js)
     if (mode === 'Universal') {
       let configFile = fs
@@ -163,7 +168,7 @@ const fetchTemplate = async templateBranch => {
         .toString()
         .split('\n');
 
-      let index = configFile.indexOf(
+      const index = configFile.indexOf(
         configFile.find(line => line.includes('mode')),
       );
       configFile[index] = ` mode: 'universal',`;
@@ -181,11 +186,22 @@ const fetchTemplate = async templateBranch => {
     type: 'confirm',
     message: 'Do you require server side template (Express.js)',
   });
+
   // Copy server side template files to the destination as required
   if (requireServer) {
-    const source = path.resolve(__dirname, '..', '..', 'templates/server');
+    // Configure path
+    const serverDir = templateBranch === 'graphql' ? 'GraphQL' : 'basic';
+    const serverPath = ['templates', 'server', serverDir];
+    const source = path.resolve(__dirname, '..', '..', ...serverPath);
     const dest = path.resolve(process.cwd(), projectName);
+
+    // Copy server template directory to the destination
     copyDirSync(source, dest);
+
+    // Rename the resultant directory to server
+    const renameFromPath = path.join(dest, serverDir);
+    const renameToPath = path.join(dest, 'server');
+    fs.renameSync(renameFromPath, renameToPath);
   }
   showCommandsList();
 };
@@ -234,7 +250,7 @@ const initializeProject = async appName => {
     `"template": "${template}"`,
     '}',
   ];
-  // Holds the branch corresponding to the respective boilerplate template
+  // Holds GitHub repo branch corresponding to the respective boilerplate template
   let templateBranch = template;
 
   if (template === 'basic') {

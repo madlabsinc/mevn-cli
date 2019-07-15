@@ -45,7 +45,7 @@ const asyncRender = async () => {
   if (!availableComponents.length) {
     console.log();
     console.log(
-      chalk.red.bold(
+      chalk.cyan.bold(
         ' Info: All of the available components are dynamically imported',
       ),
     );
