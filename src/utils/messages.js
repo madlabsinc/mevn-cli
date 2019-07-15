@@ -69,8 +69,7 @@ export const checkIfTemplateIsNuxt = async () => {
  */
 
 export const checkIfServerExists = async () => {
-  const { name } = await appData();
-  if (!fs.existsSync(path.resolve(process.cwd(), name, 'server'))) {
+  if (!fs.existsSync(path.resolve(process.cwd(), 'server'))) {
     console.log();
     console.log(chalk.red.bold(` You aren't having a FullStack-app template`));
     process.exit(1);

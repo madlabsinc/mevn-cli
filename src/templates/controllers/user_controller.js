@@ -12,7 +12,7 @@ let createData = (req, res, next) => {
 };
 
 let readData = (req, res, next) => {
-  User.find((err, user) => {
+  User.find({}, '', (err, user) => {
     if (err) {
       return next(err);
     }

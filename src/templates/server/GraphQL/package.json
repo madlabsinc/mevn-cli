@@ -4,8 +4,8 @@
   "description": "Server side GraphQL template",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "node server.js",
+    "serve": "nodemon server.js"
   },
   "author": "James George <jamesgeorge998001@gmail.com>",
   "license": "ISC",
