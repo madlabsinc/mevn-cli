@@ -10,29 +10,6 @@ import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { validateInput } from '../../utils/validate';
 
-const componentTemplate = [
-  '<template >',
-  '<center>',
-  '<br />',
-  '<h1> SFC </h1>',
-  '</center>',
-  '</template>',
-  '',
-  '<script >',
-  '    export default {',
-  '        data() {',
-  '            return {',
-  '',
-  '            }',
-  '        },',
-  '    } ',
-  '</script>',
-  '',
-  '<style scoped >',
-  '',
-  '</style>',
-];
-
 /**
  * Converts a given string into lower camel case
  *
@@ -62,7 +39,32 @@ const generateComponent = async () => {
     },
   ]);
 
+  // Convert component name to lower-camel-case
   componentName = toLowerCamelCase(componentName);
+
+  // SFC template
+  const componentTemplate = [
+    '<template >',
+    '<center>',
+    '<br />',
+    `<h1> This is the ${componentName} component </h1>`,
+    '</center>',
+    '</template>',
+    '',
+    '<script >',
+    '    export default {',
+    '        data() {',
+    '            return {',
+    '',
+    '            }',
+    '        },',
+    '    } ',
+    '</script>',
+    '',
+    '<style scoped >',
+    '',
+    '</style>',
+  ];
 
   const { template } = await appData();
   const componentPath =

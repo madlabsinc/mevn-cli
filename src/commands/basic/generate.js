@@ -29,18 +29,15 @@ let configUrl;
  */
 
 const getDBConfigUrl = async () => {
-  await inquirer
-    .prompt([
-      {
-        name: 'url',
-        type: 'input',
-        message: 'Enter url for the database : ',
-        validate: validateInput,
-      },
-    ])
-    .then(dbConfig => {
-      configUrl = dbConfig.url;
-    });
+  const { url } = await inquirer.prompt([
+    {
+      name: 'url',
+      type: 'input',
+      message: 'Enter url for the database : ',
+      validate: validateInput,
+    },
+  ]);
+  return url;
 };
 
 /**
@@ -70,60 +67,62 @@ const generateFile = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
+  const { fileType } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'fileType',
+      message: 'Choose the required file to be generated',
+      choices: ['component', 'config', 'model', 'route', 'controller'],
+    },
+  ]);
+
+  // Fetch boilerplate template used from mevn.json
   const { template } = await appData();
-  if (template === 'graphql') templateIsGraphQL();
 
-  inquirer
-    .prompt([
-      {
-        type: 'list',
-        name: 'file',
-        message: 'Choose the required file to be generated',
-        choices: ['component', 'config', 'model', 'route', 'controller'],
-      },
-    ])
-    .then(async userChoice => {
-      // Defining action handlers.
-      const actionHandler = {
-        component: generateComponent,
-        route: generateRoute,
-      };
-      // Check if the boilerplate includes a server directory
-      if (userChoice.file !== 'component') await checkIfServerExists();
+  // Defining action handlers.
+  const actionHandler = {
+    component: generateComponent,
+    route: generateRoute,
+  };
 
-      if (userChoice.file === 'component' || userChoice.file === 'route') {
-        actionHandler[userChoice.file]();
-      } else {
-        let workDir =
-          userChoice.file === 'config' ? 'config' : `${userChoice.file}s`;
-        process.chdir(`server/${workDir}`);
+  // MVC files shouldn't be created if the template is GraphQL or else if the boilerplate lacks server directory
+  if (fileType !== 'component') {
+    if (template === 'graphql') {
+      templateIsGraphQL();
+    } else {
+      await checkIfServerExists();
+    }
+  }
 
-        let removeCmd = isWin ? 'del' : 'rm';
-        if (fs.existsSync('./default.js')) {
-          execa.shellSync(`${removeCmd} default.js`);
-        }
+  if (['component', 'route'].indexOf(fileType) !== -1) {
+    actionHandler[fileType]();
+  } else {
+    let workDir = fileType === 'config' ? 'config' : `${fileType}s`;
+    process.chdir(`server/${workDir}`);
 
-        if (userChoice.file === 'config') {
-          await getDBConfigUrl();
+    let removeCmd = isWin ? 'del' : 'rm';
+    if (fs.existsSync('./default.js')) {
+      execa.shellSync(`${removeCmd} default.js`);
+    }
 
-          const configFileContent = ['{', `  "url": "${configUrl}"`, '}'];
+    if (fileType === 'config') {
+      configUrl = await getDBConfigUrl();
 
-          generatedFileContent = configFileContent.join('\n').toString();
-          generatedFile = './config.js';
-        } else {
-          generatedFileContent = getFileContent(userChoice.file);
-          generatedFile =
-            userChoice.file === 'controller'
-              ? './user_controller.js'
-              : './user_schema.js';
-        }
+      const configFileContent = ['{', `  "url": "${configUrl}"`, '}'];
 
-        createFile(generatedFile, generatedFileContent, { flag: 'wx' }, err => {
-          if (err) throw err;
-          console.log(chalk.yellow('File Created...!'));
-        });
-      }
+      generatedFileContent = configFileContent.join('\n').toString();
+      generatedFile = './config.js';
+    } else {
+      generatedFileContent = getFileContent(fileType);
+      generatedFile =
+        fileType === 'controller' ? './user_controller.js' : './user_schema.js';
+    }
+
+    createFile(generatedFile, generatedFileContent, { flag: 'wx' }, err => {
+      if (err) throw err;
+      console.log(chalk.yellow('File Created...!'));
     });
+  }
 };
 
 module.exports = generateFile;
