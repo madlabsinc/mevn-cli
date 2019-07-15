@@ -13,7 +13,6 @@ import {
 /**
  * Lazy load components
  *
- * @param {String} componentName - Name of the component to be rendered asynchronously
  * @returns {Promise<void>}
  */
 
