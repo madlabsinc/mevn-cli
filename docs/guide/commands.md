@@ -12,7 +12,7 @@ title: 'Available Commands'
 | mevn serve | Serves the client/server side template locally |
 | mevn add:package | Adds additional packages as required on the go |
 | mevn generate | Generates component, model, route, controller, and DB config files |
-| mevn codesplit &lt;name&gt; | Lazy load components as required |
+| mevn codesplit | Lazy load components as required |
 | mevn dockerize | Serves the client and server in separate docker containers |
 | mevn deploy | Deploys the webapp to a cloud service of choice |
 | mevn info | Prints debugging information about the local environment |

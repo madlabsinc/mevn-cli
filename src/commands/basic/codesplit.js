@@ -37,7 +37,6 @@ const asyncRender = async () => {
   // Populate the array with regular imported components
   routesConfig.some((item, index) => {
     if (item === '') return true;
-
     if (index >= 2) {
       availableComponents.push(item.split(' ')[1]);
     }
@@ -47,7 +46,7 @@ const asyncRender = async () => {
   if (!availableComponents.length) {
     console.log();
     console.log(
-      chalk.red.cyan(
+      chalk.red.bold(
         ' Info: All of the available components are dynamically imported',
       ),
     );
@@ -58,6 +57,7 @@ const asyncRender = async () => {
     name: 'componentName',
     type: 'list',
     choices: availableComponents,
+    message: 'Choose from below',
   });
 
   const componentImportPath = `"./views/${componentName}.vue";`;
