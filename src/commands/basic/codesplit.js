@@ -2,6 +2,7 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
+import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 
 import {
@@ -16,7 +17,7 @@ import {
  * @returns {Promise<void>}
  */
 
-const asyncRender = async componentName => {
+const asyncRender = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   await checkIfConfigFileExists();
 
@@ -30,49 +31,58 @@ const asyncRender = async componentName => {
     .toString()
     .split('\n');
 
-  const componentImportPath = `"./views/${componentName}.vue";`;
+  // Keep hold of regular imported components
+  const availableComponents = [];
 
-  // Validates whether if the respective component was already imported dynamically.
-  const asyncIndex = routesConfig.indexOf(
-    routesConfig.find(
-      item =>
-        item.trim() ===
-        `component: () => import("./views/${componentName}.vue")`,
-    ),
-  );
-  if (asyncIndex !== -1) {
+  // Populate the array with regular imported components
+  routesConfig.some((item, index) => {
+    if (item === '') return true;
+
+    if (index >= 2) {
+      availableComponents.push(item.split(' ')[1]);
+    }
+  });
+
+  // Warn the user if the list is empty
+  if (!availableComponents.length) {
     console.log();
     console.log(
-      chalk.cyan.bold(` ${componentName} is already imported dynamically`),
+      chalk.red.cyan(
+        ' Info: All of the available components are dynamically imported',
+      ),
     );
-    process.exit(1);
+    return;
   }
 
-  // Validating further.
-  const index = routesConfig.indexOf(
+  const { componentName } = await inquirer.prompt({
+    name: 'componentName',
+    type: 'list',
+    choices: availableComponents,
+  });
+
+  const componentImportPath = `"./views/${componentName}.vue";`;
+
+  // Find index corresponding to the regular import statement
+  const regularImportIndex = routesConfig.indexOf(
     routesConfig.find(
       item => item === `import ${componentName} from ${componentImportPath}`,
     ),
   );
-  // Find the index corresponding to name: ${componentName}.vue
+
+  // Find the index corresponding to name: ${componentName}.vue (within route-config)
   const componentNameIndex = routesConfig.indexOf(
     routesConfig.find(
       item => item.trim() === `name: "${componentName.toLowerCase()}",`,
     ),
   );
 
-  if (index === -1) {
-    console.log();
-    console.log(
-      `${chalk.cyan.bold(` There isn't a component named ${componentName}`)}`,
-    );
-    process.exit(1);
-  } else {
-    routesConfig[index] = '';
-    routesConfig[
-      componentNameIndex + 1
-    ] = `\t\t  component: () => import("./views/${componentName}.vue")`;
-  }
+  // Update the respective route-config to use dynamic import statement
+  routesConfig[
+    componentNameIndex + 1
+  ] = `\t  component: () => import("./views/${componentName}.vue")`;
+
+  // Remove old import statement
+  routesConfig.splice(regularImportIndex, 1);
 
   fs.writeFileSync('./router.js', routesConfig.join('\n'));
   console.log();

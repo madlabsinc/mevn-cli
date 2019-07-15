@@ -43,7 +43,7 @@ program
   .action(initializeProject);
 
 program
-  .command('codesplit <componentname>')
+  .command('codesplit')
   .description('To code split the required component')
   .action(asyncRender);
 
