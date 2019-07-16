@@ -7,10 +7,8 @@ import inquirer from 'inquirer';
 import path from 'path';
 import showBanner from 'node-banner';
 
-import {
-  checkIfConfigFileExists,
-  checkIfTemplateIsNuxt,
-} from '../../utils/messages';
+import appData from '../../utils/projectConfig';
+import { checkIfConfigFileExists } from '../../utils/messages';
 import Spinner from '../../utils/spinner';
 
 let vuexStoreTemplate = fs.readFileSync(
@@ -48,8 +46,7 @@ const addPlugins = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  // Exit for the case of Nuxt-js boilerplate template
-  await checkIfTemplateIsNuxt();
+  const { template } = await appData();
 
   // Available plugins to be installed
   const availablePlugins = ['vee-validate', 'axios', 'vuex', 'vuetify'];
@@ -84,67 +81,134 @@ const addPlugins = async () => {
     ],
   });
 
+  // Vuetify bindings for Nuxt-js
+  if (template === 'Nuxt-js') plugins.push('@nuxtjs/vuetify@next');
+
+  // Install the opted plugins
   await installPlugins(plugins);
 
-  // Navigate to the src directory and read the content within main.js
-  process.chdir('src');
+  if (template === 'Nuxt-js') {
+    // vuex-store template content for Nuxt-js
+    const vuexNuxtStoreTemplate = [
+      'export const state = () => ({',
+      '  counter: 0',
+      '})',
+      '',
+      'export const mutations = {',
+      '  increment (state) {',
+      '\tstate.counter++',
+      '  }',
+      '}',
+    ];
 
-  // Configure vuex-store
-  if (plugins.indexOf('vuex') !== -1) {
-    let config = fs
-      .readFileSync('main.js', 'utf8')
-      .toString()
-      .split('\n');
+    // Vuetify-Config to be inserted
+    const vuetifyConfig = [
+      '  /*',
+      '   ** Set up vuetify',
+      '   */',
+      '  devModules: [',
+      '   @nuxtjs/vuetify',
+      '  ],',
+      '',
+      '  // Vuetify options',
+      '  vuetify: {',
+      '   //  theme: { }',
+      '  }',
+    ];
 
-    // Creates a new store.js file within the client/src directory.
-    fs.writeFileSync('store.js', vuexStoreTemplate);
+    // Configure vuex-store for Nuxt-js template
+    if (plugins.indexOf('vuex') !== -1) {
+      // Navigate to the store directory and create a basic store template file
+      process.chdir('store');
+      fs.writeFileSync('index.js', vuexNuxtStoreTemplate.join('\n'));
 
-    // Fetch the index corresponding to the very first blank line
-    const blankLineIndex = config.indexOf(config.find(line => line === ''));
+      // Hop back to the root directory
+      process.chdir('..');
+    }
 
-    // Inserting the import statement for vuex-store
-    config.splice(blankLineIndex, 0, `import store from "./store";`);
+    // Configure @nuxtjs/vuetify
+    if (plugins.indexOf('vuetify') !== -1) {
+      // Read initial content from nuxt.config.js
+      let nuxtConfig = fs
+        .readFileSync('./nuxt.config.js', 'utf8')
+        .toString()
+        .split('\n');
 
-    // Fetching the position where in which router is passed on to the Vue instance
-    const routerIndex = config.indexOf(
-      config.find(line => line.trim() === 'router,'),
-    );
+      // Find the position of link within header information
+      const indexOfLink = nuxtConfig.indexOf(
+        nuxtConfig.find(line => line.includes('link')),
+      );
 
-    // Insert store just after router so that it gets passed on to the Vue instance
-    config.splice(routerIndex + 1, 0, `  store,`);
+      // Insert the respective content
+      vuetifyConfig.forEach((item, i) =>
+        nuxtConfig.splice(indexOfLink + i + 2, 0, item),
+      );
 
-    // Cleaning up
-    if (plugins.indexOf('vuetify') === -1) config.splice(blankLineIndex + 1, 1);
+      // Write back the updated content
+      fs.writeFileSync('nuxt.config.js', nuxtConfig.join('\n'));
+    }
+  } else {
+    // Navigate to the src directory and read the content within main.js
+    process.chdir('src');
 
-    // Write back the updated config
-    fs.writeFileSync('main.js', config.join('\n'));
-  }
+    // Configure vuex-store
+    if (plugins.indexOf('vuex') !== -1) {
+      let config = fs
+        .readFileSync('main.js', 'utf8')
+        .toString()
+        .split('\n');
 
-  // Configure vuetify
-  if (plugins.indexOf('vuetify') !== -1) {
-    let config = fs
-      .readFileSync('main.js', 'utf8')
-      .toString()
-      .split('\n');
+      // Creates a new store.js file within the client/src directory.
+      fs.writeFileSync('store.js', vuexStoreTemplate);
 
-    // Import Vuetify and minified css towards the top of the config file
-    [
-      `import Vuetify from 'vuetify';`,
-      `import 'vuetify/dist/vuetify.min.css';`,
-    ].forEach((item, i) => config.splice(i + 1, 0, item));
+      // Fetch the index corresponding to the very first blank line
+      const blankLineIndex = config.indexOf(config.find(line => line === ''));
 
-    // Fetch the index after which the respective config should come up
-    const preIndex = config.indexOf(
-      config.find(line => line.includes('Vue.config.productionTip')),
-    );
+      // Inserting the import statement for vuex-store
+      config.splice(blankLineIndex, 0, `import store from "./store";`);
 
-    // Inserting the respective Vuetify config
-    ['Vue.use(Vuetify);', ''].forEach((item, i) =>
-      config.splice(preIndex + i, 0, item),
-    );
+      // Fetching the position where in which router is passed on to the Vue instance
+      const routerIndex = config.indexOf(
+        config.find(line => line.trim() === 'router,'),
+      );
 
-    // Write back the updated config
-    fs.writeFileSync('main.js', config.join('\n'));
+      // Insert store just after router so that it gets passed on to the Vue instance
+      config.splice(routerIndex + 1, 0, `  store,`);
+
+      // Cleaning up
+      if (plugins.indexOf('vuetify') === -1)
+        config.splice(blankLineIndex + 1, 1);
+
+      // Write back the updated config
+      fs.writeFileSync('main.js', config.join('\n'));
+    }
+
+    // Configure vuetify
+    if (plugins.indexOf('vuetify') !== -1) {
+      let config = fs
+        .readFileSync('main.js', 'utf8')
+        .toString()
+        .split('\n');
+
+      // Import Vuetify and minified css towards the top of the config file
+      [
+        `import Vuetify from 'vuetify';`,
+        `import 'vuetify/dist/vuetify.min.css';`,
+      ].forEach((item, i) => config.splice(i + 1, 0, item));
+
+      // Fetch the index after which the respective config should come up
+      const preIndex = config.indexOf(
+        config.find(line => line.includes('Vue.config.productionTip')),
+      );
+
+      // Inserting the respective Vuetify config
+      ['Vue.use(Vuetify);', ''].forEach((item, i) =>
+        config.splice(preIndex + i, 0, item),
+      );
+
+      // Write back the updated config
+      fs.writeFileSync('main.js', config.join('\n'));
+    }
   }
 };
 
