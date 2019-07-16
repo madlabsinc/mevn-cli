@@ -65,6 +65,7 @@ const addPlugin = async () => {
     plugin => !dependencies.hasOwnProperty(plugin),
   );
 
+  // Warn the user if all available plugins are installed already
   if (!installablePlugins.length) {
     console.log();
     console.log(chalk.red.bold(' All the plugins are already installed'));
@@ -128,49 +129,32 @@ const addPlugin = async () => {
       }
     });
   } else if (plugin === 'vuetify') {
+    // Navigate to the src directory and read contents from main.js
     process.chdir('src');
+
     let config = fs
       .readFileSync('main.js', 'utf8')
       .toString()
       .split('\n');
 
-    for (let index = 0; index < config.length; index++) {
-      if (config[index] === "import Vuetify from './vuetify'") {
-        break;
-      }
+    // Import Vuetify and minified css towards the top of the config file
+    [
+      `import Vuetify from 'vuetify';`,
+      `import 'vuetify/dist/vuetify.min.css';`,
+    ].forEach((item, i) => config.splice(i + 1, 0, item));
 
-      if (config[index] === '') {
-        config[index] = "import Vuetify from 'vuetify'";
-        config[index + 2] = 'Vue.use(Vuetify)';
-        break;
-      }
-    }
+    // Fetch the index after which the respective config should come up
+    const preIndex = config.indexOf(
+      config.find(line => line.includes('Vue.config.productionTip')),
+    );
 
-    let content = config.join('\n');
-    fs.writeFile('main.js', content, err => {
-      if (err) {
-        throw err;
-      }
-    });
+    // Inserting the respective Vuetify config
+    ['Vue.use(Vuetify);', ''].forEach((item, i) =>
+      config.splice(preIndex + i, 0, item),
+    );
 
-    let rootComponent = fs
-      .readFileSync('App.vue', 'utf8')
-      .toString()
-      .split('\n');
-
-    for (let index = 0; index < rootComponent.length; index++) {
-      if (rootComponent[index] === '<style>') {
-        rootComponent[index] = "<style src='vuetify/dist/vuetify.min.css'>";
-        break;
-      }
-    }
-
-    let rootContent = rootComponent.join('\n');
-    fs.writeFile('App.vue', rootContent, err => {
-      if (err) {
-        throw err;
-      }
-    });
+    // Write back the updated config
+    fs.writeFileSync('main.js', config.join('\n'));
   }
 };
 
