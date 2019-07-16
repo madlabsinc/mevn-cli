@@ -39,12 +39,12 @@ program.version(pkg.version).usage('<command> [options]');
 
 program
   .command('init <appname>')
-  .description('To init the project')
+  .description('Bootstraps a basic MEVN stack webapp')
   .action(initializeProject);
 
 program
   .command('codesplit')
-  .description('To code split the required component')
+  .description('Lazy load components as required')
   .action(asyncRender);
 
 program
@@ -54,22 +54,22 @@ program
 
 program
   .command('add')
-  .description('To add a new plugin to the project')
+  .description('Adds a new plugin on the go')
   .action(addPlugin);
 
 program
   .command('serve')
-  .description('To serve client/server')
+  .description('To serve client/server locally')
   .action(setupProject);
 
 program
   .command('dockerize')
-  .description('To dockerize the app')
+  .description('To launch the webapp within a Docker container locally')
   .action(dockerize);
 
 program
   .command('deploy')
-  .description('To deploy the app to Heroku')
+  .description('To deploy the webapp to a cloud solution of choice')
   .action(deploy);
 
 program
