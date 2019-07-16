@@ -25,17 +25,17 @@ let vuexStoreTemplate = fs.readFileSync(
  * @returns {Promise<void>}
  */
 
-const installPlugin = async pluginToInstall => {
-  const fetchSpinner = new Spinner(`Installing ${pluginToInstall} `);
+const installPlugins = async pluginsToInstall => {
+  const fetchSpinner = new Spinner(`Installing ${pluginsToInstall.join(' ')} `);
   fetchSpinner.start();
 
   try {
-    await execa('npm', ['install', '--save', pluginToInstall]);
+    await execa('npm', ['install', '--save', ...pluginsToInstall]);
   } catch (err) {
-    fetchSpinner.fail(`Failed to install ${pluginToInstall}`);
+    fetchSpinner.fail(`Installation failed`);
     throw err;
   }
-  fetchSpinner.succeed(`Successfully installed ${pluginToInstall}`);
+  fetchSpinner.succeed(`Successfully installed ${pluginsToInstall.join(' ')}`);
 };
 
 /**
@@ -44,7 +44,7 @@ const installPlugin = async pluginToInstall => {
  * @returns {Promise<void>}
  */
 
-const addPlugin = async () => {
+const addPlugins = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
@@ -68,23 +68,29 @@ const addPlugin = async () => {
   // Warn the user if all available plugins are installed already
   if (!installablePlugins.length) {
     console.log();
-    console.log(chalk.red.bold(' All the plugins are already installed'));
+    console.log(
+      chalk.red.bold(` ${availablePlugins.join(', ')} are already installed`),
+    );
     return;
   }
 
-  const { plugin } = await inquirer.prompt({
-    type: 'list',
-    name: 'plugin',
-    message: 'Which plugin do you want to install?',
+  const { plugins } = await inquirer.prompt({
+    type: 'checkbox',
+    name: 'plugins',
+    message: 'Select the plugins to install',
     choices: installablePlugins,
+    default: [
+      installablePlugins[Math.floor(Math.random() * installablePlugins.length)],
+    ],
   });
 
-  await installPlugin(plugin);
+  await installPlugins(plugins);
 
-  if (plugin === 'vuex') {
-    // Navigate to the src directory and read the content within main.js
-    process.chdir('src');
+  // Navigate to the src directory and read the content within main.js
+  process.chdir('src');
 
+  // Configure vuex-store
+  if (plugins.indexOf('vuex') !== -1) {
     let config = fs
       .readFileSync('main.js', 'utf8')
       .toString()
@@ -112,10 +118,10 @@ const addPlugin = async () => {
 
     // Write back the updated config
     fs.writeFileSync('main.js', config.join('\n'));
-  } else if (plugin === 'vuetify') {
-    // Navigate to the src directory and read contents from main.js
-    process.chdir('src');
+  }
 
+  // Configure vuetify
+  if (plugins.indexOf('vuetify') !== -1) {
     let config = fs
       .readFileSync('main.js', 'utf8')
       .toString()
@@ -142,4 +148,4 @@ const addPlugin = async () => {
   }
 };
 
-module.exports = addPlugin;
+module.exports = addPlugins;
