@@ -35,7 +35,7 @@ const installPlugins = async pluginsToInstall => {
     fetchSpinner.fail(`Installation failed`);
     throw err;
   }
-  fetchSpinner.succeed(`Successfully installed ${pluginsToInstall.join(' ')}`);
+  fetchSpinner.succeed(`Successfully installed ${pluginsToInstall.join(', ')}`);
 };
 
 /**
@@ -114,7 +114,7 @@ const addPlugins = async () => {
     config.splice(routerIndex + 1, 0, `  store,`);
 
     // Cleaning up
-    config.splice(blankLineIndex + 1, 1);
+    if (plugins.indexOf('vuetify') === -1) config.splice(blankLineIndex + 1, 1);
 
     // Write back the updated config
     fs.writeFileSync('main.js', config.join('\n'));
