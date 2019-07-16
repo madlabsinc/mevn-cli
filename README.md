@@ -42,7 +42,7 @@ mevn init <appname>
 | -------------- |  ---------------- |
 | mevn init | Bootstraps a MEVN stack based boilerplate template of choice |
 | mevn serve | Serves the client/server side template locally |
-| mevn add:package | Adds additional packages as required on the go |
+| mevn add | Adds additional plugins as required on the go |
 | mevn generate | Generates component, model, route, controller, and DB config files |
 | mevn codesplit | Lazy load components as required |
 | mevn dockerize | Serves the client and server in separate docker containers |
@@ -64,7 +64,7 @@ Before contributing to this repository, please first discuss the change you wish
 1. Ensure you have no "dummy" files left, if you do then add them to the bottom of `.gitignore`.
 2. Fork and clone our repository.
 3. Make your life-changing changes.
-4. Run `npm run compile` which generates a `lib` directory with the transpiled `es5` code.
+4. Run `npm run build` which generates a `lib` directory with the transpiled `es5` code.
 5. Fire in `sudo npm link` to test everything works fine.
 6. Commit and push your changes.
 7. Make a detailed pull request.

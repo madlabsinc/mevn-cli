@@ -10,7 +10,7 @@ title: 'Available Commands'
 | -------------- |  ---------------- |
 | mevn init | Bootstraps a MEVN stack based boilerplate template of choice |
 | mevn serve | Serves the client/server side template locally |
-| mevn add:package | Adds additional packages as required on the go |
+| mevn add | Adds additional plugins as required on the go |
 | mevn generate | Generates component, model, route, controller, and DB config files |
 | mevn codesplit | Lazy load components as required |
 | mevn dockerize | Serves the client and server in separate docker containers |
