@@ -13,7 +13,7 @@ import {
 } from '../../utils/messages';
 import Spinner from '../../utils/spinner';
 
-let storeFile = fs.readFileSync(
+let vuexStoreTemplate = fs.readFileSync(
   path.resolve(__dirname, '..', '..', 'templates/vuex/store.js'),
   'utf8',
 );
@@ -82,52 +82,36 @@ const addPlugin = async () => {
   await installPlugin(plugin);
 
   if (plugin === 'vuex') {
+    // Navigate to the src directory and read the content within main.js
     process.chdir('src');
-    // Getting the file content as an array where each line represents the corresponding element.
+
     let config = fs
       .readFileSync('main.js', 'utf8')
       .toString()
       .split('\n');
+
     // Creates a new store.js file within the client/src directory.
-    fs.writeFile('store.js', storeFile, err => {
-      if (err) {
-        throw err;
-      }
-    });
+    fs.writeFileSync('store.js', vuexStoreTemplate);
 
-    let storeNotImported = true;
-    // Iterates through the array, assuming that there is a blank line between import statements and rest part of the code.
-    for (let index = 0; index < config.length; index++) {
-      if (config[index] === "import store from './store'") {
-        break;
-      }
+    // Fetch the index corresponding to the very first blank line
+    const blankLineIndex = config.indexOf(config.find(line => line === ''));
 
-      if (config[index] === '' && storeNotImported) {
-        config[index] = "import store from './store'";
-        storeNotImported = false;
-      }
+    // Inserting the import statement for vuex-store
+    config.splice(blankLineIndex, 0, `import store from "./store";`);
 
-      // Searches for the line where Vue is getting instantiated
-      if (config[index] === 'new Vue({') {
-        // This is the first line after the creation of the Vue instance
-        let indexWithin = index + 1;
-        while (config[indexWithin] !== '})') {
-          // Terminating line of creating a Vue instance.
-          indexWithin++;
-        }
-        // Inserting store within the Vue instance
-        let tempVal = config[indexWithin - 1];
-        config[indexWithin - 1] = '  store,';
-        config[indexWithin] = tempVal;
-        config[indexWithin + 1] = '})';
-      }
-    }
-    let content = config.join('\n');
-    fs.writeFile('main.js', content, err => {
-      if (err) {
-        throw err;
-      }
-    });
+    // Fetching the position where in which router is passed on to the Vue instance
+    const routerIndex = config.indexOf(
+      config.find(line => line.trim() === 'router,'),
+    );
+
+    // Insert store just after router so that it gets passed on to the Vue instance
+    config.splice(routerIndex + 1, 0, `  store,`);
+
+    // Cleaning up
+    config.splice(blankLineIndex + 1, 1);
+
+    // Write back the updated config
+    fs.writeFileSync('main.js', config.join('\n'));
   } else if (plugin === 'vuetify') {
     // Navigate to the src directory and read contents from main.js
     process.chdir('src');
