@@ -17,7 +17,7 @@ didYouMean.threshold = 0.6;
 import initializeProject from './commands/basic/init';
 import generateFile from './commands/basic/generate';
 import asyncRender from './commands/basic/codesplit';
-import addPackage from './commands/basic/package';
+import addPlugin from './commands/basic/add';
 import setupProject from './commands/serve/setup';
 import dockerize from './commands/basic/docker';
 import deploy from './commands/deploy/herokuDeploy';
@@ -53,9 +53,9 @@ program
   .action(generateFile);
 
 program
-  .command('add:package')
-  .description('To add a new package to the project')
-  .action(addPackage);
+  .command('add')
+  .description('To add a new plugin to the project')
+  .action(addPlugin);
 
 program
   .command('serve')

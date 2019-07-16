@@ -9,7 +9,6 @@ import Spinner from '../../utils/spinner';
 /**
  * Adds PWA support to Nuxt-js boilerplate template
  *
- * @param {String} templateDir - Choose between client/server side
  * @returns {Promise<void>}
  */
 
