@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v1.6.1
+
+# Fix
+
+- Critical bug fix (Configure `@babel/polyfill`)
+
+## v1.6.0
+
+# Features
+
+- Revamped commands
+- Supports `surge.sh` for SPA deployments
+- Better refactored code-base
+- Automates the process of updating route config within `main.js` on generating components with `mevn generate`
+- Out of the box support to add new plugins and lazy load components as required
+- Use `mevn add` to install additional plugins on the go.
+
+
+# Breaking changes
+
+- Rename `mevn add:package` to `mevn add`
+
 ## v1.5.1
 
 # Fixes
