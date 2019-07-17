@@ -6,7 +6,6 @@ import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
-import Table from 'cli-table3';
 import validate from 'validate-npm-package-name';
 
 import copyDirSync from '../../utils/fs';
@@ -18,8 +17,6 @@ import {
 } from '../../utils/messages';
 import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
-
-let availableCommands = new Table();
 
 let projectName;
 let projectConfig;
@@ -38,48 +35,19 @@ const makeInitialCommit = async () => {
 };
 
 /**
- * Shows the list of available commands
+ * Logs the further actions to be performed
  *
  * @returns {Void}
  */
 
-const showCommandsList = () => {
-  console.log();
-  console.log(chalk.yellow(' Available commands:-'));
-
-  availableCommands.push(
-    {
-      'mevn init': 'To bootstrap a MEVN webapp',
-    },
-    {
-      'mevn serve': 'To launch client/server',
-    },
-    {
-      'mevn add:package': 'Add additional packages',
-    },
-    {
-      'mevn generate': 'To generate config files',
-    },
-    {
-      'mevn codesplit <name>': 'Lazy load components',
-    },
-    {
-      'mevn dockerize': 'Launch within docker containers',
-    },
-    {
-      'mevn deploy': 'Deploy the app to Heroku',
-    },
-    {
-      'mevn info': 'Prints local environment information',
-    },
-  );
-  console.log(availableCommands.toString());
-
+const showInstructions = () => {
   console.log();
   console.log();
   console.log(
     chalk.cyanBright(
-      ` Make sure that you've done ${chalk.greenBright(`cd ${projectName}`)}`,
+      ` Just fire in ${chalk.greenBright(
+        `cd ${projectName}`,
+      )} and ${chalk.greenBright('mevn serve')}`,
     ),
   );
 
@@ -203,7 +171,7 @@ const fetchTemplate = async templateBranch => {
     const renameToPath = path.join(dest, 'server');
     fs.renameSync(renameFromPath, renameToPath);
   }
-  showCommandsList();
+  showInstructions();
 };
 
 /**

@@ -52,7 +52,6 @@
   "homepage": "https://github.com/MadlabsInc/mevn-cli#readme",
   "dependencies": {
     "chalk": "^2.4.1",
-    "cli-table3": "^0.5.1",
     "commander": "^2.16.0",
     "didyoumean": "^1.2.1",
     "envinfo": "^7.3.1",
