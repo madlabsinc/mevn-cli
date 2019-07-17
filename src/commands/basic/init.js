@@ -24,14 +24,18 @@ let projectConfig;
 /**
  * Creates an initial local commit
  *
- * @returns {Promise<void>}
+ * @returns {Void}
  */
 
-const makeInitialCommit = async () => {
+const makeInitialCommit = () => {
+  // Navigate to the project directory
   process.chdir(projectName);
-  await execa('git', ['init']);
-  await execa('git', ['add', '.']);
-  await execa('git', ['commit', '-m', 'Initial commit', '-m', 'From Mevn-CLI']);
+
+  // Commands to be executed serially
+  const commands = ['init', 'add .', `commit -m "Init" -m "Mevn-CLI"`];
+
+  // Execute commands serially
+  commands.forEach(cmd => execa.sync('git', cmd.split(' ')));
 };
 
 /**
