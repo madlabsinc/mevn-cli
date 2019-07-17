@@ -76,6 +76,7 @@ const showInstructions = () => {
 const fetchTemplate = async templateBranch => {
   await validateInstallation('git help -g');
 
+  // Content to be written into docker-compose.yml at the project root
   const dockerComposeTemplate = [
     `version: '3'`,
     'services:',
