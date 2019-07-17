@@ -1,7 +1,6 @@
 'use strict';
 
 import execa from 'execa';
-import path from 'path';
 
 import Spinner from '../../utils/spinner';
 
@@ -17,9 +16,9 @@ import Spinner from '../../utils/spinner';
 const exec = async (cmd, spinner, successMsg) => {
   try {
     await execa.shell(cmd);
-    if (typeof spinner !== 'undefined') spinner.succeed(successMsg);
+    spinner.succeed(successMsg);
   } catch (err) {
-    if (typeof spinner !== 'undefined') spinner.fail('Something went wrong');
+    spinner.fail('Something went wrong');
     throw err;
   }
 };
@@ -31,6 +30,7 @@ const exec = async (cmd, spinner, successMsg) => {
 
 const deployToSurge = async () => {
   console.log();
+
   const installSpinner = new Spinner(`We're getting things ready for you`);
   installSpinner.start();
 
@@ -52,10 +52,10 @@ const deployToSurge = async () => {
   await exec('npm run build', spinner, 'Done');
 
   // Navigate to the dist directory
-  process.chdir(path.resolve(process.cwd(), '..', 'dist'));
+  process.chdir('dist');
 
   // Fire up the surge CLI
-  await exec('surge');
+  await execa('surge', { stdio: 'inherit' });
 };
 
 module.exports = deployToSurge;

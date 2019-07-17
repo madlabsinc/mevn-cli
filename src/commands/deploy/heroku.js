@@ -2,9 +2,7 @@
 
 import execa from 'execa';
 import inquirer from 'inquirer';
-import showBanner from 'node-banner';
 
-import { checkIfConfigFileExists } from '../../utils/messages';
 import { validateInstallation } from '../../utils/validate';
 
 /**
@@ -55,9 +53,6 @@ const deployWithDocker = async () => {
  */
 
 const deployToHeroku = async () => {
-  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
-  checkIfConfigFileExists();
-
   await Promise.all([
     await validateInstallation('heroku'),
     await validateInstallation('git help -g'),
