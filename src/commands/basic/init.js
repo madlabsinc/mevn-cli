@@ -43,11 +43,12 @@ const makeInitialCommit = async () => {
 const showInstructions = () => {
   console.log();
   console.log();
+  console.log(chalk.cyan.bold(` You're all set`));
   console.log(
-    chalk.cyanBright(
-      ` Just fire in ${chalk.greenBright(
+    chalk.cyan.bold(
+      ` Now, just type in ${chalk.green.bold(
         `cd ${projectName}`,
-      )} and ${chalk.greenBright('mevn serve')}`,
+      )} && ${chalk.green.bold('mevn serve')}`,
     ),
   );
 
