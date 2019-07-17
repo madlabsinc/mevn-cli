@@ -5,12 +5,11 @@ import execa from 'execa';
 import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import Spinner from '../../utils/spinner';
 import { isWin } from '../../utils/constants';
 import { validateInstallation } from '../../utils/validate';
 
 /**
- * Launch the webapp locally within a Docker container
+ * Launch multiple containers with docker-compose (client, server and mongo client)
  *
  * @returns {Promise<void>}
  */
@@ -20,22 +19,20 @@ const dockerize = async () => {
   checkIfConfigFileExists();
   await validateInstallation('docker');
 
-  const spinner = new Spinner(
-    'Sit back and relax while we set things up for you',
-  );
-  spinner.start();
   try {
-    if (isWin) {
-      await execa.shell('docker-compose up', { stdio: 'inherit' });
-    } else {
-      await execa.shell('sudo docker-compose up', { stdio: 'inherit' });
-    }
+    // Requires administrative (super-user) privilege
+    // Sets up the environment by pulling required images as in the config file
+    const { stdout } = await execa.shell(
+      `${isWin ? '' : 'sudo'} docker-compose up`,
+      { stdio: 'inherit' },
+    );
+
+    // Log the results to stdout
+    console.log(stdout);
   } catch (err) {
-    spinner.fail('Something went wrong');
     throw err;
   }
 
-  spinner.succeed('You are all set');
   console.log();
   console.log(
     chalk.green.bold(
