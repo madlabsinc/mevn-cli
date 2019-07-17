@@ -51,6 +51,7 @@
   },
   "homepage": "https://github.com/MadlabsInc/mevn-cli#readme",
   "dependencies": {
+    "@babel/polyfill": "^7.4.4",
     "chalk": "^2.4.1",
     "commander": "^2.16.0",
     "didyoumean": "^1.2.1",
@@ -66,7 +67,6 @@
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
-    "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.5.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.8.0",
