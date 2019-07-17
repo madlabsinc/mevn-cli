@@ -20,7 +20,7 @@ import asyncRender from './commands/basic/codesplit';
 import addPlugins from './commands/basic/add';
 import setupProject from './commands/serve/setup';
 import dockerize from './commands/basic/docker';
-import deploy from './commands/deploy/herokuDeploy';
+import deployConfig from './commands/deploy/deploy';
 import pkg from '../package';
 
 updateNotifier({ pkg: pkg }).notify();
@@ -70,7 +70,7 @@ program
 program
   .command('deploy')
   .description('To deploy the webapp to a cloud solution of choice')
-  .action(deploy);
+  .action(deployConfig);
 
 program
   .command('info')

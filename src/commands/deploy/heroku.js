@@ -54,7 +54,7 @@ const deployWithDocker = async () => {
  * @returns {Promise<void>}
  */
 
-const deploy = async () => {
+const deployToHeroku = async () => {
   await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
@@ -75,4 +75,4 @@ const deploy = async () => {
   mode === 'Deploy with Git' ? deployWithGit() : deployWithDocker();
 };
 
-module.exports = deploy;
+module.exports = deployToHeroku;
