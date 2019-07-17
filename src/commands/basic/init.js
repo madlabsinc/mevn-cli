@@ -87,7 +87,7 @@ const fetchTemplate = async templateBranch => {
     '',
     '  node-server:',
     '\tbuild: ./server',
-    '\tcommand: npm start',
+    '\tcommand: npm run serve',
     '\tports:',
     `\t  - "9000:9000"`,
     '\tlinks:',
@@ -202,7 +202,7 @@ const fetchTemplate = async templateBranch => {
 
   // Create a docker-compose.yml (config) file at the project root
   fs.writeFileSync(
-    'docker-compose.yml',
+    `./${projectName}/docker-compose.yml`,
     requireServer
       ? dockerComposeTemplate.join('\n')
       : dockerComposeTemplate.slice(0, 7).join('\n'),
