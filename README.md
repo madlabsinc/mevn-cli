@@ -14,10 +14,10 @@
 
 A CLI tool for getting started with the MEVN stack. It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
 
-- [Basic](https://github.com/madlabsinc/mevn-boilerplate)
-- [Pwa](https://github.com/madlabsinc/mevn-pwa-boilerplate)
-- [GraphQL](https://github.com/madlabsinc/mevn-graphql-boilerplate)
-- [Nuxt.js](https://github.com/madlabsinc/mevn-nuxt-boilerplate)
+- [Basic](http://github.com/madlabsinc/mevn-starter-templates/)
+- [Pwa](http://github.com/madlabsinc/mevn-starter-templates/tree/pwa)
+- [GraphQL](http://github.com/madlabsinc/mevn-starter-templates/tree/graphql)
+- [Nuxt.js](http://github.com/madlabsinc/mevn-starter-templates/tree/nuxt)
 
 ## Installation
 
