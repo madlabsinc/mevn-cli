@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Out of the box support to add new plugins and lazy load components as required
 - Use `mevn add` to install additional plugins on the go.
 
+# Internal changes
+
+- Switch to a single repository for the boilerplate templates: [mevn-starter-kit](http://github.com/madlabsinc/mevn-starter-templates)
+
 
 # Breaking changes
 
