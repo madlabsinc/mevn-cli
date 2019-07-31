@@ -76,7 +76,7 @@ Before contributing to this repository, please first discuss the change you wish
 > `npm link` creates a symlink in the global folder making the `mevn` command globally available within your local development environment
 
 ### Why should I contribute?
-Contributing helps people and makes the world simply a better place, without contributors this project would cease to exist.
+Contributing helps people and makes the world simply a better place, without contributors this project would not cease to exist.
 
 ### What if I cannot code or do not like it?
 You can always write documentation, most repositories lack in it.
