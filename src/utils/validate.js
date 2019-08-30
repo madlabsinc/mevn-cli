@@ -18,14 +18,12 @@ const spinner = new Spinner();
  */
 
 const dependencyIsInstalled = async dependency => {
-  let status;
   try {
     await execa.shell(dependency);
-    status = true;
+    return true;
   } catch (err) {
-    status = false;
+    return false;
   }
-  return status;
 };
 
 /**
@@ -39,30 +37,28 @@ const validateInstallation = async dependency => {
   const status = await dependencyIsInstalled(dependency);
 
   if (!status) {
-    await inquirer
-      .prompt([
-        {
-          type: 'confirm',
-          name: 'installDependency',
-          message: `Sorry, ${dependency} is not installed on your system, Do you want to install it?`,
-        },
-      ])
-      .then(async choice => {
-        if (choice.installDependency) {
-          spinner.text = `Installing ${dependency}`;
-          spinner.start();
+    const { depToInstall } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'depToInstall',
+        message: `Sorry, ${dependency} is not installed on your system, Do you want to install it?`,
+      },
+    ]);
 
-          if (dependency === 'git help -g') {
-            await installGit();
-          } else if (dependency === 'docker') {
-            await installDocker();
-          } else {
-            await installHerokuCLI();
-          }
-        } else {
-          dependencyNotInstalled(dependency);
-        }
-      });
+    if (depToInstall) {
+      spinner.text = `Installing ${dependency}`;
+      spinner.start();
+
+      if (dependency === 'git help -g') {
+        await installGit();
+      } else if (dependency === 'docker') {
+        await installDocker();
+      } else {
+        await installHerokuCLI();
+      }
+    } else {
+      dependencyNotInstalled(dependency);
+    }
   }
 };
 
