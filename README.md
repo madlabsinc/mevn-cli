@@ -6,7 +6,7 @@
 	<a href=""https://travis-ci.com/madlabsinc/mevn-cli><img src="https://travis-ci.com/madlabsinc/mevn-cli.svg?branch=master" alt="Build Status" /></a>
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/v/mevn-cli" alt="npm version" /></a>
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/dm/mevn-cli" alt="Downloads" /></a>
-	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
+	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><a href="https://opencollective.com/mevn-cli" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/mevn-cli/all/badge.svg?label=financial+contributors" /></a> <img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
 	<a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" alt="code style: prettier" /></a>
 	<a href="https://github.com/vuejs/awesome-vue"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-Vue" /></a>
 	<a href="https://github.com/ulivz/awesome-vuepress"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-VuePress" /></a>
@@ -91,6 +91,36 @@ Nothing! You're done and ready to get coding!
 | --- | --- |
 | -V, --version | Check CLI version |
 | -h, --help | Get help and check usage |
+
+## Contributors
+
+### Code Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="https://github.com/madlabsinc/mevn-cli/graphs/contributors"><img src="https://opencollective.com/mevn-cli/contributors.svg?width=890&button=false" /></a>
+
+### Financial Contributors
+
+Become a financial contributor and help us sustain our community. [[Contribute](https://opencollective.com/mevn-cli/contribute)]
+
+#### Individuals
+
+<a href="https://opencollective.com/mevn-cli"><img src="https://opencollective.com/mevn-cli/individuals.svg?width=890"></a>
+
+#### Organizations
+
+Support this project with your organization. Your logo will show up here with a link to your website. [[Contribute](https://opencollective.com/mevn-cli/contribute)]
+
+<a href="https://opencollective.com/mevn-cli/organization/0/website"><img src="https://opencollective.com/mevn-cli/organization/0/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/1/website"><img src="https://opencollective.com/mevn-cli/organization/1/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/2/website"><img src="https://opencollective.com/mevn-cli/organization/2/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/3/website"><img src="https://opencollective.com/mevn-cli/organization/3/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/4/website"><img src="https://opencollective.com/mevn-cli/organization/4/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/5/website"><img src="https://opencollective.com/mevn-cli/organization/5/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/6/website"><img src="https://opencollective.com/mevn-cli/organization/6/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/7/website"><img src="https://opencollective.com/mevn-cli/organization/7/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/8/website"><img src="https://opencollective.com/mevn-cli/organization/8/avatar.svg"></a>
+<a href="https://opencollective.com/mevn-cli/organization/9/website"><img src="https://opencollective.com/mevn-cli/organization/9/avatar.svg"></a>
 
 ## License
 
