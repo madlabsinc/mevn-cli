@@ -96,7 +96,7 @@ Nothing! You're done and ready to get coding!
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contribute. [[Contribute](https://github.com/madlabsinc/mevn-cli/wiki/Contributing-Guidelines)].
 <a href="https://github.com/madlabsinc/mevn-cli/graphs/contributors"><img src="https://opencollective.com/mevn-cli/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
