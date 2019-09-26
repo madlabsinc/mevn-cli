@@ -16,7 +16,7 @@
 	<a href='https://www.buymeacoffee.com/jamesgeorge007' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png' border='0' alt='Buy Me a Coffee' /></a>
 </p>
 
-A CLI tool for getting started with the MEVN stack. It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
+A CLI tool for getting started with the MEVN stack.The acronym “MEVN” stands for “MongoDB Express.js VueJS Node.js”.It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
 
 - [Basic](http://github.com/madlabsinc/mevn-starter-templates/)
 - [Pwa](http://github.com/madlabsinc/mevn-starter-templates/tree/pwa)
