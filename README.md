@@ -59,8 +59,11 @@ These commands are used to generate the code necessary for running a server.
 ## Features
 
 - This tool provides an easy way to build a web app by providing a super simple boilerplate project and a reliable boilerplate pwa to build upon.  
+
 - Its written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.
-- The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code.  
+
+- The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code. 
+
 - Mevn-Cli will automate the files and generate the codes necessary to start and run a server, API etc
 
 
@@ -79,12 +82,15 @@ Before contributing to this repository, please first discuss the change you wish
 > After executing ```npm link``` , the mevn-cli command is available within your terminal globally.
 
 ### Why should I contribute?
+
 Contributing helps people and makes the world simply a better place, without contributors this project would cease to exist.
 
 ### What if I cannot code or do not like it?
+
 You can always write documentation, most repositories lack in it.
 
 ### What is next?
+
 Nothing! Your done and ready to get coding!
 
 
