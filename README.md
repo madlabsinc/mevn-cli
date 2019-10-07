@@ -78,6 +78,35 @@ Before contributing to this repository, please first discuss the change you wish
 ### Why should I contribute?
 Contributing helps people and makes the world simply a better place, without contributors this project would cease to exist.
 
+### How should I write a commit message?
+This project uses [Commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint) to check if the commit messages meet the [conventional commit format](https://www.conventionalcommits.org/en/v1.0.0/).
+The full pattern is:
+```sh
+type(scope?): subject #scope is optional
+
+body? #body is optional
+
+footer? #footer is optional
+```
+
+Following that pattern, your commit messages should look like these:
+```sh
+feat: activate open collective
+```
+
+```sh
+chore: correct typo
+
+It should be "guest" and not "gest"
+```
+
+```sh
+refactor(cli): drop support for node 6
+
+BREAKING CHANGE: you will need to update your node version to keep using this CLI
+This closes #123
+```
+
 ### What if I cannot code or do not like it?
 You can always write documentation, most repositories lack in it.
 
