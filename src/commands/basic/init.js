@@ -8,7 +8,7 @@ import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 import validate from 'validate-npm-package-name';
 
-import { copyDirSync } from '../../utils/fs';
+import { copyDirSync, readFileAsync, writeFileAsync } from '../../utils/fs';
 import { isWin } from '../../utils/constants';
 import {
   directoryExistsInPath,
@@ -121,7 +121,7 @@ const fetchTemplate = async templateBranch => {
 
   fetchSpinner.stop();
 
-  fs.writeFileSync(
+  await writeFileAsync(
     `./${projectName}/mevn.json`,
     projectConfig.join('\n').toString(),
   );
@@ -138,13 +138,12 @@ const fetchTemplate = async templateBranch => {
 
     // Write to mevn.json in order to keep track while installing dependencies
     if (requirePwaSupport) {
-      let configFile = JSON.parse(
-        fs.readFileSync(`./${projectName}/mevn.json`).toString(),
-      );
-      configFile['isPwa'] = true;
+      let configFile = await readFileAsync(`./${projectName}/mevn.json`);
+      let configFileContent = JSON.parse(configFile.toString());
+      configFileContent['isPwa'] = true;
       fs.writeFileSync(
         `./${projectName}/mevn.json`,
-        JSON.stringify(configFile),
+        JSON.stringify(configFileContent),
       );
     }
 
