@@ -1,5 +1,13 @@
 import fs from 'fs';
 import path from 'path';
+import { promisify } from 'util';
+
+/**
+ *  Convert into async variants
+ */
+
+const readFileAsync = promisify(fs.readFile);
+const writeFileAsync = promisify(fs.writeFile);
 
 /**
  * Copy files
@@ -47,4 +55,4 @@ const copyDirSync = (source, target) => {
   }
 };
 
-module.exports = copyDirSync;
+module.exports = { copyDirSync, readFileAsync, writeFileAsync };
