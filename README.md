@@ -10,6 +10,7 @@
 	<a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" alt="code style: prettier" /></a>
 	<a href="https://github.com/vuejs/awesome-vue"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-Vue" /></a>
 	<a href="https://github.com/ulivz/awesome-vuepress"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-VuePress" /></a>
+	<a title="MadeWithVueJs.com Shield" href="https://madewithvuejs.com/p/mevn-cli/shield-link"> <img src="https://madewithvuejs.com/storage/repo-shields/1823-shield.svg"/></a>
 </p>
 
 <p align="center">
