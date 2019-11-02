@@ -62,7 +62,7 @@ const showInstructions = () => {
   );
 
   let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
-  execa.shellSync(`${removeCmd} ${path.join(projectName, '.git')}`);
+  execa(`${removeCmd} ${path.join(projectName, '.git')}`, { shell: true });
   makeInitialCommit();
 };
 

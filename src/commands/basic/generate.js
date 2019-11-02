@@ -102,7 +102,7 @@ const generateFile = async () => {
 
     let removeCmd = isWin ? 'del' : 'rm';
     if (fs.existsSync('./default.js')) {
-      execa.shellSync(`${removeCmd} default.js`);
+      execa(`${removeCmd} default.js`, { shell: true });
     }
 
     if (fileType === 'config') {
