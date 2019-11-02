@@ -22,10 +22,10 @@ const dockerize = async () => {
   try {
     // Requires administrative (super-user) privilege
     // Sets up the environment by pulling required images as in the config file
-    const { stdout } = await execa.shell(
-      `${isWin ? '' : 'sudo'} docker-compose up`,
-      { stdio: 'inherit' },
-    );
+    const { stdout } = await execa(`${isWin ? '' : 'sudo'} docker-compose up`, {
+      stdio: 'inherit',
+      shell: true,
+    });
 
     // Log the results to stdout
     console.log(stdout);

@@ -88,7 +88,10 @@ const serveProject = async (projectTemplate, templateDir) => {
   );
 
   launchSpinner.start();
-  Promise.all([execa.shell('npm run serve'), open(`${rootPath}:${port}`)]);
+  Promise.all([
+    execa('npm run serve', { shell: true }),
+    open(`${rootPath}:${port}`),
+  ]);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };
 
