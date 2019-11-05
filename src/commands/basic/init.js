@@ -67,6 +67,92 @@ const showInstructions = () => {
 };
 
 /**
+ * Fetch the user reqired test runner
+ *
+ * @param {String} template
+ * @returns {Promise<Void>}
+ */
+const fetchTestRunner = async template => {
+  const { testRunner } = await inquirer.prompt([
+    {
+      name: 'testRunner',
+      type: 'list',
+      message: 'Please select your test framework for your project',
+      choices: ['none', 'ava', 'jest', 'mocha'],
+    },
+  ]);
+  if (testRunner === 'none') {
+    return;
+  }
+  if (testRunner === 'ava' && template === 'nuxt') {
+    return;
+  }
+
+  process.chdir(`${projectName}/client/`);
+
+  const fetchSpinner = new Spinner(`Installing the ${testRunner}`);
+  fetchSpinner.start();
+  try {
+    await execa('npm', ['install', '--save-dev', testRunner]);
+  } catch (err) {
+    fetchSpinner.fail('Something went wrong');
+    throw err;
+  }
+  fetchSpinner.stop();
+
+  //Make npm script 'test'
+  let packageJsonFile = JSON.parse(
+    fs.readFileSync('./package.json').toString(),
+  );
+  packageJsonFile.scripts['test'] = testRunner;
+  fs.writeFileSync('./package.json', JSON.stringify(packageJsonFile, null, 2));
+
+  //Create config file for testrunners
+  const testFolderName = template === 'nuxt' ? 'test' : 'tests';
+
+  switch (testRunner) {
+    case 'ava': {
+      const avaConfig = `export default {
+  files: ['${testFolderName}/**/*']
+};`;
+      fs.writeFileSync('./ava.config.js', avaConfig);
+      break;
+    }
+    case 'jest': {
+      const jestConfig = `module.exports = {
+  verbose: true,
+  testMatch: ["${testFolderName}/**/*.test.js"]
+};`;
+      fs.writeFileSync('./jest.config.js', jestConfig);
+      break;
+    }
+    case 'mocha': {
+      const mochaConfig = `'use strict';
+
+// Here's a JavaScript-based config file.
+// If you need conditional logic, you might want to use this type of config.
+// Otherwise, JSON or YAML is recommended.
+
+module.exports = {
+  diff: true,
+  extension: ['js'],
+  opts: false,
+  package: './package.json',
+  reporter: 'spec',
+  slow: 75,
+  timeout: 2000,
+  ui: 'bdd',
+  'watch-files': ['lib/**/*.js', '${testFolderName}/**/*.js'],
+  'watch-ignore': ['lib/vendor']
+};`;
+      fs.writeFileSync('./.mocharc.js', mochaConfig);
+      break;
+    }
+  }
+  process.chdir('../../');
+};
+
+/**
  * Fetch the boilerplate template of choice
  *
  * @param {String} template - The branch which corresponds to the respective boilerplate template
@@ -208,6 +294,9 @@ const fetchTemplate = async templateBranch => {
       ? dockerComposeTemplate.join('\n')
       : dockerComposeTemplate.slice(0, 7).join('\n'),
   );
+
+  //Show user prompt for chosing test runner
+  await fetchTestRunner(templateBranch);
 
   // Show up initial instructions to the user
   showInstructions();
