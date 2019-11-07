@@ -1,14 +1,10 @@
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import UserAuth from '../models/user_schema';
-
+import FacebookKeys from '../../config/Facebook'
 passport.use(
   new FacebookStrategy(
-    {
-      clientID: 'FACEBOOK_APP_ID',
-      clientSecret: 'FACEBOOK_APP_SECRET',
-      callbackURL: 'http://www.example.com/auth/facebook/callback',
-    },
+    FacebookKeys,
     (accessToken, refreshToken, profile, done) => {
       UserAuth.findOrCreate({ facebookId: profile.id }, (err, user) => {
         if (err) {

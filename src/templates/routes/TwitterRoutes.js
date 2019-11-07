@@ -1,14 +1,10 @@
 import passport from 'passport';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
 import UserAuth from '../models/user_schema';
-
+import TwitterKeys from '../../config/Twitter'
 passport.use(
   new TwitterStrategy(
-    {
-      consumerKey: 'TWITTER_CONSUMER_KEY',
-      consumerSecret: 'TWITTER_CONSUMER_SECRET',
-      callbackURL: 'http://www.example.com/auth/twitter/callback',
-    },
+    TwitterKeys,
     (token, tokenSecret, profile, done) => {
       UserAuth.findOrCreate({ twitterId: profile.id }, (err, user) => {
         if (err) {
