@@ -11,6 +11,7 @@
 	<a href="https://github.com/vuejs/awesome-vue"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-Vue" /></a>
 	<a href="https://github.com/ulivz/awesome-vuepress"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-VuePress" /></a>
 	<a title="MadeWithVueJs.com Shield" href="https://madewithvuejs.com/p/mevn-cli/shield-link"> <img src="https://madewithvuejs.com/storage/repo-shields/1823-shield.svg"/></a>
+	<a title="Chat on Telegram" href="https://t.me/mevn_cli"> <img src="https://img.shields.io/badge/chat-Telegram-blueviolet?logo=Telegram"/></a>
 </p>
 
 <p align="center">
