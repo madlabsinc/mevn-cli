@@ -1,5 +1,6 @@
 <p align="center">
 	<a href="https://mevn.madhacks.co"><img src="https://i.imgur.com/NV51t84.jpg" width="350px" /></a>
+	<hr />
 	<p align="center"> Light speed setup for MEVN stack based web-apps </p>
 </p>
 
