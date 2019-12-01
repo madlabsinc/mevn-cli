@@ -24,7 +24,7 @@
 
 **Chat: _[Telegram](https://t.me/teachcode_cli)_**
 
-**Donate: _[PayPal](https://www.paypal.me/jamesgeorge007), [Patreon](https://www.patreon.com/jamesgeorge007)_**
+**Donate: _[PayPal](https://www.paypal.me/jamesgeorge007), _[Open Collective](https://www.opencollective.com/mevn-cli), [Patreon](https://www.patreon.com/jamesgeorge007)_**
 
 A CLI tool for getting started with the MEVN stack. The acronym “MEVN” stands for “MongoDB Express.js VueJS Node.js”. It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
 
