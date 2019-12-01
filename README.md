@@ -22,7 +22,7 @@
 
 ---
 
-**Chat: _[Telegram](https://t.me/teachcode_cli)_**
+**Chat: _[Telegram](https://t.me/mevn_cli)_**
 
 **Donate: _[PayPal](https://www.paypal.me/jamesgeorge007), _[Open Collective](https://www.opencollective.com/mevn-cli), [Patreon](https://www.patreon.com/jamesgeorge007)_**
 
