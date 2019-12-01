@@ -7,11 +7,12 @@
 	<a href="https://travis-ci.com/madlabsinc/mevn-cli"><img src="https://travis-ci.com/madlabsinc/mevn-cli.svg?branch=master" alt="Build Status" /></a>
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/v/mevn-cli" alt="npm version" /></a>
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/dm/mevn-cli" alt="Downloads" /></a>
-	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><a href="https://opencollective.com/mevn-cli" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/mevn-cli/all/badge.svg?label=financial+contributors" /></a> <img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
+	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><a href="https://opencollective.com/mevn-cli" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/mevn-cli/all/badge.svg?label=financial+contributors" /></a>
+	<a href="https://mevn.madlabs.xyz/guide/contributing.html#how-do-i-contribute"><img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
 	<a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" alt="code style: prettier" /></a>
 	<a href="https://github.com/vuejs/awesome-vue"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-Vue" /></a>
 	<a href="https://github.com/ulivz/awesome-vuepress"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-VuePress" /></a>
-	<a title="MadeWithVueJs.com Shield" href="https://madewithvuejs.com/p/mevn-cli/shield-link"> <img src="https://madewithvuejs.com/storage/repo-shields/1823-shield.svg"/></a>
+	<a title="MadeWithVueJs.com Shield" href="https://madewithvuejs.com/p/mevn-cli/shield-link"><img src="https://madewithvuejs.com/storage/repo-shields/1823-shield.svg"/></a>
 	<a title="Chat on Telegram" href="https://t.me/mevn_cli"> <img src="https://img.shields.io/badge/chat-Telegram-blueviolet?logo=Telegram"/></a>
 	<a href="https://twitter.com/intent/follow?screen_name=mevn_cli"><img src="https://img.shields.io/twitter/follow/mevn_cli.svg?style=social&label=Follow%20@mevn_cli" alt="Follow on Twitter"></a>
 </p>
