@@ -240,6 +240,15 @@ const initializeProject = async appName => {
     directoryExistsInPath(appName);
   }
 
+  if (fs.existsSync('./mevn.json')) {
+    console.log(
+      chalk.yellow.bold(
+        `It seems that you're already within a valid MEVN stack based project`,
+      ),
+    );
+    process.exit(1);
+  }
+
   projectName = appName;
 
   const { template } = await inquirer.prompt([
