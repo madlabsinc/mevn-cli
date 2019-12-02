@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`show up CLI version information 1`] = `"1.6.2"`;
+exports[`show up CLI version information 1`] = `"1.6.5"`;
 
-exports[`show up CLI version information 2`] = `"1.6.2"`;
+exports[`show up CLI version information 2`] = `"1.6.5"`;
 
 exports[`show up help information on passing in the respective options 1`] = `
 "
