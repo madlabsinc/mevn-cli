@@ -4,7 +4,7 @@ title: 'Available Commands'
 
 # Available Commands
 
- `Mevn-CLI` offers the following set of commands:-
+ `MEVN-CLI` offers the following set of commands:-
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
