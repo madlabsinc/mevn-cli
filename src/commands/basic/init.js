@@ -221,7 +221,7 @@ const fetchTemplate = async templateBranch => {
  */
 
 const initializeProject = async appName => {
-  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
+  await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
 
   const hasMultipleProjectNameArgs =
     process.argv[4] && !process.argv[4].startsWith('-');
@@ -241,9 +241,10 @@ const initializeProject = async appName => {
   }
 
   if (fs.existsSync('./mevn.json')) {
+    console.log();
     console.log(
-      chalk.yellow.bold(
-        `It seems that you're already within a valid MEVN stack based project`,
+      chalk.cyan.bold(
+        ` It seems that you're already within a valid MEVN stack based project`,
       ),
     );
     process.exit(1);
