@@ -32,11 +32,7 @@ const makeInitialCommit = () => {
   process.chdir(projectName);
 
   // Commands to be executed serially
-  const commands = [
-    'init',
-    'add .',
-    `commit -m "Init" -m "bootstrapped by MEVN-CLI"`,
-  ];
+  const commands = ['init', 'add .', `commit -m "Init" -m "MEVN-CLI"`];
 
   // Execute commands serially
   commands.forEach(cmd => execa.sync('git', cmd.split(' ')));
