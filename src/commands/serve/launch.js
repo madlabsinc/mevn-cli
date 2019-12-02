@@ -86,6 +86,7 @@ const serveProject = async (projectTemplate, templateDir) => {
   } else {
     port = projectTemplate === 'graphql' ? '9000/graphql' : '9000/api';
   }
+
   try {
     await execa('npm', ['install']);
   } catch (err) {
