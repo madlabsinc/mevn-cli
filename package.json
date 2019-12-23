@@ -13,12 +13,12 @@
   "scripts": {
     "build": "gulp clean && babel src --out-dir lib --copy-files && gulp copy",
     "build:watch": "babel --watch src --out-dir lib --copy-files",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
     "pretest": "npm run lint",
     "test": "jest",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint --fix ./src",
     "postinstall": "opencollective-postinstall || true"
   },
   "husky": {
