@@ -13,6 +13,7 @@
   "scripts": {
     "build": "gulp clean && babel src --out-dir lib --copy-files && gulp copy",
     "build:watch": "babel --watch src --out-dir lib --copy-files",
+    "pretest": "npm run lint",
     "test": "jest",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
