@@ -28,7 +28,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.js": "npm run lint"
+    "*.js": "npm run lint"
   },
   "repository": {
     "type": "git",
