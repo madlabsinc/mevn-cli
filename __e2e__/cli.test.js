@@ -10,14 +10,14 @@ test('shows up help if no arguments were passed', () => {
 
 test('show up help information on passing in the respective options', () => {
   ['-h', '--help'].forEach(op => {
-    let { stdout } = run([op]);
+    const { stdout } = run([op]);
     expect(stdout).toMatchSnapshot();
   });
 });
 
 test('show up CLI version information', () => {
   ['-V', '--version'].forEach(op => {
-    let { stdout } = run([op]);
+    const { stdout } = run([op]);
     expect(stdout).toMatchSnapshot();
   });
 });

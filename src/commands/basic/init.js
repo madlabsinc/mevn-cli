@@ -32,7 +32,7 @@ const makeInitialCommit = () => {
   process.chdir(projectName);
 
   // Commands to be executed serially
-  const commands = ['init', 'add .', `commit -m "Init" -m "Mevn-CLI"`];
+  const commands = ['init', 'add .', `commit -m "Init" -m "MEVN-CLI"`];
 
   // Execute commands serially
   commands.forEach(cmd => execa.sync('git', cmd.split(' ')));
@@ -310,7 +310,7 @@ const fetchTemplate = async templateBranch => {
  */
 
 const initializeProject = async appName => {
-  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
+  await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
 
   const hasMultipleProjectNameArgs =
     process.argv[4] && !process.argv[4].startsWith('-');
@@ -327,6 +327,16 @@ const initializeProject = async appName => {
 
   if (fs.existsSync(appName)) {
     directoryExistsInPath(appName);
+  }
+
+  if (fs.existsSync('./mevn.json')) {
+    console.log();
+    console.log(
+      chalk.cyan.bold(
+        ` It seems that you're already within a valid MEVN stack based project`,
+      ),
+    );
+    process.exit(1);
   }
 
   projectName = appName;

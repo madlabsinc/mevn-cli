@@ -23,7 +23,7 @@ import dockerize from './commands/basic/docker';
 import deployConfig from './commands/deploy/deploy';
 import pkg from '../package';
 
-updateNotifier({ pkg: pkg }).notify();
+updateNotifier({ pkg }).notify();
 
 const suggestCommands = cmd => {
   const availableCommands = program.commands.map(c => c._name);
