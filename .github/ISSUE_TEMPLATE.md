@@ -1,4 +1,4 @@
-<!-- Before creating an issue please make sure you are using the latest version of webpack. -->
+<!-- Before creating an issue please make sure you are using the latest version of mevn-cli -->
 
 **Do you want to request a *feature* or report a *bug*?**
 
