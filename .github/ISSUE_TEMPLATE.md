@@ -1,6 +1,6 @@
 <!-- Before creating an issue please make sure you are using the latest version of webpack. -->
 
-**Do you want to request a *feature* or report a *bug*?** -->
+**Do you want to request a *feature* or report a *bug*?**
 
 ## What is the current behavior?
 
