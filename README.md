@@ -1,21 +1,31 @@
 <p align="center">
-	<a href="https://mevn.madhacks.co"><img src="https://i.imgur.com/NV51t84.jpg" width="350px" /></a>
+	<a href="https://mevn.madlabs.xyz"><img src="https://i.imgur.com/NV51t84.jpg" width="350px" /></a>
+	<p align="center"> Light speed setup for MEVN stack based web-apps </p>
 </p>
 
 <p align="center">
 	<a href="https://travis-ci.com/madlabsinc/mevn-cli"><img src="https://travis-ci.com/madlabsinc/mevn-cli.svg?branch=master" alt="Build Status" /></a>
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/v/mevn-cli" alt="npm version" /></a>
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/dm/mevn-cli" alt="Downloads" /></a>
-	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><a href="https://opencollective.com/mevn-cli" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/mevn-cli/all/badge.svg?label=financial+contributors" /></a> <img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
+	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><a href="https://opencollective.com/mevn-cli" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/mevn-cli/all/badge.svg?label=financial+contributors" /></a>
+	<a href="https://mevn.madlabs.xyz/guide/contributing.html#how-do-i-contribute"><img src="https://img.shields.io/badge/PRs%20-welcome-brightgreen.svg" alt="PRs Welcome" /></a>
 	<a href="https://github.com/prettier/prettier"><img src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg" alt="code style: prettier" /></a>
 	<a href="https://github.com/vuejs/awesome-vue"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-Vue" /></a>
 	<a href="https://github.com/ulivz/awesome-vuepress"><img src="https://awesome.re/mentioned-badge.svg" alt="Mentioned in Awesome-VuePress" /></a>
-	<a title="MadeWithVueJs.com Shield" href="https://madewithvuejs.com/p/mevn-cli/shield-link"> <img src="https://madewithvuejs.com/storage/repo-shields/1823-shield.svg"/></a>
+	<a title="MadeWithVueJs.com Shield" href="https://madewithvuejs.com/p/mevn-cli/shield-link"><img src="https://madewithvuejs.com/storage/repo-shields/1823-shield.svg"/></a>
+	<a title="Chat on Telegram" href="https://t.me/mevn_cli"> <img src="https://img.shields.io/badge/chat-Telegram-blueviolet?logo=Telegram"/></a>
+	<a href="https://twitter.com/intent/follow?screen_name=mevn_cli"><img src="https://img.shields.io/twitter/follow/mevn_cli.svg?style=social&label=Follow%20@mevn_cli" alt="Follow on Twitter"></a>
 </p>
 
 <p align="center">
 	<a href='https://www.buymeacoffee.com/jamesgeorge007' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png' border='0' alt='Buy Me a Coffee' /></a>
 </p>
+
+---
+
+**Chat: _[Telegram](https://t.me/mevn_cli)_**
+
+**Donate: [PayPal](https://www.paypal.me/jamesgeorge007), _[Open Collective](https://www.opencollective.com/mevn-cli), [Patreon](https://www.patreon.com/jamesgeorge007)_**
 
 A CLI tool for getting started with the MEVN stack. The acronym “MEVN” stands for “MongoDB Express.js VueJS Node.js”. It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
 
@@ -28,7 +38,7 @@ A CLI tool for getting started with the MEVN stack. The acronym “MEVN” stand
 
 ### Prerequisites
 
-- [**npm**](https://www.npmjs.com/) it is a package manager for the JavaScript programming language.
+- [**npm**](https://www.npmjs.com/) is a package manager for the JavaScript programming language.
 - [**node.js**](https://nodejs.org/en/) is an open-source, cross-platform JavaScript run-time environment that executes JavaScript code outside of a browser.
 - [**git**](https://git-scm.com/) is a version control system for tracking changes in computer files and coordinating work on those files among multiple people. It is primarily used for source code management in software development.
 
@@ -41,7 +51,7 @@ mevn init <appname>
 
 ### Available Commands
 
- `Mevn-CLI` offers the following set of commands:-
+ `MEVN-CLI` offers the following set of commands:-
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
@@ -57,9 +67,9 @@ mevn init <appname>
 ## Features
 
 - It allows Developers to build webapps with ease in which all the local environment setup is being taken care of. All he/she has to do is to focus on writing actual code.
-- Its written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.
+- It's written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code.  
-- Mevn-CLI simplifies the entire workflow by generating boilerplate code as required, automating redundant tasks etc.
+- MEVN-CLI simplifies the entire workflow by generating boilerplate code as required, automating redundant tasks, etc.
 
 ## Contributing
 

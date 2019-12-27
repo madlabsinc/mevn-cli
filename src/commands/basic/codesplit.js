@@ -17,7 +17,7 @@ import {
  */
 
 const asyncRender = async () => {
-  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
+  await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   await checkIfConfigFileExists();
 
   // Exit for the case of Nuxt-js boilerplate template

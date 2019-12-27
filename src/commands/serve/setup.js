@@ -16,7 +16,7 @@ import serveProject from './launch';
  */
 
 const setupProject = async () => {
-  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
+  await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   let templateDir;
@@ -27,13 +27,13 @@ const setupProject = async () => {
   const serverDirExists = fs.existsSync(path.resolve(process.cwd(), 'server'));
 
   if (serverDirExists) {
-    const userChoice = await inquirer.prompt({
+    const { dir } = await inquirer.prompt({
       name: 'dir',
       type: 'list',
       message: 'Choose from below',
       choices: ['client', 'server'],
     });
-    templateDir = userChoice.dir;
+    templateDir = dir;
   } else {
     templateDir = 'client';
   }

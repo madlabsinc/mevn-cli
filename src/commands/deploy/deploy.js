@@ -13,7 +13,7 @@ import deployToHeroku from './heroku';
  */
 
 const deployConfig = async () => {
-  await showBanner('Mevn CLI', 'Light speed setup for MEVN stack based apps.');
+  await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   if (fs.existsSync(path.resolve(process.cwd(), 'server'))) {
