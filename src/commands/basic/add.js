@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 import path from 'path';
 import showBanner from 'node-banner';
 
@@ -71,15 +71,18 @@ const addPlugins = async () => {
     return;
   }
 
-  const { plugins } = await inquirer.prompt({
-    type: 'checkbox',
-    name: 'plugins',
+  const { pluginChoices } = await prompts({
+    type: 'multiselect',
+    name: 'pluginChoices',
     message: 'Select the plugins to install',
     choices: installablePlugins,
     default: [
       installablePlugins[Math.floor(Math.random() * installablePlugins.length)],
     ],
   });
+
+  // The index of choice in the array will be used as its value if not specified.
+  const plugins = Array.from(pluginChoices, item => installablePlugins[item]);
 
   // Vuetify bindings for Nuxt-js
   if (template === 'Nuxt-js') plugins.push('@nuxtjs/vuetify@next');
