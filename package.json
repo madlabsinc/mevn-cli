@@ -63,6 +63,7 @@
     "open": "^6.3.0",
     "opencollective-postinstall": "^2.0.2",
     "ora": "^3.4.0",
+    "prompts": "^2.3.0",
     "update-notifier": "^3.0.0",
     "validate-npm-package-name": "^3.0.0"
   },
