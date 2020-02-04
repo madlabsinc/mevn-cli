@@ -2,7 +2,7 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 import showBanner from 'node-banner';
 import path from 'path';
 
@@ -30,9 +30,9 @@ const generateComponent = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  let { componentName } = await inquirer.prompt([
+  let { componentName } = await prompts([
     {
-      type: 'input',
+      type: 'text',
       name: 'componentName',
       message: 'Kindly provide a name for the new component',
       validate: validateInput,
