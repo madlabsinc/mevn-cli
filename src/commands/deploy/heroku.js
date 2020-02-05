@@ -1,7 +1,7 @@
 'use strict';
 
 import execa from 'execa';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 
 import { validateInstallation } from '../../utils/validate';
 
@@ -58,11 +58,14 @@ const deployToHeroku = async () => {
     await validateInstallation('git help -g'),
   ]);
 
-  const { mode } = await inquirer.prompt([
+  const { mode } = await prompts([
     {
       name: 'mode',
-      type: 'list',
-      choices: ['Deploy with Git', 'Deploy with Docker'],
+      type: 'select',
+      choices: [
+        { title: 'Deploy with Git', value: 'Deploy with Git' },
+        { title: 'Deploy with Docker', value: 'Deploy with Docker' },
+      ],
       message: 'Choose your preferred mode',
     },
   ]);
