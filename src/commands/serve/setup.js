@@ -1,7 +1,7 @@
 'use strict';
 
 import fs from 'fs';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 import path from 'path';
 import showBanner from 'node-banner';
 
@@ -27,11 +27,14 @@ const setupProject = async () => {
   const serverDirExists = fs.existsSync(path.resolve(process.cwd(), 'server'));
 
   if (serverDirExists) {
-    const { dir } = await inquirer.prompt({
+    const { dir } = await prompts({
       name: 'dir',
-      type: 'list',
+      type: 'select',
       message: 'Choose from below',
-      choices: ['client', 'server'],
+      choices: [
+        { title: 'client', value: 'client' },
+        { title: 'server', value: 'server' },
+      ],
     });
     templateDir = dir;
   } else {
