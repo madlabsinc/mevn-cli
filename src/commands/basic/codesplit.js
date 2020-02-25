@@ -2,7 +2,7 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 import showBanner from 'node-banner';
 
 import {
@@ -53,12 +53,14 @@ const asyncRender = async () => {
   }
 
   // Allow the user to choose his component of choice
-  const { componentName } = await inquirer.prompt({
-    name: 'componentName',
-    type: 'list',
+  const { componentNameChoice } = await prompts({
+    name: 'componentNameChoice',
+    type: 'select',
     choices: availableComponents,
     message: 'Choose from below',
   });
+  // The index of choice in the array will be used as its value if not specified.
+  const componentName = availableComponents[componentNameChoice];
 
   const componentImportPath = `"./views/${componentName}.vue";`;
 

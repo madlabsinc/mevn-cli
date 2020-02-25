@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 import showBanner from 'node-banner';
 
 import createFile from '../../utils/createFile';
@@ -148,23 +148,19 @@ const generateRoute = async () => {
   checkIfConfigFileExists();
   await checkIfServerExists();
 
-  inquirer.prompt(questions).then(answer => {
+  prompts(questions).then(answer => {
     if (answer.passportAuth) {
       process.chdir('server');
       // Ask whether if he/she require social media auth configurations
-      inquirer
-        .prompt(socialMediaAuthQuestions)
-        .then(async socialMediaAuthAnswer => {
-          let fetchSpinner = startSpinner(
-            socialMediaAuthAnswer.socialMediaAuth,
-          );
-          fetchSpinner.start();
+      prompts(socialMediaAuthQuestions).then(async socialMediaAuthAnswer => {
+        let fetchSpinner = startSpinner(socialMediaAuthAnswer.socialMediaAuth);
+        fetchSpinner.start();
 
-          installPassportPackages(
-            socialMediaAuthAnswer.socialMediaAuth,
-            fetchSpinner,
-          );
-        });
+        installPassportPackages(
+          socialMediaAuthAnswer.socialMediaAuth,
+          fetchSpinner,
+        );
+      });
     } else {
       process.chdir('server/routes');
       createFile('./index.js', routesFile, { flag: 'wx' }, err => {

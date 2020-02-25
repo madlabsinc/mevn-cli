@@ -1,7 +1,7 @@
 'use strict';
 
 import execa from 'execa';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 
 import { dependencyNotInstalled, showInstallationInfo } from './messages';
 import { isWin, isLinux } from './constants';
@@ -37,7 +37,7 @@ const validateInstallation = async dependency => {
   const status = await dependencyIsInstalled(dependency);
 
   if (!status) {
-    const { depToInstall } = await inquirer.prompt([
+    const { depToInstall } = await prompts([
       {
         type: 'confirm',
         name: 'depToInstall',

@@ -1,6 +1,6 @@
 'use strict';
 
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 
 /**
  * Shows file overwrite prompt
@@ -21,7 +21,7 @@ const showPrompt = (fileName, cb) => {
     },
   ];
 
-  return inquirer.prompt(defaultQuestion).then(answer => cb(answer));
+  return prompts(defaultQuestion).then(answer => cb(answer));
 };
 
 module.exports = showPrompt;

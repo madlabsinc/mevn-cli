@@ -3,7 +3,7 @@
 import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 import showBanner from 'node-banner';
 
 import appData from '../../utils/projectConfig';
@@ -29,10 +29,10 @@ let configUrl;
  */
 
 const getDBConfigUrl = async () => {
-  const { url } = await inquirer.prompt([
+  const { url } = await prompts([
     {
       name: 'url',
-      type: 'input',
+      type: 'text',
       message: 'Enter url for the database : ',
       validate: validateInput,
     },
@@ -67,12 +67,18 @@ const generateFile = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  const { fileType } = await inquirer.prompt([
+  const { fileType } = await prompts([
     {
-      type: 'list',
+      type: 'select',
       name: 'fileType',
       message: 'Choose the required file to be generated',
-      choices: ['component', 'config', 'model', 'route', 'controller'],
+      choices: [
+        { title: 'component', value: 'component' },
+        { title: 'config', value: 'config' },
+        { title: 'model', value: 'model' },
+        { title: 'route', value: 'route' },
+        { title: 'controller', value: 'controller' },
+      ],
     },
   ]);
 

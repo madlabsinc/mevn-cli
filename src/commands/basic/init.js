@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
 import path from 'path';
-import inquirer from 'inquirer';
+import prompts from 'prompts';
 import showBanner from 'node-banner';
 import validate from 'validate-npm-package-name';
 
@@ -128,7 +128,7 @@ const fetchTemplate = async templateBranch => {
 
   // Prompt the user whether he/she requires pwa support
   if (templateBranch === 'nuxt') {
-    const { requirePwaSupport } = await inquirer.prompt([
+    const { requirePwaSupport } = await prompts([
       {
         name: 'requirePwaSupport',
         type: 'confirm',
@@ -149,10 +149,10 @@ const fetchTemplate = async templateBranch => {
     }
 
     // Choose between Universal/SPA mode
-    const { mode } = await inquirer.prompt([
+    const { mode } = await prompts([
       {
         name: 'mode',
-        type: 'list',
+        type: 'multiselect',
         message: 'Choose your preferred mode',
         choices: ['Universal', 'SPA'],
       },
@@ -178,7 +178,7 @@ const fetchTemplate = async templateBranch => {
   }
 
   // Show up a suitable prompt whether if the user requires a Full stack application (Express.js)
-  const { requireServer } = await inquirer.prompt({
+  const { requireServer } = await prompts({
     name: 'requireServer',
     type: 'confirm',
     message: 'Do you require server side template (Express.js)',
@@ -252,12 +252,18 @@ const initializeProject = async appName => {
 
   projectName = appName;
 
-  const { template } = await inquirer.prompt([
+  const { template } = await prompts([
     {
       name: 'template',
-      type: 'list',
+      type: 'select',
       message: 'Please select your template of choice',
-      choices: ['basic', 'pwa', 'graphql', 'Nuxt-js'],
+      choices: [
+        { name: 'basic', value: 'basic' },
+        { name: 'pwa', value: 'pwa' },
+        { name: 'graphql', value: 'graphql' },
+        { name: 'Nuxt-js', value: 'Nuxt-js' },
+      ],
+      initial: 0,
     },
   ]);
 
