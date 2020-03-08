@@ -38,7 +38,7 @@ const setupProject = async () => {
     templateDir = 'client';
   }
 
-  // Navigate to the respectice directory
+  // Navigate to the respective directory
   process.chdir(templateDir);
 
   // Proceed with further installation

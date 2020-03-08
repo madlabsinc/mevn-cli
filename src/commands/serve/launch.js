@@ -2,7 +2,6 @@
 
 import execa from 'execa';
 import fs from 'fs';
-import open from 'open';
 
 import Spinner from '../../utils/spinner';
 
@@ -82,7 +81,7 @@ const serveProject = async (projectTemplate, templateDir) => {
   let port;
 
   if (templateDir === 'client') {
-    port = projectTemplate === 'Nuxt-js' ? '3000' : '8080';
+    port = projectTemplate === 'Nuxt-js' ? '3000' : '3002';
   } else {
     port = projectTemplate === 'graphql' ? '9000/graphql' : '9000/api';
   }
@@ -111,7 +110,7 @@ const serveProject = async (projectTemplate, templateDir) => {
   );
 
   launchSpinner.start();
-  Promise.all([execa.shell('npm run serve'), open(`${rootPath}:${port}`)]);
+  execa.command(`npm run serve -- --port ${port} --open`);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };
 

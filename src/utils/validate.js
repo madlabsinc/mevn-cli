@@ -19,7 +19,7 @@ const spinner = new Spinner();
 
 const dependencyIsInstalled = async dependency => {
   try {
-    await execa.shell(dependency);
+    await execa.command(dependency, { shell: true });
     return true;
   } catch (err) {
     return false;
@@ -88,8 +88,8 @@ const validateInput = componentName => {
 const exec = async cmd => {
   return new Promise(async () => {
     try {
-      await execa.shell('sudo apt update', { stdio: 'inherit' });
-      await execa.shell(cmd), { stdio: 'inherit' };
+      await execa.command('sudo apt update', { stdio: 'inherit', shell: true });
+      await execa.command(cmd, { stdio: 'inherit', shell: true });
       spinner.succeed(`You're good to go`);
     } catch (err) {
       spinner.fail('Something went wrong');

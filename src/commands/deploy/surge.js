@@ -15,7 +15,7 @@ import Spinner from '../../utils/spinner';
 
 const exec = async (cmd, spinner, successMsg) => {
   try {
-    await execa.shell(cmd);
+    await execa.command(cmd, { shell: true });
     spinner.succeed(successMsg);
   } catch (err) {
     spinner.fail('Something went wrong');
