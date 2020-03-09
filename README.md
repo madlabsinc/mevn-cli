@@ -66,14 +66,14 @@ mevn init <appname>
 
 ## Features
 
-- It allows Developers to build webapps with ease in which all the local environment setup is being taken care of. All he/she has to do is to focus on writing actual code.
-- It's written in ES6 syntax, which is a developer-friendly syntax that keeps the code simpler and smaller.
-- The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and much more compact code.  
-- MEVN-CLI simplifies the entire workflow by generating boilerplate code as required, automating redundant tasks, etc.
+- It allows Developers to build webapps with ease in which all the local environment setup is being taken care of. All they have to do is to focus on writing actual code.
+- It uses ES6 syntax, which is developer-friendly and keeps the code simpler and smaller.
+- The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and leads to compact code.  
+- MEVN-CLI simplifies developer workflow by generating boilerplate code as required and automating redundant tasks.
 
 ## Contributing
 
-Before contributing to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository before making a change. Take a look at the [Contributing Guidelines](https://github.com/madlabsinc/mevn-cli/wiki/Contributing-Guidelines) to get a better picture regarding the codebase and project structure.
+Before contributing a change to this repository, please first discuss the change you wish to make via issue, or any other method with the owners of this repository . Take a look at the [Contributing Guidelines](https://github.com/madlabsinc/mevn-cli/wiki/Contributing-Guidelines) to get a better picture regarding the codebase and project structure.
 
 ### How do I contribute?
 1. Ensure you have no "dummy" files left, if you do then add them to the bottom of `.gitignore`.
@@ -87,7 +87,7 @@ Before contributing to this repository, please first discuss the change you wish
 > `npm link` creates a symlink in the global folder making the `mevn` command globally available within your local development environment
 
 ### Why should I contribute?
-Contributing helps people and makes the world simply a better place, without contributors this project would cease to exist.
+Contributing helps people and simply makes the world a better place, Without contributors this project would cease to exist.
 
 ### How should I write a commit message?
 This project uses [Commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint) to check if the commit messages meet the [conventional commit format](https://www.conventionalcommits.org/en/v1.0.0/).
