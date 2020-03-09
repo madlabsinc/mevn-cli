@@ -66,7 +66,7 @@ mevn init <appname>
 
 ## Features
 
-- It allows developers to build webapps with ease. All the setup for a local environment is taken care of by mevn-cli. All the dev has to do is to focus on app logic.
+- It allows Developers to build webapps with ease in which all the local environment setup is being taken care of. All they have to do is to focus on writing actual code.
 - It uses ES6 syntax, which is developer-friendly and keeps the code simpler and smaller.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and leads to compact code.  
 - MEVN-CLI simplifies developer workflow by generating boilerplate code as required and automating redundant tasks.
