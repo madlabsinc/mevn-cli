@@ -2,7 +2,6 @@
 
 import execa from 'execa';
 import fs from 'fs';
-import open from 'open';
 
 import Spinner from '../../utils/spinner';
 
@@ -111,7 +110,7 @@ const serveProject = async (projectTemplate, templateDir) => {
   );
 
   launchSpinner.start();
-  Promise.all([execa.shell('npm run serve'), open(`${rootPath}:${port}`)]);
+  execa.shell('npm run serve -- --open');
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };
 
