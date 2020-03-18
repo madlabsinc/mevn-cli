@@ -81,7 +81,7 @@ const serveProject = async (projectTemplate, templateDir) => {
   let port;
 
   if (templateDir === 'client') {
-    port = projectTemplate === 'Nuxt-js' ? '3000' : '8080';
+    port = projectTemplate === 'Nuxt-js' ? '3000' : '3002';
   } else {
     port = projectTemplate === 'graphql' ? '9000/graphql' : '9000/api';
   }
@@ -110,7 +110,7 @@ const serveProject = async (projectTemplate, templateDir) => {
   );
 
   launchSpinner.start();
-  execa.shell('npm run serve -- --open');
+  execa.shell(`npm run serve -- --port ${port} --open`);
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };
 
