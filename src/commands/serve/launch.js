@@ -106,7 +106,9 @@ const serveProject = async (projectTemplate, templateDir) => {
   }
 
   const launchSpinner = new Spinner(
-    'The default browser will open up in a while',
+    templateDir === 'client'
+      ? 'The default browser will open up in a while'
+      : 'Finalizing',
   );
 
   launchSpinner.start();
