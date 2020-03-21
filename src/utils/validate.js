@@ -141,21 +141,7 @@ const installDocker = async () => {
  */
 
 const installHerokuCLI = async () => {
-  const url = 'https://devcenter.heroku.com/articles/heroku-cli';
-  if (isWin) {
-    showInstallationInfo('heroku-cli', spinner, url);
-  } else {
-    const cmd = isLinux
-      ? 'snap install --classic heroku'
-      : ['brew tap heroku/brew', 'brew install heroku'];
-
-    if (!Array.isArray(cmd)) {
-      await exec(cmd);
-    } else {
-      await exec(cmd[1]);
-      await exec(cmd[2]);
-    }
-  }
+  await exec('npm install -g heroku-cli');
 };
 
 module.exports = {
