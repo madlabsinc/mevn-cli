@@ -12,10 +12,8 @@ import { validateInstallation } from '../../utils/validate';
  */
 
 const deployToHeroku = async () => {
-  await Promise.all([
-    validateInstallation('heroku'),
-    validateInstallation('git help -g'),
-  ]);
+  validateInstallation('heroku');
+  validateInstallation('git help -g');
 
   // Navigate to the client directory
   process.chdir('client');
