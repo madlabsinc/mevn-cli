@@ -79,7 +79,7 @@ const validateInput = componentName => {
 };
 
 /**
- * Exeutes respective shell command
+ * Executes respective shell command
  *
  * @param {String} cmd
  * @returns {Promise<any>}
