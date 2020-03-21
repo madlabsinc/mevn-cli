@@ -1,6 +1,5 @@
 'use strict';
-import fs from 'fs';
-import path from 'path';
+import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
@@ -16,10 +15,19 @@ const deployConfig = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  if (fs.existsSync(path.resolve(process.cwd(), 'server'))) {
-    deployToHeroku();
-  } else {
+  const { platform } = await inquirer.prompt([
+    {
+      name: 'platform',
+      type: 'list',
+      message: 'Choose your preferred platform',
+      choices: ['Surge', 'Heroku'],
+    },
+  ]);
+
+  if (platform === 'Surge') {
     deployToSurge();
+  } else {
+    deployToHeroku();
   }
 };
 
