@@ -88,7 +88,9 @@ const validateInput = componentName => {
 const exec = async cmd => {
   return new Promise(async () => {
     try {
-      await execa.shell('sudo apt update', { stdio: 'inherit' });
+      if (!isWin) {
+        await execa.shell('sudo apt update', { stdio: 'inherit' });
+      }
       await execa.shell(cmd), { stdio: 'inherit' };
       spinner.succeed(`You're good to go`);
     } catch (err) {
