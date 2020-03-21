@@ -36,6 +36,12 @@ const dependencyIsInstalled = async dependency => {
 const validateInstallation = async dependency => {
   const status = await dependencyIsInstalled(dependency);
 
+  if (dependency === 'git help -g') {
+    dependency = 'git';
+  } else if (dependency === 'heroku') {
+    dependency = 'heroku-cli';
+  }
+
   if (!status) {
     const { depToInstall } = await inquirer.prompt([
       {
@@ -49,7 +55,7 @@ const validateInstallation = async dependency => {
       spinner.text = `Installing ${dependency}`;
       spinner.start();
 
-      if (dependency === 'git help -g') {
+      if (dependency === 'git') {
         await installGit();
       } else if (dependency === 'docker') {
         await installDocker();
