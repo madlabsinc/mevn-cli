@@ -60,12 +60,26 @@ const deployToHeroku = async () => {
   spinner.text = 'Moving ahead';
   spinner.start();
 
+  let pkgJson = JSON.parse(fs.readFileSync('./package.json'));
+
+  pkgJson = {
+    ...pkgJson,
+    scripts: {
+      ...pkgJson.scripts,
+      postinstall:
+        'if test "$NODE_ENV" = "production" ; then npm run build ; fi',
+      start: 'node server.js',
+    },
+  };
+
   if (!fs.existsSync('./server.js')) {
     fs.writeFileSync('./server.js', starterSource.join('\n'));
+    fs.writeFileSync('./package.json', JSON.stringify(pkgJson));
   }
 
   await execa.shell('git add .');
   await execa.shell(`git commit -m "Add files"`);
+  spinner.stop();
 };
 
 module.exports = deployToHeroku;
