@@ -13,18 +13,14 @@ import Spinner from '../../utils/spinner';
 const deployToSurge = async () => {
   console.log();
 
-  const installSpinner = new Spinner(`We're getting things ready for you`);
-  installSpinner.start();
+  const spinner = new Spinner(`We're getting things ready for you`);
+  spinner.start();
 
   // Install surge globally
-  await exec(
-    'npm install -g surge',
-    installSpinner,
-    'Successfully installed surge',
-  );
+  await exec('npm install -g surge', spinner, 'Successfully installed surge');
 
   // New spinner instance
-  const spinner = new Spinner('Creating a production level build');
+  spinner.text = 'Creating a production level build';
   spinner.start();
 
   // Navigate to the client directory and create the production build
