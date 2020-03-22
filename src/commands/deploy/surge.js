@@ -2,26 +2,8 @@
 
 import execa from 'execa';
 
+import exec from '../../utils/exec';
 import Spinner from '../../utils/spinner';
-
-/**
- * Execute shell commands
- * @param {String} cmd - Command to be executed
- * @param {Spinner} spinner - Spinner instance
- * @param {String} successMsg - Suitable message to show up with the spinner on successful completion
- *
- * @returns {Promise<void>}
- */
-
-const exec = async (cmd, spinner, successMsg) => {
-  try {
-    await execa.shell(cmd);
-    spinner.succeed(successMsg);
-  } catch (err) {
-    spinner.fail('Something went wrong');
-    throw err;
-  }
-};
 
 /**
  * Deploys the respective SPA to surge.sh platform
