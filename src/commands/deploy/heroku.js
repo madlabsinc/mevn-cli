@@ -8,6 +8,21 @@ import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
 
 /**
+ * Checks whether the user is logged in on Heroku
+ *
+ * @returns {Boolean}
+ */
+
+const isLoggedIn = async () => {
+  try {
+    await execa.shell('heroku whoami');
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+/**
  * Deploy the webapp to Heroku
  *
  * @returns {Promise<void>}
@@ -82,7 +97,10 @@ const deployToHeroku = async () => {
 
   await execa.shell('git add .');
   await execa.shell(`git commit -m "Add files"`);
-  spinner.stop();
+
+  if (!(await isLoggedIn())) {
+    await execa.shell('heroku login', { stdio: 'inherit' });
+  }
 };
 
 module.exports = deployToHeroku;
