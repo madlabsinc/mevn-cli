@@ -23,8 +23,14 @@ const deployToHeroku = async () => {
   // Navigate to the client directory
   process.chdir('client');
 
-  if (!fs.existsSync('./git')) {
+  if (!fs.existsSync('.git')) {
     await execa.shell('git init');
+  } else {
+    const { stdout } = await execa.shell('git status');
+    if (stdout.includes('nothing to commit')) {
+      spinner.fail('No changes detected!');
+      process.exit(1);
+    }
   }
 
   const staticConfig = {
@@ -56,9 +62,6 @@ const deployToHeroku = async () => {
     spinner,
     'Successully installed express and serve-static',
   );
-
-  spinner.text = 'Moving ahead';
-  spinner.start();
 
   let pkgJson = JSON.parse(fs.readFileSync('./package.json'));
 
