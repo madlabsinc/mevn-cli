@@ -1,11 +1,38 @@
 'use strict';
 
+import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
+import inquirer from 'inquirer';
 
 import exec from '../../utils/exec';
 import Spinner from '../../utils/spinner';
+import { validateInput } from '../../utils/validate';
 import { validateInstallation } from '../../utils/validate';
+
+/**
+ * Creates a new Heroku app
+ *
+ * @returns {Promise<void>}
+ */
+
+const createHerokuApp = async () => {
+  const { appName } = await inquirer.prompt({
+    name: 'appName',
+    type: 'input',
+    message: 'Enter a name for the app',
+    validate: validateInput,
+  });
+
+  try {
+    await execa.shell(`heroku create ${appName}`);
+  } catch (err) {
+    console.log();
+    console.log(chalk.red('Please provide another name'));
+    console.log();
+    createHerokuApp();
+  }
+};
 
 /**
  * Checks whether the user is logged in on Heroku
@@ -79,20 +106,19 @@ const deployToHeroku = async () => {
   );
 
   let pkgJson = JSON.parse(fs.readFileSync('./package.json'));
-
+  const postInstallScript = "if test \"$NODE_ENV\" = \"production\" ; then npm run build ; fi "; // eslint-disable-line
   pkgJson = {
     ...pkgJson,
     scripts: {
       ...pkgJson.scripts,
-      postinstall:
-        'if test "$NODE_ENV" = "production" ; then npm run build ; fi',
+      postinstall: postInstallScript,
       start: 'node server.js',
     },
   };
 
   if (!fs.existsSync('./server.js')) {
     fs.writeFileSync('./server.js', starterSource.join('\n'));
-    fs.writeFileSync('./package.json', JSON.stringify(pkgJson));
+    fs.writeFileSync('./package.json', JSON.stringify(pkgJson, null, 2));
   }
 
   await execa.shell('git add .');
@@ -100,6 +126,11 @@ const deployToHeroku = async () => {
 
   if (!(await isLoggedIn())) {
     await execa.shell('heroku login', { stdio: 'inherit' });
+  }
+
+  const { stdout } = await execa.shell('git remote');
+  if (!stdout.includes('heroku')) {
+    await createHerokuApp();
   }
 };
 
