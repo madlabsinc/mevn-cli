@@ -26,11 +26,11 @@ const createHerokuApp = async () => {
 
   try {
     await execa.shell(`heroku create ${appName}`);
-  } catch (err) {
+  } catch ({ stderr }) {
     console.log();
-    console.log(chalk.red('Please provide another name'));
+    console.log(chalk.red(stderr));
     console.log();
-    createHerokuApp();
+    await createHerokuApp();
   }
 };
 
@@ -121,9 +121,6 @@ const deployToHeroku = async () => {
     fs.writeFileSync('./package.json', JSON.stringify(pkgJson, null, 2));
   }
 
-  await execa.shell('git add .');
-  await execa.shell(`git commit -m "Add files"`);
-
   if (!(await isLoggedIn())) {
     await execa.shell('heroku login', { stdio: 'inherit' });
   }
@@ -132,6 +129,11 @@ const deployToHeroku = async () => {
   if (!stdout.includes('heroku')) {
     await createHerokuApp();
   }
+
+  await execa.shell('git add .');
+  await execa.shell(`git commit -m "Add files"`);
+
+  await execa.shell('git push heroku master', { stdio: 'inherit' });
 };
 
 module.exports = deployToHeroku;
