@@ -97,14 +97,6 @@ const deployToHeroku = async () => {
     'app.listen(port);',
   ];
 
-  spinner.text = 'Installing dependencies';
-
-  await exec(
-    'npm install --save express serve-static',
-    spinner,
-    'Successully installed express and serve-static',
-  );
-
   let pkgJson = JSON.parse(fs.readFileSync('./package.json'));
   const postInstallScript = "if test \"$NODE_ENV\" = \"production\" ; then npm run build ; fi "; // eslint-disable-line
   pkgJson = {
@@ -118,6 +110,14 @@ const deployToHeroku = async () => {
 
   if (!fs.existsSync('./server.js')) {
     fs.writeFileSync('./server.js', starterSource.join('\n'));
+
+    spinner.text = 'Installing dependencies';
+    await exec(
+      'npm install --save express serve-static',
+      spinner,
+      'Successully installed express and serve-static',
+    );
+
     fs.writeFileSync('./package.json', JSON.stringify(pkgJson, null, 2));
   }
 
@@ -134,6 +134,7 @@ const deployToHeroku = async () => {
   await execa.shell(`git commit -m "Add files"`);
 
   await execa.shell('git push heroku master', { stdio: 'inherit' });
+  await execa.shell('heroku open');
 };
 
 module.exports = deployToHeroku;
