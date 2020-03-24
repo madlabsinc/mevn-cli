@@ -19,7 +19,7 @@ import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
 
 let projectName;
-let projectConfig;
+let projectConfig = {};
 
 /**
  * Creates an initial local commit
@@ -58,7 +58,7 @@ const showInstructions = () => {
 
   console.log();
   console.log(
-    `${chalk.yellow.bold(' Warning: ')} Do not delete the mevn.json file`,
+    `${chalk.yellow.bold(' Warning: ')} Do not delete the .mevnrc file`,
   );
 
   let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
@@ -122,8 +122,8 @@ const fetchTemplate = async templateBranch => {
   fetchSpinner.stop();
 
   fs.writeFileSync(
-    `./${projectName}/mevn.json`,
-    projectConfig.join('\n').toString(),
+    `./${projectName}/.mevnrc`,
+    JSON.stringify(projectConfig, null, 2),
   );
 
   // Prompt the user whether he/she requires pwa support
@@ -136,15 +136,13 @@ const fetchTemplate = async templateBranch => {
       },
     ]);
 
-    // Write to mevn.json in order to keep track while installing dependencies
+    // Write to .mevnrc in order to keep track while installing dependencies
     if (requirePwaSupport) {
-      let configFile = JSON.parse(
-        fs.readFileSync(`./${projectName}/mevn.json`).toString(),
-      );
+      let configFile = JSON.parse(fs.readFileSync(`./${projectName}/.mevnrc`));
       configFile['isPwa'] = true;
       fs.writeFileSync(
-        `./${projectName}/mevn.json`,
-        JSON.stringify(configFile),
+        `./${projectName}/.mevnrc`,
+        JSON.stringify(configFile, null, 2),
       );
     }
 
@@ -240,7 +238,7 @@ const initializeProject = async appName => {
     directoryExistsInPath(appName);
   }
 
-  if (fs.existsSync('./mevn.json')) {
+  if (fs.existsSync('./.mevnrc')) {
     console.log();
     console.log(
       chalk.cyan.bold(
@@ -261,12 +259,9 @@ const initializeProject = async appName => {
     },
   ]);
 
-  projectConfig = [
-    '{',
-    `"name": "${appName}",`,
-    `"template": "${template}"`,
-    '}',
-  ];
+  projectConfig['name'] = appName;
+  projectConfig['template'] = template;
+
   // Holds GitHub repo branch corresponding to the respective boilerplate template
   let templateBranch = template;
 
