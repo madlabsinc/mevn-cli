@@ -15,7 +15,7 @@ const configurePwaSupport = async () => {
   // Hop to the project root directory
   process.chdir('../');
 
-  let configFile = JSON.parse(fs.readFileSync('./mevn.json').toString());
+  let configFile = JSON.parse(fs.readFileSync('./.mevnrc'));
 
   if (configFile['isPwa']) {
     // Install the @nuxtjs/pwa package.

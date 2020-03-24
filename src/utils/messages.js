@@ -13,10 +13,10 @@ import appData from './projectConfig';
  */
 
 export const checkIfConfigFileExists = () => {
-  if (!fs.existsSync('./mevn.json')) {
+  if (!fs.existsSync('./.mevnrc')) {
     console.log(
       chalk.cyan.bold(`\n\n Make sure that you're within a valid MEVN project
-      \n${chalk.red.bold(' Error:')} No mevn.json file found
+      \n${chalk.red.bold(' Error:')} No .mevnrc file found
     `),
     );
     process.exit(1);

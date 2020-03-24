@@ -76,7 +76,7 @@ const generateFile = async () => {
     },
   ]);
 
-  // Fetch boilerplate template used from mevn.json
+  // Fetch boilerplate template used from .mevnrc
   const { template } = await appData();
 
   // Defining action handlers.
