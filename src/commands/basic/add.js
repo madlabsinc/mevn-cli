@@ -46,7 +46,7 @@ const addPlugins = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  const { template } = await appData();
+  const { template } = appData();
 
   // Available plugins to be installed
   const availablePlugins = ['vee-validate', 'axios', 'vuex', 'vuetify'];

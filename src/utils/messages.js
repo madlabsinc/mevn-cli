@@ -51,7 +51,7 @@ export const templateIsGraphQL = () => {
  */
 
 export const checkIfTemplateIsNuxt = async () => {
-  const { template } = await appData();
+  const { template } = appData();
   if (template === 'Nuxt-js') {
     console.log();
     console.log(

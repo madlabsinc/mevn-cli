@@ -66,7 +66,7 @@ const generateComponent = async () => {
     '</style>',
   ];
 
-  const { template } = await appData();
+  const { template } = appData();
   const componentPath =
     template === 'Nuxt-js' ? 'client/pages' : 'client/src/views';
   process.chdir(componentPath);

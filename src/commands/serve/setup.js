@@ -21,7 +21,7 @@ const setupProject = async () => {
 
   let templateDir;
 
-  const { template } = await appData();
+  const { template } = appData();
 
   // Checks if the server directory exists
   const serverDirExists = fs.existsSync(path.resolve(process.cwd(), 'server'));
