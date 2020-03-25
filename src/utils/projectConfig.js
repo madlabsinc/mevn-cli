@@ -9,8 +9,7 @@ import fs from 'fs';
  */
 
 const appData = () => {
-  const data = fs.readFileSync(process.cwd() + '/.mevnrc', 'utf8');
-  return new Promise(resolve => resolve(JSON.parse(data)));
+  return JSON.parse(fs.readFileSync(process.cwd() + '/.mevnrc', 'utf8'));
 };
 
 module.exports = appData;
