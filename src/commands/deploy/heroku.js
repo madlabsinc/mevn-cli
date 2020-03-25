@@ -121,6 +121,8 @@ const deployToHeroku = async () => {
     fs.writeFileSync('./package.json', JSON.stringify(pkgJson, null, 2));
   }
 
+  spinner.stop();
+
   if (!(await isLoggedIn())) {
     await execa.shell('heroku login', { stdio: 'inherit' });
   }
