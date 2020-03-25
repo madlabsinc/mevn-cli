@@ -5,6 +5,7 @@ import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
 
+import appData from '../../utils/projectConfig';
 import exec from '../../utils/exec';
 import Spinner from '../../utils/spinner';
 import { validateInput } from '../../utils/validate';
@@ -59,6 +60,10 @@ const deployToHeroku = async () => {
   validateInstallation('heroku');
   validateInstallation('git help -g');
 
+  const projectConfig = appData();
+  const { template } = projectConfig;
+  const isPwa = projectConfig.hasOwnProperty('isPwa') && projectConfig.isPwa;
+
   const spinner = new Spinner(`We're getting things ready for you`);
   spinner.start();
 
@@ -98,7 +103,8 @@ const deployToHeroku = async () => {
   ];
 
   let pkgJson = JSON.parse(fs.readFileSync('./package.json'));
-  const postInstallScript = "if test \"$NODE_ENV\" = \"production\" ; then npm run build ; fi "; // eslint-disable-line
+  const buildCmd = `npm run ${template === 'Nuxt-js' ? 'generate' : 'build'}`;
+  const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then npm run ${buildCmd} ; fi `; // eslint-disable-line
   pkgJson = {
     ...pkgJson,
     scripts: {
@@ -107,6 +113,10 @@ const deployToHeroku = async () => {
       start: 'node server.js',
     },
   };
+
+  if (isPwa) {
+    pkgJson.scripts['preinstall'] = 'npm install --save @nuxtjs/pwa';
+  }
 
   if (!fs.existsSync('./server.js')) {
     fs.writeFileSync('./server.js', starterSource.join('\n'));
