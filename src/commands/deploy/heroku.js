@@ -6,7 +6,6 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 
 import appData from '../../utils/projectConfig';
-import exec from '../../utils/exec';
 import Spinner from '../../utils/spinner';
 import { validateInput } from '../../utils/validate';
 import { validateInstallation } from '../../utils/validate';
@@ -120,14 +119,7 @@ const deployToHeroku = async () => {
 
   if (!fs.existsSync('./server.js')) {
     fs.writeFileSync('./server.js', starterSource.join('\n'));
-
-    spinner.text = 'Installing dependencies';
-    await exec(
-      'npm install --save express serve-static',
-      spinner,
-      'Successully installed express and serve-static',
-    );
-
+    pkgJson.scripts['preinstall'] = 'npm install --save express serve-static';
     fs.writeFileSync('./package.json', JSON.stringify(pkgJson, null, 2));
   }
 
