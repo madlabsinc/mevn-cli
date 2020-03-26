@@ -125,6 +125,11 @@ const generateComponent = async () => {
 
   // Write back the updated config
   fs.writeFileSync('./router.js', routesConfig.join('\n'));
+  console.log(
+    chalk.green.bold(
+      `Successfully created ${componentName}.vue file on ${componentPath}`,
+    ),
+  );
 };
 
 module.exports = generateComponent;
