@@ -72,11 +72,6 @@ const configurePwaSupport = async () => {
  */
 
 const serveProject = async (projectTemplate, templateDir) => {
-  const installDepsSpinner = new Spinner(
-    'Installing dependencies in the background. Hold on...',
-  );
-  installDepsSpinner.start();
-
   const rootPath = 'http://localhost';
   let port;
 
@@ -86,19 +81,24 @@ const serveProject = async (projectTemplate, templateDir) => {
     port = projectTemplate === 'graphql' ? '9000/graphql' : '9000/api';
   }
 
-  try {
-    await execa('npm', ['install']);
-  } catch (err) {
-    installDepsSpinner.fail(
-      `Something went wrong. Couldn't install the dependencies!`,
+  if (!fs.existsSync('./node_modules')) {
+    const installDepsSpinner = new Spinner(
+      'Installing dependencies in the background. Hold on...',
     );
-    throw err;
+    installDepsSpinner.start();
+    try {
+      await execa('npm', ['install']);
+    } catch (err) {
+      installDepsSpinner.fail(
+        `Something went wrong. Couldn't install the dependencies!`,
+      );
+      throw err;
+    }
   }
+
   if (projectTemplate === 'Nuxt-js') {
     await configurePwaSupport();
   }
-
-  installDepsSpinner.succeed(`You're all set`);
 
   // Navigate back to the respective directory
   if (projectTemplate === 'Nuxt-js') {
