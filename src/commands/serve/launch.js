@@ -94,6 +94,7 @@ const serveProject = async (projectTemplate, templateDir) => {
       );
       throw err;
     }
+    installDepsSpinner.succeed('Dependencies were successfully installed');
   }
 
   if (projectTemplate === 'Nuxt-js') {
