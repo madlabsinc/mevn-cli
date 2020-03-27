@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`show up CLI version information 1`] = `"1.6.5"`;
+exports[`show up CLI version information 1`] = `"1.7.0-beta.0"`;
 
-exports[`show up CLI version information 2`] = `"1.6.5"`;
+exports[`show up CLI version information 2`] = `"1.7.0-beta.0"`;
 
 exports[`show up help information on passing in the respective options 1`] = `
 "
@@ -86,10 +86,10 @@ exports[`suggests the matching command if the user makes a typo 1`] = `
     dockerize       To launch the webapp within a Docker container locally
     deploy          To deploy the webapp to a cloud solution of choice
     info            Prints debugging information about the local environment
-  
-  Unknown command ini.
+  [31m[39m
+[31m  Unknown command [33mini[31m.[39m
 
-  Did you mean init?"
+  [31mDid you mean [33minit[31m?[39m"
 `;
 
 exports[`warns the user if an unknown command is passed 1`] = `
@@ -111,7 +111,7 @@ exports[`warns the user if an unknown command is passed 1`] = `
     dockerize       To launch the webapp within a Docker container locally
     deploy          To deploy the webapp to a cloud solution of choice
     info            Prints debugging information about the local environment
-  
-  Unknown command junkcmd.
+  [31m[39m
+[31m  Unknown command [33mjunkcmd[31m.[39m
 "
 `;
