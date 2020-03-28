@@ -67,6 +67,10 @@ const generateFile = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
+  if (!fs.existsSync('./server')) {
+    return generateComponent();
+  }
+
   const { fileType } = await inquirer.prompt([
     {
       type: 'list',
