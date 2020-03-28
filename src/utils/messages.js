@@ -35,7 +35,7 @@ export const templateIsGraphQL = () => {
     `model, route and controller`,
   )} directories!`;
   console.log(
-    chalk.red.bold(
+    chalk.yellow.bold(
       `\n Warning:- ${chalk.cyan.bold(`${msg}
     `)}`,
     ),
@@ -85,7 +85,7 @@ export const checkIfServerExists = async () => {
 
 export const dependencyNotInstalled = dependency => {
   console.log(
-    chalk.red.bold(` Warning:- ${chalk.cyan.bold(
+    chalk.yellow.bold(` Warning:- ${chalk.cyan.bold(
       `${dependency} is required to be installed`,
     )}
     `),

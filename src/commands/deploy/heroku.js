@@ -56,8 +56,8 @@ const isLoggedIn = async () => {
  */
 
 const deployToHeroku = async () => {
-  validateInstallation('heroku');
-  validateInstallation('git help -g');
+  await validateInstallation('heroku');
+  await validateInstallation('git help -g');
 
   const projectConfig = appData();
   const { template } = projectConfig;

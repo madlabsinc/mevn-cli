@@ -94,7 +94,7 @@ const validateInput = componentName => {
 const exec = async cmd => {
   return new Promise(async () => {
     try {
-      if (!isWin) {
+      if (isLinux) {
         await execa.shell('sudo apt update', { stdio: 'inherit' });
       }
       await execa.shell(cmd), { stdio: 'inherit' };
@@ -149,7 +149,7 @@ const installDocker = async () => {
  */
 
 const installHerokuCLI = async () => {
-  await exec('npm install -g heroku-cli');
+  await exec('npm install -g heroku');
 };
 
 module.exports = {
