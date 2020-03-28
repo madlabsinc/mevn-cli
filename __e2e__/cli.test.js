@@ -35,10 +35,10 @@ test('warns the user on passing in unknown option', () => {
 
 test('warns the user if an unknown command is passed', () => {
   const { stdout } = run(['junkcmd']);
-  expect(stdout).toMatchSnapshot();
+  expect(stdout).toContain('Unknown command');
 });
 
 test('suggests the matching command if the user makes a typo', () => {
   const { stdout } = run(['ini']);
-  expect(stdout).toMatchSnapshot();
+  expect(stdout).toContain('Did you mean');
 });

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`show up CLI version information 1`] = `"1.7.0-beta.5"`;
+exports[`show up CLI version information 1`] = `"1.7.0-beta.9"`;
 
-exports[`show up CLI version information 2`] = `"1.7.0-beta.5"`;
+exports[`show up CLI version information 2`] = `"1.7.0-beta.9"`;
 
 exports[`show up help information on passing in the respective options 1`] = `
 "
@@ -65,53 +65,4 @@ exports[`shows up help if no arguments were passed 1`] = `
     dockerize       To launch the webapp within a Docker container locally
     deploy          To deploy the webapp to a cloud solution of choice
     info            Prints debugging information about the local environment"
-`;
-
-exports[`suggests the matching command if the user makes a typo 1`] = `
-"
-  Usage: mevn <command> [options]
-
-  Options:
-
-    -V, --version   output the version number
-    -h, --help      output usage information
-
-  Commands:
-
-    init <appname>  Bootstraps a basic MEVN stack webapp
-    codesplit       Lazy load components as required
-    generate        To generate model, route, controller and DB config files
-    add             Adds a new plugin on the go
-    serve           To serve client/server locally
-    dockerize       To launch the webapp within a Docker container locally
-    deploy          To deploy the webapp to a cloud solution of choice
-    info            Prints debugging information about the local environment
-  [31m[39m
-[31m  Unknown command [33mini[31m.[39m
-
-  [31mDid you mean [33minit[31m?[39m"
-`;
-
-exports[`warns the user if an unknown command is passed 1`] = `
-"
-  Usage: mevn <command> [options]
-
-  Options:
-
-    -V, --version   output the version number
-    -h, --help      output usage information
-
-  Commands:
-
-    init <appname>  Bootstraps a basic MEVN stack webapp
-    codesplit       Lazy load components as required
-    generate        To generate model, route, controller and DB config files
-    add             Adds a new plugin on the go
-    serve           To serve client/server locally
-    dockerize       To launch the webapp within a Docker container locally
-    deploy          To deploy the webapp to a cloud solution of choice
-    info            Prints debugging information about the local environment
-  [31m[39m
-[31m  Unknown command [33mjunkcmd[31m.[39m
-"
 `;
