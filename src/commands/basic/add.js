@@ -82,7 +82,7 @@ const addPlugins = async () => {
   });
 
   // Vuetify bindings for Nuxt-js
-  if (template === 'Nuxt-js') plugins.push('@nuxtjs/vuetify@next');
+  if (template === 'Nuxt-js') plugins.push('@nuxtjs/vuetify');
 
   // Install the opted plugins
   await installPlugins(plugins);
@@ -106,14 +106,18 @@ const addPlugins = async () => {
       '  /*',
       '   ** Set up vuetify',
       '   */',
-      '  devModules: [',
-      '   @nuxtjs/vuetify',
-      '  ],',
+      '  buildModules: [',
+      '    // Simple usage',
+      `    '@nuxtjs/vuetify',`,
       '',
-      '  // Vuetify options',
-      '  vuetify: {',
-      '   //  theme: { }',
-      '  }',
+      '    // With options',
+      '    [',
+      `      '@nuxtjs/vuetify',`,
+      '      {',
+      '        /* module options */',
+      '      }',
+      '    ]',
+      '  ],',
     ];
 
     // Configure vuex-store for Nuxt-js template
