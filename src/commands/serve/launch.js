@@ -72,7 +72,6 @@ const configurePwaSupport = async () => {
  */
 
 const serveProject = async (projectTemplate, templateDir) => {
-  const rootPath = 'http://localhost';
   let port;
 
   if (templateDir === 'client') {
@@ -105,20 +104,7 @@ const serveProject = async (projectTemplate, templateDir) => {
   if (projectTemplate === 'Nuxt-js') {
     process.chdir(templateDir);
   }
-
-  const launchSpinner = new Spinner(
-    templateDir === 'client'
-      ? 'The default browser will open up in a while'
-      : 'Finalizing',
-  );
-
-  launchSpinner.start();
-  try {
-    execa.shell(`npm run serve -- --port ${port} --open`);
-  } catch ({ stderr }) {
-    throw stderr;
-  }
-  launchSpinner.info(`Available on ${rootPath}:${port}`);
+  execa.shell(`npm run serve -- --port ${port} --open`, { stdio: 'inherit' });
 };
 
 module.exports = serveProject;
