@@ -66,11 +66,29 @@ const generateComponent = async () => {
     '</style>',
   ];
 
+  const { componentType } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'componentType',
+      message: 'Please choose the component type',
+      choices: ['UI Component', 'Page Component (generates route)'],
+    },
+  ]);
+
   const { template } = appData();
-  const componentPath =
-    template === 'Nuxt-js' ? 'client/pages' : 'client/src/views';
+
+  // Get to know whether the route config is to be touched
+  let componentPath = '';
+  if (componentType === 'UI Component') {
+    componentPath =
+      template === 'Nuxt-js' ? 'client/components' : 'client/src/components';
+  } else {
+    componentPath =
+      template === 'Nuxt-js' ? 'client/pages' : 'client/src/views';
+  }
   process.chdir(componentPath);
 
+  // Duplicate component
   if (fs.existsSync(`${componentName}.vue`)) {
     console.log();
     console.log(chalk.cyan.bold(` Info: ${componentName}.vue already exists`));
@@ -79,8 +97,17 @@ const generateComponent = async () => {
 
   fs.writeFileSync(`./${componentName}.vue`, componentTemplate.join('\n'));
 
-  // Nuxt-js automatically sets up the routing configurations
-  if (template === 'Nuxt-js') return;
+  console.log(
+    chalk.green.bold(
+      `Successfully created ${componentName}.vue file on ${componentPath}`,
+    ),
+  );
+
+  /**
+   * Nuxt-js automatically sets up the routing configurations
+   * only page components require adding a new entry in the route config
+   */
+  if (template === 'Nuxt-js' || componentType === 'UI Component') return;
 
   process.chdir(path.join(process.cwd(), '..'));
 
@@ -111,11 +138,11 @@ const generateComponent = async () => {
 
   // Route config for generated component
   const routeConfigToAppend = [
-    '\t{',
-    `\t  path: "/${componentName.toLowerCase()}",`,
-    `\t  name: "${componentName.toLowerCase()}",`,
-    `\t  component: ${componentName}`,
-    '\t}',
+    '\t  {',
+    `\t    path: "/${componentName.toLowerCase()}",`,
+    `\t    name: "${componentName.toLowerCase()}",`,
+    `\t    component: ${componentName}`,
+    '\t  }',
   ];
 
   // Append the route config for newly created component
@@ -125,11 +152,6 @@ const generateComponent = async () => {
 
   // Write back the updated config
   fs.writeFileSync('./router.js', routesConfig.join('\n'));
-  console.log(
-    chalk.green.bold(
-      `Successfully created ${componentName}.vue file on ${componentPath}`,
-    ),
-  );
 };
 
 module.exports = generateComponent;
