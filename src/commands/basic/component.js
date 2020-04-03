@@ -138,11 +138,11 @@ const generateComponent = async () => {
 
   // Route config for generated component
   const routeConfigToAppend = [
-    '\t  {',
-    `\t    path: "/${componentName.toLowerCase()}",`,
-    `\t    name: "${componentName.toLowerCase()}",`,
-    `\t    component: ${componentName}`,
-    '\t  }',
+    '\t{',
+    `\t  path: "/${componentName.toLowerCase()}",`,
+    `\t  name: "${componentName.toLowerCase()}",`,
+    `\t  component: ${componentName}`,
+    '\t}',
   ];
 
   // Append the route config for newly created component
