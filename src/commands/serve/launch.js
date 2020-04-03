@@ -113,7 +113,11 @@ const serveProject = async (projectTemplate, templateDir) => {
   );
 
   launchSpinner.start();
-  execa.shell(`npm run serve -- --port ${port} --open`);
+  try {
+    execa.shell(`npm run serve -- --port ${port} --open`);
+  } catch ({ stderr }) {
+    throw stderr;
+  }
   launchSpinner.info(`Available on ${rootPath}:${port}`);
 };
 
