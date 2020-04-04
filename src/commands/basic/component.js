@@ -52,7 +52,7 @@ const generateComponent = async () => {
   ]);
 
   // Convert component name to lower-camel-case
-  if (template !== 'Nuxt-js' && componentType !== 'UI Component') {
+  if (!(template === 'Nuxt-js' && componentType !== 'UI Component')) {
     componentName = toLowerCamelCase(componentName);
   }
 
