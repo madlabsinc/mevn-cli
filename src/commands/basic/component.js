@@ -39,32 +39,8 @@ const generateComponent = async () => {
     },
   ]);
 
-  // Convert component name to lower-camel-case
-  componentName = toLowerCamelCase(componentName);
-
-  // SFC template
-  const componentTemplate = [
-    '<template >',
-    '<center>',
-    '<br />',
-    `<h1> This is the ${componentName} component </h1>`,
-    '</center>',
-    '</template>',
-    '',
-    '<script >',
-    '    export default {',
-    '        data() {',
-    '            return {',
-    '',
-    '            }',
-    '        },',
-    '    } ',
-    '</script>',
-    '',
-    '<style scoped >',
-    '',
-    '</style>',
-  ];
+  // Fetch information specific to the project
+  const { template } = appData();
 
   const { componentType } = await inquirer.prompt([
     {
@@ -75,7 +51,31 @@ const generateComponent = async () => {
     },
   ]);
 
-  const { template } = appData();
+  // Convert component name to lower-camel-case
+  if (template !== 'Nuxt-js' && componentType !== 'UI Component') {
+    componentName = toLowerCamelCase(componentName);
+  }
+
+  // SFC template
+  const componentTemplate = [
+    '<template>',
+    '  <center>',
+    '    <br />',
+    `    <h1>This is the ${componentName} component</h1>`,
+    '  </center>',
+    '</template>',
+    '',
+    '<script>',
+    'export default {',
+    '  data() {',
+    '    return {}',
+    '  }',
+    '}',
+    '</script>',
+    '',
+    '<style scoped></style>',
+    '',
+  ];
 
   // Get to know whether the route config is to be touched
   let componentPath = '';
