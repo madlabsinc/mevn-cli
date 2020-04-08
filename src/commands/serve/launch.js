@@ -36,7 +36,7 @@ const configurePwaSupport = async () => {
 
     // Get the index where module definition starts
     let moduleDefStartsWithIndex = nuxtConfigFile.indexOf(
-      nuxtConfigFile.find(line => line.includes('modules: [')),
+      nuxtConfigFile.find((line) => line.includes('modules: [')),
     );
 
     nuxtConfigFile[moduleDefStartsWithIndex] = `  modules: [`;

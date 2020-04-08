@@ -63,7 +63,7 @@ const socialMediaAuthQuestions = [
  * @returns {Spinner} - Spinner instance
  */
 
-const startSpinner = withSocialMediaAuth => {
+const startSpinner = (withSocialMediaAuth) => {
   const message = withSocialMediaAuth
     ? 'Installing passport and social media authentication packages'
     : 'Installing passport package';
@@ -102,7 +102,7 @@ const installPassportPackages = async (withSocialMediaAuth, spinner) => {
       './index.js',
       routesFileWithSocialMediaAuth,
       { flag: 'wx' },
-      err => {
+      (err) => {
         if (err) throw err;
         console.log(chalk.yellow('File Created...!'));
       },
@@ -113,24 +113,29 @@ const installPassportPackages = async (withSocialMediaAuth, spinner) => {
       './FacebookRoutes.js',
       facebookRoutesFile,
       { flag: 'wx' },
-      err => {
+      (err) => {
         if (err) throw err;
         console.log(chalk.yellow('File Created...!'));
       },
     );
 
-    createFile('./TwitterRoutes.js', twitterRoutesFile, { flag: 'wx' }, err => {
-      if (err) throw err;
-      console.log(chalk.yellow('File Created...!'));
-    });
+    createFile(
+      './TwitterRoutes.js',
+      twitterRoutesFile,
+      { flag: 'wx' },
+      (err) => {
+        if (err) throw err;
+        console.log(chalk.yellow('File Created...!'));
+      },
+    );
 
-    createFile('./GoogleRoutes.js', googleRoutesFile, { flag: 'wx' }, err => {
+    createFile('./GoogleRoutes.js', googleRoutesFile, { flag: 'wx' }, (err) => {
       if (err) throw err;
       console.log(chalk.yellow('File Created...!'));
     });
   } else {
     // Create file only with passport auth configuration
-    createFile('./index.js', routesFileWithPassPort, { flag: 'wx' }, err => {
+    createFile('./index.js', routesFileWithPassPort, { flag: 'wx' }, (err) => {
       if (err) throw err;
       console.log(chalk.yellow('File Created...!'));
     });
@@ -148,13 +153,13 @@ const generateRoute = async () => {
   checkIfConfigFileExists();
   await checkIfServerExists();
 
-  inquirer.prompt(questions).then(answer => {
+  inquirer.prompt(questions).then((answer) => {
     if (answer.passportAuth) {
       process.chdir('server');
       // Ask whether if he/she require social media auth configurations
       inquirer
         .prompt(socialMediaAuthQuestions)
-        .then(async socialMediaAuthAnswer => {
+        .then(async (socialMediaAuthAnswer) => {
           let fetchSpinner = startSpinner(
             socialMediaAuthAnswer.socialMediaAuth,
           );
@@ -167,7 +172,7 @@ const generateRoute = async () => {
         });
     } else {
       process.chdir('server/routes');
-      createFile('./index.js', routesFile, { flag: 'wx' }, err => {
+      createFile('./index.js', routesFile, { flag: 'wx' }, (err) => {
         if (err) throw err;
         console.log(chalk.yellow('File Created...!'));
       });

@@ -17,7 +17,7 @@ const spinner = new Spinner();
  * @returns {Promise<boolean>}
  */
 
-const dependencyIsInstalled = async dependency => {
+const dependencyIsInstalled = async (dependency) => {
   try {
     await execa.shell(dependency);
     return true;
@@ -33,7 +33,7 @@ const dependencyIsInstalled = async dependency => {
  * @returns {Promise<boolean>}
  */
 
-const validateInstallation = async dependency => {
+const validateInstallation = async (dependency) => {
   const status = await dependencyIsInstalled(dependency);
 
   if (dependency === 'git help -g') {
@@ -75,7 +75,7 @@ const validateInstallation = async dependency => {
  * @returns {Boolean}
  */
 
-const validateInput = componentName => {
+const validateInput = (componentName) => {
   if (!componentName) {
     console.log(`Can't be empty!`);
     return false;
@@ -91,7 +91,7 @@ const validateInput = componentName => {
  * @returns {Promise<any>}
  */
 
-const exec = async cmd => {
+const exec = async (cmd) => {
   return new Promise(async () => {
     try {
       if (isLinux) {

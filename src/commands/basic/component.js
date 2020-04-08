@@ -17,7 +17,7 @@ import { validateInput } from '../../utils/validate';
  * @returns {String}
  */
 
-const toLowerCamelCase = str =>
+const toLowerCamelCase = (str) =>
   str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 
 /**
@@ -117,7 +117,7 @@ const generateComponent = async () => {
     .split('\n');
 
   const postImportIndex = routesConfig.indexOf(
-    routesConfig.find(item => item === ''),
+    routesConfig.find((item) => item === ''),
   );
 
   // Add an import statement at the respective place
@@ -130,7 +130,7 @@ const generateComponent = async () => {
 
   // Fetch the index corresponding to route-config array closing bracket
   const routesArrayEndsWithIndex = routesConfig.indexOf(
-    routesConfig.find(item => item.trim() === ']'),
+    routesConfig.find((item) => item.trim() === ']'),
   );
 
   // Append a comma (},) to the previous component route-config delimiter

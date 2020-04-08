@@ -36,7 +36,7 @@ const copyDirSync = (source, target) => {
 
   // copy
   if (fs.lstatSync(source).isDirectory()) {
-    fs.readdirSync(source).forEach(function(file) {
+    fs.readdirSync(source).forEach(function (file) {
       var curSource = path.join(source, file);
       if (fs.lstatSync(curSource).isDirectory()) {
         copyDirSync(curSource, targetFolder);

@@ -21,7 +21,7 @@ const showPrompt = (fileName, cb) => {
     },
   ];
 
-  return inquirer.prompt(defaultQuestion).then(answer => cb(answer));
+  return inquirer.prompt(defaultQuestion).then((answer) => cb(answer));
 };
 
 module.exports = showPrompt;

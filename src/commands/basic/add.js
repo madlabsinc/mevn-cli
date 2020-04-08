@@ -23,7 +23,7 @@ let vuexStoreTemplate = fs.readFileSync(
  * @returns {Promise<void>}
  */
 
-const installPlugins = async pluginsToInstall => {
+const installPlugins = async (pluginsToInstall) => {
   const fetchSpinner = new Spinner(`Installing ${pluginsToInstall.join(' ')} `);
   fetchSpinner.start();
 
@@ -59,7 +59,7 @@ const addPlugins = async () => {
 
   // Show up only those plugins that aren't installed already
   const installablePlugins = availablePlugins.filter(
-    plugin => !dependencies.hasOwnProperty(plugin),
+    (plugin) => !dependencies.hasOwnProperty(plugin),
   );
 
   // Warn the user if all available plugins are installed already
@@ -140,7 +140,7 @@ const addPlugins = async () => {
 
       // Find the position of link within header information
       const indexOfLink = nuxtConfig.indexOf(
-        nuxtConfig.find(line => line.includes('link')),
+        nuxtConfig.find((line) => line.includes('link')),
       );
 
       // Insert the respective content
@@ -157,23 +157,20 @@ const addPlugins = async () => {
 
     // Configure vuex-store
     if (plugins.indexOf('vuex') !== -1) {
-      let config = fs
-        .readFileSync('main.js', 'utf8')
-        .toString()
-        .split('\n');
+      let config = fs.readFileSync('main.js', 'utf8').toString().split('\n');
 
       // Creates a new store.js file within the client/src directory.
       fs.writeFileSync('store.js', vuexStoreTemplate);
 
       // Fetch the index corresponding to the very first blank line
-      const blankLineIndex = config.indexOf(config.find(line => line === ''));
+      const blankLineIndex = config.indexOf(config.find((line) => line === ''));
 
       // Inserting the import statement for vuex-store
       config.splice(blankLineIndex, 0, `import store from "./store";`);
 
       // Fetching the position where in which router is passed on to the Vue instance
       const routerIndex = config.indexOf(
-        config.find(line => line.trim() === 'router,'),
+        config.find((line) => line.trim() === 'router,'),
       );
 
       // Insert store just after router so that it gets passed on to the Vue instance
@@ -189,10 +186,7 @@ const addPlugins = async () => {
 
     // Configure vuetify
     if (plugins.indexOf('vuetify') !== -1) {
-      let config = fs
-        .readFileSync('main.js', 'utf8')
-        .toString()
-        .split('\n');
+      let config = fs.readFileSync('main.js', 'utf8').toString().split('\n');
 
       // Import Vuetify and minified css towards the top of the config file
       [
@@ -202,7 +196,7 @@ const addPlugins = async () => {
 
       // Fetch the index after which the respective config should come up
       const preIndex = config.indexOf(
-        config.find(line => line.includes('Vue.config.productionTip')),
+        config.find((line) => line.includes('Vue.config.productionTip')),
       );
 
       // Inserting the respective Vuetify config

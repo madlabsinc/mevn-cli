@@ -47,7 +47,7 @@ const getDBConfigUrl = async () => {
  * @returns {String}
  */
 
-const getFileContent = fileToGenerate => {
+const getFileContent = (fileToGenerate) => {
   let rootPath = `${__dirname}/../../templates`;
   let filePath =
     fileToGenerate === 'model'
@@ -122,7 +122,7 @@ const generateFile = async () => {
         fileType === 'controller' ? './user_controller.js' : './user_schema.js';
     }
 
-    createFile(generatedFile, generatedFileContent, { flag: 'wx' }, err => {
+    createFile(generatedFile, generatedFileContent, { flag: 'wx' }, (err) => {
       if (err) throw err;
       console.log(chalk.yellow('File Created...!'));
     });

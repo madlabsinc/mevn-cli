@@ -35,7 +35,7 @@ const makeInitialCommit = () => {
   const commands = ['init', 'add .', `commit -m "Init" -m "MEVN-CLI"`];
 
   // Execute commands serially
-  commands.forEach(cmd => execa.sync('git', cmd.split(' ')));
+  commands.forEach((cmd) => execa.sync('git', cmd.split(' ')));
 };
 
 /**
@@ -73,7 +73,7 @@ const showInstructions = () => {
  * @returns {Promise<void>}
  */
 
-const fetchTemplate = async templateBranch => {
+const fetchTemplate = async (templateBranch) => {
   await validateInstallation('git help -g');
 
   // Content to be written into docker-compose.yml at the project root
@@ -164,7 +164,7 @@ const fetchTemplate = async templateBranch => {
         .split('\n');
 
       const index = configFile.indexOf(
-        configFile.find(line => line.includes('mode')),
+        configFile.find((line) => line.includes('mode')),
       );
       configFile[index] = ` mode: 'universal',`;
 
@@ -218,7 +218,7 @@ const fetchTemplate = async templateBranch => {
  * @returns {Promise<void>}
  */
 
-const initializeProject = async appName => {
+const initializeProject = async (appName) => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
 
   const hasMultipleProjectNameArgs =

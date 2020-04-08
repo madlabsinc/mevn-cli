@@ -25,8 +25,8 @@ import pkg from '../package';
 
 updateNotifier({ pkg }).notify();
 
-const suggestCommands = cmd => {
-  const availableCommands = program.commands.map(c => c._name);
+const suggestCommands = (cmd) => {
+  const availableCommands = program.commands.map((c) => c._name);
 
   const suggestion = didYouMean(cmd, availableCommands);
   if (suggestion) {
@@ -87,7 +87,7 @@ program
       .then(console.log);
   });
 
-program.arguments('<command>').action(cmd => {
+program.arguments('<command>').action((cmd) => {
   program.outputHelp();
   console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
   console.log();

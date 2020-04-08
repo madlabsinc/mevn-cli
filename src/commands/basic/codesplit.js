@@ -65,14 +65,14 @@ const asyncRender = async () => {
   // Find index corresponding to the regular import statement
   const regularImportIndex = routesConfig.indexOf(
     routesConfig.find(
-      item => item === `import ${componentName} from ${componentImportPath}`,
+      (item) => item === `import ${componentName} from ${componentImportPath}`,
     ),
   );
 
   // Find the index corresponding to name: ${componentName}.vue (within route-config)
   const componentNameIndex = routesConfig.indexOf(
     routesConfig.find(
-      item => item.trim() === `name: "${componentName.toLowerCase()}",`,
+      (item) => item.trim() === `name: "${componentName.toLowerCase()}",`,
     ),
   );
 

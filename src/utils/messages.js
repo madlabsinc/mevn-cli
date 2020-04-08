@@ -83,7 +83,7 @@ export const checkIfServerExists = async () => {
  * @returns {Void}
  */
 
-export const dependencyNotInstalled = dependency => {
+export const dependencyNotInstalled = (dependency) => {
   console.log(
     chalk.yellow.bold(` Warning:- ${chalk.cyan.bold(
       `${dependency} is required to be installed`,
@@ -119,7 +119,7 @@ export const showInstallationInfo = (depCandidate, spinner, url) => {
  * @returns {Void}
  */
 
-export const invalidProjectName = projectName => {
+export const invalidProjectName = (projectName) => {
   console.log(
     chalk.red.bold(
       ` Error: Could not create a project called ${chalk.red(
@@ -137,7 +137,7 @@ export const invalidProjectName = projectName => {
  * @returns {any}
  */
 
-export const directoryExistsInPath = projectName => {
+export const directoryExistsInPath = (projectName) => {
   console.log(
     chalk.red.bold(
       `\n Error: Directory ${chalk.cyan.bold(
