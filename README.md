@@ -80,7 +80,7 @@ Before contributing a change to this repository, please first discuss the change
 2. Fork and clone our repository.
 3. Make your life-changing changes.
 4. Run `npm run build` which generates a `lib` directory with the transpiled `es5` code.
-5. Fire in `sudo npm link` to test everything works fine.
+5. Fire in `npm link` to test everything works fine.
 6. Commit and push your changes.
 7. Make a detailed pull request.
 
