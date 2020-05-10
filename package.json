@@ -51,9 +51,9 @@
   "author": "James George <jamesgeorge998001@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/MadlabsInc/mevn-cli/issues"
+    "url": "https://github.com/madlabsinc/mevn-cli/issues"
   },
-  "homepage": "https://github.com/MadlabsInc/mevn-cli#readme",
+  "homepage": "https://github.com/madlabsinc/mevn-cli#readme",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "chalk": "^2.4.1",
