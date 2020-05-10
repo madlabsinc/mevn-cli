@@ -17,7 +17,7 @@ const configurePwaSupport = async () => {
 
   let configFile = JSON.parse(fs.readFileSync('./.mevnrc'));
 
-  if (configFile['isPwa']) {
+  if (configFile['isPwa'] && !configFile['isPwaConfigured']) {
     // Install the @nuxtjs/pwa package.
     try {
       await execa('npm', ['install', '@nuxtjs/pwa']);
@@ -60,6 +60,13 @@ const configurePwaSupport = async () => {
 
     // Hop back to the root directory
     process.chdir('../');
+
+    // set the isPwaConfigured flag in the config file
+    configFile = Object.assign(configFile, {
+      isPwaConfigured: true,
+    });
+
+    fs.writeFileSync(`./.mevnrc`, JSON.stringify(configFile, null, 2));
   }
 };
 
