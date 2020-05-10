@@ -139,7 +139,10 @@ const fetchTemplate = async (templateBranch) => {
     // Write to .mevnrc in order to keep track while installing dependencies
     if (requirePwaSupport) {
       let configFile = JSON.parse(fs.readFileSync(`./${projectName}/.mevnrc`));
-      configFile['isPwa'] = true;
+      configFile = Object.assign(configFile, {
+        isPwa: true,
+        isPwaConfigured: false,
+      });
       fs.writeFileSync(
         `./${projectName}/.mevnrc`,
         JSON.stringify(configFile, null, 2),
