@@ -1,12 +1,12 @@
 'use strict';
 
 import fs from 'fs';
-import inquirer from 'inquirer';
 import path from 'path';
 import showBanner from 'node-banner';
 
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
+import dirOfChoice from '../../utils/directoryPrompt';
 import serveProject from './launch';
 
 /**
@@ -27,12 +27,7 @@ const setupProject = async () => {
   const serverDirExists = fs.existsSync(path.resolve(process.cwd(), 'server'));
 
   if (serverDirExists) {
-    const { dir } = await inquirer.prompt({
-      name: 'dir',
-      type: 'list',
-      message: 'Choose from below',
-      choices: ['client', 'server'],
-    });
+    const { dir } = await dirOfChoice();
     templateDir = dir;
   } else {
     templateDir = 'client';
