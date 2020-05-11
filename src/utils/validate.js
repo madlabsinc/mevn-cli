@@ -4,6 +4,7 @@ import execa from 'execa';
 import inquirer from 'inquirer';
 
 import { dependencyNotInstalled, showInstallationInfo } from './messages';
+import exec from './exec';
 import { isWin, isLinux } from './constants';
 import Spinner from './spinner';
 
@@ -91,21 +92,6 @@ const validateInput = (componentName) => {
  * @returns {Promise<any>}
  */
 
-const exec = async (cmd) => {
-  return new Promise(async () => {
-    try {
-      if (isLinux) {
-        await execa.shell('sudo apt update', { stdio: 'inherit' });
-      }
-      await execa.shell(cmd), { stdio: 'inherit' };
-      spinner.succeed(`You're good to go`);
-    } catch (err) {
-      spinner.fail('Something went wrong');
-      throw err;
-    }
-  });
-};
-
 /**
  * Triggers Git installation specific to the platform
  *
@@ -115,7 +101,7 @@ const exec = async (cmd) => {
 const installGit = async () => {
   const url = 'https://git-scm.com/download/win';
   if (isWin) {
-    showInstallationInfo('git', spinner, url);
+    showInstallationInfo('git', url);
   } else {
     const packageMgr = isLinux ? 'apt' : 'brew';
     await exec(`${packageMgr} install git`);
@@ -138,7 +124,7 @@ const installDocker = async () => {
   if (isLinux) {
     await exec('apt install docker.io');
   } else {
-    showInstallationInfo('docker', spinner, urlMap[process.platform]);
+    showInstallationInfo('docker', urlMap[process.platform]);
   }
 };
 

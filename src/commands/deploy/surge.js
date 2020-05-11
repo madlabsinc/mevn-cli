@@ -3,7 +3,6 @@
 import execa from 'execa';
 
 import exec from '../../utils/exec';
-import Spinner from '../../utils/spinner';
 
 /**
  * Deploys the respective SPA to surge.sh platform
@@ -13,27 +12,20 @@ import Spinner from '../../utils/spinner';
 const deployToSurge = async () => {
   console.log();
 
-  const spinner = new Spinner(`We're getting things ready for you`);
-  spinner.start();
-
   // Install surge globally
-  await exec('npm install -g surge', spinner, 'Successfully installed surge');
-
-  // New spinner instance
-  spinner.text = 'Creating a production level build';
-  spinner.start();
-
-  // Navigate to the client directory and create the production build
-  process.chdir('client');
+  await exec(
+    'npm install -g surge',
+    `We're getting things ready for you`,
+    'Successfully installed surge',
+  );
 
   // Create a production build with npm run build
-  await exec('npm run build', spinner, 'Done');
-
-  // Navigate to the dist directory
-  process.chdir('dist');
+  await exec('npm run build', 'Creating a production level build', 'Done', {
+    cwd: 'client',
+  });
 
   // Fire up the surge CLI
-  await execa('surge', { stdio: 'inherit' });
+  await execa('surge', { cwd: 'client/dist', stdio: 'inherit' });
 };
 
 module.exports = deployToSurge;

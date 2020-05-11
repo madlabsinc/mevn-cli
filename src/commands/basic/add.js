@@ -1,40 +1,18 @@
 'use strict';
 
-import chalk from 'chalk';
-import execa from 'execa';
 import fs from 'fs';
-import inquirer from 'inquirer';
 import path from 'path';
 import showBanner from 'node-banner';
 
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
-import Spinner from '../../utils/spinner';
+import dirOfChoice from '../../utils/directoryPrompt';
+import exec from '../../utils/exec';
 
-let vuexStoreTemplate = fs.readFileSync(
+const vuexStoreTemplate = fs.readFileSync(
   path.resolve(__dirname, '..', '..', 'templates/vuex/store.js'),
   'utf8',
 );
-
-/**
- * Adds the respective plugin
- *
- * @param {String} pluginToInstall
- * @returns {Promise<void>}
- */
-
-const installPlugins = async (pluginsToInstall) => {
-  const fetchSpinner = new Spinner(`Installing ${pluginsToInstall.join(' ')} `);
-  fetchSpinner.start();
-
-  try {
-    await execa('npm', ['install', '--save', ...pluginsToInstall]);
-  } catch (err) {
-    fetchSpinner.fail(`Installation failed`);
-    throw err;
-  }
-  fetchSpinner.succeed(`Successfully installed ${pluginsToInstall.join(', ')}`);
-};
 
 /**
  * Choose additional plugins to install on the go
@@ -42,50 +20,32 @@ const installPlugins = async (pluginsToInstall) => {
  * @returns {Promise<void>}
  */
 
-const addPlugins = async () => {
+const addPlugins = async (args) => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  const { template } = appData();
+  // Global reference to the directory of choice
+  let templateDir = 'client';
 
-  // Available plugins to be installed
-  const availablePlugins = ['vee-validate', 'axios', 'vuex', 'vuetify'];
-
-  // Hop in to the client directory and fetch the dependencies from package.json
-  process.chdir('client');
-  const { dependencies } = JSON.parse(
-    fs.readFileSync('./package.json', 'utf8').toString(),
-  );
-
-  // Show up only those plugins that aren't installed already
-  const installablePlugins = availablePlugins.filter(
-    (plugin) => !dependencies.hasOwnProperty(plugin),
-  );
-
-  // Warn the user if all available plugins are installed already
-  if (!installablePlugins.length) {
-    console.log();
-    console.log(
-      chalk.red.bold(` ${availablePlugins.join(', ')} are already installed`),
-    );
-    return;
+  // Get to know whether the plugins are to be installed for client/server directory
+  if (fs.existsSync('./server')) {
+    ({ dir: templateDir } = await dirOfChoice());
   }
 
-  const { plugins } = await inquirer.prompt({
-    type: 'checkbox',
-    name: 'plugins',
-    message: 'Select the plugins to install',
-    choices: installablePlugins,
-    default: [
-      installablePlugins[Math.floor(Math.random() * installablePlugins.length)],
-    ],
-  });
+  const { template } = appData();
 
   // Vuetify bindings for Nuxt-js
-  if (template === 'Nuxt-js') plugins.push('@nuxtjs/vuetify');
+  if (template === 'Nuxt-js') args.push('@nuxtjs/vuetify');
 
   // Install the opted plugins
-  await installPlugins(plugins);
+  await exec(
+    `npm install --save ${args.join(' ')}`,
+    `Installing ${args.join(' ')}`,
+    'Done',
+    {
+      cwd: templateDir,
+    },
+  );
 
   if (template === 'Nuxt-js') {
     // vuex-store template content for Nuxt-js
@@ -121,17 +81,16 @@ const addPlugins = async () => {
     ];
 
     // Configure vuex-store for Nuxt-js template
-    if (plugins.indexOf('vuex') !== -1) {
+    if (args.includes('vuex')) {
       // Navigate to the store directory and create a basic store template file
-      process.chdir('store');
-      fs.writeFileSync('index.js', vuexNuxtStoreTemplate.join('\n'));
-
-      // Hop back to the root directory
-      process.chdir('..');
+      fs.writeFileSync(
+        './client/store/index.js',
+        vuexNuxtStoreTemplate.join('\n'),
+      );
     }
 
     // Configure @nuxtjs/vuetify
-    if (plugins.indexOf('vuetify') !== -1) {
+    if (args.includes('vuetify')) {
       // Read initial content from nuxt.config.js
       let nuxtConfig = fs
         .readFileSync('./nuxt.config.js', 'utf8')
@@ -149,18 +108,18 @@ const addPlugins = async () => {
       );
 
       // Write back the updated content
-      fs.writeFileSync('nuxt.config.js', nuxtConfig.join('\n'));
+      fs.writeFileSync('./client/nuxt.config.js', nuxtConfig.join('\n'));
     }
   } else {
-    // Navigate to the src directory and read the content within main.js
-    process.chdir('src');
-
     // Configure vuex-store
-    if (plugins.indexOf('vuex') !== -1) {
-      let config = fs.readFileSync('main.js', 'utf8').toString().split('\n');
+    if (args.includes('vuex')) {
+      let config = fs
+        .readFileSync('./client/src/main.js', 'utf8')
+        .toString()
+        .split('\n');
 
       // Creates a new store.js file within the client/src directory.
-      fs.writeFileSync('store.js', vuexStoreTemplate);
+      fs.writeFileSync('./client/src/store.js', vuexStoreTemplate);
 
       // Fetch the index corresponding to the very first blank line
       const blankLineIndex = config.indexOf(config.find((line) => line === ''));
@@ -177,16 +136,18 @@ const addPlugins = async () => {
       config.splice(routerIndex + 1, 0, `  store,`);
 
       // Cleaning up
-      if (plugins.indexOf('vuetify') === -1)
-        config.splice(blankLineIndex + 1, 1);
+      if (args.includes('vuetify')) config.splice(blankLineIndex + 1, 1);
 
       // Write back the updated config
-      fs.writeFileSync('main.js', config.join('\n'));
+      fs.writeFileSync('./client/src/main.js', config.join('\n'));
     }
 
     // Configure vuetify
-    if (plugins.indexOf('vuetify') !== -1) {
-      let config = fs.readFileSync('main.js', 'utf8').toString().split('\n');
+    if (args.includes('vuetify')) {
+      let config = fs
+        .readFileSync('./client/src/main.js', 'utf8')
+        .toString()
+        .split('\n');
 
       // Import Vuetify and minified css towards the top of the config file
       [
@@ -205,7 +166,7 @@ const addPlugins = async () => {
       );
 
       // Write back the updated config
-      fs.writeFileSync('main.js', config.join('\n'));
+      fs.writeFileSync('./client/src/main.js', config.join('\n'));
     }
   }
 };

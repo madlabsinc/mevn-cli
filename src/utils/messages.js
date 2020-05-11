@@ -97,18 +97,13 @@ export const dependencyNotInstalled = (dependency) => {
  * Shows installation information
  *
  * @param {String} depCandidate - The repective package to be installed
- * @param {Spinner} spinner - The spinner instance
  * @param {String} url - Official downloads page url
  * @returns {any}
  */
 
-export const showInstallationInfo = (depCandidate, spinner, url) => {
+export const showInstallationInfo = (depCandidate, url) => {
   const msg = ` You need to download ${depCandidate} from the official downloads page: ${url}`;
-  if (typeof spinner === 'undefined') {
-    console.log(chalk.cyan.bold(msg));
-  } else {
-    spinner.info(msg);
-  }
+  console.log(chalk.cyan.bold(msg));
   process.exit(1);
 };
 

@@ -53,7 +53,7 @@ program
   .action(generateFile);
 
 program
-  .command('add')
+  .command('add [plugins...]')
   .description('Adds a new plugin on the go')
   .action(addPlugins);
 
