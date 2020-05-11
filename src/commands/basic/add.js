@@ -40,7 +40,7 @@ const addPlugins = async (args) => {
   // Install the opted plugins
   await exec(
     `npm install --save ${args.join(' ')}`,
-    `Installing ${args.join(' ')}`,
+    `Installing ${args.join(', ')}`,
     'Done',
     {
       cwd: templateDir,
