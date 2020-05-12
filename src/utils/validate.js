@@ -28,48 +28,6 @@ const dependencyIsInstalled = async (dependency) => {
 };
 
 /**
- * Validates installation
- *
- * @param {String} dependency
- * @returns {Promise<boolean>}
- */
-
-const validateInstallation = async (dependency) => {
-  const status = await dependencyIsInstalled(dependency);
-
-  if (dependency === 'git help -g') {
-    dependency = 'git';
-  } else if (dependency === 'heroku') {
-    dependency = 'heroku-cli';
-  }
-
-  if (!status) {
-    const { depToInstall } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: 'depToInstall',
-        message: `Sorry, ${dependency} is not installed on your system, Do you want to install it?`,
-      },
-    ]);
-
-    if (depToInstall) {
-      spinner.text = `Installing ${dependency}`;
-      spinner.start();
-
-      if (dependency === 'git') {
-        await installGit();
-      } else if (dependency === 'docker') {
-        await installDocker();
-      } else {
-        await installHerokuCLI();
-      }
-    } else {
-      dependencyNotInstalled(dependency);
-    }
-  }
-};
-
-/**
  * Validates user input
  *
  * @param {String} componentName
@@ -129,13 +87,54 @@ const installDocker = async () => {
 };
 
 /**
- * Triggers Heroku installation specific to the platform
+ * Installs respective package from the npm registry
  *
  * @returns{Promise<void>}
  */
 
-const installHerokuCLI = async () => {
-  await exec('npm install -g heroku');
+const installNpmPackage = async (dependency) => {
+  await exec(`npm install -g ${dependency}`);
+};
+
+/**
+ * Validates installation
+ *
+ * @param {String} dependency
+ * @returns {Promise<boolean>}
+ */
+
+const validateInstallation = async (dependency) => {
+  const status = await dependencyIsInstalled(dependency);
+
+  if (dependency.includes(' ')) {
+    const sep = dependency.includes('-') ? '-' : '';
+    dependency = dependency.split(sep)[0];
+  }
+
+  if (!status) {
+    const { depToInstall } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'depToInstall',
+        message: `Sorry, ${dependency} is not installed on your system, Do you want to install it?`,
+      },
+    ]);
+
+    if (depToInstall) {
+      spinner.text = `Installing ${dependency}`;
+      spinner.start();
+
+      if (dependency === 'git') {
+        await installGit();
+      } else if (dependency === 'docker') {
+        await installDocker();
+      } else {
+        await installNpmPackage(dependency);
+      }
+    } else {
+      dependencyNotInstalled(dependency);
+    }
+  }
 };
 
 module.exports = {

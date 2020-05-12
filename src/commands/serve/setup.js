@@ -1,7 +1,6 @@
 'use strict';
 
 import fs from 'fs';
-import path from 'path';
 import showBanner from 'node-banner';
 
 import appData from '../../utils/projectConfig';
@@ -23,18 +22,11 @@ const setupProject = async () => {
 
   const { template } = appData();
 
-  // Checks if the server directory exists
-  const serverDirExists = fs.existsSync(path.resolve(process.cwd(), 'server'));
-
-  if (serverDirExists) {
-    const { dir } = await dirOfChoice();
-    templateDir = dir;
+  if (fs.existsSync('./server')) {
+    ({ dir: templateDir } = await dirOfChoice());
   } else {
     templateDir = 'client';
   }
-
-  // Navigate to the respectice directory
-  process.chdir(templateDir);
 
   // Proceed with further installation
   serveProject(template, templateDir);

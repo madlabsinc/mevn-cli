@@ -25,7 +25,7 @@ const createHerokuApp = async () => {
   });
 
   try {
-    await execa.shell(`heroku create ${appName}`);
+    await execa.shell(`heroku create ${appName}`, { cwd: 'client' });
   } catch ({ stderr }) {
     console.log();
     console.log(chalk.red(stderr));
@@ -42,7 +42,7 @@ const createHerokuApp = async () => {
 
 const isLoggedIn = async () => {
   try {
-    await execa.shell('heroku whoami');
+    await execa.shell('heroku whoami', { cwd: 'client' });
     return true;
   } catch (err) {
     return false;
@@ -66,13 +66,11 @@ const deployToHeroku = async () => {
   const spinner = new Spinner(`We're getting things ready for you`);
   spinner.start();
 
-  // Navigate to the client directory
-  process.chdir('client');
-
-  if (!fs.existsSync('.git')) {
-    await execa.shell('git init');
+  if (!fs.existsSync('./client/.git')) {
+    await execa.shell('git init', { cwd: 'client' });
+    fs.writeFileSync('./client/.gitignore', 'node_modules');
   } else {
-    const { stdout } = await execa.shell('git status');
+    const { stdout } = await execa.shell('git status', { cwd: 'client' });
     if (stdout.includes('nothing to commit')) {
       spinner.fail('No changes detected!');
       process.exit(1);
@@ -87,8 +85,11 @@ const deployToHeroku = async () => {
     },
   };
 
-  if (!fs.existsSync('./static.json')) {
-    fs.writeFileSync('./static.json', JSON.stringify(staticConfig, null, 2));
+  if (!fs.existsSync('./client/static.json')) {
+    fs.writeFileSync(
+      './client/static.json',
+      JSON.stringify(staticConfig, null, 2),
+    );
   }
 
   const starterSource = [
@@ -101,7 +102,7 @@ const deployToHeroku = async () => {
     'app.listen(port);',
   ];
 
-  let pkgJson = JSON.parse(fs.readFileSync('./package.json'));
+  let pkgJson = JSON.parse(fs.readFileSync('./client/package.json'));
   const buildCmd = `npm run ${template === 'Nuxt-js' ? 'generate' : 'build'}`;
   const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then ${buildCmd} ; fi `; // eslint-disable-line
   pkgJson = {
@@ -117,28 +118,31 @@ const deployToHeroku = async () => {
     pkgJson.scripts['preinstall'] = 'npm install --save @nuxtjs/pwa';
   }
 
-  if (!fs.existsSync('./server.js')) {
-    fs.writeFileSync('./server.js', starterSource.join('\n'));
+  if (!fs.existsSync('./client/server.js')) {
+    fs.writeFileSync('./client/server.js', starterSource.join('\n'));
     pkgJson.scripts['preinstall'] = 'npm install --save express serve-static';
-    fs.writeFileSync('./package.json', JSON.stringify(pkgJson, null, 2));
+    fs.writeFileSync('./client/package.json', JSON.stringify(pkgJson, null, 2));
   }
 
   spinner.stop();
 
   if (!(await isLoggedIn())) {
-    await execa.shell('heroku login', { stdio: 'inherit' });
+    await execa.shell('heroku login', { stdio: 'inherit', cwd: 'client' });
   }
 
-  const { stdout } = await execa.shell('git remote');
+  const { stdout } = await execa.shell('git remote', { cwd: 'client' });
   if (!stdout.includes('heroku')) {
     await createHerokuApp();
   }
 
-  await execa.shell('git add .');
-  await execa.shell(`git commit -m "Add files"`);
+  await execa.shell('git add .', { cwd: 'client' });
+  await execa.shell(`git commit -m "Add files"`, { cwd: 'client' });
 
-  await execa.shell('git push heroku master', { stdio: 'inherit' });
-  await execa.shell('heroku open');
+  await execa.shell('git push heroku master', {
+    stdio: 'inherit',
+    cwd: 'client',
+  });
+  await execa.shell('heroku open', { cwd: 'client' });
 };
 
 module.exports = deployToHeroku;
