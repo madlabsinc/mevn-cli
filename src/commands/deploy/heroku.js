@@ -6,7 +6,6 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 
 import appData from '../../utils/projectConfig';
-import Spinner from '../../utils/spinner';
 import { validateInput } from '../../utils/validate';
 import { validateInstallation } from '../../utils/validate';
 
@@ -63,16 +62,13 @@ const deployToHeroku = async () => {
   const { template } = projectConfig;
   const isPwa = projectConfig.hasOwnProperty('isPwa') && projectConfig.isPwa;
 
-  const spinner = new Spinner(`We're getting things ready for you`);
-  spinner.start();
-
   if (!fs.existsSync('./client/.git')) {
     await execa.shell('git init', { cwd: 'client' });
     fs.writeFileSync('./client/.gitignore', 'node_modules');
   } else {
     const { stdout } = await execa.shell('git status', { cwd: 'client' });
     if (stdout.includes('nothing to commit')) {
-      spinner.fail('No changes detected!');
+      console.error('No changes detected!');
       process.exit(1);
     }
   }
@@ -123,8 +119,6 @@ const deployToHeroku = async () => {
     pkgJson.scripts['preinstall'] = 'npm install --save express serve-static';
     fs.writeFileSync('./client/package.json', JSON.stringify(pkgJson, null, 2));
   }
-
-  spinner.stop();
 
   if (!(await isLoggedIn())) {
     await execa.shell('heroku login', { stdio: 'inherit', cwd: 'client' });
