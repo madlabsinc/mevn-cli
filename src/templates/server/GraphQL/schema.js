@@ -1,10 +1,18 @@
-const { buildSchema } = require('graphql');
+const { GraphQLSchema, GraphQLObjectType, GraphQLString } = require("graphql");
 
 // GraphQL schema
-let graphqlSchema = buildSchema(`
-    type Query {
-        message: String
-    }
-`);
+const graphqlSchema = new GraphQLSchema({
+  query: new GraphQLObjectType({
+    name: "RootQueryType",
+    fields: {
+      message: {
+        type: GraphQLString,
+        resolve() {
+          return "Root resolver";
+        },
+      },
+    },
+  }),
+});
 
 module.exports = graphqlSchema;
