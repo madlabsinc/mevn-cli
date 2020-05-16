@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-import User from '../models/user_schema';
+const User = require("../models/user_schema");
 
-let createData = (req, res, next) => {
-  User.create(req.body).then(err => {
+const createData = (req, res, next) => {
+  User.create(req.body).then((err) => {
     if (err) {
       return next(err);
     }
-    res.send('Entry created successfully!');
+    res.send("Entry created successfully!");
   });
 };
 
-let readData = (req, res, next) => {
-  User.find({}, '', (err, user) => {
+const readData = (req, res, next) => {
+  User.find({}, (err, user) => {
     if (err) {
       return next(err);
     }
@@ -20,8 +20,8 @@ let readData = (req, res, next) => {
   });
 };
 
-let updateData = (req, res, next) => {
-  User.findByIdAndUpdate(req.params.id, { $set: req.body }, (err, user) => {
+const updateData = (req, res, next) => {
+  User.updateOne({ id: req.body.id }, { $set: req.body }, (err, user) => {
     if (err) {
       return next(err);
     }
@@ -29,12 +29,12 @@ let updateData = (req, res, next) => {
   });
 };
 
-let deleteData = (req, res, next) => {
-  User.findByIdAndRemove(req.params.id, err => {
+const deleteData = (req, res, next) => {
+  User.deleteOne({ id: req.body.id }, (err, result) => {
     if (err) {
       return next(err);
     }
-    res.send('Entry deleted successfully!');
+    res.send(result);
   });
 };
 

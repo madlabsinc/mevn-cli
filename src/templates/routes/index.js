@@ -1,17 +1,17 @@
-import express from 'express';
+const express = require('express');
 
-import {
+const {
   createData,
   readData,
   updateData,
   deleteData,
-} from '../controllers/user_controller';
+} = require('../controllers/user_controller');
 
 const router = express.Router();
 
-router.post('/enter_api', createData);
-router.get('/enter_api', readData);
-router.put('/enter_api/:id', updateData);
-router.delete('/enter_api/:id', deleteData);
+router.post('/', createData);
+router.get('/', readData);
+router.put('/', updateData);
+router.delete('/', deleteData);
 
 module.exports = router;
