@@ -16,13 +16,11 @@ app.set('view engine', 'html');
 // Static folder
 app.use(express.static(__dirname + '/views/'));
 
-// Defining the Routes
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
-});
+// Defining the route middleware
+app.use('/api', './routes/api');
 
 // Listening to port
 app.listen(port);
-console.log(`Listening On http://localhost:${port}`);
+console.log(`Listening On http://localhost:${port}/api`);
 
 module.exports = app;
