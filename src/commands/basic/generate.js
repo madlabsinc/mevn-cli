@@ -1,12 +1,15 @@
 'use strict';
 
+import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
+import path from 'path';
 import showBanner from 'node-banner';
 
 // import appData from '../../utils/projectConfig';
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
+import copyDirSync from '../../utils/fs';
 import exec from '../../utils/exec';
 import generateComponent from './component';
 
@@ -29,18 +32,36 @@ const generateFile = async () => {
       type: 'list',
       name: 'type',
       message: 'Choose the required file to be generated',
-      choices: ['component (client)', 'CRUD Template (server)'],
+      choices: ['Component (client)', 'CRUD Template (server)'],
     },
   ]);
 
   // Fetch boilerplate template used from .mevnrc
   const { template } = appData();
 
-  if (type.includes('component')) {
+  if (type.includes('Component')) {
     generateComponent();
   } else {
+    // Only execute once
+    if (fs.existsSync('./server/models')) {
+      console.log();
+      console.log(
+        chalk.cyan(' It seems you already have the CRUD functionality'),
+      );
+      return;
+    }
     if (template === 'graphql') {
-      // TODO
+      // Create graphql-schema directory
+      copyDirSync(
+        path.join(__dirname, '..', '..', 'templates', 'graphql'),
+        'server',
+      );
+
+      // Create models directory
+      copyDirSync(
+        path.join(__dirname, '..', '..', 'templates', 'models'),
+        'server',
+      );
     } else {
       // Set up routes for CRUD functionality
       const routesFilePath = `server/routes/api.js`;
@@ -50,32 +71,22 @@ const generateFile = async () => {
       );
 
       // Create controllers directory
-      const controllersDirPath = `server/controllers`;
-      fs.mkdirSync(controllersDirPath);
-      fs.writeFileSync(
-        `${controllersDirPath}/user_controller.js`,
-        fs.readFileSync(
-          `${__dirname}/../../templates/controllers/user_controller.js`,
-          'utf8',
-        ),
+      copyDirSync(
+        path.join(__dirname, '..', '..', 'templates', 'controllers'),
+        'server',
       );
 
       // Create models directory
-      const modelsDirPath = `server/models`;
-      fs.mkdirSync(modelsDirPath);
-      fs.writeFileSync(
-        `${modelsDirPath}/user_schema.js`,
-        fs.readFileSync(
-          `${__dirname}/../../templates/models/user_schema.js`,
-          'utf8',
-        ),
-      );
-
-      await exec(
-        'npm install --save mongoose',
-        'Installing dependencies. Hold on',
+      copyDirSync(
+        path.join(__dirname, '..', '..', 'templates', 'models'),
+        'server',
       );
     }
+    // Install mongoose ORM
+    await exec(
+      'npm install --save mongoose',
+      'Installing mongoose ORM. Hold on',
+    );
   }
 };
 

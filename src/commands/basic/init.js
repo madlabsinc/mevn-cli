@@ -187,8 +187,8 @@ const fetchTemplate = async (templateBranch) => {
     // Configure path
     const serverDir = templateBranch === 'graphql' ? 'GraphQL' : 'basic';
     const serverPath = ['templates', 'server', serverDir];
-    const source = path.resolve(__dirname, '..', '..', ...serverPath);
-    const dest = path.resolve(process.cwd(), projectName);
+    const source = path.join(__dirname, '..', '..', ...serverPath);
+    const dest = path.resolve(projectName);
 
     // Copy server template directory to the destination
     copyDirSync(source, dest);
