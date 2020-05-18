@@ -8,11 +8,11 @@ const userSchema = new Schema({
   },
   name: {
     type: String,
-    required: [true, "Name is required"],
+    required: [true, "name field is required"],
   },
   age: {
-    type: String,
-    required: [true, "Name is required"],
+    type: Number,
+    required: [true, "age field is required"],
   },
 });
 
