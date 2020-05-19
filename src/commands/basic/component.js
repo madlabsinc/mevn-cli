@@ -4,7 +4,6 @@ import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
-import path from 'path';
 
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
@@ -86,16 +85,18 @@ const generateComponent = async () => {
     componentPath =
       template === 'Nuxt-js' ? 'client/pages' : 'client/src/views';
   }
-  process.chdir(componentPath);
 
   // Duplicate component
-  if (fs.existsSync(`${componentName}.vue`)) {
+  if (fs.existsSync(`./${componentPath}/${componentName}.vue`)) {
     console.log();
     console.log(chalk.cyan.bold(` Info: ${componentName}.vue already exists`));
     return;
   }
 
-  fs.writeFileSync(`./${componentName}.vue`, componentTemplate.join('\n'));
+  fs.writeFileSync(
+    `./${componentPath}/${componentName}.vue`,
+    componentTemplate.join('\n'),
+  );
 
   console.log(
     chalk.green.bold(
@@ -109,10 +110,8 @@ const generateComponent = async () => {
    */
   if (template === 'Nuxt-js' || componentType === 'UI Component') return;
 
-  process.chdir(path.join(process.cwd(), '..'));
-
-  let routesConfig = fs
-    .readFileSync('./router.js', 'utf8')
+  const routesConfig = fs
+    .readFileSync('./client/src/router.js', 'utf8')
     .toString()
     .split('\n');
 
@@ -151,7 +150,7 @@ const generateComponent = async () => {
   );
 
   // Write back the updated config
-  fs.writeFileSync('./router.js', routesConfig.join('\n'));
+  fs.writeFileSync('./client/src/router.js', routesConfig.join('\n'));
 };
 
 module.exports = generateComponent;

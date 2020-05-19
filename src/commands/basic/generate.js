@@ -78,6 +78,8 @@ const generateFile = async () => {
       'npm install --save mongoose',
       'Installing mongoose ORM. Hold on',
     );
+    // Create .env file
+    fs.writeFileSync('./server/.env', 'DB_URL=mongodb://localhost:27017');
   }
 };
 

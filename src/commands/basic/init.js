@@ -28,14 +28,13 @@ let projectConfig = {};
  */
 
 const makeInitialCommit = () => {
-  // Navigate to the project directory
-  process.chdir(projectName);
-
   // Commands to be executed serially
   const commands = ['init', 'add .', `commit -m "Init" -m "MEVN-CLI"`];
 
   // Execute commands serially
-  commands.forEach((cmd) => execa.sync('git', cmd.split(' ')));
+  commands.forEach((cmd) =>
+    execa.sync('git', cmd.split(' '), { cwd: projectName }),
+  );
 };
 
 /**

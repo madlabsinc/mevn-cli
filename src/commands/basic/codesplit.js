@@ -23,10 +23,8 @@ const asyncRender = async () => {
   // Exit for the case of Nuxt-js boilerplate template
   checkIfTemplateIsNuxt();
 
-  process.chdir('client/src');
-
-  let routesConfig = fs
-    .readFileSync('./router.js', 'utf8')
+  const routesConfig = fs
+    .readFileSync('./client/src/router.js', 'utf8')
     .toString()
     .split('\n');
 
@@ -85,7 +83,7 @@ const asyncRender = async () => {
   routesConfig.splice(regularImportIndex, 1);
 
   // Write back the updated route-config
-  fs.writeFileSync('./router.js', routesConfig.join('\n'));
+  fs.writeFileSync('./client/src/router.js', routesConfig.join('\n'));
   console.log();
   console.log(
     chalk.green.bold(
