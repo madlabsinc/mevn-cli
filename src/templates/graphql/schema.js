@@ -1,5 +1,6 @@
 const {
     GraphQLObjectType,
+    GraphQLInputObjectType,
     GraphQLString,
     GraphQLID,
     GraphQLInt,
@@ -12,6 +13,15 @@ const UserSchema = require("../models/user_schema");
 
 const UserType = new GraphQLObjectType({
     name: "User",
+    fields: () => ({
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt },
+    }),
+});
+
+const UserInputType = new GraphQLInputObjectType({
+    name: "UserInput",
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
@@ -48,23 +58,23 @@ const schema = new GraphQLSchema({
             addUser: {
                 type: UserType,
                 args: {
-                    id: { type: new GraphQLNonNull(GraphQLID) },
-                    name: { type: new GraphQLNonNull(GraphQLString) },
-                    age: { type: new GraphQLNonNull(GraphQLInt) },
+                    input: { 
+                        type: new GraphQLNonNull(UserInputType),
+                    },
                 },
-                resolve(parent, args) {
-                    return UserSchema.create(args);
+                resolve(parent, { input }) {
+                    return UserSchema.create(input);
                 },
             },
             updateUser: {
                 type: UserType,
                 args: {
-                    id: { type: new GraphQLNonNull(GraphQLID) },
-                    name: { type: new GraphQLNonNull(GraphQLString) },
-                    age: { type: new GraphQLNonNull(GraphQLInt) },
+                    input: {
+                        type: new GraphQLNonNull(UserInputType),
+                    },
                 },
-                resolve(parent, args) {
-                    return UserSchema.updateOne({ id: args.id }, { $set: args });
+                resolve(parent, { input }) {
+                    return UserSchema.updateOne({ id: input.id }, { $set: input });
                 },
             },
             deleteUser: {
