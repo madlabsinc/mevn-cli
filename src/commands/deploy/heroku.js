@@ -65,13 +65,16 @@ const deployToHeroku = async () => {
   const isPwa = projectConfig.hasOwnProperty('isPwa') && projectConfig.isPwa;
 
   // Choose between client/server
-  const { dir } = await dirOfChoice();
+  let templateDir = 'client';
+  if (fs.existsSync('./server')) {
+    ({ dir: templateDir } = await dirOfChoice());
+  }
 
-  if (!fs.existsSync(`./${dir}/.git`)) {
-    await execa.shell('git init', { cwd: dir });
-    fs.writeFileSync(`./${dir}/.gitignore`, 'node_modules');
+  if (!fs.existsSync(`./${templateDir}/.git`)) {
+    await execa.shell('git init', { cwd: templateDir });
+    fs.writeFileSync(`./${templateDir}/.gitignore`, 'node_modules');
   } else {
-    const { stdout } = await execa.shell('git status', { cwd: dir });
+    const { stdout } = await execa.shell('git status', { cwd: templateDir });
     if (stdout.includes('nothing to commit')) {
       console.error('No changes detected!');
       process.exit(1);
@@ -79,7 +82,7 @@ const deployToHeroku = async () => {
   }
 
   // Necessary configurations that are specific to the client side
-  if (dir === 'client') {
+  if (templateDir === 'client') {
     const staticConfig = {
       root: 'dist',
       clean_urls: true,
@@ -132,22 +135,22 @@ const deployToHeroku = async () => {
   }
 
   if (!(await isLoggedIn())) {
-    await execa.shell('heroku login', { stdio: 'inherit', cwd: dir });
+    await execa.shell('heroku login', { stdio: 'inherit', cwd: templateDir });
   }
 
-  const { stdout } = await execa.shell('git remote', { cwd: dir });
+  const { stdout } = await execa.shell('git remote', { cwd: templateDir });
   if (!stdout.includes('heroku')) {
-    await createHerokuApp(dir);
+    await createHerokuApp(templateDir);
   }
 
-  await execa.shell('git add .', { cwd: dir });
-  await execa.shell(`git commit -m "Add files"`, { cwd: dir });
+  await execa.shell('git add .', { cwd: templateDir });
+  await execa.shell(`git commit -m "Add files"`, { cwd: templateDir });
 
   await execa.shell('git push heroku master', {
     stdio: 'inherit',
-    cwd: dir,
+    cwd: templateDir,
   });
-  await execa.shell('heroku open', { cwd: dir });
+  await execa.shell('heroku open', { cwd: templateDir });
 };
 
 module.exports = deployToHeroku;
