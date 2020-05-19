@@ -1,6 +1,5 @@
 'use strict';
 
-import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import path from 'path';
@@ -23,7 +22,7 @@ const generateFile = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  if (!fs.existsSync('./server')) {
+  if (!fs.existsSync('./server') || fs.existsSync('./server/models')) {
     return generateComponent();
   }
 
@@ -42,14 +41,6 @@ const generateFile = async () => {
   if (type.includes('Component')) {
     generateComponent();
   } else {
-    // Only execute once
-    if (fs.existsSync('./server/models')) {
-      console.log();
-      console.log(
-        chalk.cyan(' It seems you already have the CRUD functionality'),
-      );
-      return;
-    }
     if (template === 'graphql') {
       // Create graphql-schema directory
       copyDirSync(

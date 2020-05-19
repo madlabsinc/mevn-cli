@@ -34,7 +34,7 @@ const generateComponent = async () => {
     {
       type: 'input',
       name: 'componentName',
-      message: 'Kindly provide a name for the new component',
+      message: 'Please provide a name for the new component',
       validate: validateInput,
     },
   ]);
