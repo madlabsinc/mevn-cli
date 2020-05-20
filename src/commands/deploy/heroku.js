@@ -72,7 +72,10 @@ const deployToHeroku = async () => {
 
   if (!fs.existsSync(`./${templateDir}/.git`)) {
     await execa.shell('git init', { cwd: templateDir });
-    fs.writeFileSync(`./${templateDir}/.gitignore`, 'node_modules');
+    const fileContent = fs.existsSync('./server/.env')
+      ? 'node_modules\n.env'
+      : 'node_modules';
+    fs.writeFileSync(`./${templateDir}/.gitignore`, fileContent);
   } else {
     const { stdout } = await execa.shell('git status', { cwd: templateDir });
     if (stdout.includes('nothing to commit')) {
@@ -141,6 +144,21 @@ const deployToHeroku = async () => {
   const { stdout } = await execa.shell('git remote', { cwd: templateDir });
   if (!stdout.includes('heroku')) {
     await createHerokuApp(templateDir);
+  }
+
+  if (templateDir === 'server' && fs.existsSync('./server/models')) {
+    const { stdout } = await execa.shell('heroku config', { cwd: templateDir });
+    if (!stdout.includes('DB_URL')) {
+      const { uri } = await inquirer.prompt({
+        type: 'password',
+        name: 'uri',
+        message: 'Please provide the path to a cloud based MongoDB URI',
+        validate: validateInput,
+      });
+      await execa.shell(`heroku config:set DB_URL=${uri}`, {
+        cwd: templateDir,
+      });
+    }
   }
 
   await execa.shell('git add .', { cwd: templateDir });

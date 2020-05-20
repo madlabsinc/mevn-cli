@@ -11,6 +11,7 @@ import { checkIfConfigFileExists } from '../../utils/messages';
 import copyDirSync from '../../utils/fs';
 import exec from '../../utils/exec';
 import generateComponent from './component';
+import { validateInput } from '../../utils/validate';
 
 /**
  * Generates a new file of choice
@@ -73,13 +74,30 @@ const generateFile = async () => {
         'server',
       );
     }
+    // Installing dependencies
+    await exec('npm install', 'Installing dependencies', 'Done', {
+      cwd: 'server',
+    });
     // Install mongoose ORM
     await exec(
       'npm install --save mongoose',
       'Installing mongoose ORM. Hold on',
+      'Done',
+      {
+        cwd: 'server',
+      },
     );
     // Create .env file
-    fs.writeFileSync('./server/.env', 'DB_URL=mongodb://localhost:27017');
+    const { uri } = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'uri',
+        message: 'Please provide the MongoDB URI path',
+        default: 'mongodb://localhost:27017',
+        validate: validateInput,
+      },
+    ]);
+    fs.writeFileSync('./server/.env', `DB_URL=${uri}`);
   }
 };
 
