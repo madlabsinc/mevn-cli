@@ -21,7 +21,7 @@ const readData = (req, res, next) => {
 };
 
 const updateData = (req, res, next) => {
-  User.updateOne({ id: req.body.id }, { $set: req.body }, (err, user) => {
+  User.updateOne({ id: req.params.id }, { $set: req.body }, (err, user) => {
     if (err) {
       return next(err);
     }
@@ -30,7 +30,7 @@ const updateData = (req, res, next) => {
 };
 
 const deleteData = (req, res, next) => {
-  User.deleteOne({ id: req.body.id }, (err, result) => {
+  User.deleteOne({ id: req.params.id }, (err, result) => {
     if (err) {
       return next(err);
     }
