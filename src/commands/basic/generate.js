@@ -75,14 +75,19 @@ const generateFile = async () => {
       );
     }
     // Installing dependencies
-    await exec('npm install', 'Installing dependencies', 'Done', {
-      cwd: 'server',
-    });
+    await exec(
+      'npm install',
+      'Installing dependencies',
+      'Successfully installed the dependencies',
+      {
+        cwd: 'server',
+      },
+    );
     // Install mongoose ORM
     await exec(
       'npm install --save mongoose',
       'Installing mongoose ORM. Hold on',
-      'Done',
+      `You're all set to interact with the DB`,
       {
         cwd: 'server',
       },
