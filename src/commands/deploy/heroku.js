@@ -6,7 +6,6 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 
 import appData from '../../utils/projectConfig';
-import dirOfChoice from '../../utils/directoryPrompt';
 import { validateInput } from '../../utils/validate';
 import { validateInstallation } from '../../utils/validate';
 
@@ -53,22 +52,17 @@ const isLoggedIn = async () => {
 /**
  * Deploy the webapp to Heroku
  *
+ * @param {String} templateDir - client/server
  * @returns {Promise<void>}
  */
 
-const deployToHeroku = async () => {
+const deployToHeroku = async (templateDir) => {
   await validateInstallation('heroku');
   await validateInstallation('git help -g');
 
   const projectConfig = appData();
   const { template } = projectConfig;
   const isPwa = projectConfig.hasOwnProperty('isPwa') && projectConfig.isPwa;
-
-  // Choose between client/server
-  let templateDir = 'client';
-  if (fs.existsSync('./server')) {
-    ({ dir: templateDir } = await dirOfChoice());
-  }
 
   if (!fs.existsSync(`./${templateDir}/.git`)) {
     await execa.shell('git init', { cwd: templateDir });
