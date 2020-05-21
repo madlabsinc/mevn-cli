@@ -23,11 +23,6 @@ const deployConfig = async () => {
     ({ dir: templateDir } = await dirOfChoice());
   }
 
-  // Deploy the Express.js webapp to Heroku
-  if (templateDir === 'server') {
-    deployToHeroku(templateDir);
-  }
-
   // List the various options for client side
   if (templateDir === 'client') {
     const { platform } = await inquirer.prompt([
@@ -40,11 +35,11 @@ const deployConfig = async () => {
     ]);
 
     if (platform === 'Surge') {
-      deployToSurge();
-    } else {
-      deployToHeroku(templateDir);
+      return deployToSurge();
     }
   }
+
+  deployToHeroku(templateDir);
 };
 
 module.exports = deployConfig;
