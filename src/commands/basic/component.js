@@ -7,6 +7,7 @@ import showBanner from 'node-banner';
 
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
+import exec from '../../utils/exec';
 import { validateInput } from '../../utils/validate';
 
 /**
@@ -98,11 +99,25 @@ const generateComponent = async () => {
     componentTemplate.join('\n'),
   );
 
+  console.log();
   console.log(
     chalk.green.bold(
       `Successfully created ${componentName}.vue file on ${componentPath}`,
     ),
   );
+
+  // Execute linter
+  if (!fs.existsSync('./client/node_modules')) {
+    await exec(
+      'npm install',
+      'Getting things ready',
+      'Successfully installed the dependencies',
+      { cwd: 'client' },
+    );
+  }
+  await exec('npm run lint -- --fix', 'Cleaning up', `You're all set`, {
+    cwd: 'client',
+  });
 
   /**
    * Nuxt-js automatically sets up the routing configurations
@@ -151,6 +166,11 @@ const generateComponent = async () => {
 
   // Write back the updated config
   fs.writeFileSync('./client/src/router.js', routesConfig.join('\n'));
+
+  // Execute linter
+  await exec('npm run lint -- --fix', 'Cleaning up', `Done`, {
+    cwd: 'client',
+  });
 };
 
 module.exports = generateComponent;
