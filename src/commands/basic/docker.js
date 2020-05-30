@@ -25,7 +25,9 @@ const getFileContent = (configFile) => {
     'templates',
     'docker',
   );
-  return fs.readFileSync(path.join(dockerConfigTemplatePath, configFile));
+  return fs
+    .readFileSync(path.join(dockerConfigTemplatePath, configFile))
+    .toString();
 };
 
 /**
@@ -50,7 +52,7 @@ const dockerize = async () => {
     fs.writeFileSync('./server/.dockerignore', 'node_modules');
     // docker-compose.yml
     if (!fs.existsSync('./server/models')) {
-      dockerComposeTemplate = dockerComposeTemplate.slice(0, 21);
+      dockerComposeTemplate = dockerComposeTemplate.slice(0, 19);
     }
   }
 
