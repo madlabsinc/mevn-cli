@@ -75,30 +75,6 @@ const showInstructions = () => {
 const fetchTemplate = async (templateBranch) => {
   await validateInstallation('git help -g');
 
-  // Content to be written into docker-compose.yml at the project root
-  const dockerComposeTemplate = [
-    `version: '3'`,
-    'services:',
-    '  vue-client:',
-    `${' '.repeat(4)}build: ./client`,
-    `${' '.repeat(4)}command: npm run serve`,
-    `${' '.repeat(4)}ports:`,
-    `${' '.repeat(4)}  - "8080:8080"`,
-    '',
-    '  node-server:',
-    `${' '.repeat(4)}build: ./server`,
-    `${' '.repeat(4)}command: npm run serve`,
-    `${' '.repeat(4)}ports:`,
-    `${' '.repeat(4)}  - "9000:9000"`,
-    `${' '.repeat(4)}links:`,
-    `${' '.repeat(4)}  - mongo`,
-    '',
-    '  mongo:',
-    `${' '.repeat(4)}image: mongo`,
-    `${' '.repeat(4)}ports:`,
-    `${' '.repeat(4)}  - "27017:27017" `,
-  ];
-
   // Boilerplate templates are available within a single repository
   const repoUrl = 'https://github.com/madlabsinc/mevn-starter-templates';
 
@@ -197,14 +173,6 @@ const fetchTemplate = async (templateBranch) => {
     const renameToPath = path.join(dest, 'server');
     fs.renameSync(renameFromPath, renameToPath);
   }
-
-  // Create a docker-compose.yml (config) file at the project root
-  fs.writeFileSync(
-    `./${projectName}/docker-compose.yml`,
-    requireServer
-      ? dockerComposeTemplate.join('\n')
-      : dockerComposeTemplate.slice(0, 7).join('\n'),
-  );
 
   // Show up initial instructions to the user
   showInstructions();
