@@ -12,6 +12,7 @@ import { validateInstallation } from '../../utils/validate';
 /**
  * Returns the respective file content
  *
+ * @param {String} configFile - File whose content is to be read
  * @returns {String}
  */
 

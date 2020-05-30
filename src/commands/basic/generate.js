@@ -13,6 +13,21 @@ import exec from '../../utils/exec';
 import generateComponent from './component';
 import { validateInput } from '../../utils/validate';
 
+// Holds reference to the path where the boilerplate files reside
+const templatePath = path.join(__dirname, '..', '..', 'templates');
+
+/**
+ * Creates a directory with the given name and associated boilerplate template
+ *
+ * @param {String} dir - Directory name
+ * @returns {Void}
+ */
+
+const createDir = (dir) => {
+  // Copy to destination
+  copyDirSync(path.join(templatePath, dir), 'server');
+};
+
 /**
  * Generates a new file of choice
  *
@@ -44,35 +59,23 @@ const generateFile = async () => {
   } else {
     if (template === 'graphql') {
       // Create graphql-schema directory
-      copyDirSync(
-        path.join(__dirname, '..', '..', 'templates', 'graphql'),
-        'server',
-      );
+      createDir('graphql');
 
       // Create models directory
-      copyDirSync(
-        path.join(__dirname, '..', '..', 'templates', 'models'),
-        'server',
-      );
+      createDir('models');
     } else {
       // Set up routes for CRUD functionality
       const routesFilePath = `server/routes/api.js`;
       fs.writeFileSync(
         routesFilePath,
-        fs.readFileSync(`${__dirname}/../../templates/routes/index.js`, 'utf8'),
+        fs.readFileSync(path.join(templatePath, 'routes', 'index.js')),
       );
 
       // Create controllers directory
-      copyDirSync(
-        path.join(__dirname, '..', '..', 'templates', 'controllers'),
-        'server',
-      );
+      createDir('controllers');
 
       // Create models directory
-      copyDirSync(
-        path.join(__dirname, '..', '..', 'templates', 'models'),
-        'server',
-      );
+      createDir('models');
     }
     // Installing dependencies
     await exec(
