@@ -1,12 +1,31 @@
 'use strict';
 
-import chalk from 'chalk';
 import execa from 'execa';
+import fs from 'fs';
+import path from 'path';
 import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { isWin } from '../../utils/constants';
 import { validateInstallation } from '../../utils/validate';
+
+/**
+ * Returns the respective file content
+ *
+ * @returns {String}
+ */
+
+const getFileContent = (configFile) => {
+  // Holds reference to the path where docker-config files reside
+  const dockerConfigTemplatePath = path.join(
+    __dirname,
+    '..',
+    '..',
+    'templates',
+    'docker',
+  );
+  return fs.readFileSync(path.join(dockerConfigTemplatePath, configFile));
+};
 
 /**
  * Launch multiple containers with docker-compose (client, server and mongo client)
@@ -19,26 +38,42 @@ const dockerize = async () => {
   checkIfConfigFileExists();
   await validateInstallation('docker');
 
+  // Get the respective file contents
+  let dockerComposeTemplate = getFileContent('docker-compose.yml').split('\n');
+  const dockerFileTemplate = getFileContent('Dockerfile');
+
+  if (fs.existsSync('./server')) {
+    // Create Dockerfile for the server directory
+    fs.writeFileSync('./server/Dockerfile', dockerFileTemplate);
+    // Create .dockerignore
+    fs.writeFileSync('./server/.dockerignore', 'node_modules');
+    // docker-compose.yml
+    if (!fs.existsSync('./server/models')) {
+      dockerComposeTemplate = dockerComposeTemplate.slice(0, 21);
+    }
+  }
+
+  // Create Dockerfile for client directory
+  fs.writeFileSync('./client/Dockerfile', dockerFileTemplate);
+  // Create .dockerignore
+  fs.writeFileSync('./client/.dockerignore', 'node_modules\ndist');
+  // docker-compose.yml should only include the necessary instructions for the client side
+  if (!fs.existsSync('./server')) {
+    dockerComposeTemplate = dockerComposeTemplate.slice(0, 10);
+  }
+
+  // Create docker-compose.yml at project root
+  fs.writeFileSync('docker-compose.yml', dockerComposeTemplate.join('\n'));
+
   try {
     // Requires administrative (super-user) privilege
     // Sets up the environment by pulling required images as in the config file
-    const { stdout } = await execa.shell(
-      `${isWin ? '' : 'sudo'} docker-compose up`,
-      { stdio: 'inherit' },
-    );
-
-    // Log the results to stdout
-    console.log(stdout);
+    await execa.shell(`${isWin ? '' : 'sudo'} docker-compose up`, {
+      stdio: 'inherit',
+    });
   } catch (err) {
     throw err;
   }
-
-  console.log();
-  console.log(
-    chalk.green.bold(
-      ' Services:\n server:- http://localhost:9000\n client:- http://localhost:8080',
-    ),
-  );
 };
 
 module.exports = dockerize;

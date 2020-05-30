@@ -1,0 +1,26 @@
+version: '3'
+services:
+  vue-client:
+    build: ./client
+    command: npm run serve
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    ports:
+      - "8080:8080"
+
+  node-server:
+    build: ./server
+    command: npm run serve
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    ports:
+      - "9000:9000"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017" 
