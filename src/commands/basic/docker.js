@@ -6,14 +6,13 @@ import path from 'path';
 import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
-import { isWin } from '../../utils/constants';
 import { validateInstallation } from '../../utils/validate';
 
 /**
- * Returns the respective file content
+ * Returns the respective file content as an array
  *
  * @param {String} configFile - File whose content is to be read
- * @returns {String}
+ * @returns {String[]}
  */
 
 const getFileContent = (configFile) => {
@@ -27,7 +26,8 @@ const getFileContent = (configFile) => {
   );
   return fs
     .readFileSync(path.join(dockerConfigTemplatePath, configFile))
-    .toString();
+    .toString()
+    .split('\n');
 };
 
 /**
@@ -42,12 +42,17 @@ const dockerize = async () => {
   await validateInstallation('docker');
 
   // Get the respective file contents
-  let dockerComposeTemplate = getFileContent('docker-compose.yml').split('\n');
+  let dockerComposeTemplate = getFileContent('docker-compose.yml');
   const dockerFileTemplate = getFileContent('Dockerfile');
+
+  // Create Dockerfile for client directory
+  fs.writeFileSync('./client/Dockerfile', dockerFileTemplate.join('\n'));
 
   if (fs.existsSync('./server')) {
     // Create Dockerfile for the server directory
-    fs.writeFileSync('./server/Dockerfile', dockerFileTemplate);
+    dockerFileTemplate.splice(8, 0, 'RUN npm install -g nodemon');
+    dockerFileTemplate.splice(9, 0, '');
+    fs.writeFileSync('./server/Dockerfile', dockerFileTemplate.join('\n'));
     // Create .dockerignore
     fs.writeFileSync('./server/.dockerignore', 'node_modules');
     // docker-compose.yml
@@ -56,8 +61,6 @@ const dockerize = async () => {
     }
   }
 
-  // Create Dockerfile for client directory
-  fs.writeFileSync('./client/Dockerfile', dockerFileTemplate);
   // Create .dockerignore
   fs.writeFileSync('./client/.dockerignore', 'node_modules\ndist');
   // docker-compose.yml should only include the necessary instructions for the client side
@@ -71,7 +74,7 @@ const dockerize = async () => {
   try {
     // Requires administrative (super-user) privilege
     // Sets up the environment by pulling required images as in the config file
-    await execa.shell(`${isWin ? '' : 'sudo'} docker-compose up`, {
+    await execa.shell('docker-compose up', {
       stdio: 'inherit',
     });
   } catch (err) {

@@ -11,7 +11,7 @@ services:
 
   node-server:
     build: ./server
-    command: npm run serve
+    command: nodemon --watch views -e js,html server.js
     volumes:
       - /app/node_modules
       - ./server:/app
