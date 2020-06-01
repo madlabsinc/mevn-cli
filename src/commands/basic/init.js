@@ -18,7 +18,7 @@ import {
 import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
 
-let projectName;
+let projectPathRelative;
 let projectConfig = {};
 
 /**
@@ -33,7 +33,7 @@ const makeInitialCommit = () => {
 
   // Execute commands serially
   commands.forEach((cmd) =>
-    execa.sync('git', cmd.split(' '), { cwd: projectName }),
+    execa.sync('git', cmd.split(' '), { cwd: projectPathRelative }),
   );
 };
 
@@ -44,16 +44,19 @@ const makeInitialCommit = () => {
  */
 
 const showInstructions = () => {
+  const isCurrentDir = projectPathRelative === '.';
+  let userCommandInstruction = chalk.green.bold('mevn serve');
+
+  if (!isCurrentDir) {
+    userCommandInstruction = `${chalk.green.bold(
+      `cd ${projectPathRelative}`,
+    )} && ${userCommandInstruction}`;
+  }
+
   console.log();
   console.log();
-  console.log(chalk.cyan.bold(` You're all set`));
-  console.log(
-    chalk.cyan.bold(
-      ` Now, just type in ${chalk.green.bold(
-        `cd ${projectName}`,
-      )} && ${chalk.green.bold('mevn serve')}`,
-    ),
-  );
+  console.log(chalk.cyan.bold(`You're all set`));
+  console.log(chalk.cyan.bold(`Now, just type in ${userCommandInstruction}`));
 
   console.log();
   console.log(
@@ -61,7 +64,7 @@ const showInstructions = () => {
   );
 
   let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
-  execa.shellSync(`${removeCmd} ${path.join(projectName, '.git')}`);
+  execa.shellSync(`${removeCmd} ${path.join(projectPathRelative, '.git')}`);
   makeInitialCommit();
 };
 
@@ -87,7 +90,7 @@ const fetchTemplate = async (templateBranch) => {
       '--branch',
       templateBranch,
       '--single-branch',
-      projectName,
+      projectPathRelative,
     ]);
   } catch (err) {
     fetchSpinner.fail('Something went wrong');
@@ -97,7 +100,7 @@ const fetchTemplate = async (templateBranch) => {
   fetchSpinner.stop();
 
   fs.writeFileSync(
-    `./${projectName}/.mevnrc`,
+    `./${projectPathRelative}/.mevnrc`,
     JSON.stringify(projectConfig, null, 2),
   );
 
@@ -113,10 +116,12 @@ const fetchTemplate = async (templateBranch) => {
 
     // Write to .mevnrc in order to keep track while installing dependencies
     if (requirePwaSupport) {
-      let configFile = JSON.parse(fs.readFileSync(`./${projectName}/.mevnrc`));
+      let configFile = JSON.parse(
+        fs.readFileSync(`./${projectPathRelative}/.mevnrc`),
+      );
       configFile = { ...configFile, isPwa: true, isPwaConfigured: false };
       fs.writeFileSync(
-        `./${projectName}/.mevnrc`,
+        `./${projectPathRelative}/.mevnrc`,
         JSON.stringify(configFile, null, 2),
       );
     }
@@ -134,7 +139,7 @@ const fetchTemplate = async (templateBranch) => {
     // Update the config file (nuxt.config.js)
     if (mode === 'Universal') {
       let configFile = fs
-        .readFileSync(`./${projectName}/client/nuxt.config.js`, 'utf8')
+        .readFileSync(`./${projectPathRelative}/client/nuxt.config.js`, 'utf8')
         .toString()
         .split('\n');
 
@@ -144,7 +149,7 @@ const fetchTemplate = async (templateBranch) => {
       configFile[index] = ` mode: 'universal',`;
 
       fs.writeFileSync(
-        `./${projectName}/client/nuxt.config.js`,
+        `./${projectPathRelative}/client/nuxt.config.js`,
         configFile.join('\n'),
       );
     }
@@ -163,7 +168,7 @@ const fetchTemplate = async (templateBranch) => {
     const serverDir = templateBranch === 'graphql' ? 'GraphQL' : 'basic';
     const serverPath = ['templates', 'server', serverDir];
     const source = path.join(__dirname, '..', '..', ...serverPath);
-    const dest = path.resolve(projectName);
+    const dest = path.resolve(projectPathRelative);
 
     // Copy server template directory to the destination
     copyDirSync(source, dest);
@@ -190,6 +195,11 @@ const initializeProject = async (appName) => {
 
   const hasMultipleProjectNameArgs =
     process.argv[4] && !process.argv[4].startsWith('-');
+  const isCurrentDir = appName === '.';
+
+  if (isCurrentDir) {
+    appName = path.basename(process.cwd());
+  }
 
   // Validation for multiple directory names
   if (hasMultipleProjectNameArgs) {
@@ -201,7 +211,7 @@ const initializeProject = async (appName) => {
     invalidProjectName(appName);
   }
 
-  if (fs.existsSync(appName)) {
+  if (!isCurrentDir && fs.existsSync(appName)) {
     directoryExistsInPath(appName);
   }
 
@@ -215,7 +225,7 @@ const initializeProject = async (appName) => {
     process.exit(1);
   }
 
-  projectName = appName;
+  projectPathRelative = isCurrentDir ? '.' : appName;
 
   const { template } = await inquirer.prompt([
     {
