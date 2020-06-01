@@ -2,8 +2,10 @@ FROM node:12.16.0-buster
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 
 RUN npm install
 
-CMD npm run serve
+COPY . .
+
+CMD [ "npm", "run", "serve" ]

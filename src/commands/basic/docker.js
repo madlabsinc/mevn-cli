@@ -53,17 +53,29 @@ const dockerize = async () => {
     dockerFileTemplate.splice(8, 0, 'RUN npm install -g nodemon');
     dockerFileTemplate.splice(9, 0, '');
     fs.writeFileSync('./server/Dockerfile', dockerFileTemplate.join('\n'));
+
     // Create .dockerignore
     fs.writeFileSync('./server/.dockerignore', 'node_modules');
-    // docker-compose.yml
-    if (!fs.existsSync('./server/models')) {
+
+    // Configure env variables for CRUD boilerplate template
+    // to be consumed within the Docker container
+    if (fs.existsSync('./server/models')) {
+      dockerComposeTemplate.splice(14, 0, `${' '.repeat(4)}environment:`);
+      dockerComposeTemplate.splice(
+        15,
+        0,
+        `${' '.repeat(6)}- DB_URL=mongodb://mongo:27017`,
+      );
+    } else {
       dockerComposeTemplate = dockerComposeTemplate.slice(0, 19);
     }
   }
 
   // Create .dockerignore
   fs.writeFileSync('./client/.dockerignore', 'node_modules\ndist');
-  // docker-compose.yml should only include the necessary instructions for the client side
+
+  // docker-compose.yml should only include the necessary instructions
+  // for the client side
   if (!fs.existsSync('./server')) {
     dockerComposeTemplate = dockerComposeTemplate.slice(0, 10);
   }
@@ -72,8 +84,6 @@ const dockerize = async () => {
   fs.writeFileSync('docker-compose.yml', dockerComposeTemplate.join('\n'));
 
   try {
-    // Requires administrative (super-user) privilege
-    // Sets up the environment by pulling required images as in the config file
     await execa.shell('docker-compose up', {
       stdio: 'inherit',
     });
