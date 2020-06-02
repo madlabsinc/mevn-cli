@@ -7,6 +7,7 @@ import showBanner from 'node-banner';
 
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { validateInstallation } from '../../utils/validate';
+import { readGitIgnore, writeGitIgnore } from '../../utils/gitignore';
 
 /**
  * Returns the respective file content as an array
@@ -29,6 +30,25 @@ const getFileContent = (configFile) => {
     .toString()
     .split('\n');
 };
+
+/**
+ * Make data directory for mongo container to montain in order to persist
+ * the database.
+ *
+ * @returns {void}
+ */
+function makeDataDir() {
+  fs.mkdirSync('./tmp/data', { recursive: true });
+
+  let gitIgnoreContents = readGitIgnore();
+  const mongoGitIgnoreHeader = '# MEVN_GENERATED:MONGO';
+
+  if (!new RegExp(mongoGitIgnoreHeader, 'g').test(gitIgnoreContents)) {
+    gitIgnoreContents += ['# MEVN_GENERATED:MONGO', '/tmp', '\n'].join('\n');
+  }
+
+  writeGitIgnore(gitIgnoreContents);
+}
 
 /**
  * Launch multiple containers with docker-compose (client, server and mongo client)
@@ -66,6 +86,8 @@ const dockerize = async () => {
         0,
         `${' '.repeat(6)}- DB_URL=mongodb://mongo:27017`,
       );
+
+      makeDataDir();
     } else {
       dockerComposeTemplate = dockerComposeTemplate.slice(0, 19);
     }
