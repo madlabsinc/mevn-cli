@@ -199,6 +199,14 @@ const initializeProject = async (appName) => {
 
   if (isCurrentDir) {
     appName = path.basename(process.cwd());
+    if (fs.readdirSync('.').length) {
+      console.log();
+      console.log(
+        chalk.red.bold(`It seems the current directory isn't empty.`),
+      );
+      console.log();
+      process.exit(1);
+    }
   }
 
   // Validation for multiple directory names
