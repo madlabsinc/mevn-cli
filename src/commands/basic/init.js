@@ -195,18 +195,11 @@ const initializeProject = async (appName) => {
 
   const hasMultipleProjectNameArgs =
     process.argv[4] && !process.argv[4].startsWith('-');
-  const isCurrentDir = appName === '.';
 
-  if (isCurrentDir) {
+  let isCurrentDir = false;
+  if (appName === '.') {
+    isCurrentDir = true;
     appName = path.basename(process.cwd());
-    if (fs.readdirSync('.').length) {
-      console.log();
-      console.log(
-        chalk.red.bold(`It seems the current directory isn't empty.`),
-      );
-      console.log();
-      process.exit(1);
-    }
   }
 
   // Validation for multiple directory names
@@ -217,6 +210,17 @@ const initializeProject = async (appName) => {
   const validationResult = validate(appName);
   if (!validationResult.validForNewPackages) {
     invalidProjectName(appName);
+  }
+
+  if (isCurrentDir) {
+    if (fs.readdirSync('.').length) {
+      console.log();
+      console.log(
+        chalk.red.bold(`It seems the current directory isn't empty.`),
+      );
+      console.log();
+      process.exit(1);
+    }
   }
 
   if (!isCurrentDir && fs.existsSync(appName)) {
