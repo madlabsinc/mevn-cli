@@ -31,6 +31,27 @@ const getFileContent = (configFile) => {
 };
 
 /**
+ * Make data directory for mongo container to mount in order to persist
+ * the database.
+ *
+ * @returns {void}
+ */
+const makeDataDir = () => {
+  fs.mkdirSync('./tmp/data', { recursive: true });
+
+  let gitIgnoreContents = fs.readFileSync('./.gitignore');
+  const mongoGitIgnoreHeader = '# MEVN_GENERATED:MONGO';
+
+  if (!new RegExp(mongoGitIgnoreHeader, 'g').test(gitIgnoreContents)) {
+    gitIgnoreContents += ['\n', '# MEVN_GENERATED:MONGO', '/tmp', '\n'].join(
+      '\n',
+    );
+  }
+  // Write back the updated contents to .gitignore
+  fs.writeFileSync('./.gitignore', gitIgnoreContents);
+};
+
+/**
  * Launch multiple containers with docker-compose (client, server and mongo client)
  *
  * @returns {Promise<void>}
@@ -66,6 +87,7 @@ const dockerize = async () => {
         0,
         `${' '.repeat(6)}- DB_URL=mongodb://mongo:27017`,
       );
+      makeDataDir();
     } else {
       dockerComposeTemplate = dockerComposeTemplate.slice(0, 19);
     }
