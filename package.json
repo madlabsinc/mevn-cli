@@ -13,8 +13,8 @@
   "scripts": {
     "build": "gulp clean && babel src --out-dir lib --copy-files && gulp copy",
     "build:watch": "babel --watch src --out-dir lib --copy-files",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint --fix ./src",
+    "lint": "eslint ./src __e2e__",
+    "lint:fix": "eslint --fix ./src __e2e__",
     "pretest": "npm run lint",
     "test": "jest",
     "docs:dev": "vuepress dev docs",
