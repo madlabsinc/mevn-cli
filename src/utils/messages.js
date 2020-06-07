@@ -2,7 +2,6 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
-import path from 'path';
 
 import appData from './projectConfig';
 
@@ -24,26 +23,6 @@ export const checkIfConfigFileExists = () => {
 };
 
 /**
- * Warns appropriately if the template chosen was GraphQL
- * where in which if the user opts to generate MVC files
- *
- * @returns {Void}
- */
-
-export const templateIsGraphQL = () => {
-  let msg = `GraphQL boilerplate doesn't include ${chalk.yellow.bold(
-    `model, route and controller`,
-  )} directories!`;
-  console.log(
-    chalk.yellow.bold(
-      `\n Warning:- ${chalk.cyan.bold(`${msg}
-    `)}`,
-    ),
-  );
-  process.exit(1);
-};
-
-/**
  * Warns appropriately if the template chosen was Nuxt-js
  * for the respective cases
  *
@@ -57,22 +36,7 @@ export const checkIfTemplateIsNuxt = async () => {
     console.log(
       chalk.red.bold(` You're having the Nuxt-js boilerplate template`),
     );
-    process.exit(1);
-  }
-};
-
-/**
- * Warns appropriately if the boilerplate template
- * doesn't include server directory
- *
- * @returns {Promise<void>}
- */
-
-export const checkIfServerExists = async () => {
-  if (!fs.existsSync(path.resolve(process.cwd(), 'server'))) {
-    console.log();
-    console.log(chalk.red.bold(` You aren't having a FullStack-app template`));
-    process.exit(1);
+    process.exit(0);
   }
 };
 
@@ -90,7 +54,7 @@ export const dependencyNotInstalled = (dependency) => {
     )}
     `),
   );
-  process.exit(1);
+  process.exit(0);
 };
 
 /**
@@ -104,7 +68,7 @@ export const dependencyNotInstalled = (dependency) => {
 export const showInstallationInfo = (depCandidate, url) => {
   const msg = ` You need to download ${depCandidate} from the official downloads page: ${url}`;
   console.log(chalk.cyan.bold(msg));
-  process.exit(1);
+  process.exit(0);
 };
 
 /**
@@ -122,7 +86,7 @@ export const invalidProjectName = (projectName) => {
       )} because of npm naming restrictions:`,
     ),
   );
-  process.exit(1);
+  process.exit(0);
 };
 
 /**
@@ -140,7 +104,7 @@ export const directoryExistsInPath = (projectName) => {
       )} already exists in path!`,
     ),
   );
-  process.exit(1);
+  process.exit(0);
 };
 
 /**
@@ -155,5 +119,5 @@ export const hasStrayArgs = () => {
       '\n Error: Kindly provide only one argument as the directory name!!',
     ),
   );
-  process.exit(1);
+  process.exit(0);
 };

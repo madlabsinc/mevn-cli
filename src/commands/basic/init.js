@@ -219,7 +219,7 @@ const initializeProject = async (appName) => {
         chalk.red.bold(`It seems the current directory isn't empty.`),
       );
       console.log();
-      process.exit(1);
+      process.exit(0);
     }
   }
 
@@ -234,7 +234,7 @@ const initializeProject = async (appName) => {
         ` It seems that you're already within a valid MEVN stack based project`,
       ),
     );
-    process.exit(1);
+    process.exit(0);
   }
 
   projectPathRelative = isCurrentDir ? '.' : appName;
