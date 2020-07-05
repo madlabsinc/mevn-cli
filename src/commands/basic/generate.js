@@ -107,6 +107,29 @@ const generateFile = async () => {
     ]);
     fs.writeFileSync('./server/.env', `DB_URL=${uri}`);
   }
+
+  const dbFilePath = `server/src/db/mongodb.js`;
+  fs.copyFile('../../helpers/db', dbFilePath, (err) => {
+    if (err) throw err;
+  });
+
+  const serverFile = fs
+    .readFileSync('./server/src/router.js', 'utf8')
+    .toString()
+    .split('\n');
+
+  const postImportIndex = serverFile.indexOf(
+    serverFile.find((item) => item === ''),
+  );
+
+  // Include a new line to compensate the previous addition
+  serverFile.splice(
+    postImportIndex + 1,
+    0,
+    'import mongoDbInit from "./helpers/db/mongodb.js";',
+    '',
+    'mongodbInit();',
+  );
 };
 
 module.exports = generateFile;
