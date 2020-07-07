@@ -47,7 +47,7 @@ const generateFile = async () => {
       type: 'list',
       name: 'type',
       message: 'Choose the required file to be generated',
-      choices: ['Component (client)', 'CRUD Template (server)'],
+      choices: ['Component (client)', 'CRUD Boilerplate (server)'],
     },
   ]);
 
@@ -81,7 +81,7 @@ const generateFile = async () => {
     await exec(
       'npm install',
       'Installing dependencies',
-      'Successfully installed the dependencies',
+      'Dependencies were successfully installed',
       {
         cwd: 'server',
       },

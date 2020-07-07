@@ -3,7 +3,8 @@ const graphQLHttp = require("express-graphql");
 const schema = require("./graphql/schema");
 const cors = require("cors");
 const app = express();
-// const mongoose = require("mongoose");
+
+require('dotenv').config();
 
 app.use(cors());
 
@@ -14,17 +15,6 @@ app.use(
     graphiql: true,
   })
 );
-
-/*
-mongoose.connect(process.env.DB_URL).catch((err) => {
-  console.error("eror: " + err.stack);
-  process.exit(1);
-});
-mongoose.connection.on("open", () => {
-  console.log("connected to database");
-});
-mongoose.Promise = global.Promise;
-*/
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
