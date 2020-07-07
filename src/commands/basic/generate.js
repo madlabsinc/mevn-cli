@@ -126,6 +126,8 @@ const generateFile = async () => {
     'require("./helpers/db/mongodb.js")();',
     '',
   );
+
+  fs.writeFileSync('./server/server.js', serverFile.join('\n'));
 };
 
 module.exports = generateFile;
