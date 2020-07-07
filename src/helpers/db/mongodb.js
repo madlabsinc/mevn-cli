@@ -12,4 +12,4 @@ const init = () => {
 
 mongoose.Promise = global.Promise;
 
-export default init;
+module.exports = init;
