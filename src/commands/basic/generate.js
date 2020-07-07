@@ -107,6 +107,27 @@ const generateFile = async () => {
     ]);
     fs.writeFileSync('./server/.env', `DB_URL=${uri}`);
   }
+
+  copyDirSync(path.join(templatePath, 'helpers'), 'server');
+
+  const serverFile = fs
+    .readFileSync('./server/server.js', 'utf8')
+    .toString()
+    .split('\n');
+
+  const postImportIndex = serverFile.findIndex((item) => item === '');
+  // second occurrence
+  const requiredIndex = serverFile.indexOf('', postImportIndex + 1);
+
+  // Include a new line to compensate the previous addition
+  serverFile.splice(
+    requiredIndex + 1,
+    0,
+    'require("./helpers/db/mongodb.js")();',
+    '',
+  );
+
+  fs.writeFileSync('./server/server.js', serverFile.join('\n'));
 };
 
 module.exports = generateFile;
