@@ -2,7 +2,6 @@
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const express = require("express");
-// const mongoose = require("mongoose");
 
 // parse env variables
 require("dotenv").config();
@@ -23,17 +22,6 @@ app.use(express.static(__dirname + "/views/"));
 
 // Defining route middleware
 app.use('/api', require('./routes/api'));
-
-/* Uncomment these lines once you have the CRUD template
-mongoose.connect(process.env.DB_URL).catch((err) => {
-  console.error("eror: " + err.stack);
-  process.exit(1);
-});
-mongoose.connection.on("open", () => {
-  console.log("connected to database");
-});
-mongoose.Promise = global.Promise;
-*/
 
 // Listening to port
 app.listen(port);
