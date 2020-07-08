@@ -10,9 +10,9 @@ const {
 const router = express.Router();
 
 router
-  .post("/", createData)
-  .get("/", readData)
-  .put("/:id", updateData)
-  .delete("/:id", deleteData);
+  .post('/', createData)
+  .get('/', readData)
+  .put('/:id', updateData)
+  .delete('/:id', deleteData);
 
 module.exports = router;

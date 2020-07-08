@@ -1,14 +1,14 @@
-const { GraphQLSchema, GraphQLObjectType, GraphQLString } = require("graphql");
+const { GraphQLSchema, GraphQLObjectType, GraphQLString } = require('graphql');
 
 // GraphQL schema
 const graphqlSchema = new GraphQLSchema({
   query: new GraphQLObjectType({
-    name: "RootQueryType",
+    name: 'RootQueryType',
     fields: {
       message: {
         type: GraphQLString,
         resolve() {
-          return "Root resolver";
+          return 'Root resolver';
         },
       },
     },

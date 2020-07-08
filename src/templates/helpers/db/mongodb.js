@@ -7,9 +7,9 @@ const init = () => {
       useUnifiedTopology: true,
     })
     .catch((err) => {
-    console.error('error: ' + err.stack);
-    process.exit(1);
-  });
+      console.error('error: ' + err.stack);
+      process.exit(1);
+    });
   mongoose.connection.on('open', () => {
     console.log('connected to database');
   });

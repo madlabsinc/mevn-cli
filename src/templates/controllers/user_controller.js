@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
-const User = require("../models/user_schema");
+const User = require('../models/user_schema');
 
 const createData = (req, res, next) => {
   User.create(req.body).then((err) => {
     if (err) {
       return next(err);
     }
-    res.send("Entry created successfully!");
+    res.send('Entry created successfully!');
   });
 };
 
