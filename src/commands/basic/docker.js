@@ -67,34 +67,48 @@ const dockerize = async () => {
   const dockerFileTemplate = getFileContent('Dockerfile');
 
   // Create Dockerfile for client directory
-  fs.writeFileSync('./client/Dockerfile', dockerFileTemplate.join('\n'));
+  if (!fs.existsSync('./client/Dockerfile')) {
+    fs.writeFileSync('./client/Dockerfile', dockerFileTemplate.join('\n'));
+  }
 
   if (fs.existsSync('./server')) {
     // Create Dockerfile for the server directory
     dockerFileTemplate.splice(8, 0, 'RUN npm install -g nodemon');
     dockerFileTemplate.splice(9, 0, '');
-    fs.writeFileSync('./server/Dockerfile', dockerFileTemplate.join('\n'));
+    if (!fs.existsSync('./server/Dockerfile')) {
+      fs.writeFileSync('./server/Dockerfile', dockerFileTemplate.join('\n'));
+    }
 
     // Create .dockerignore
-    fs.writeFileSync('./server/.dockerignore', 'node_modules');
+    if (!fs.existsSync('./server/.dockerignore')) {
+      fs.writeFileSync('./server/.dockerignore', 'node_modules');
+    }
 
     // Configure env variables for CRUD boilerplate template
     // to be consumed within the Docker container
     if (fs.existsSync('./server/models')) {
-      dockerComposeTemplate.splice(14, 0, `${' '.repeat(4)}environment:`);
-      dockerComposeTemplate.splice(
-        15,
-        0,
-        `${' '.repeat(6)}- DB_URL=mongodb://mongo:27017`,
-      );
-      makeDataDir();
+      if (!fs.existsSync('./tmp/data')) {
+        makeDataDir();
+        dockerComposeTemplate.splice(14, 0, `${' '.repeat(4)}environment:`);
+        dockerComposeTemplate.splice(
+          15,
+          0,
+          `${' '.repeat(6)}- DB_URL=mongodb://mongo:27017`,
+        );
+        fs.writeFileSync(
+          'docker-compose.yml',
+          dockerComposeTemplate.join('\n'),
+        );
+      }
     } else {
       dockerComposeTemplate = dockerComposeTemplate.slice(0, 19);
     }
   }
 
   // Create .dockerignore
-  fs.writeFileSync('./client/.dockerignore', 'node_modules\ndist');
+  if (!fs.existsSync('./client/.dockerignore')) {
+    fs.writeFileSync('./client/.dockerignore', 'node_modules\ndist');
+  }
 
   // docker-compose.yml should only include the necessary instructions
   // for the client side
@@ -103,7 +117,9 @@ const dockerize = async () => {
   }
 
   // Create docker-compose.yml at project root
-  fs.writeFileSync('docker-compose.yml', dockerComposeTemplate.join('\n'));
+  if (!fs.existsSync('docker-compose.yml')) {
+    fs.writeFileSync('docker-compose.yml', dockerComposeTemplate.join('\n'));
+  }
 
   try {
     await execa.shell('docker-compose up', {
