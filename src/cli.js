@@ -54,6 +54,7 @@ program
 
 program
   .command('add <plugins...>')
+  .option('-d, --dev', 'install devDependencies')
   .description('Adds a new plugin on the go')
   .action(addPlugins);
 

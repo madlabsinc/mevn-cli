@@ -20,7 +20,7 @@ const vuexStoreTemplate = fs.readFileSync(
  * @returns {Promise<void>}
  */
 
-const addPlugins = async (args) => {
+const addPlugins = async (plugins, { dev }) => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
@@ -32,20 +32,31 @@ const addPlugins = async (args) => {
     ({ dir: templateDir } = await dirOfChoice());
   }
 
+  if (
+    templateDir === 'server' &&
+    plugins.some((plugin) => ['vuex', 'vuetify'].includes(plugin))
+  ) {
+    return;
+  }
+
   const { template } = appData();
 
   // Vuetify bindings for Nuxt-js
-  if (template === 'Nuxt-js') args.push('@nuxtjs/vuetify');
+  if (template === 'Nuxt-js' && !dev) plugins.push('@nuxtjs/vuetify');
+
+  const installFlag = dev ? '--save-dev' : '--save';
 
   // Install the opted plugins
   await exec(
-    `npm install --save ${args.join(' ')}`,
-    `Installing ${args.join(', ')}`,
+    `npm install ${installFlag} ${plugins.join(' ')}`,
+    `Installing ${plugins.join(', ')}`,
     'Done',
     {
       cwd: templateDir,
     },
   );
+
+  if (dev) return;
 
   if (template === 'Nuxt-js') {
     // vuex-store template content for Nuxt-js
@@ -81,7 +92,7 @@ const addPlugins = async (args) => {
     ];
 
     // Configure vuex-store for Nuxt-js template
-    if (args.includes('vuex')) {
+    if (plugins.includes('vuex')) {
       // Navigate to the store directory and create a basic store template file
       fs.writeFileSync(
         './client/store/index.js',
@@ -90,7 +101,7 @@ const addPlugins = async (args) => {
     }
 
     // Configure @nuxtjs/vuetify
-    if (args.includes('vuetify')) {
+    if (plugins.includes('vuetify')) {
       // Read initial content from nuxt.config.js
       let nuxtConfig = fs
         .readFileSync('./nuxt.config.js', 'utf8')
@@ -112,7 +123,7 @@ const addPlugins = async (args) => {
     }
   } else {
     // Configure vuex-store
-    if (args.includes('vuex')) {
+    if (plugins.includes('vuex')) {
       let config = fs
         .readFileSync('./client/src/main.js', 'utf8')
         .toString()
@@ -136,14 +147,14 @@ const addPlugins = async (args) => {
       config.splice(routerIndex + 1, 0, `  store,`);
 
       // Cleaning up
-      if (args.includes('vuetify')) config.splice(blankLineIndex + 1, 1);
+      if (plugins.includes('vuetify')) config.splice(blankLineIndex + 1, 1);
 
       // Write back the updated config
       fs.writeFileSync('./client/src/main.js', config.join('\n'));
     }
 
     // Configure vuetify
-    if (args.includes('vuetify')) {
+    if (plugins.includes('vuetify')) {
       let config = fs
         .readFileSync('./client/src/main.js', 'utf8')
         .toString()
