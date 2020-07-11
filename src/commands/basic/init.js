@@ -58,11 +58,6 @@ const showInstructions = () => {
   console.log(chalk.cyan.bold(`You're all set`));
   console.log(chalk.cyan.bold(`Now, just type in ${userCommandInstruction}`));
 
-  console.log();
-  console.log(
-    `${chalk.yellow.bold(' Warning: ')} Do not delete the .mevnrc file`,
-  );
-
   let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
   execa.shellSync(`${removeCmd} ${path.join(projectPathRelative, '.git')}`);
   makeInitialCommit();

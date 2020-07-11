@@ -17,7 +17,7 @@ didYouMean.threshold = 0.6;
 import initializeProject from './commands/basic/init';
 import generateFile from './commands/basic/generate';
 import asyncRender from './commands/basic/codesplit';
-import addPlugins from './commands/basic/add';
+import addDeps from './commands/basic/add';
 import setupProject from './commands/serve/setup';
 import dockerize from './commands/basic/docker';
 import deployConfig from './commands/deploy/deploy';
@@ -53,10 +53,10 @@ program
   .action(generateFile);
 
 program
-  .command('add <plugins...>')
-  .option('-d, --dev', 'install devDependencies')
-  .description('Adds a new plugin on the go')
-  .action(addPlugins);
+  .command('add <deps...>')
+  .option('-d, --dev', 'install dev-dependencies')
+  .description('Install dependencies on the go')
+  .action(addDeps);
 
 program
   .command('serve')

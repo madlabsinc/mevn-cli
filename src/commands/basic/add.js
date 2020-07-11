@@ -15,26 +15,26 @@ const vuexStoreTemplate = fs.readFileSync(
 );
 
 /**
- * Choose additional plugins to install on the go
+ * Choose additional deps to install on the go
  *
  * @returns {Promise<void>}
  */
 
-const addPlugins = async (plugins, { dev }) => {
+const addDeps = async (deps, { dev }) => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   // Global reference to the directory of choice
   let templateDir = 'client';
 
-  // Get to know whether the plugins are to be installed for client/server directory
+  // Get to know whether the deps are to be installed for client/server directory
   if (fs.existsSync('./server')) {
     ({ dir: templateDir } = await dirOfChoice());
   }
 
   if (
     templateDir === 'server' &&
-    plugins.some((plugin) => ['vuex', 'vuetify'].includes(plugin))
+    deps.some((plugin) => ['vuex', 'vuetify'].includes(plugin))
   ) {
     return;
   }
@@ -42,14 +42,14 @@ const addPlugins = async (plugins, { dev }) => {
   const { template } = appData();
 
   // Vuetify bindings for Nuxt-js
-  if (template === 'Nuxt-js' && !dev) plugins.push('@nuxtjs/vuetify');
+  if (template === 'Nuxt-js' && !dev) deps.push('@nuxtjs/vuetify');
 
   const installFlag = dev ? '--save-dev' : '--save';
 
-  // Install the opted plugins
+  // Install the opted deps
   await exec(
-    `npm install ${installFlag} ${plugins.join(' ')}`,
-    `Installing ${plugins.join(', ')}`,
+    `npm install ${installFlag} ${deps.join(' ')}`,
+    `Installing ${deps.join(', ')}`,
     'Done',
     {
       cwd: templateDir,
@@ -92,7 +92,7 @@ const addPlugins = async (plugins, { dev }) => {
     ];
 
     // Configure vuex-store for Nuxt-js template
-    if (plugins.includes('vuex')) {
+    if (deps.includes('vuex')) {
       // Navigate to the store directory and create a basic store template file
       fs.writeFileSync(
         './client/store/index.js',
@@ -101,7 +101,7 @@ const addPlugins = async (plugins, { dev }) => {
     }
 
     // Configure @nuxtjs/vuetify
-    if (plugins.includes('vuetify')) {
+    if (deps.includes('vuetify')) {
       // Read initial content from nuxt.config.js
       let nuxtConfig = fs
         .readFileSync('./nuxt.config.js', 'utf8')
@@ -123,7 +123,7 @@ const addPlugins = async (plugins, { dev }) => {
     }
   } else {
     // Configure vuex-store
-    if (plugins.includes('vuex')) {
+    if (deps.includes('vuex')) {
       let config = fs
         .readFileSync('./client/src/main.js', 'utf8')
         .toString()
@@ -147,14 +147,14 @@ const addPlugins = async (plugins, { dev }) => {
       config.splice(routerIndex + 1, 0, `  store,`);
 
       // Cleaning up
-      if (plugins.includes('vuetify')) config.splice(blankLineIndex + 1, 1);
+      if (deps.includes('vuetify')) config.splice(blankLineIndex + 1, 1);
 
       // Write back the updated config
       fs.writeFileSync('./client/src/main.js', config.join('\n'));
     }
 
     // Configure vuetify
-    if (plugins.includes('vuetify')) {
+    if (deps.includes('vuetify')) {
       let config = fs
         .readFileSync('./client/src/main.js', 'utf8')
         .toString()
@@ -182,4 +182,4 @@ const addPlugins = async (plugins, { dev }) => {
   }
 };
 
-module.exports = addPlugins;
+module.exports = addDeps;
