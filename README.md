@@ -55,12 +55,12 @@ mevn init <appname>
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
-| mevn init <appname> | Bootstraps a MEVN stack based boilerplate template of choice |
+| mevn init &lt;appname&gt; | Scaffolds a MEVN stack project in the current path |
 | mevn serve | Serves the client/server side template locally |
-| mevn add <deps> | Adds additional dependencies as required on the go |
-| mevn generate | Generates component, model, route, controller, and DB config files |
+| mevn add &lt;deps&gt; | Adds additional dependencies as required on the go |
+| mevn generate | Generates component files for the client and CRUD boilerplate template for the server based on MVC architecture |
 | mevn codesplit | Lazy load components as required |
-| mevn dockerize | Serves the client and server in separate docker containers |
+| mevn dockerize | Serves the webapp as multi-container Docker applications |
 | mevn deploy | Deploys the webapp to a cloud service of choice |
 | mevn info | Prints debugging information about the local environment |
 

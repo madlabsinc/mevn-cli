@@ -39,7 +39,7 @@ program.version(pkg.version).usage('<command> [options]');
 
 program
   .command('init <appname>')
-  .description('Bootstraps a basic MEVN stack webapp')
+  .description('Scaffolds a MEVN stack project in the current path')
   .action(initializeProject);
 
 program
@@ -49,7 +49,9 @@ program
 
 program
   .command('generate')
-  .description('To generate model, route, controller and DB config files')
+  .description(
+    'Generates client side component files and server side CRUD boilerplate template',
+  )
   .action(generateFile);
 
 program
@@ -60,17 +62,17 @@ program
 
 program
   .command('serve')
-  .description('To serve client/server locally')
+  .description('Serves client/server locally')
   .action(setupProject);
 
 program
   .command('dockerize')
-  .description('To launch the webapp within a Docker container locally')
+  .description('Serves the webapp as mult-container Docker applications')
   .action(dockerize);
 
 program
   .command('deploy')
-  .description('To deploy the webapp to a cloud solution of choice')
+  .description('Deploys the webapp to a cloud solution of choice')
   .action(deployConfig);
 
 program

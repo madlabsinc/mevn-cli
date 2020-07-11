@@ -8,12 +8,12 @@ title: 'Available Commands'
 
 | command | description |                                                                                                
 | -------------- |  ---------------- |
-| mevn init | Bootstraps a MEVN stack based boilerplate template of choice |
+| mevn init &lt;appname&gt; | Scaffolds a MEVN stack projet in the current path |
 | mevn serve | Serves the client/server side template locally |
-| mevn add | Adds additional plugins as required on the go |
-| mevn generate | Generates component, model, route, controller, and DB config files |
+| mevn add &lt;deps&gt; | Add additional dependencies as required on the go |
+| mevn generate | Generates component files for the client and CRUD boilerplate template for the server |
 | mevn codesplit | Lazy load components as required |
-| mevn dockerize | Serves the client and server in separate docker containers |
+| mevn dockerize | Serves the webapp as mult-container Docker applications |
 | mevn deploy | Deploys the webapp to a cloud service of choice |
 | mevn info | Prints debugging information about the local environment |
 
