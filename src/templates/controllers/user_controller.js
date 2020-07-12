@@ -22,7 +22,6 @@ const createData = (req, res) => {
 const readData = (req, res) => {
   User.find()
     .then((data) => {
-      console.log('Data found: ', data);
       res.status(200).json(data);
     })
     .catch((err) => {
@@ -37,9 +36,9 @@ const readData = (req, res) => {
 };
 
 const updateData = (req, res) => {
-  User.updateOne(req.body)
+  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((data) => {
-      console.log('User updated!', data);
+      console.log('User updated!');
       res.status(201).json(data);
     })
     .catch((err) => {
@@ -58,10 +57,12 @@ const deleteData = (req, res) => {
     .then((data) => {
       if (!data) {
         throw new Error('User not available');
-      } else {
-        console.log('User removed!', data);
-        res.status(200).json(data);
       }
+      return data.remove();
+    })
+    .then((data) => {
+      console.log('User removed!');
+      res.status(200).json(data);
     })
     .catch((err) => {
       console.error(err);
