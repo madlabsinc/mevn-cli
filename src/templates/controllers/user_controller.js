@@ -25,13 +25,8 @@ const readData = (req, res) => {
       res.status(200).json(data);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        console.error('Error Validating!', err);
-        res.status(422).json(err);
-      } else {
-        console.error(err);
-        res.status(500).json(err);
-      }
+      console.error(err);
+      res.status(500).json(err);
     });
 };
 
