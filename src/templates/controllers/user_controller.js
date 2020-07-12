@@ -31,7 +31,10 @@ const readData = (req, res) => {
 };
 
 const updateData = (req, res) => {
-  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+  User.findByIdAndUpdate(req.params.id, req.body, {
+    useFindAndModify: false,
+    new: true,
+  })
     .then((data) => {
       console.log('User updated!');
       res.status(201).json(data);
