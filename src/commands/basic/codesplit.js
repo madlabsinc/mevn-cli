@@ -5,6 +5,8 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 
+import exec from '../../utils/exec';
+
 import {
   checkIfConfigFileExists,
   checkIfTemplateIsNuxt,
@@ -85,10 +87,15 @@ const asyncRender = async () => {
   // Write back the updated route-config
   fs.writeFileSync('./client/src/router.js', routesConfig.join('\n'));
   console.log();
-  console.log(
-    chalk.green.bold(
-      ` From now on ${componentName} will be rendered asynchronously`,
-    ),
+
+  // Execute linter
+  await exec(
+    'npm run lint -- --fix',
+    'Cleaning up',
+    ` From now on ${componentName} will be rendered asynchronously`,
+    {
+      cwd: 'client',
+    },
   );
 };
 

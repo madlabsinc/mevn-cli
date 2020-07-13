@@ -30,6 +30,9 @@ const generateComponent = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
+  // Message to show up alongwith the spinner
+  let progressMsg = 'Getting things ready';
+
   let { componentName } = await inquirer.prompt([
     {
       type: 'input',
@@ -100,30 +103,32 @@ const generateComponent = async () => {
   );
 
   console.log();
-  console.log(
-    chalk.green.bold(
-      `Successfully created ${componentName}.vue file on ${componentPath}`,
-    ),
-  );
 
   // Execute linter
   if (!fs.existsSync('./client/node_modules')) {
     await exec(
       'npm install',
-      'Getting things ready',
+      progressMsg,
       'Successfully installed the dependencies',
       { cwd: 'client' },
     );
+    progressMsg = 'Cleaning up';
   }
-  await exec('npm run lint -- --fix', 'Cleaning up', `You're all set`, {
-    cwd: 'client',
-  });
 
   /**
    * Nuxt-js automatically sets up the routing configurations
    * only page components require adding a new entry in the route config
    */
-  if (template === 'Nuxt-js' || componentType === 'UI Component') return;
+  if (template === 'Nuxt-js' || componentType === 'UI Component') {
+    return await exec(
+      'npm run lint -- --fix',
+      progressMsg,
+      `Successfully created ${componentName}.vue file on ${componentPath}`,
+      {
+        cwd: 'client',
+      },
+    );
+  }
 
   const routesConfig = fs
     .readFileSync('./client/src/router.js', 'utf8')
@@ -168,9 +173,14 @@ const generateComponent = async () => {
   fs.writeFileSync('./client/src/router.js', routesConfig.join('\n'));
 
   // Execute linter
-  await exec('npm run lint -- --fix', 'Cleaning up', `Done`, {
-    cwd: 'client',
-  });
+  await exec(
+    'npm run lint -- --fix',
+    progressMsg,
+    `Successfully created ${componentName}.vue file on ${componentPath}`,
+    {
+      cwd: 'client',
+    },
+  );
 };
 
 module.exports = generateComponent;
