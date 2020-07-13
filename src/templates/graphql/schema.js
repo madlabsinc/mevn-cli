@@ -46,7 +46,7 @@ const schema = new GraphQLSchema({
           },
         },
         resolve(parent, args) {
-          return UserSchema.findOne({ _id: args.id });
+          return UserSchema.findById(args.id);
         },
       },
     },
