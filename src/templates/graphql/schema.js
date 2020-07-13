@@ -14,7 +14,7 @@ const UserSchema = require('../models/user_schema');
 const UserType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
-    id: { type: GraphQLID },
+    _id: { type: GraphQLID },
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
   }),
@@ -23,7 +23,6 @@ const UserType = new GraphQLObjectType({
 const UserInputType = new GraphQLInputObjectType({
   name: 'UserInput',
   fields: () => ({
-    id: { type: GraphQLID },
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
   }),
@@ -47,7 +46,7 @@ const schema = new GraphQLSchema({
           },
         },
         resolve(parent, args) {
-          return UserSchema.findOne({ id: args.id });
+          return UserSchema.findById(args.id);
         },
       },
     },
@@ -69,12 +68,13 @@ const schema = new GraphQLSchema({
       updateUser: {
         type: UserType,
         args: {
+          id: { type: new GraphQLNonNull(GraphQLID) },
           input: {
             type: new GraphQLNonNull(UserInputType),
           },
         },
-        resolve(parent, { input }) {
-          return UserSchema.updateOne({ id: input.id }, { $set: input });
+        resolve(parent, { id, input }) {
+          return UserSchema.findByIdAndUpdate(id, input, { new: true });
         },
       },
       deleteUser: {
@@ -83,7 +83,7 @@ const schema = new GraphQLSchema({
           id: { type: new GraphQLNonNull(GraphQLID) },
         },
         resolve(parent, { id }) {
-          return UserSchema.deleteOne({ id });
+          return UserSchema.findByIdAndDelete({ _id: id });
         },
       },
     },
