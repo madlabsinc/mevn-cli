@@ -14,6 +14,7 @@ const UserSchema = require('../models/user_schema');
 const UserType = new GraphQLObjectType({
   name: 'User',
   fields: () => ({
+    _id: { type: GraphQLID },
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
   }),
