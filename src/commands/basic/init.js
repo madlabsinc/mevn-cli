@@ -15,7 +15,6 @@ import {
   hasStrayArgs,
   invalidProjectName,
 } from '../../utils/messages';
-import Spinner from '../../utils/spinner';
 import { validateInstallation } from '../../utils/validate';
 
 let projectPathRelative;
@@ -70,29 +69,28 @@ const showInstructions = () => {
  * @returns {Promise<void>}
  */
 
-const fetchTemplate = async (templateBranch) => {
+const fetchTemplate = async (template) => {
   await validateInstallation('git help -g');
 
-  // Boilerplate templates are available within a single repository
-  const repoUrl = 'https://github.com/madlabsinc/mevn-starter-templates';
+  // Holds reference to the destination path
+  const dest = path.resolve(projectPathRelative);
 
-  const fetchSpinner = new Spinner('Fetching the boilerplate template');
-  fetchSpinner.start();
-  try {
-    await execa('git', [
-      'clone',
-      repoUrl,
-      '--branch',
-      templateBranch,
-      '--single-branch',
-      projectPathRelative,
-    ]);
-  } catch (err) {
-    fetchSpinner.fail('Something went wrong');
-    throw err;
-  }
+  // Holds reference to the path where starter templates reside
+  const templatePath = path.join(
+    __dirname,
+    '..',
+    '..',
+    'templates',
+    'starter-templates',
+  );
 
-  fetchSpinner.stop();
+  // Copy the starter template to user's current working directory
+  copyDirSync(path.join(templatePath, template), dest);
+
+  // rename the resultant directory to client
+  const renameFromPath = path.join(dest, template);
+  const renameToPath = path.join(dest, 'client');
+  fs.renameSync(renameFromPath, renameToPath);
 
   fs.writeFileSync(
     `./${projectPathRelative}/.mevnrc`,
@@ -100,7 +98,7 @@ const fetchTemplate = async (templateBranch) => {
   );
 
   // Prompt the user whether he/she requires pwa support
-  if (templateBranch === 'nuxt') {
+  if (template === 'Nuxt.js') {
     const { requirePwaSupport } = await inquirer.prompt([
       {
         name: 'requirePwaSupport',
@@ -160,7 +158,7 @@ const fetchTemplate = async (templateBranch) => {
   // Copy server side template files to the destination as required
   if (requireServer) {
     // Configure path
-    const serverDir = templateBranch === 'graphql' ? 'GraphQL' : 'basic';
+    const serverDir = template === 'GraphQL' ? 'GraphQL' : 'basic';
     const serverPath = ['templates', 'server', serverDir];
     const source = path.join(__dirname, '..', '..', ...serverPath);
     const dest = path.resolve(projectPathRelative);
@@ -239,23 +237,19 @@ const initializeProject = async (appName) => {
       name: 'template',
       type: 'list',
       message: 'Please select your template of choice',
-      choices: ['basic', 'pwa', 'graphql', 'Nuxt-js'],
+      choices: ['basic', 'pwa', 'GraphQL', 'Nuxt.js'],
     },
   ]);
+
+  // Create a directory in the current path with the given name
+  if (!isCurrentDir) {
+    fs.mkdirSync(appName);
+  }
 
   projectConfig['name'] = appName;
   projectConfig['template'] = template;
 
-  // Holds GitHub repo branch corresponding to the respective boilerplate template
-  let templateBranch = template;
-
-  if (template === 'basic') {
-    templateBranch = 'master';
-  } else if (template === 'Nuxt-js') {
-    templateBranch = 'nuxt';
-  }
-
-  fetchTemplate(templateBranch);
+  fetchTemplate(template);
 };
 
 module.exports = initializeProject;
