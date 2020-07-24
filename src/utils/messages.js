@@ -23,7 +23,7 @@ export const checkIfConfigFileExists = () => {
 };
 
 /**
- * Warns appropriately if the template chosen was Nuxt-js
+ * Warns appropriately if the template chosen was Nuxt.js
  * for the respective cases
  *
  * @returns {Promise<void>}
@@ -31,10 +31,10 @@ export const checkIfConfigFileExists = () => {
 
 export const checkIfTemplateIsNuxt = async () => {
   const { template } = appData();
-  if (template === 'Nuxt-js') {
+  if (template === 'Nuxt.js') {
     console.log();
     console.log(
-      chalk.red.bold(` You're having the Nuxt-js boilerplate template`),
+      chalk.red.bold(` You're having the Nuxt.js boilerplate template`),
     );
     process.exit(0);
   }

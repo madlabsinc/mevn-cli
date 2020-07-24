@@ -6,7 +6,7 @@ import fs from 'fs';
 import exec from '../../utils/exec';
 
 /**
- * Adds PWA support to Nuxt-js boilerplate template
+ * Adds PWA support to Nuxt.js boilerplate template
  *
  * @returns {Promise<void>}
  */
@@ -71,9 +71,9 @@ const serveProject = async (projectTemplate, templateDir) => {
   let port;
 
   if (templateDir === 'client') {
-    port = projectTemplate === 'Nuxt-js' ? '3000' : '3002';
+    port = projectTemplate === 'Nuxt.js' ? '3000' : '3002';
   } else {
-    port = projectTemplate === 'graphql' ? '9000/graphql' : '9000/api';
+    port = projectTemplate === 'GraphQL' ? '9000/graphql' : '9000/api';
   }
 
   if (!fs.existsSync(`./${templateDir}/node_modules`)) {
@@ -87,7 +87,7 @@ const serveProject = async (projectTemplate, templateDir) => {
     );
   }
 
-  if (projectTemplate === 'Nuxt-js') {
+  if (projectTemplate === 'Nuxt.js') {
     await configurePwaSupport();
   }
   execa.shell(`npm run serve -- --port ${port} --open`, {

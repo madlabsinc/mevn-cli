@@ -55,7 +55,7 @@ const generateComponent = async () => {
   ]);
 
   // Convert component name to lower-camel-case
-  if (!(template === 'Nuxt-js' && componentType !== 'UI Component')) {
+  if (!(template === 'Nuxt.js' && componentType !== 'UI Component')) {
     componentName = toLowerCamelCase(componentName);
   }
 
@@ -84,10 +84,10 @@ const generateComponent = async () => {
   let componentPath = '';
   if (componentType === 'UI Component') {
     componentPath =
-      template === 'Nuxt-js' ? 'client/components' : 'client/src/components';
+      template === 'Nuxt.js' ? 'client/components' : 'client/src/components';
   } else {
     componentPath =
-      template === 'Nuxt-js' ? 'client/pages' : 'client/src/views';
+      template === 'Nuxt.js' ? 'client/pages' : 'client/src/views';
   }
 
   // Duplicate component
@@ -116,10 +116,10 @@ const generateComponent = async () => {
   }
 
   /**
-   * Nuxt-js automatically sets up the routing configurations
+   * Nuxt.js automatically sets up the routing configurations
    * only page components require adding a new entry in the route config
    */
-  if (template === 'Nuxt-js' || componentType === 'UI Component') {
+  if (template === 'Nuxt.js' || componentType === 'UI Component') {
     return await exec(
       'npm run lint -- --fix',
       progressMsg,

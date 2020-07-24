@@ -55,9 +55,9 @@ const generateFile = async () => {
   const { template } = appData();
 
   if (type.includes('Component')) {
-    generateComponent();
+    return generateComponent();
   } else {
-    if (template === 'graphql') {
+    if (template === 'GraphQL') {
       // Create graphql-schema directory
       createDir('graphql');
 

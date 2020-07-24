@@ -106,7 +106,7 @@ const deployToHeroku = async (templateDir) => {
     ];
 
     let pkgJson = JSON.parse(fs.readFileSync('./client/package.json'));
-    const buildCmd = `npm run ${template === 'Nuxt-js' ? 'generate' : 'build'}`;
+    const buildCmd = `npm run ${template === 'Nuxt.js' ? 'generate' : 'build'}`;
     const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then ${buildCmd} ; fi `; // eslint-disable-line
     pkgJson = {
       ...pkgJson,

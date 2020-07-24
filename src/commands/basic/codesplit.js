@@ -22,7 +22,7 @@ const asyncRender = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   await checkIfConfigFileExists();
 
-  // Exit for the case of Nuxt-js boilerplate template
+  // Exit for the case of Nuxt.js boilerplate template
   checkIfTemplateIsNuxt();
 
   const routesConfig = fs

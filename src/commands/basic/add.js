@@ -41,8 +41,8 @@ const addDeps = async (deps, { dev }) => {
 
   const { template } = appData();
 
-  // Vuetify bindings for Nuxt-js
-  if (template === 'Nuxt-js' && !dev) deps.push('@nuxtjs/vuetify');
+  // Vuetify bindings for Nuxt.js
+  if (template === 'Nuxt.js' && !dev) deps.push('@nuxtjs/vuetify');
 
   const installFlag = dev ? '--save-dev' : '--save';
 
@@ -58,8 +58,8 @@ const addDeps = async (deps, { dev }) => {
 
   if (dev) return;
 
-  if (template === 'Nuxt-js') {
-    // vuex-store template content for Nuxt-js
+  if (template === 'Nuxt.js') {
+    // vuex-store template content for Nuxt.js
     const vuexNuxtStoreTemplate = [
       'export const state = () => ({',
       '  counter: 0',
@@ -91,7 +91,7 @@ const addDeps = async (deps, { dev }) => {
       '  ],',
     ];
 
-    // Configure vuex-store for Nuxt-js template
+    // Configure vuex-store for Nuxt.js template
     if (deps.includes('vuex')) {
       // Navigate to the store directory and create a basic store template file
       fs.writeFileSync(
