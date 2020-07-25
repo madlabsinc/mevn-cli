@@ -8,8 +8,7 @@
     "start": "nuxt start",
     "export": "nuxt export",
     "serve": "nuxt serve",
-    "lint:js": "eslint --ext .js,.vue .",
-    "lint": "npm run lint:js"
+    "lint": "eslint --ext .js,.vue ."
   },
   "dependencies": {
     "nuxt": "^2.13.0"
