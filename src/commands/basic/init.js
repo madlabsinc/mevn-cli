@@ -99,53 +99,107 @@ const fetchTemplate = async (template) => {
 
   // Prompt the user whether he/she requires pwa support
   if (template === 'Nuxt.js') {
-    const { requirePwaSupport } = await inquirer.prompt([
+    const configFile = fs
+      .readFileSync(`./${projectPathRelative}/client/nuxt.config.js`, 'utf8')
+      .toString()
+      .split('\n');
+
+    // Choose the Nuxt.js modules to install
+    const { modules } = await inquirer.prompt([
       {
-        name: 'requirePwaSupport',
-        type: 'confirm',
-        message: 'Do you require pwa support',
+        name: 'modules',
+        type: 'checkbox',
+        message: 'Nuxt.js modules',
+        choices: ['Axios', 'Progressive Web App (PWA)', 'Content'],
       },
     ]);
 
-    // Write to .mevnrc in order to keep track while installing dependencies
-    if (requirePwaSupport) {
-      let configFile = JSON.parse(
-        fs.readFileSync(`./${projectPathRelative}/.mevnrc`),
-      );
-      configFile = { ...configFile, isPwa: true, isPwaConfigured: false };
-      fs.writeFileSync(
-        `./${projectPathRelative}/.mevnrc`,
-        JSON.stringify(configFile, null, 2),
+    // Add 2 so that the content gets inserted at the right position
+    const buildModulesIdx =
+      configFile.findIndex((line) => line.includes('buildModules:')) + 2;
+
+    const modulesIdx =
+      configFile.findIndex((line) => line.includes('modules:')) + 2;
+
+    if (modules.includes('Axios')) {
+      const axiosConfig = [
+        `${' '.repeat(2)}axios: {`,
+        `${' '.repeat(4)}// proxyHeaders: false`,
+        `${' '.repeat(2)}},`,
+      ];
+      configFile.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/axios',`);
+
+      // Add 1 so that the content gets inserted after the modules array
+      const modulesEndIdx =
+        configFile.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add @nuxtjs/axios config beneath the modules array
+      axiosConfig.forEach((config, idx) =>
+        configFile.splice(modulesEndIdx + idx, 0, config),
       );
     }
 
-    // Choose between Universal/SPA mode
+    if (modules.includes('Progressive Web App (PWA)')) {
+      configFile.splice(buildModulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/pwa',`);
+    }
+
+    if (modules.includes('Content')) {
+      const contentConfig = [
+        `${' '.repeat(2)}content: {`,
+        `${' '.repeat(4)} //Options`,
+        `${' '.repeat(2)}},`,
+      ];
+      configFile.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/content',`);
+
+      const modulesEndIdx =
+        configFile.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add @nuxtjs/content config beneath the modules array
+      contentConfig.forEach((config, idx) =>
+        configFile.splice(modulesEndIdx + idx, 0, config),
+      );
+    }
+
+    // Choose the rendering mode
     const { mode } = await inquirer.prompt([
       {
         name: 'mode',
         type: 'list',
-        message: 'Choose your preferred mode',
+        message: 'Rendering mode',
         choices: ['Universal', 'SPA'],
       },
     ]);
 
     // Update the config file (nuxt.config.js)
     if (mode === 'Universal') {
-      let configFile = fs
-        .readFileSync(`./${projectPathRelative}/client/nuxt.config.js`, 'utf8')
-        .toString()
-        .split('\n');
-
-      const index = configFile.indexOf(
-        configFile.find((line) => line.includes('mode')),
-      );
-      configFile[index] = ` mode: 'universal',`;
-
-      fs.writeFileSync(
-        `./${projectPathRelative}/client/nuxt.config.js`,
-        configFile.join('\n'),
-      );
+      const modeIdx = configFile.findIndex((line) => line.includes('mode:'));
+      configFile[modeIdx] = ` mode: 'universal',`;
     }
+
+    // Choose the Deployment target
+    const { deployTarget } = await inquirer.prompt([
+      {
+        name: 'deployTarget',
+        type: 'list',
+        message: 'Deployment target',
+        choices: ['Node.js hosting', 'Static (Static/JAMStack hosting)'],
+      },
+    ]);
+
+    if (deployTarget === 'Node.js hosting') {
+      const targetIdx = configFile.findIndex((line) =>
+        line.includes('target:'),
+      );
+      configFile[targetIdx] = `${' '.repeat(2)}target: 'server',`;
+    }
+
+    console.log(configFile);
+
+    // write back the updated config file (nuxt.config.js)
+    fs.writeFileSync(
+      `./${projectPathRelative}/client/nuxt.config.js`,
+      configFile.join('\n'),
+    );
   }
 
   // Show up a suitable prompt whether if the user requires a Full stack application (Express.js)

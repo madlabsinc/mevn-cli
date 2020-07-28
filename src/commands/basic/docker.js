@@ -126,7 +126,7 @@ const dockerize = async () => {
       stdio: 'inherit',
     });
   } catch (err) {
-    throw err;
+    process.exit(1);
   }
 };
 

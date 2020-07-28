@@ -42,15 +42,17 @@ export default {
   components: true,
   /*
    ** Nuxt.js dev-modules
+   ** See https://nuxtjs.org/api/configuration-modules/#buildmodules
    */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
   ],
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: [
+    // Doc: https://nuxtjs.org/api/configuration-modules/
+  ],
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/

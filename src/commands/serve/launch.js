@@ -6,60 +6,6 @@ import fs from 'fs';
 import exec from '../../utils/exec';
 
 /**
- * Adds PWA support to Nuxt.js boilerplate template
- *
- * @returns {Promise<void>}
- */
-
-const configurePwaSupport = async () => {
-  let configFile = JSON.parse(fs.readFileSync('./.mevnrc'));
-
-  if (configFile['isPwa'] && !configFile['isPwaConfigured']) {
-    // Install the @nuxtjs/pwa package.
-    await exec(
-      'npm install --save @nuxtjs/pwa',
-      'Installing Nuxt.js pwa module',
-      'Done',
-      { cwd: 'client' },
-    );
-
-    const nuxtConfigFile = fs
-      .readFileSync('client/nuxt.config.js')
-      .toString()
-      .split('\n');
-
-    // Get the index where module definition starts
-    let moduleDefStartsWithIndex = nuxtConfigFile.indexOf(
-      nuxtConfigFile.find((line) => line.includes('modules: [')),
-    );
-
-    nuxtConfigFile[moduleDefStartsWithIndex] = `  modules: [`;
-
-    const contentToAppend = [
-      `  '@nuxtjs/eslint-module',`,
-      `  '@nuxtjs/pwa'`,
-      '  ],',
-    ];
-
-    // Make use of the updated value
-    moduleDefStartsWithIndex++;
-
-    //  Update modules array to include pwa module
-    contentToAppend.forEach((config, idx) =>
-      nuxtConfigFile.splice(moduleDefStartsWithIndex + idx, 0, config),
-    );
-
-    // Write back the updated config
-    fs.writeFileSync('client/nuxt.config.js', nuxtConfigFile.join('\n'));
-
-    // set isPwaConfigured key in the config file to true
-    configFile.isPwaConfigured = true;
-
-    fs.writeFileSync(`./.mevnrc`, JSON.stringify(configFile, null, 2));
-  }
-};
-
-/**
  * Serve the webapp locally
  *
  * @param {String} projectTemplate - Boilerplate template of choice
@@ -87,10 +33,12 @@ const serveProject = async (projectTemplate, templateDir) => {
     );
   }
 
+  let cmd = 'serve';
   if (projectTemplate === 'Nuxt.js') {
-    await configurePwaSupport();
+    cmd = 'dev';
+    // await configurePwaSupport();
   }
-  execa.shell(`npm run serve -- --port ${port} --open`, {
+  execa.shell(`npm run ${cmd} -- --port ${port} --open`, {
     stdio: 'inherit',
     cwd: templateDir,
   });
