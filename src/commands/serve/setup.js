@@ -20,7 +20,7 @@ const setupProject = async () => {
 
   let templateDir;
 
-  const { template } = appData();
+  const projectConfig = appData();
 
   if (fs.existsSync('./server')) {
     ({ dir: templateDir } = await dirOfChoice());
@@ -29,7 +29,7 @@ const setupProject = async () => {
   }
 
   // Proceed with further installation
-  serveProject(template, templateDir);
+  serveProject(projectConfig, templateDir);
 };
 
 module.exports = setupProject;

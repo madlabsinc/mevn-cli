@@ -6,15 +6,34 @@ import fs from 'fs';
 import exec from '../../utils/exec';
 
 /**
- * Serve the webapp locally
+ * Install Nuxt.js modules
  *
- * @param {String} projectTemplate - Boilerplate template of choice
- * @param {String} templateDir - Choose between client/server side
+ * @param {String[]} deps - Nuxt.js modules
  * @returns {Promise<void>}
  */
 
-const serveProject = async (projectTemplate, templateDir) => {
+const installDeps = async (deps) => {
+  await exec(
+    `npm install --save ${deps}`,
+    'Installing Nuxt.js modules',
+    `${deps} is successfully installed and configured`,
+    {
+      cwd: 'client',
+    },
+  );
+};
+
+/**
+ * Serve the webapp locally
+ *
+ * @param {String} projectConfig - Boilerplate template of choice
+ * @param {String} templateDir - The directory to execute shell command (client/server)
+ * @returns {Promise<void>}
+ */
+
+const serveProject = async (projectConfig, templateDir) => {
   let port;
+  const { template: projectTemplate } = projectConfig;
 
   if (templateDir === 'client') {
     port = projectTemplate === 'Nuxt.js' ? '3000' : '3002';
@@ -26,17 +45,47 @@ const serveProject = async (projectTemplate, templateDir) => {
     await exec(
       'npm install',
       'Installing dependencies in the background. Hold on...',
-      'Dependencies were successfully installed',
+      'Dependencies are successfully installed',
       {
         cwd: templateDir,
       },
     );
+    // Install Nuxt.js modules
+    if (templateDir === 'client' && projectTemplate === 'Nuxt.js') {
+      const { modules } = projectConfig;
+      // Add the @nuxtjs prefix
+      const modulesWithPrefix = modules.map((module) => `@nuxtjs/${module}`);
+
+      // Do not proceed if the user haven't opted for any Nuxt.js modules
+      if (modules.length) {
+        // @nuxtjs/pwa is to be installed as a devDependency
+        if (modules.includes('pwa')) {
+          await exec(
+            'npm install --save-dev @nuxtjs/pwa',
+            'Installing Nuxt.js pwa module',
+            '@nuxtjs/pwa is successfully installed and configured',
+            {
+              cwd: templateDir,
+            },
+          );
+          // User opted for additional Nuxt.js modules as well
+          if (modules.length > 1) {
+            const deps = modulesWithPrefix
+              .filter((module) => module !== '@nuxtjs/pwa')
+              .join(' ');
+            await installDeps(deps);
+          }
+        } else {
+          // User hasn't opted for @nuxtjs/pwa module
+          await installDeps(modulesWithPrefix.join(' '));
+        }
+      }
+    }
   }
 
   let cmd = 'serve';
   if (projectTemplate === 'Nuxt.js') {
     cmd = 'dev';
-    // await configurePwaSupport();
   }
   execa.shell(`npm run ${cmd} -- --port ${port} --open`, {
     stdio: 'inherit',

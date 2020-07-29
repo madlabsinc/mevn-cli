@@ -65,7 +65,7 @@ const showInstructions = () => {
 /**
  * Fetch the boilerplate template of choice
  *
- * @param {String} template - The branch which corresponds to the respective boilerplate template
+ * @param {String} template - The boilerplate template of choice
  * @returns {Promise<void>}
  */
 
@@ -92,11 +92,6 @@ const fetchTemplate = async (template) => {
   const renameToPath = path.join(dest, 'client');
   fs.renameSync(renameFromPath, renameToPath);
 
-  fs.writeFileSync(
-    `./${projectPathRelative}/.mevnrc`,
-    JSON.stringify(projectConfig, null, 2),
-  );
-
   // Prompt the user whether he/she requires pwa support
   if (template === 'Nuxt.js') {
     const configFile = fs
@@ -121,12 +116,15 @@ const fetchTemplate = async (template) => {
     const modulesIdx =
       configFile.findIndex((line) => line.includes('modules:')) + 2;
 
+    projectConfig.modules = [];
+
     if (modules.includes('Axios')) {
       const axiosConfig = [
         `${' '.repeat(2)}axios: {`,
         `${' '.repeat(4)}// proxyHeaders: false`,
         `${' '.repeat(2)}},`,
       ];
+      projectConfig.modules.push('axios');
       configFile.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/axios',`);
 
       // Add 1 so that the content gets inserted after the modules array
@@ -140,6 +138,7 @@ const fetchTemplate = async (template) => {
     }
 
     if (modules.includes('Progressive Web App (PWA)')) {
+      projectConfig.modules.push('pwa');
       configFile.splice(buildModulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/pwa',`);
     }
 
@@ -149,6 +148,7 @@ const fetchTemplate = async (template) => {
         `${' '.repeat(4)} //Options`,
         `${' '.repeat(2)}},`,
       ];
+      projectConfig.modules.push('content');
       configFile.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/content',`);
 
       const modulesEndIdx =
@@ -159,6 +159,12 @@ const fetchTemplate = async (template) => {
         configFile.splice(modulesEndIdx + idx, 0, config),
       );
     }
+
+    // Update .mevnrc config file
+    fs.writeFileSync(
+      `./${projectPathRelative}/.mevnrc`,
+      JSON.stringify(projectConfig, null, 2),
+    );
 
     // Choose the rendering mode
     const { mode } = await inquirer.prompt([
@@ -192,8 +198,6 @@ const fetchTemplate = async (template) => {
       );
       configFile[targetIdx] = `${' '.repeat(2)}target: 'server',`;
     }
-
-    console.log(configFile);
 
     // write back the updated config file (nuxt.config.js)
     fs.writeFileSync(
