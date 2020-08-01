@@ -32,67 +32,141 @@ const addDeps = async (deps, { dev }) => {
     ({ dir: templateDir } = await dirOfChoice());
   }
 
+  // Supported Nuxt.js modules
+  const nuxtModules = ['vuetify', 'pwa', 'axios', 'content'];
+
+  // These doesn't require installation
+  const nuxtAddons = ['vuex'];
+
+  // The entire list
+  const nuxtDeps = [].concat(nuxtModules, nuxtAddons);
+
   if (
     templateDir === 'server' &&
-    deps.some((plugin) => ['vuex', 'vuetify'].includes(plugin))
+    deps.some((plugin) => nuxtDeps.includes(plugin))
   ) {
     return;
   }
 
   const { template } = appData();
 
-  // Vuetify bindings for Nuxt.js
-  if (template === 'Nuxt.js' && !dev) deps.push('@nuxtjs/vuetify');
-
   const installFlag = dev ? '--save-dev' : '--save';
 
-  // Install the opted deps
-  await exec(
-    `npm install ${installFlag} ${deps.join(' ')}`,
-    `Installing ${deps.join(', ')}`,
-    'Done',
-    {
-      cwd: templateDir,
-    },
-  );
+  // Filter out Nuxt.js modules
+  const installCandidate =
+    template === 'Nuxt.js'
+      ? deps.filter((dep) => !nuxtDeps.includes(dep))
+      : deps;
 
-  if (dev) return;
+  // Install dependencies
+  if (installCandidate.length) {
+    await exec(
+      `npm install ${installFlag} ${installCandidate.join(' ')}`,
+      `Installing ${installCandidate.join(', ')}`,
+      'Dependencies are successfully installed',
+      {
+        cwd: templateDir,
+      },
+    );
+  }
+
+  // No need for further config
+  if (dev || templateDir === 'server') return;
 
   if (template === 'Nuxt.js') {
-    // vuex-store template content for Nuxt.js
-    const vuexNuxtStoreTemplate = [
-      'export const state = () => ({',
-      '  counter: 0',
-      '})',
-      '',
-      'export const mutations = {',
-      '  increment (state) {',
-      '\tstate.counter++',
-      '  }',
-      '}',
-    ];
+    // Supported Nuxt.js buildModules
+    const availableBuildModules = ['pwa', 'vuetify'];
 
-    // Vuetify-Config to be inserted
-    const vuetifyConfig = [
-      '  /*',
-      '   ** Set up vuetify',
-      '   */',
-      '  buildModules: [',
-      '    // Simple usage',
-      `    '@nuxtjs/vuetify',`,
-      '',
-      '    // With options',
-      '    [',
-      `      '@nuxtjs/vuetify',`,
-      '      {',
-      '        /* module options */',
-      '      }',
-      '    ]',
-      '  ],',
-    ];
+    // Nuxt.js modules that are already installed and configured (.mevnrc)
+    const { modules: configuredModules } = appData();
+
+    // Supported Nuxt.js modules
+    const availableModules = nuxtModules.filter(
+      (module) => !availableBuildModules.includes(module),
+    );
+
+    // Nuxt.js modules that are supposed to be installed
+    const modules = deps.filter(
+      (dep) =>
+        availableModules.includes(dep) && !configuredModules.includes(dep),
+    );
+
+    // Add the @nuxtjs prefix
+    const modulesWithPrefix = modules.map(
+      (module) => `${module === 'content' ? '@nuxt' : '@nuxtjs'}/${module}`, // @nuxt/content has different prefix
+    );
+
+    // Check if there is atleast a dep to be installed
+    if (modules.length) {
+      await exec(
+        `npm install --save ${modulesWithPrefix.join(' ')}`,
+        `Installing ${modulesWithPrefix.join(', ')}`,
+        'Succesfully installed opted Nuxt.js modules',
+        {
+          cwd: templateDir,
+        },
+      );
+    }
+
+    // Nuxt.js modules to be installed as a devDependency
+    const buildModules = deps.filter(
+      (dep) =>
+        availableBuildModules.includes(dep) && !configuredModules.includes(dep),
+    );
+
+    // @nuxtjs/pwa and @nuxtjs/vuetify are supposed to be installed as a devDep
+    if (buildModules.length) {
+      // Add @nuxtjs prefix
+      const buildModulesWithPrefix = buildModules.map(
+        (buildModule) => `@nuxtjs/${buildModule}`,
+      );
+
+      // Install buildModules as a devDep
+      await exec(
+        `npm install --save-dev ${buildModulesWithPrefix.join(' ')}`,
+        `Installing ${buildModulesWithPrefix.join(', ')}`,
+        'Succesfully installed opted Nuxt.js buildModules',
+        {
+          cwd: templateDir,
+        },
+      );
+    }
+
+    // Holds reference to the project specific config (.mevnrc)
+    const projectConfig = appData();
+
+    // Read initial content from nuxt.config.js
+    const nuxtConfig = fs
+      .readFileSync('./client/nuxt.config.js', 'utf8')
+      .toString()
+      .split('\n');
+
+    // Add 2 so that the content gets inserted at the right position
+    const buildModulesIdx =
+      nuxtConfig.findIndex((line) => line.includes('buildModules:')) + 2;
+
+    const modulesIdx =
+      nuxtConfig.findIndex((line) => line.includes('modules:')) + 2;
+
+    // Opted Nuxt.js addons
+    const addons = deps.filter(
+      (dep) => nuxtAddons.includes(dep) && !configuredModules.includes(dep),
+    );
 
     // Configure vuex-store for Nuxt.js template
-    if (deps.includes('vuex')) {
+    if (addons.includes('vuex')) {
+      const vuexNuxtStoreTemplate = [
+        'export const state = () => ({',
+        '  counter: 0',
+        '})',
+        '',
+        'export const mutations = {',
+        '  increment (state) {',
+        '\tstate.counter++',
+        '  }',
+        '}',
+      ];
+
       // Navigate to the store directory and create a basic store template file
       fs.writeFileSync(
         './client/store/index.js',
@@ -101,30 +175,84 @@ const addDeps = async (deps, { dev }) => {
     }
 
     // Configure @nuxtjs/vuetify
-    if (deps.includes('vuetify')) {
-      // Read initial content from nuxt.config.js
-      let nuxtConfig = fs
-        .readFileSync('./nuxt.config.js', 'utf8')
-        .toString()
-        .split('\n');
-
-      // Find the position of link within header information
-      const indexOfLink = nuxtConfig.indexOf(
-        nuxtConfig.find((line) => line.includes('link')),
+    if (buildModules.includes('vuetify')) {
+      const vuetifyConfig = [
+        `${' '.repeat(2)}vuetify: {`,
+        `${' '.repeat(4)}/* module options */`,
+        `${' '.repeat(2)}},`,
+      ];
+      nuxtConfig.splice(
+        buildModulesIdx,
+        0,
+        `${' '.repeat(4)}'@nuxtjs/vuetify',`,
       );
 
-      // Insert the respective content
-      vuetifyConfig.forEach((item, i) =>
-        nuxtConfig.splice(indexOfLink + i + 2, 0, item),
-      );
+      // Add 1 so that the content gets inserted after the buildModules array
+      const buildModulesEndIdx =
+        nuxtConfig.indexOf(`${' '.repeat(2)}],`, buildModulesIdx) + 1;
 
-      // Write back the updated content
-      fs.writeFileSync('./client/nuxt.config.js', nuxtConfig.join('\n'));
+      // Add @nuxtjs/vuetify config beneath the buildModules array
+      vuetifyConfig.forEach((config, idx) =>
+        nuxtConfig.splice(buildModulesEndIdx + idx, 0, config),
+      );
     }
+
+    // Configure @nuxtjs/axios module
+    if (modules.includes('axios')) {
+      const axiosConfig = [
+        `${' '.repeat(2)}axios: {`,
+        `${' '.repeat(4)}// proxyHeaders: false`,
+        `${' '.repeat(2)}},`,
+      ];
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/axios',`);
+
+      // Add 1 so that the content gets inserted after the modules array
+      const modulesEndIdx =
+        nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add @nuxtjs/axios config beneath the modules array
+      axiosConfig.forEach((config, idx) =>
+        nuxtConfig.splice(modulesEndIdx + idx, 0, config),
+      );
+    }
+
+    // Configure @nuxtjs/pwa module
+    if (buildModules.includes('pwa')) {
+      nuxtConfig.splice(buildModulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/pwa',`);
+    }
+
+    // Configure @nuxtjs/content module
+    if (modules.includes('content')) {
+      const contentConfig = [
+        `${' '.repeat(2)}content: {`,
+        `${' '.repeat(4)} //Options`,
+        `${' '.repeat(2)}},`,
+      ];
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/content',`);
+
+      const modulesEndIdx =
+        nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add @nuxtjs/content config beneath the modules array
+      contentConfig.forEach((config, idx) =>
+        nuxtConfig.splice(modulesEndIdx + idx, 0, config),
+      );
+    }
+
+    // Update modules entry with the installed Nuxt.js modules
+    configuredModules.push(...[].concat(modules, buildModules, addons));
+
+    // Update the modules entry
+    projectConfig.modules = configuredModules;
+
+    fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
+
+    // Write back the updated content
+    fs.writeFileSync('./client/nuxt.config.js', nuxtConfig.join('\n'));
   } else {
     // Configure vuex-store
     if (deps.includes('vuex')) {
-      let config = fs
+      const config = fs
         .readFileSync('./client/src/main.js', 'utf8')
         .toString()
         .split('\n');

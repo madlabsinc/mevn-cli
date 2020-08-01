@@ -118,6 +118,7 @@ const fetchTemplate = async (template) => {
 
     projectConfig.modules = [];
 
+    // Configure @nuxtjs/axios module
     if (modules.includes('Axios')) {
       const axiosConfig = [
         `${' '.repeat(2)}axios: {`,
@@ -137,11 +138,13 @@ const fetchTemplate = async (template) => {
       );
     }
 
+    // Configure @nuxtjs/pwa module
     if (modules.includes('Progressive Web App (PWA)')) {
       projectConfig.modules.push('pwa');
       configFile.splice(buildModulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/pwa',`);
     }
 
+    // Configure @nuxtjs/content module
     if (modules.includes('Content')) {
       const contentConfig = [
         `${' '.repeat(2)}content: {`,
