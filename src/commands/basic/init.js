@@ -204,18 +204,18 @@ const fetchTemplate = async (template) => {
       ? 'server'
       : 'static';
 
-    // Update project specific config file
-    fs.writeFileSync(
-      `./${projectPathRelative}/.mevnrc`,
-      JSON.stringify(projectConfig, null, 2),
-    );
-
     // Write back the updated config file (nuxt.config.js)
     fs.writeFileSync(
       `./${projectPathRelative}/client/nuxt.config.js`,
       configFile.join('\n'),
     );
   }
+
+  // Update project specific config file
+  fs.writeFileSync(
+    `./${projectPathRelative}/.mevnrc`,
+    JSON.stringify(projectConfig, null, 2),
+  );
 
   // Show up a suitable prompt whether if the user requires a Full stack application (Express.js)
   const { requireServer } = await inquirer.prompt({
