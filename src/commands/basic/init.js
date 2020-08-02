@@ -163,12 +163,6 @@ const fetchTemplate = async (template) => {
       );
     }
 
-    // Update .mevnrc config file
-    fs.writeFileSync(
-      `./${projectPathRelative}/.mevnrc`,
-      JSON.stringify(projectConfig, null, 2),
-    );
-
     // Choose the rendering mode
     const { mode } = await inquirer.prompt([
       {
@@ -184,6 +178,9 @@ const fetchTemplate = async (template) => {
       const modeIdx = configFile.findIndex((line) => line.includes('mode:'));
       configFile[modeIdx] = ` mode: 'universal',`;
     }
+
+    // To be written to project specific config (.mevnrc)
+    projectConfig.renderingMode = mode.toLowerCase();
 
     // Choose the Deployment target
     const { deployTarget } = await inquirer.prompt([
@@ -202,7 +199,18 @@ const fetchTemplate = async (template) => {
       configFile[targetIdx] = `${' '.repeat(2)}target: 'server',`;
     }
 
-    // write back the updated config file (nuxt.config.js)
+    // To be written to project specific config (.mevnrc)
+    projectConfig.deployTarget = deployTarget.includes('Node.js')
+      ? 'server'
+      : 'static';
+
+    // Update project specific config file
+    fs.writeFileSync(
+      `./${projectPathRelative}/.mevnrc`,
+      JSON.stringify(projectConfig, null, 2),
+    );
+
+    // Write back the updated config file (nuxt.config.js)
     fs.writeFileSync(
       `./${projectPathRelative}/client/nuxt.config.js`,
       configFile.join('\n'),
