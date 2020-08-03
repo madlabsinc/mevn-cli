@@ -50,6 +50,35 @@ const isLoggedIn = async () => {
 };
 
 /**
+ * Set config variable
+ *
+ * @param {String} configVar - The config variable
+ * @param {String} dir - Directory of choice
+ * @param {String} value - Supply the value
+ * @returns {Promise<void>}
+ */
+
+const setConfigVar = async (configVar, dir, value) => {
+  const { stdout } = await execa.shell('heroku config', {
+    cwd: dir,
+  });
+  if (!stdout.includes(configVar)) {
+    if (configVar === 'DB_URL') {
+      const { uri } = await inquirer.prompt({
+        type: 'password',
+        name: 'value',
+        message: 'Please provide the path to a cloud based MongoDB URI',
+        validate: validateInput,
+      });
+      value = uri;
+    }
+    await execa.shell(`heroku config:set ${configVar}=${value}`, {
+      cwd: dir,
+    });
+  }
+};
+
+/**
  * Deploy the webapp to Heroku
  *
  * @param {String} templateDir - client/server
@@ -62,7 +91,6 @@ const deployToHeroku = async (templateDir) => {
 
   const projectConfig = appData();
   const { template } = projectConfig;
-  const isPwa = projectConfig.hasOwnProperty('isPwa') && projectConfig.isPwa;
 
   if (!fs.existsSync(`./${templateDir}/.git`)) {
     await execa.shell('git init', { cwd: templateDir });
@@ -77,81 +105,81 @@ const deployToHeroku = async (templateDir) => {
       process.exit(1);
     }
   }
-
-  // Necessary configurations that are specific to the client side
-  if (templateDir === 'client') {
-    const staticConfig = {
-      root: 'dist',
-      clean_urls: true,
-      routes: {
-        '/**': 'index.html',
-      },
-    };
-
-    if (!fs.existsSync('./client/static.json')) {
-      fs.writeFileSync(
-        './client/static.json',
-        JSON.stringify(staticConfig, null, 2),
-      );
-    }
-
-    const starterSource = [
-      'const express = require("express");',
-      'const serveStatic = require("serve-static");',
-      'const path = require("path");',
-      'const app = express();',
-      'app.use(serveStatic(path.join(__dirname, "dist")));',
-      'const port = process.env.PORT || 80;',
-      'app.listen(port);',
-    ];
-
-    let pkgJson = JSON.parse(fs.readFileSync('./client/package.json'));
-    const buildCmd = `npm run ${template === 'Nuxt.js' ? 'generate' : 'build'}`;
-    const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then ${buildCmd} ; fi `; // eslint-disable-line
-    pkgJson = {
-      ...pkgJson,
-      scripts: {
-        ...pkgJson.scripts,
-        postinstall: postInstallScript,
-        start: 'node server.js',
-      },
-    };
-
-    if (isPwa) {
-      pkgJson.scripts['preinstall'] = 'npm install --save @nuxtjs/pwa';
-    }
-
-    if (!fs.existsSync('./client/server.js')) {
-      fs.writeFileSync('./client/server.js', starterSource.join('\n'));
-      pkgJson.scripts['preinstall'] = 'npm install --save express serve-static';
-      fs.writeFileSync(
-        './client/package.json',
-        JSON.stringify(pkgJson, null, 2),
-      );
-    }
-  }
-
+  // Show up the login prompt if not logged in
   if (!(await isLoggedIn())) {
     await execa.shell('heroku login', { stdio: 'inherit', cwd: templateDir });
   }
 
+  // Create a new Heroku app
   const { stdout } = await execa.shell('git remote', { cwd: templateDir });
   if (!stdout.includes('heroku')) {
     await createHerokuApp(templateDir);
   }
 
+  // It depends on a DBAAS
   if (templateDir === 'server' && fs.existsSync('./server/models')) {
-    const { stdout } = await execa.shell('heroku config', { cwd: templateDir });
-    if (!stdout.includes('DB_URL')) {
-      const { uri } = await inquirer.prompt({
-        type: 'password',
-        name: 'uri',
-        message: 'Please provide the path to a cloud based MongoDB URI',
-        validate: validateInput,
-      });
-      await execa.shell(`heroku config:set DB_URL=${uri}`, {
-        cwd: templateDir,
-      });
+    await setConfigVar('DB_URL', templateDir);
+  }
+
+  // Necessary configurations that are specific to the client side
+  if (templateDir === 'client') {
+    // Nuxt.js with target server
+    if (template === 'Nuxt.js') {
+      // Set config vars via heroku-cli
+      await setConfigVar('HOST', templateDir, '0.0.0.0');
+      await setConfigVar('NODE_ENV', templateDir, 'production');
+
+      // Create Procfile
+      if (!fs.existsSync('./client/Procfile')) {
+        fs.writeFileSync('./client/Procfile', 'web: nuxt start');
+      }
+    } else {
+      const staticConfig = {
+        root: 'dist',
+        clean_urls: true,
+        routes: {
+          '/**': 'index.html',
+        },
+      };
+
+      if (!fs.existsSync('./client/static.json')) {
+        fs.writeFileSync(
+          './client/static.json',
+          JSON.stringify(staticConfig, null, 2),
+        );
+      }
+
+      const starterSource = [
+        'const express = require("express");',
+        'const serveStatic = require("serve-static");',
+        'const path = require("path");',
+        'const app = express();',
+        'app.use(serveStatic(path.join(__dirname, "dist")));',
+        'const port = process.env.PORT || 80;',
+        'app.listen(port);',
+      ];
+
+      let pkgJson = JSON.parse(fs.readFileSync('./client/package.json'));
+      const buildCmd = 'npm run build';
+      const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then ${buildCmd} ; fi `; // eslint-disable-line
+      pkgJson = {
+        ...pkgJson,
+        scripts: {
+          ...pkgJson.scripts,
+          postinstall: postInstallScript,
+          start: 'node server.js',
+        },
+      };
+
+      if (!fs.existsSync('./client/server.js')) {
+        fs.writeFileSync('./client/server.js', starterSource.join('\n'));
+        pkgJson.scripts['preinstall'] =
+          'npm install --save express serve-static';
+        fs.writeFileSync(
+          './client/package.json',
+          JSON.stringify(pkgJson, null, 2),
+        );
+      }
     }
   }
 

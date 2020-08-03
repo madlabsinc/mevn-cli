@@ -3,6 +3,7 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 
+import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import deployToSurge from './surge';
 import deployToHeroku from './heroku';
@@ -25,6 +26,19 @@ const deployConfig = async () => {
 
   // List the various options for client side
   if (templateDir === 'client') {
+    const { template } = appData();
+
+    // Choose platform based on deploy-target for Nuxt.js
+    if (template === 'Nuxt.js') {
+      const { deployTarget } = appData();
+
+      // static deployment
+      if (deployTarget === 'static') {
+        return deployToSurge();
+      }
+      // server target
+      return deployToHeroku(templateDir);
+    }
     const { platform } = await inquirer.prompt([
       {
         name: 'platform',
