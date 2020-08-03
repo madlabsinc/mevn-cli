@@ -169,18 +169,15 @@ const fetchTemplate = async (template) => {
         name: 'mode',
         type: 'list',
         message: 'Rendering mode',
-        choices: ['Universal', 'SPA'],
+        choices: ['Universal (SSR/SSG)', 'Single Page App'],
       },
     ]);
 
     // Update the config file (nuxt.config.js)
-    if (mode === 'Universal') {
+    if (mode.includes('Universal')) {
       const modeIdx = configFile.findIndex((line) => line.includes('mode:'));
       configFile[modeIdx] = ` mode: 'universal',`;
     }
-
-    // To be written to project specific config (.mevnrc)
-    projectConfig.renderingMode = mode.toLowerCase();
 
     // Choose the Deployment target
     const { deployTarget } = await inquirer.prompt([
