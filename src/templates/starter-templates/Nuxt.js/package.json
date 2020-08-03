@@ -6,12 +6,11 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "export": "nuxt export",
-    "serve": "nuxt serve",
+    "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue ."
   },
   "dependencies": {
-    "nuxt": "^2.13.0"
+    "nuxt": "^2.14.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",
