@@ -201,6 +201,9 @@ const fetchTemplate = async (template) => {
       ? 'server'
       : 'static';
 
+    // Keep track whether the Nuxt.js modules are configured
+    projectConfig.isConfigured = false;
+
     // Write back the updated config file (nuxt.config.js)
     fs.writeFileSync(
       `./${projectPathRelative}/client/nuxt.config.js`,

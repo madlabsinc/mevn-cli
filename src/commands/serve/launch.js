@@ -50,9 +50,12 @@ const serveProject = async (projectConfig, templateDir) => {
         cwd: templateDir,
       },
     );
-    // Install Nuxt.js modules
-    if (templateDir === 'client' && projectTemplate === 'Nuxt.js') {
-      const { modules } = projectConfig;
+  }
+
+  // Install Nuxt.js modules
+  if (templateDir === 'client' && projectTemplate === 'Nuxt.js') {
+    const { modules, isConfigured } = projectConfig;
+    if (!isConfigured) {
       // Add the @nuxtjs prefix
       const modulesWithPrefix = modules.map((module) => `@nuxtjs/${module}`);
 
@@ -80,6 +83,10 @@ const serveProject = async (projectConfig, templateDir) => {
           await installDeps(modulesWithPrefix.join(' '));
         }
       }
+
+      // Update the isConfigured key
+      projectConfig.isConfigured = true;
+      fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
     }
   }
 
