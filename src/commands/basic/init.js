@@ -239,6 +239,8 @@ const fetchTemplate = async (template) => {
     const renameFromPath = path.join(dest, serverDir);
     const renameToPath = path.join(dest, 'server');
     fs.renameSync(renameFromPath, renameToPath);
+
+    fs.writeFileSync(`${renameToPath}/.gitignore`, 'node_modules');
   }
 
   // Show up initial instructions to the user
