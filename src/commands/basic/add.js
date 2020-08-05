@@ -1,5 +1,6 @@
 'use strict';
 
+import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import showBanner from 'node-banner';
@@ -8,6 +9,7 @@ import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import dirOfChoice from '../../utils/directoryPrompt';
 import exec from '../../utils/exec';
+import inquirer from 'inquirer';
 
 const vuexStoreTemplate = fs.readFileSync(
   path.resolve(__dirname, '..', '..', 'templates/vuex/store.js'),
@@ -32,37 +34,26 @@ const addDeps = async (deps, { dev }) => {
     ({ dir: templateDir } = await dirOfChoice());
   }
 
-  // Supported Nuxt.js modules
-  const nuxtModules = ['vuetify', 'pwa', 'axios', 'content'];
-
-  // These doesn't require installation
-  const nuxtAddons = ['vuex'];
-
-  // The entire list
-  const nuxtDeps = [].concat(nuxtModules, nuxtAddons);
-
-  if (
-    templateDir === 'server' &&
-    deps.some((plugin) => nuxtDeps.includes(plugin))
-  ) {
-    return;
-  }
-
   const { template } = appData();
+
+  // Do not proceed if the deps were not supplied
+  if (
+    !deps &&
+    (templateDir === 'server' ||
+      (templateDir === 'client' && template !== 'Nuxt.js'))
+  ) {
+    return console.log(
+      chalk.yellow(' Please specify the dependencies to install'),
+    );
+  }
 
   const installFlag = dev ? '--save-dev' : '--save';
 
-  // Filter out Nuxt.js modules
-  const installCandidate =
-    template === 'Nuxt.js'
-      ? deps.filter((dep) => !nuxtDeps.includes(dep))
-      : deps;
-
   // Install dependencies
-  if (installCandidate.length) {
+  if (deps.length) {
     await exec(
-      `npm install ${installFlag} ${installCandidate.join(' ')}`,
-      `Installing ${installCandidate.join(', ')}`,
+      `npm install ${installFlag} ${deps.join(' ')}`,
+      `Installing ${deps.join(', ')}`,
       'Dependencies are successfully installed',
       {
         cwd: templateDir,
@@ -73,22 +64,42 @@ const addDeps = async (deps, { dev }) => {
   // No need for further config
   if (dev || templateDir === 'server') return;
 
-  if (template === 'Nuxt.js') {
+  // Nuxt.js modules are installed via multiselect prompt
+  if (template === 'Nuxt.js' && !deps.length) {
+    // Supported Nuxt.js modules
+    const nuxtModules = ['vuetify', 'pwa', 'axios', 'content'];
+
+    // These doesn't require installation
+    const nuxtAddons = ['vuex'];
+
     // Supported Nuxt.js buildModules
     const availableBuildModules = ['pwa', 'vuetify'];
-
-    // Nuxt.js modules that are already installed and configured (.mevnrc)
-    const { modules: configuredModules } = appData();
 
     // Supported Nuxt.js modules
     const availableModules = nuxtModules.filter(
       (module) => !availableBuildModules.includes(module),
     );
 
+    // Nuxt.js modules that are already installed and configured (.mevnrc)
+    const { modules: configuredModules } = appData();
+
+    // Nuxt.js modules that are available for installation
+    const nuxtDeps = []
+      .concat(nuxtModules, nuxtAddons)
+      .filter((dep) => !configuredModules.includes(dep));
+
+    const { installCandidate } = await inquirer.prompt([
+      {
+        name: 'installCandidate',
+        type: 'checkbox',
+        message: 'Choose the required Nuxt.js modules',
+        choices: nuxtDeps,
+      },
+    ]);
+
     // Nuxt.js modules that are supposed to be installed
-    const modules = deps.filter(
-      (dep) =>
-        availableModules.includes(dep) && !configuredModules.includes(dep),
+    const modules = installCandidate.filter((dep) =>
+      availableModules.includes(dep),
     );
 
     // Add the @nuxtjs prefix
@@ -109,9 +120,8 @@ const addDeps = async (deps, { dev }) => {
     }
 
     // Nuxt.js modules to be installed as a devDependency
-    const buildModules = deps.filter(
-      (dep) =>
-        availableBuildModules.includes(dep) && !configuredModules.includes(dep),
+    const buildModules = installCandidate.filter((dep) =>
+      availableBuildModules.includes(dep),
     );
 
     // @nuxtjs/pwa and @nuxtjs/vuetify are supposed to be installed as a devDep
@@ -149,9 +159,7 @@ const addDeps = async (deps, { dev }) => {
       nuxtConfig.findIndex((line) => line.includes('modules:')) + 2;
 
     // Opted Nuxt.js addons
-    const addons = deps.filter(
-      (dep) => nuxtAddons.includes(dep) && !configuredModules.includes(dep),
-    );
+    const addons = installCandidate.filter((dep) => nuxtAddons.includes(dep));
 
     // Configure vuex-store for Nuxt.js template
     if (addons.includes('vuex')) {

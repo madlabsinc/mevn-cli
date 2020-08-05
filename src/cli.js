@@ -55,7 +55,7 @@ program
   .action(generateFile);
 
 program
-  .command('add <deps...>')
+  .command('add [deps...]')
   .option('-d, --dev', 'install dev-dependencies')
   .description('Install dependencies on the go')
   .action(addDeps);
