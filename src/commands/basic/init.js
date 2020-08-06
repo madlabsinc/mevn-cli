@@ -152,7 +152,7 @@ const fetchTemplate = async (template) => {
         `${' '.repeat(2)}},`,
       ];
       projectConfig.modules.push('content');
-      configFile.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/content',`);
+      configFile.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxt/content',`);
 
       const modulesEndIdx =
         configFile.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
