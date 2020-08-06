@@ -29,7 +29,7 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js
-        `${DOWN}${SPACE}${DOWN}${SPACE}${ENTER}`, // Opt for @nuxtjs/content module
+        `${DOWN}${SPACE}${DOWN}${SPACE}${ENTER}`, // Opt for @nuxtjs/content and @nuxtjs/pwa modules
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
         `Y${ENTER}`, // Requires server directory
@@ -37,11 +37,20 @@ describe('mevn init', () => {
     );
 
     const clientPath = path.join(genPath, 'client');
+    const serverPath = path.join(genPath, 'server');
+
     // nuxt.config.js
     const nuxtConfig = require(path.join(clientPath, 'nuxt.config.js')).default;
-    // Check for Nuxt.js module config
+
+    // Check whether the respective entries have been updated
+    expect(nuxtConfig.buildModules).toContain('@nuxtjs/pwa');
+    expect(nuxtConfig.modules).toContain('@nuxtjs/content');
+    expect(nuxtConfig.modules).not.toContain('@nuxtjs/axios');
+
+    // Check for Nuxt.js modules config
     expect(nuxtConfig).not.toHaveProperty('axios');
     expect(nuxtConfig).toHaveProperty('content');
+
     // Check for rendering mode and deploy target config
     expect(nuxtConfig.mode).toBe('spa');
     expect(nuxtConfig.target).toBe('static');
@@ -59,6 +68,9 @@ describe('mevn init', () => {
       fs.readFileSync(path.join(genPath, '.mevnrc')),
     );
     expect(projectConfig).toStrictEqual(projectConfigContent);
+
+    // Check for the existence for server directory
+    expect(fs.existsSync(serverPath)).toBeTruthy();
   });
 
   it('shows an appropriate warning if the specified directory already exists in path', () => {
