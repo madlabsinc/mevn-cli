@@ -44,7 +44,7 @@ describe('mevn init', () => {
 
     // Check whether the respective entries have been updated
     expect(nuxtConfig.buildModules).toContain('@nuxtjs/pwa');
-    expect(nuxtConfig.modules).toContain('@nuxtjs/content');
+    expect(nuxtConfig.modules).toContain('@nuxt/content');
     expect(nuxtConfig.modules).not.toContain('@nuxtjs/axios');
 
     // Check for Nuxt.js modules config
