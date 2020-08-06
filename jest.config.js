@@ -7,7 +7,10 @@ module.exports = {
       displayName: 'e2e',
       setupFilesAfterEnv: ['<rootDir>/jest/setupE2eTests.js'],
       testMatch: ['<rootDir>/__e2e__/**/*.test.js'],
-      modulePathIgnorePatterns: ['<rootDir>/my-app/*/package.json'],
+      modulePathIgnorePatterns: [
+        '<rootDir>/my-app/*/package.json',
+        '<rootDir>/lib/*',
+      ],
     },
   ],
 };
