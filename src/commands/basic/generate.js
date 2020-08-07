@@ -46,7 +46,7 @@ const generateFile = async () => {
     {
       type: 'list',
       name: 'type',
-      message: 'Choose the required file to be generated',
+      message: 'Choose from below',
       choices: ['Component (client)', 'CRUD Boilerplate (server)'],
     },
   ]);
@@ -70,6 +70,18 @@ const generateFile = async () => {
         routesFilePath,
         fs.readFileSync(path.join(templatePath, 'routes', 'index.js')),
       );
+
+      // Create .env file
+      const { uri } = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'uri',
+          message: 'Please provide the MongoDB URI path',
+          default: 'mongodb://localhost:27017',
+          validate: validateInput,
+        },
+      ]);
+      fs.writeFileSync('./server/.env', `DB_URL=${uri}`);
 
       // Create controllers directory
       createDir('controllers');
@@ -95,17 +107,6 @@ const generateFile = async () => {
         cwd: 'server',
       },
     );
-    // Create .env file
-    const { uri } = await inquirer.prompt([
-      {
-        type: 'input',
-        name: 'uri',
-        message: 'Please provide the MongoDB URI path',
-        default: 'mongodb://localhost:27017',
-        validate: validateInput,
-      },
-    ]);
-    fs.writeFileSync('./server/.env', `DB_URL=${uri}`);
   }
 
   copyDirSync(path.join(templatePath, 'helpers'), 'server');
