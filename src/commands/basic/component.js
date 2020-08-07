@@ -123,7 +123,7 @@ const generateComponent = async () => {
     return await exec(
       'npm run lint -- --fix',
       progressMsg,
-      `Successfully created ${componentName}.vue file on ${componentPath}`,
+      `Successfully created ${componentName}.vue file in ${componentPath}`,
       {
         cwd: 'client',
       },
@@ -176,7 +176,7 @@ const generateComponent = async () => {
   await exec(
     'npm run lint -- --fix',
     progressMsg,
-    `Successfully created ${componentName}.vue file on ${componentPath}`,
+    `Successfully created ${componentName}.vue file in ${componentPath}`,
     {
       cwd: 'client',
     },
