@@ -1,4 +1,10 @@
-import { runPromptWithAnswers, DOWN, ENTER, SPACE } from '../../jest/helpers';
+import {
+  runPromptWithAnswers,
+  rmTempDir,
+  DOWN,
+  ENTER,
+  SPACE,
+} from '../../jest/helpers';
 
 import fs from 'fs';
 import path from 'path';
@@ -15,11 +21,9 @@ const clientPath = path.join(genPath, 'client');
 // The server directory
 const serverPath = path.join(genPath, 'server');
 
-// Deletes temporary directory
-const rmTmpDir = () => fs.rmdirSync(tempDirPath, { recursive: true });
-
 describe('mevn add', () => {
-  afterAll(() => rmTmpDir());
+  // cleanup
+  afterAll(() => rmTempDir());
 
   it('installs Nuxt.js modules if no args were passed in', async () => {
     await runPromptWithAnswers(

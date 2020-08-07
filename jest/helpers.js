@@ -3,6 +3,7 @@
 import 'babel-polyfill';
 import concat from 'concat-stream';
 import execa from 'execa';
+import fs from 'fs';
 import path from 'path';
 
 const CLI_PATH = path.resolve('bin', 'mevn.js');
@@ -43,6 +44,10 @@ export const runPromptWithAnswers = (args, answers, testPath) => {
 // async version
 export const runAsync = async (args, options = {}) =>
   await execa(CLI_PATH, args, options);
+
+// Cleanup
+export const rmTempDir = (tempDirPath) =>
+  fs.rmdirSync(tempDirPath, { recursive: true });
 
 // Espace sequence
 export const DOWN = '\x1B\x5B\x42';
