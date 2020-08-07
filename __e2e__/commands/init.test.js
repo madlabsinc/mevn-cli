@@ -1,20 +1,25 @@
 'use strict';
 
-import { run, runPromptWithAnswers } from '../../jest/helpers';
+import {
+  run,
+  runPromptWithAnswers,
+  DOWN,
+  ENTER,
+  SPACE,
+} from '../../jest/helpers';
 
 import fs from 'fs';
-import { DOWN, ENTER } from 'inquirer-test';
 import path from 'path';
 
-const SPACE = '\x20';
+// Create a temp directory
+const tempDirPath = path.join(__dirname, 'init-cmd');
+fs.mkdirSync(tempDirPath);
 
-// The project root
-const rootPath = path.join(__dirname, '..', '..');
-const genPath = path.join(rootPath, 'my-app');
+const genPath = path.join(tempDirPath, 'my-app');
 
 describe('mevn init', () => {
   afterAll(() => {
-    fs.rmdirSync(genPath, { recursive: true });
+    fs.rmdirSync(tempDirPath, { recursive: true });
   });
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {
@@ -34,6 +39,7 @@ describe('mevn init', () => {
         `${DOWN}${ENTER}`, // Choose static as the deploy target
         `Y${ENTER}`, // Requires server directory
       ],
+      tempDirPath,
     );
 
     const clientPath = path.join(genPath, 'client');
@@ -69,12 +75,12 @@ describe('mevn init', () => {
     );
     expect(projectConfig).toStrictEqual(projectConfigContent);
 
-    // Check for the existence for server directory
+    // Check for the existence of server directory
     expect(fs.existsSync(serverPath)).toBeTruthy();
   });
 
   it('shows an appropriate warning if the specified directory already exists in path', () => {
-    const { stdout } = run(['init', 'my-app'], { cwd: rootPath });
+    const { stdout } = run(['init', 'my-app'], { cwd: tempDirPath });
     expect(stdout).toContain('Error: Directory my-app already exists in path!');
   });
 
