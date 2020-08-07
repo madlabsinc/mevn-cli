@@ -57,7 +57,9 @@ const serveProject = async (projectConfig, templateDir) => {
     const { modules, isConfigured } = projectConfig;
     if (!isConfigured) {
       // Add the @nuxtjs prefix
-      const modulesWithPrefix = modules.map((module) => `@nuxtjs/${module}`);
+      const modulesWithPrefix = modules.map(
+        (module) => `${module === 'content' ? '@nuxt' : '@nuxtjs'}/${module}`, // @nuxt/content has different prefix
+      );
 
       // Do not proceed if the user haven't opted for any Nuxt.js modules
       if (modules.length) {
