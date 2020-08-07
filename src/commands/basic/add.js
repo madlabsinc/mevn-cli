@@ -38,7 +38,7 @@ const addDeps = async (deps, { dev }) => {
 
   // Do not proceed if the deps were not supplied
   if (
-    !deps &&
+    !deps.length &&
     (templateDir === 'server' ||
       (templateDir === 'client' && template !== 'Nuxt.js'))
   ) {
@@ -62,7 +62,7 @@ const addDeps = async (deps, { dev }) => {
   }
 
   // No need for further config
-  if (dev || templateDir === 'server') return;
+  if (dev) return;
 
   // Nuxt.js modules are installed via multiselect prompt
   if (template === 'Nuxt.js' && !deps.length) {

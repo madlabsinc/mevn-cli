@@ -9,10 +9,17 @@ fs.mkdirSync(tempDirPath);
 
 const genPath = path.join(tempDirPath, 'my-app');
 
+// The client directory
+const clientPath = path.join(genPath, 'client');
+
+// The server directory
+const serverPath = path.join(genPath, 'server');
+
+// Deletes temporary directory
+const rmTmpDir = () => fs.rmdirSync(tempDirPath, { recursive: true });
+
 describe('mevn add', () => {
-  afterAll(() => {
-    fs.rmdirSync(tempDirPath, { recursive: true });
-  });
+  afterAll(() => rmTmpDir());
 
   it('installs Nuxt.js modules if no args were passed in', async () => {
     await runPromptWithAnswers(
@@ -22,7 +29,7 @@ describe('mevn add', () => {
         `${SPACE}${ENTER}`, // Opt for @nuxtjs/axios module
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
-        `N${ENTER}`, // Not a fullstack app
+        `Y${ENTER}`, // Requires server directory
       ],
       tempDirPath,
     );
@@ -30,10 +37,9 @@ describe('mevn add', () => {
     // Invoke the add command
     await runPromptWithAnswers(
       ['add'],
-      [`${DOWN}${SPACE}${DOWN}${DOWN}${SPACE}${ENTER}`], // Choose @nuxtjs/pwa modules and the vuex addon
+      [ENTER, `${DOWN}${SPACE}${DOWN}${DOWN}${SPACE}${ENTER}`], // Choose @nuxtjs/pwa module and the vuex addon
       genPath,
     );
-    const clientPath = path.join(genPath, 'client');
 
     // nuxt.config.js
     const nuxtConfig = require(path.join(clientPath, 'nuxt.config.js')).default;
@@ -61,5 +67,38 @@ describe('mevn add', () => {
     expect(
       fs.readFileSync(path.join(clientPath, 'store', 'index.js')),
     ).toBeTruthy();
+  });
+
+  it('installs the respective dependency passed as an arg', async () => {
+    await runPromptWithAnswers(['add', 'v-tooltip'], [ENTER], genPath);
+
+    // package.json
+    const pkgJson = JSON.parse(
+      fs.readFileSync(path.join(clientPath, 'package.json')),
+    );
+    expect(pkgJson.dependencies['v-tooltip']).toBeTruthy();
+  });
+
+  it('installs the respective devDependency passed as an arg for the server directory', async () => {
+    await runPromptWithAnswers(
+      ['add', 'husky', '--dev'],
+      [`${DOWN}${ENTER}`],
+      genPath,
+    );
+
+    // package.json
+    const pkgJson = JSON.parse(
+      fs.readFileSync(path.join(serverPath, 'package.json')),
+    );
+    expect(pkgJson.devDependencies['husky']).toBeTruthy();
+  });
+
+  it('shows a warning if no args were passed in for server directory', async () => {
+    const stdout = await runPromptWithAnswers(
+      ['add'],
+      [`${DOWN}${ENTER}`], // opts for server directory
+      genPath,
+    );
+    expect(stdout).toContain(' Please specify the dependencies to install');
   });
 });
