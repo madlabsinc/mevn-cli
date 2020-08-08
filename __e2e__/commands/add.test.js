@@ -23,7 +23,7 @@ const serverPath = path.join(genPath, 'server');
 
 describe('mevn add', () => {
   // cleanup
-  afterAll(() => rmTempDir());
+  afterAll(() => rmTempDir(tempDirPath));
 
   it('installs Nuxt.js modules if no args were passed in', async () => {
     await runPromptWithAnswers(
@@ -101,6 +101,28 @@ describe('mevn add', () => {
     const stdout = await runPromptWithAnswers(
       ['add'],
       [`${DOWN}${ENTER}`], // opts for server directory
+      genPath,
+    );
+    expect(stdout).toContain(' Please specify the dependencies to install');
+
+    // Delete generated directory
+    rmTempDir(genPath);
+  });
+
+  it('shows a warning if no args were passed in for a starter template other than Nuxt.js', async () => {
+    await runPromptWithAnswers(
+      ['init', 'my-app'],
+      [
+        ENTER, // Choose basic template
+        `Y${ENTER}`, // Requires server directory
+      ],
+      tempDirPath,
+    );
+
+    // Invoke the add command
+    const stdout = await runPromptWithAnswers(
+      ['add'],
+      [ENTER], // opts for client directory
       genPath,
     );
     expect(stdout).toContain(' Please specify the dependencies to install');
