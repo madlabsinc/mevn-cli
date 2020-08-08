@@ -57,5 +57,9 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    /*
+    ** You can extend webpack config here
+    */
+  },
 }

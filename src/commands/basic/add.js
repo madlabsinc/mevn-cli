@@ -67,13 +67,30 @@ const addDeps = async (deps, { dev }) => {
   // Nuxt.js modules are installed via multiselect prompt
   if (template === 'Nuxt.js' && !deps.length) {
     // Supported Nuxt.js modules
-    const nuxtModules = ['vuetify', 'pwa', 'axios', 'content'];
+    const nuxtModules = [
+      'vuetify',
+      'pwa',
+      'axios',
+      'content',
+      'apollo',
+      'oauth',
+      'toast',
+      'bulma',
+      'tailwindcss',
+      'storybook',
+      'markdownit',
+    ];
 
-    // These doesn't require installation
+    // These addons doesn't require installation
     const nuxtAddons = ['vuex'];
 
     // Supported Nuxt.js buildModules
-    const availableBuildModules = ['pwa', 'vuetify'];
+    const availableBuildModules = [
+      'pwa',
+      'vuetify',
+      'storybook',
+      'tailwindcss',
+    ];
 
     // Supported Nuxt.js modules
     const availableModules = nuxtModules.filter(
@@ -87,6 +104,12 @@ const addDeps = async (deps, { dev }) => {
     const nuxtDeps = []
       .concat(nuxtModules, nuxtAddons)
       .filter((dep) => !configuredModules.includes(dep));
+
+    if (!nuxtDeps.length) {
+      return console.log(
+        chalk.yellow(' Please specify the dependencies to install'),
+      );
+    }
 
     const { installCandidate } = await inquirer.prompt([
       {
@@ -104,7 +127,14 @@ const addDeps = async (deps, { dev }) => {
 
     // Add the @nuxtjs prefix
     const modulesWithPrefix = modules.map(
-      (module) => `${module === 'content' ? '@nuxt' : '@nuxtjs'}/${module}`, // @nuxt/content has different prefix
+      (module) =>
+        `${
+          module === 'oauth'
+            ? 'nuxt-oauth' // nuxt-oauth
+            : module === 'content'
+            ? `@nuxt/${module}`
+            : `@nuxtjs/${module}`
+        }`, // @nuxt/content has different prefix
     );
 
     // Check if there is atleast a dep to be installed
@@ -155,7 +185,7 @@ const addDeps = async (deps, { dev }) => {
     const buildModulesIdx =
       nuxtConfig.findIndex((line) => line.includes('buildModules:')) + 2;
 
-    const modulesIdx =
+    let modulesIdx =
       nuxtConfig.findIndex((line) => line.includes('modules:')) + 2;
 
     // Opted Nuxt.js addons
@@ -205,6 +235,9 @@ const addDeps = async (deps, { dev }) => {
       );
     }
 
+    // Recompute since buildModules was updated
+    modulesIdx = nuxtConfig.findIndex((line) => line.includes('modules:')) + 2;
+
     // Configure @nuxtjs/axios module
     if (modules.includes('axios')) {
       const axiosConfig = [
@@ -224,10 +257,13 @@ const addDeps = async (deps, { dev }) => {
       );
     }
 
-    // Configure @nuxtjs/pwa module
+    // Configure @nuxtjs/pwa buildModule
     if (buildModules.includes('pwa')) {
       nuxtConfig.splice(buildModulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/pwa',`);
     }
+
+    // Recompute since buildModules was updated
+    modulesIdx = nuxtConfig.findIndex((line) => line.includes('modules:')) + 2;
 
     // Configure @nuxtjs/content module
     if (modules.includes('content')) {
@@ -243,6 +279,181 @@ const addDeps = async (deps, { dev }) => {
 
       // Add @nuxtjs/content config beneath the modules array
       contentConfig.forEach((config, idx) =>
+        nuxtConfig.splice(modulesEndIdx + idx, 0, config),
+      );
+    }
+
+    // Configure @nuxtjs/apollo module
+    if (modules.includes('apollo')) {
+      const apolloConfig = [
+        `${' '.repeat(2)}apollo: {`,
+        `${' '.repeat(4)}clientConfigs: {`,
+        `${' '.repeat(6)}default: {`,
+        `${' '.repeat(8)}httpEndpoint: 'http://localhost:4000',`,
+        `${' '.repeat(6)}}`,
+        `${' '.repeat(4)}}`,
+        `${' '.repeat(2)}},`,
+      ];
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/apollo',`);
+
+      const modulesEndIdx =
+        nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add @nuxtjs/apollo config beneath the modules array
+      apolloConfig.forEach((config, idx) =>
+        nuxtConfig.splice(modulesEndIdx + idx, 0, config),
+      );
+    }
+
+    // Configure nuxt-oauth module
+    if (modules.includes('oauth')) {
+      const oAuthConfig = [
+        `${' '.repeat(2)}oauth: {`,
+        `${' '.repeat(4)}sessionName: 'mySession',`,
+        `${' '.repeat(4)}secretKey: process.env.SECRET_KEY,`,
+        `${' '.repeat(4)}oauthHost: process.env.OAUTH_HOST,`,
+        `${' '.repeat(4)}oauthClientID: process.env.OAUTH_CLIENT_ID,`,
+        `${' '.repeat(4)}oauthClientSecret: process.env.OAUTH_CLIENT_SECRET,`,
+        `${' '.repeat(4)}onLogout: (req, res) => {`,
+        `${' '.repeat(6)}// do something after logging out`,
+        `${' '.repeat(4)}},`,
+        `${' '.repeat(4)}fetchUser: (accessToken, request) => {`,
+        `${' '.repeat(6)}// do something to return the user`,
+        `${' '.repeat(4)}},`,
+        `${' '.repeat(2)}},`,
+      ];
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxt-oauth',`);
+
+      const modulesEndIdx =
+        nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add nuxt-oauth config beneath the modules array
+      oAuthConfig.forEach((config, idx) =>
+        nuxtConfig.splice(modulesEndIdx + idx, 0, config),
+      );
+    }
+
+    // Configure @nuxtjs/toast module
+    if (modules.includes('toast')) {
+      const toastConfig = [
+        `${' '.repeat(2)}toast: {`,
+        `${' '.repeat(4)}position: 'top-center',`,
+        `${' '.repeat(4)}register: [ // Register custom toasts`,
+        `${' '.repeat(4)}],`,
+        `${' '.repeat(2)}},`,
+      ];
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/toast',`);
+
+      const modulesEndIdx =
+        nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add @nuxtjs/toast config beneath the modules array
+      toastConfig.forEach((config, idx) =>
+        nuxtConfig.splice(modulesEndIdx + idx, 0, config),
+      );
+    }
+
+    // Configure @nuxtjs/tailwindcss buildModule
+    if (buildModules.includes('tailwindcss')) {
+      nuxtConfig.splice(
+        buildModulesIdx,
+        0,
+        `${' '.repeat(4)}'@nuxtjs/tailwindcss',`,
+      );
+    }
+
+    // Recompute since buildModules was updated
+    modulesIdx = nuxtConfig.findIndex((line) => line.includes('modules:')) + 2;
+
+    // Configure @nuxtjs/bulma module
+    if (modules.includes('bulma')) {
+      const postCssConfig = [
+        `${' '.repeat(4)}postcss: {`,
+        `${' '.repeat(6)}preset: {`,
+        `${' '.repeat(8)}features: {`,
+        `${' '.repeat(10)}customProperties: false`,
+        `${' '.repeat(8)}}`,
+        `${' '.repeat(6)}}`,
+        `${' '.repeat(4)}},`,
+      ];
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/bulma',`);
+
+      // Add 4 so that the content gets inserted at the right position
+      const buildConfigIdx =
+        nuxtConfig.findIndex((line) => line.includes('build:')) + 4;
+      postCssConfig.forEach((config, idx) =>
+        nuxtConfig.splice(buildConfigIdx + idx, 0, config),
+      );
+    }
+
+    // Configure @nuxtjs/storybook buildModule
+    if (buildModules.includes('storybook')) {
+      const storybookConfig = [
+        `${' '.repeat(2)}storybook: {`,
+        `${' '.repeat(4)} // Options`,
+        `${' '.repeat(2)}},`,
+      ];
+      nuxtConfig.splice(
+        buildModulesIdx,
+        0,
+        `${' '.repeat(4)}'@nuxtjs/storybook',`,
+      );
+
+      const modulesEndIdx =
+        nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add @nuxtjs/storybook config beneath the modules array
+      storybookConfig.forEach((config, idx) =>
+        nuxtConfig.splice(modulesEndIdx + idx, 0, config),
+      );
+
+      // Update .gitignore
+      const gitIgnoreContent = fs
+        .readFileSync('./client/.gitignore', 'utf8')
+        .split('\n');
+      gitIgnoreContent.push('.nuxt-storybook', 'storybook-static');
+
+      // Write back the updated file content
+      fs.writeFileSync('./client/.gitignore', gitIgnoreContent.join('\n'));
+
+      // Update .nuxtignore
+      if (fs.existsSync('./client/.nuxtignore')) {
+        const nuxtIgnoreContent = fs
+          .readFileSync('./client/.nuxtignore', 'utf8')
+          .split('\n');
+        nuxtIgnoreContent.push('**/*.stories.js');
+
+        // Write back the updated file content
+        fs.writeFileSync('./client/.nuxtignore', nuxtIgnoreContent.join('\n'));
+      } else {
+        // Create.nuxtignore if it doesn't exist
+        fs.writeFileSync('./client/.nuxtignore', '**/*.stories.js');
+      }
+    }
+
+    // Recompute since buildModules was updated
+    modulesIdx = nuxtConfig.findIndex((line) => line.includes('modules:')) + 2;
+
+    // Configure @nuxtjs/markdownit module
+    if (modules.includes('markdownit')) {
+      const markdownitConfig = [
+        `${' '.repeat(2)}markdownit: {`,
+        `${' '.repeat(4)}preset: 'default',`,
+        `${' '.repeat(4)}linkify: true,`,
+        `${' '.repeat(4)}breaks: true,`,
+        `${' '.repeat(4)}use: [`,
+        `${' '.repeat(6)}'markdown-it-div',`,
+        `${' '.repeat(6)}'markdown-it-attrs',`,
+        `${' '.repeat(4)}],`,
+        `${' '.repeat(2)}},`,
+      ];
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/markdownit',`);
+
+      const modulesEndIdx =
+        nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
+
+      // Add @nuxtjs/toast config beneath the modules array
+      markdownitConfig.forEach((config, idx) =>
         nuxtConfig.splice(modulesEndIdx + idx, 0, config),
       );
     }

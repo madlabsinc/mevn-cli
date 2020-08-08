@@ -45,7 +45,7 @@ const serveProject = async (projectConfig, templateDir) => {
     await exec(
       'npm install',
       'Installing dependencies in the background. Hold on...',
-      'Dependencies are successfully installed',
+      'Dependencies were successfully installed',
       {
         cwd: templateDir,
       },
@@ -56,15 +56,31 @@ const serveProject = async (projectConfig, templateDir) => {
   if (templateDir === 'client' && projectTemplate === 'Nuxt.js') {
     const { modules, isConfigured } = projectConfig;
     if (!isConfigured) {
-      // Add the @nuxtjs prefix
-      const modulesWithPrefix = modules.map(
-        (module) => `${module === 'content' ? '@nuxt' : '@nuxtjs'}/${module}`, // @nuxt/content has different prefix
+      const installCandidate = modules.filter((module) =>
+        ['pwa', 'axios', 'content'].includes(module),
       );
 
+      if (!installCandidate.length && modules.length) {
+        // Additional dependencies were installed with add command
+        await exec(
+          'npm install',
+          'Installing dependencies in the background. Hold on...',
+          'Dependencies were successfully installed',
+          {
+            cwd: templateDir,
+          },
+        );
+      }
+
       // Do not proceed if the user haven't opted for any Nuxt.js modules
-      if (modules.length) {
+      if (installCandidate.length) {
+        // Add the @nuxtjs prefix
+        const modulesWithPrefix = installCandidate.map(
+          (module) => `${module === 'content' ? '@nuxt' : '@nuxtjs'}/${module}`, // @nuxt/content has different prefix
+        );
+
         // @nuxtjs/pwa is to be installed as a devDependency
-        if (modules.includes('pwa')) {
+        if (installCandidate.includes('pwa')) {
           await exec(
             'npm install --save-dev @nuxtjs/pwa',
             'Installing Nuxt.js pwa module',
@@ -74,7 +90,7 @@ const serveProject = async (projectConfig, templateDir) => {
             },
           );
           // User opted for additional Nuxt.js modules as well
-          if (modules.length > 1) {
+          if (installCandidate.length > 1) {
             const deps = modulesWithPrefix
               .filter((module) => module !== '@nuxtjs/pwa')
               .join(' ');
