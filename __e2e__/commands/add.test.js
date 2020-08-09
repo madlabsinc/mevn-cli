@@ -30,7 +30,6 @@ describe('mevn add', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js
-        `${SPACE}${ENTER}`, // Opt for @nuxtjs/axios module
         ENTER, // Choose universal as the rendering mode
         ENTER, // Choose server as the deploy target
         `Y${ENTER}`, // Requires server directory
@@ -43,7 +42,7 @@ describe('mevn add', () => {
       ['add'],
       [
         ENTER,
-        `${DOWN}${SPACE}${DOWN}${DOWN}${DOWN}${SPACE}${DOWN}${DOWN}${DOWN}${DOWN}${SPACE}${ENTER}`,
+        `${DOWN}${SPACE}${DOWN}${DOWN}${DOWN}${DOWN}${SPACE}${DOWN}${DOWN}${DOWN}${DOWN}${SPACE}${ENTER}`,
       ], // Choose @nuxtjs/pwa, nuxt-oauth and @nuxtjs/storybook modules
       genPath,
     );
@@ -53,16 +52,15 @@ describe('mevn add', () => {
     expect(nuxtConfig.buildModules).toContain('@nuxtjs/pwa');
     expect(nuxtConfig.modules).toContain('nuxt-oauth');
     expect(nuxtConfig.buildModules).not.toContain('@nuxtjs/storybook');
-    expect(nuxtConfig.modules).toContain('@nuxtjs/axios');
 
     // .mevnrc
     const projectConfig = JSON.parse(
       fs.readFileSync(path.join(genPath, '.mevnrc')),
     );
-    ['pwa', 'oauth', 'storybook', 'vuex', 'axios'].forEach((module) =>
+    ['pwa', 'oauth', 'storybook', 'vuex'].forEach((module) =>
       expect(projectConfig.modules).toContain(module),
     );
-    expect(projectConfig.isConfigured).toBe(true);
+    expect(projectConfig.isConfigured['client']).toBe(true);
 
     // package.json
     const pkgJson = JSON.parse(
@@ -71,9 +69,6 @@ describe('mevn add', () => {
     expect(pkgJson.dependencies['nuxt-oauth']).toBeTruthy();
     expect(pkgJson.devDependencies['@nuxtjs/pwa']).toBeTruthy();
     expect(pkgJson.devDependencies['@nuxtjs/storybook']).toBeTruthy();
-
-    // @nuxtjs/axios should be installed via mevn serve since it was opted at first
-    expect(pkgJson.devDependencies['@nuxtjs/axios']).not.toBeTruthy();
 
     const gitIgnoreContent = fs
       .readFileSync(path.join(clientPath, '.gitignore'), 'utf8')

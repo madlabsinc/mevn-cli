@@ -65,7 +65,6 @@ describe('mevn codesplit', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js
-        ENTER, // Nuxt.js modules aren't required
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
         `Y${ENTER}`, // Requires server directory

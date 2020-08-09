@@ -1,12 +1,6 @@
 'use strict';
 
-import {
-  run,
-  runPromptWithAnswers,
-  DOWN,
-  ENTER,
-  SPACE,
-} from '../../jest/helpers';
+import { run, runPromptWithAnswers, DOWN, ENTER } from '../../jest/helpers';
 
 import fs from 'fs';
 import path from 'path';
@@ -34,7 +28,6 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js
-        `${DOWN}${SPACE}${DOWN}${SPACE}${ENTER}`, // Opt for @nuxtjs/content and @nuxtjs/pwa modules
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
         `Y${ENTER}`, // Requires server directory
@@ -48,15 +41,6 @@ describe('mevn init', () => {
     // nuxt.config.js
     const nuxtConfig = require(path.join(clientPath, 'nuxt.config.js')).default;
 
-    // Check whether the respective entries have been updated
-    expect(nuxtConfig.buildModules).toContain('@nuxtjs/pwa');
-    expect(nuxtConfig.modules).toContain('@nuxt/content');
-    expect(nuxtConfig.modules).not.toContain('@nuxtjs/axios');
-
-    // Check for Nuxt.js modules config
-    expect(nuxtConfig).not.toHaveProperty('axios');
-    expect(nuxtConfig).toHaveProperty('content');
-
     // Check for rendering mode and deploy target config
     expect(nuxtConfig.mode).toBe('spa');
     expect(nuxtConfig.target).toBe('static');
@@ -66,9 +50,12 @@ describe('mevn init', () => {
       name: 'my-app',
       renderingMode: 'spa',
       template: 'Nuxt.js',
-      modules: ['pwa', 'content'],
+      modules: [],
       deployTarget: 'static',
-      isConfigured: false,
+      isConfigured: {
+        client: false,
+        server: false,
+      },
     };
 
     const projectConfig = JSON.parse(

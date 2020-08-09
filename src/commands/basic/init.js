@@ -100,70 +100,6 @@ const fetchTemplate = async (template) => {
       .toString()
       .split('\n');
 
-    // Choose the Nuxt.js modules to install
-    const { modules } = await inquirer.prompt([
-      {
-        name: 'modules',
-        type: 'checkbox',
-        message: 'Nuxt.js modules',
-        choices: ['Axios', 'Progressive Web App (PWA)', 'Content'],
-      },
-    ]);
-
-    // Add 2 so that the content gets inserted at the right position
-    const buildModulesIdx =
-      configFile.findIndex((line) => line.includes('buildModules:')) + 2;
-
-    const modulesIdx =
-      configFile.findIndex((line) => line.includes('modules:')) + 2;
-
-    projectConfig.modules = [];
-
-    // Configure @nuxtjs/axios module
-    if (modules.includes('Axios')) {
-      const axiosConfig = [
-        `${' '.repeat(2)}axios: {`,
-        `${' '.repeat(4)}// proxyHeaders: false`,
-        `${' '.repeat(2)}},`,
-      ];
-      projectConfig.modules.push('axios');
-      configFile.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/axios',`);
-
-      // Add 1 so that the content gets inserted after the modules array
-      const modulesEndIdx =
-        configFile.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
-
-      // Add @nuxtjs/axios config beneath the modules array
-      axiosConfig.forEach((config, idx) =>
-        configFile.splice(modulesEndIdx + idx, 0, config),
-      );
-    }
-
-    // Configure @nuxtjs/pwa module
-    if (modules.includes('Progressive Web App (PWA)')) {
-      projectConfig.modules.push('pwa');
-      configFile.splice(buildModulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/pwa',`);
-    }
-
-    // Configure @nuxtjs/content module
-    if (modules.includes('Content')) {
-      const contentConfig = [
-        `${' '.repeat(2)}content: {`,
-        `${' '.repeat(4)} //Options`,
-        `${' '.repeat(2)}},`,
-      ];
-      projectConfig.modules.push('content');
-      configFile.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxt/content',`);
-
-      const modulesEndIdx =
-        configFile.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
-
-      // Add @nuxtjs/content config beneath the modules array
-      contentConfig.forEach((config, idx) =>
-        configFile.splice(modulesEndIdx + idx, 0, config),
-      );
-    }
-
     // Choose the rendering mode
     const { mode } = await inquirer.prompt([
       {
@@ -198,6 +134,7 @@ const fetchTemplate = async (template) => {
     }
 
     // To be written to project specific config (.mevnrc)
+    projectConfig.modules = [];
     projectConfig.renderingMode = mode.includes('Universal')
       ? 'universal'
       : 'spa';
@@ -205,15 +142,18 @@ const fetchTemplate = async (template) => {
       ? 'server'
       : 'static';
 
-    // Keep track whether the Nuxt.js modules are configured
-    projectConfig.isConfigured = false;
-
     // Write back the updated config file (nuxt.config.js)
     fs.writeFileSync(
       `./${projectPathRelative}/client/nuxt.config.js`,
       configFile.join('\n'),
     );
   }
+
+  // Keep track whether dependencies are to be installed
+  projectConfig.isConfigured = {
+    client: false,
+    server: false,
+  };
 
   // Update project specific config file
   fs.writeFileSync(

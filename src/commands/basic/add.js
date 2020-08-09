@@ -34,7 +34,7 @@ const addDeps = async (deps, { dev }) => {
     ({ dir: templateDir } = await dirOfChoice());
   }
 
-  const { template } = appData();
+  const { template, isConfigured } = appData();
 
   // Do not proceed if the deps were not supplied
   if (
@@ -70,11 +70,7 @@ const addDeps = async (deps, { dev }) => {
     const projectConfig = appData();
 
     // Nuxt.js modules that are already installed and configured (.mevnrc)
-    const {
-      modules: configuredModules,
-      isConfigured,
-      renderingMode,
-    } = projectConfig;
+    const { modules: configuredModules, renderingMode } = projectConfig;
 
     // Supported Nuxt.js modules
     let nuxtModules = [
@@ -136,7 +132,7 @@ const addDeps = async (deps, { dev }) => {
       availableModules.includes(dep),
     );
 
-    // Add the @nuxtjs prefix
+    // Add the respective prefix
     const modulesWithPrefix = modules.map(
       (module) =>
         `${
@@ -148,7 +144,7 @@ const addDeps = async (deps, { dev }) => {
         }`, // @nuxt/content has different prefix
     );
 
-    // Check if there is atleast a dep to be installed
+    // If the user opted for atleast a Nuxt.js module
     if (modules.length) {
       await exec(
         `npm install --save ${modulesWithPrefix.join(' ')}`,
@@ -165,7 +161,7 @@ const addDeps = async (deps, { dev }) => {
       availableBuildModules.includes(dep),
     );
 
-    // @nuxtjs/pwa and @nuxtjs/vuetify are supposed to be installed as a devDep
+    // If the user opted for atleast a Nuxt.js buildModule
     if (buildModules.length) {
       // Add @nuxtjs prefix
       const buildModulesWithPrefix = buildModules.map(
@@ -488,7 +484,7 @@ const addDeps = async (deps, { dev }) => {
     // Update the modules entry
     projectConfig.modules = configuredModules;
 
-    if (!isConfigured) {
+    if (!isConfigured[templateDir]) {
       // Additional dependencies were installed before invoking serve
       await exec(
         'npm install',
@@ -499,14 +495,9 @@ const addDeps = async (deps, { dev }) => {
         },
       );
 
-      // Skip configuration step involved when invoking serve
-      if (
-        ['pwa', 'axios', 'content'].some((module) =>
-          installedNuxtModules.includes(module),
-        )
-      ) {
-        projectConfig.isConfigured = true;
-      }
+      // Update .mevnrc
+      projectConfig.isConfigured[templateDir] = true;
+      fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
     }
 
     // Eslint
