@@ -66,8 +66,18 @@ const addDeps = async (deps, { dev }) => {
 
   // Nuxt.js modules are installed via multiselect prompt
   if (template === 'Nuxt.js' && !deps.length) {
+    // Holds reference to the project specific config (.mevnrc)
+    const projectConfig = appData();
+
+    // Nuxt.js modules that are already installed and configured (.mevnrc)
+    const {
+      modules: configuredModules,
+      isConfigured,
+      renderingMode,
+    } = projectConfig;
+
     // Supported Nuxt.js modules
-    const nuxtModules = [
+    let nuxtModules = [
       'vuetify',
       'pwa',
       'axios',
@@ -80,6 +90,10 @@ const addDeps = async (deps, { dev }) => {
       'storybook',
       'markdownit',
     ];
+    if (renderingMode === 'spa') {
+      // nuxt-oauth requires server rendered app
+      nuxtModules = nuxtModules.filter((module) => module !== 'oauth');
+    }
 
     // These addons doesn't require installation
     const nuxtAddons = ['vuex'];
@@ -96,9 +110,6 @@ const addDeps = async (deps, { dev }) => {
     const availableModules = nuxtModules.filter(
       (module) => !availableBuildModules.includes(module),
     );
-
-    // Nuxt.js modules that are already installed and configured (.mevnrc)
-    const { modules: configuredModules } = appData();
 
     // Nuxt.js modules that are available for installation
     const nuxtDeps = []
@@ -172,9 +183,6 @@ const addDeps = async (deps, { dev }) => {
       );
     }
 
-    // Holds reference to the project specific config (.mevnrc)
-    const projectConfig = appData();
-
     // Read initial content from nuxt.config.js
     const nuxtConfig = fs
       .readFileSync('./client/nuxt.config.js', 'utf8')
@@ -192,24 +200,30 @@ const addDeps = async (deps, { dev }) => {
     const addons = installCandidate.filter((dep) => nuxtAddons.includes(dep));
 
     // Configure vuex-store for Nuxt.js template
-    if (addons.includes('vuex')) {
+    const configureNuxtVuexStore = () => {
       const vuexNuxtStoreTemplate = [
         'export const state = () => ({',
-        '  counter: 0',
+        '  counter: 0,',
         '})',
         '',
         'export const mutations = {',
         '  increment (state) {',
         '\tstate.counter++',
-        '  }',
+        '  },',
         '}',
       ];
 
       // Navigate to the store directory and create a basic store template file
-      fs.writeFileSync(
-        './client/store/index.js',
-        vuexNuxtStoreTemplate.join('\n'),
-      );
+      if (!fs.existsSync('./client/store/index.js')) {
+        fs.writeFileSync(
+          './client/store/index.js',
+          vuexNuxtStoreTemplate.join('\n'),
+        );
+      }
+    };
+
+    if (addons.includes('vuex')) {
+      configureNuxtVuexStore();
     }
 
     // Configure @nuxtjs/vuetify
@@ -265,19 +279,19 @@ const addDeps = async (deps, { dev }) => {
     // Recompute since buildModules was updated
     modulesIdx = nuxtConfig.findIndex((line) => line.includes('modules:')) + 2;
 
-    // Configure @nuxtjs/content module
+    // Configure @nuxt/content module
     if (modules.includes('content')) {
       const contentConfig = [
         `${' '.repeat(2)}content: {`,
         `${' '.repeat(4)} //Options`,
         `${' '.repeat(2)}},`,
       ];
-      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxtjs/content',`);
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxt/content',`);
 
       const modulesEndIdx =
         nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
 
-      // Add @nuxtjs/content config beneath the modules array
+      // Add @nuxt/content config beneath the modules array
       contentConfig.forEach((config, idx) =>
         nuxtConfig.splice(modulesEndIdx + idx, 0, config),
       );
@@ -310,10 +324,14 @@ const addDeps = async (deps, { dev }) => {
       const oAuthConfig = [
         `${' '.repeat(2)}oauth: {`,
         `${' '.repeat(4)}sessionName: 'mySession',`,
-        `${' '.repeat(4)}secretKey: process.env.SECRET_KEY,`,
-        `${' '.repeat(4)}oauthHost: process.env.OAUTH_HOST,`,
-        `${' '.repeat(4)}oauthClientID: process.env.OAUTH_CLIENT_ID,`,
-        `${' '.repeat(4)}oauthClientSecret: process.env.OAUTH_CLIENT_SECRET,`,
+        `${' '.repeat(4)}secretKey: process.env.SECRET_KEY || 'SECRET_KEY',`,
+        `${' '.repeat(4)}oauthHost: process.env.OAUTH_HOST || 'OAUTH_HOST',`,
+        `${' '.repeat(
+          4,
+        )}oauthClientID: process.env.OAUTH_CLIENT_ID || 'OAUTH_CLIENT_ID',`,
+        `${' '.repeat(
+          4,
+        )}oauthClientSecret: process.env.OAUTH_CLIENT_SECRET || 'OAUTH_CLIENT_SECRET',`,
         `${' '.repeat(4)}onLogout: (req, res) => {`,
         `${' '.repeat(6)}// do something after logging out`,
         `${' '.repeat(4)}},`,
@@ -322,7 +340,7 @@ const addDeps = async (deps, { dev }) => {
         `${' '.repeat(4)}},`,
         `${' '.repeat(2)}},`,
       ];
-      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'@nuxt-oauth',`);
+      nuxtConfig.splice(modulesIdx, 0, `${' '.repeat(4)}'nuxt-oauth',`);
 
       const modulesEndIdx =
         nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
@@ -331,6 +349,9 @@ const addDeps = async (deps, { dev }) => {
       oAuthConfig.forEach((config, idx) =>
         nuxtConfig.splice(modulesEndIdx + idx, 0, config),
       );
+
+      // It requires Vuex Store to be activated
+      configureNuxtVuexStore();
     }
 
     // Configure @nuxtjs/toast module
@@ -393,11 +414,6 @@ const addDeps = async (deps, { dev }) => {
         `${' '.repeat(4)} // Options`,
         `${' '.repeat(2)}},`,
       ];
-      nuxtConfig.splice(
-        buildModulesIdx,
-        0,
-        `${' '.repeat(4)}'@nuxtjs/storybook',`,
-      );
 
       const modulesEndIdx =
         nuxtConfig.indexOf(`${' '.repeat(2)}],`, modulesIdx) + 1;
@@ -459,10 +475,44 @@ const addDeps = async (deps, { dev }) => {
     }
 
     // Update modules entry with the installed Nuxt.js modules
-    configuredModules.push(...[].concat(modules, buildModules, addons));
+    const installedNuxtModules = [].concat(modules, buildModules, addons);
+    if (
+      installedNuxtModules.includes('nuxt-oauth') &&
+      !installedNuxtModules.includes('vuex')
+    ) {
+      // Vuex Store is activated with nuxt-oauth
+      installedNuxtModules.push('vuex');
+    }
+    configuredModules.push(...installedNuxtModules);
 
     // Update the modules entry
     projectConfig.modules = configuredModules;
+
+    if (!isConfigured) {
+      // Additional dependencies were installed before invoking serve
+      await exec(
+        'npm install',
+        'Installing dependencies in the background. Hold on...',
+        'Dependencies were successfully installed',
+        {
+          cwd: templateDir,
+        },
+      );
+
+      // Skip configuration step involved when invoking serve
+      if (
+        ['pwa', 'axios', 'content'].some((module) =>
+          installedNuxtModules.includes(module),
+        )
+      ) {
+        projectConfig.isConfigured = true;
+      }
+    }
+
+    // Eslint
+    await exec('npm run lint -- --fix', 'Cleaning up', 'Fixed lint errors', {
+      cwd: templateDir,
+    });
 
     fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
 

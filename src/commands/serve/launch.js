@@ -60,23 +60,12 @@ const serveProject = async (projectConfig, templateDir) => {
         ['pwa', 'axios', 'content'].includes(module),
       );
 
-      if (!installCandidate.length && modules.length) {
-        // Additional dependencies were installed with add command
-        await exec(
-          'npm install',
-          'Installing dependencies in the background. Hold on...',
-          'Dependencies were successfully installed',
-          {
-            cwd: templateDir,
-          },
-        );
-      }
-
       // Do not proceed if the user haven't opted for any Nuxt.js modules
       if (installCandidate.length) {
         // Add the @nuxtjs prefix
         const modulesWithPrefix = installCandidate.map(
-          (module) => `${module === 'content' ? '@nuxt' : '@nuxtjs'}/${module}`, // @nuxt/content has different prefix
+          (module) =>
+            `${module === 'content' ? `@nuxt/${module}` : '@nuxtjs'}/${module}`, // @nuxt/content has different prefix
         );
 
         // @nuxtjs/pwa is to be installed as a devDependency

@@ -197,6 +197,9 @@ const fetchTemplate = async (template) => {
     }
 
     // To be written to project specific config (.mevnrc)
+    projectConfig.renderingMode = mode.includes('Universal')
+      ? 'universal'
+      : 'spa';
     projectConfig.deployTarget = deployTarget.includes('Node.js')
       ? 'server'
       : 'static';
