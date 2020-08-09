@@ -23,7 +23,7 @@ export const runPromptWithAnswers = (args, answers, testPath) => {
       setTimeout(() => {
         process.stdin.write(answers[0]);
         writeToStdin(answers.slice(1));
-      }, 2000);
+      }, 3000);
     } else {
       process.stdin.end();
     }

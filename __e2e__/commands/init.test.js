@@ -64,6 +64,7 @@ describe('mevn init', () => {
     // .mevnrc
     const projectConfigContent = {
       name: 'my-app',
+      renderingMode: 'spa',
       template: 'Nuxt.js',
       modules: ['pwa', 'content'],
       deployTarget: 'static',

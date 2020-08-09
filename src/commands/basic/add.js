@@ -477,7 +477,7 @@ const addDeps = async (deps, { dev }) => {
     // Update modules entry with the installed Nuxt.js modules
     const installedNuxtModules = [].concat(modules, buildModules, addons);
     if (
-      installedNuxtModules.includes('nuxt-oauth') &&
+      installedNuxtModules.includes('oauth') &&
       !installedNuxtModules.includes('vuex')
     ) {
       // Vuex Store is activated with nuxt-oauth

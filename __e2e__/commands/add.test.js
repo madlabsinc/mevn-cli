@@ -31,8 +31,8 @@ describe('mevn add', () => {
       [
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js
         `${SPACE}${ENTER}`, // Opt for @nuxtjs/axios module
-        `${DOWN}${ENTER}`, // Choose spa as the rendering mode
-        `${DOWN}${ENTER}`, // Choose static as the deploy target
+        ENTER, // Choose universal as the rendering mode
+        ENTER, // Choose server as the deploy target
         `Y${ENTER}`, // Requires server directory
       ],
       tempDirPath,
@@ -41,33 +41,52 @@ describe('mevn add', () => {
     // Invoke the add command
     await runPromptWithAnswers(
       ['add'],
-      [ENTER, `${DOWN}${SPACE}${DOWN}${DOWN}${SPACE}${ENTER}`], // Choose @nuxtjs/pwa module and the vuex addon
+      [
+        ENTER,
+        `${DOWN}${SPACE}${DOWN}${DOWN}${DOWN}${SPACE}${DOWN}${DOWN}${DOWN}${DOWN}${SPACE}${ENTER}`,
+      ], // Choose @nuxtjs/pwa, nuxt-oauth and @nuxtjs/storybook modules
       genPath,
     );
 
     // nuxt.config.js
     const nuxtConfig = require(path.join(clientPath, 'nuxt.config.js')).default;
     expect(nuxtConfig.buildModules).toContain('@nuxtjs/pwa');
+    expect(nuxtConfig.modules).toContain('nuxt-oauth');
+    expect(nuxtConfig.buildModules).not.toContain('@nuxtjs/storybook');
     expect(nuxtConfig.modules).toContain('@nuxtjs/axios');
 
     // .mevnrc
     const projectConfig = JSON.parse(
       fs.readFileSync(path.join(genPath, '.mevnrc')),
     );
-    expect(projectConfig.modules).toContain('pwa');
-    expect(projectConfig.modules).toContain('vuex');
-    expect(projectConfig.modules).toContain('axios');
+    ['pwa', 'oauth', 'storybook', 'vuex', 'axios'].forEach((module) =>
+      expect(projectConfig.modules).toContain(module),
+    );
+    expect(projectConfig.isConfigured).toBe(true);
 
     // package.json
     const pkgJson = JSON.parse(
       fs.readFileSync(path.join(clientPath, 'package.json')),
     );
+    expect(pkgJson.dependencies['nuxt-oauth']).toBeTruthy();
     expect(pkgJson.devDependencies['@nuxtjs/pwa']).toBeTruthy();
+    expect(pkgJson.devDependencies['@nuxtjs/storybook']).toBeTruthy();
 
     // @nuxtjs/axios should be installed via mevn serve since it was opted at first
     expect(pkgJson.devDependencies['@nuxtjs/axios']).not.toBeTruthy();
 
-    // vuex-store
+    const gitIgnoreContent = fs
+      .readFileSync(path.join(clientPath, '.gitignore'), 'utf8')
+      .split('\n');
+    expect(gitIgnoreContent.includes('.nuxt-storybook')).toBeTruthy();
+    expect(gitIgnoreContent.includes('storybook-static')).toBeTruthy();
+
+    const nuxtIgnoreContent = fs
+      .readFileSync(path.join(clientPath, '.nuxtignore'), 'utf8')
+      .split('\n');
+    expect(nuxtIgnoreContent.includes('**/*.stories.js')).toBeTruthy();
+
+    // vuex-store is activated via nuxt-oauth
     expect(
       fs.readFileSync(path.join(clientPath, 'store', 'index.js')),
     ).toBeTruthy();
