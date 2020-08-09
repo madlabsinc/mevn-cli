@@ -91,6 +91,7 @@ const fetchTemplate = async (template) => {
   const renameFromPath = path.join(dest, template);
   const renameToPath = path.join(dest, 'client');
   fs.renameSync(renameFromPath, renameToPath);
+  fs.renameSync(`${renameToPath}/.mevngitignore`, `${renameToPath}/.gitignore`);
 
   // Prompt the user whether he/she requires pwa support
   if (template === 'Nuxt.js') {
