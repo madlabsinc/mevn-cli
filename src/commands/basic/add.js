@@ -54,7 +54,7 @@ const addDeps = async (deps, { dev }) => {
     await exec(
       `npm install ${installFlag} ${deps.join(' ')}`,
       `Installing ${deps.join(', ')}`,
-      'Dependencies are successfully installed',
+      'Dependencies were successfully installed',
       {
         cwd: templateDir,
       },
@@ -152,7 +152,7 @@ const addDeps = async (deps, { dev }) => {
     if (modules.length) {
       await exec(
         `npm install --save ${modulesWithPrefix.join(' ')}`,
-        `Installing ${modulesWithPrefix.join(', ')}`,
+        `Installing Nuxt.js modules`,
         'Succesfully installed opted Nuxt.js modules',
         {
           cwd: templateDir,
@@ -175,7 +175,7 @@ const addDeps = async (deps, { dev }) => {
       // Install buildModules as a devDep
       await exec(
         `npm install --save-dev ${buildModulesWithPrefix.join(' ')}`,
-        `Installing ${buildModulesWithPrefix.join(', ')}`,
+        `Installing Nuxt.js buildModules`,
         'Succesfully installed opted Nuxt.js buildModules',
         {
           cwd: templateDir,

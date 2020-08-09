@@ -23,7 +23,7 @@ const deployToSurge = async () => {
     await exec(
       `npm install`,
       'Installing dependencies',
-      'Dependencies are successfully installed',
+      'Dependencies were successfully installed',
       {
         cwd: 'client',
       },
