@@ -152,14 +152,7 @@ const fetchTemplate = async (template) => {
   // Keep track whether dependencies are to be installed
   projectConfig.isConfigured = {
     client: false,
-    server: false,
   };
-
-  // Update project specific config file
-  fs.writeFileSync(
-    `./${projectPathRelative}/.mevnrc`,
-    JSON.stringify(projectConfig, null, 2),
-  );
 
   // Show up a suitable prompt whether if the user requires a Full stack application (Express.js)
   const { requireServer } = await inquirer.prompt({
@@ -176,6 +169,12 @@ const fetchTemplate = async (template) => {
     const source = path.join(__dirname, '..', '..', ...serverPath);
     const dest = path.resolve(projectPathRelative);
 
+    // Keep track whether dependencies are to be installed
+    projectConfig.isConfigured = {
+      client: false,
+      server: false,
+    };
+
     // Copy server template directory to the destination
     copyDirSync(source, dest);
 
@@ -186,6 +185,12 @@ const fetchTemplate = async (template) => {
 
     fs.writeFileSync(`${renameToPath}/.gitignore`, 'node_modules');
   }
+
+  // Update project specific config file
+  fs.writeFileSync(
+    `./${projectPathRelative}/.mevnrc`,
+    JSON.stringify(projectConfig, null, 2),
+  );
 
   // Show up initial instructions to the user
   showInstructions();
@@ -227,7 +232,7 @@ const initializeProject = async (appName) => {
         chalk.red.bold(`It seems the current directory isn't empty.`),
       );
       console.log();
-      process.exit(0);
+      process.exit(1);
     }
   }
 

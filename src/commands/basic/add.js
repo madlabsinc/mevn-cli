@@ -2,7 +2,6 @@
 
 import chalk from 'chalk';
 import fs from 'fs';
-import path from 'path';
 import showBanner from 'node-banner';
 
 import appData from '../../utils/projectConfig';
@@ -10,11 +9,6 @@ import { checkIfConfigFileExists } from '../../utils/messages';
 import dirOfChoice from '../../utils/directoryPrompt';
 import exec from '../../utils/exec';
 import inquirer from 'inquirer';
-
-const vuexStoreTemplate = fs.readFileSync(
-  path.resolve(__dirname, '..', '..', 'templates/vuex/store.js'),
-  'utf8',
-);
 
 /**
  * Choose additional deps to install on the go
@@ -512,13 +506,31 @@ const addDeps = async (deps, { dev }) => {
   } else {
     // Configure vuex-store
     if (deps.includes('vuex')) {
+      // Content to be inserted
+      const vuexStoreTemplate = [
+        `import Vue from "vue";`,
+        `import Vuex from "vuex";`,
+        '',
+        `Vue.use(Vuex);`,
+        '',
+        `export default new Vuex.Store({`,
+        `${' '.repeat(2)}state: {},`,
+        '',
+        `${' '.repeat(2)}getters: {},`,
+        '',
+        `${' '.repeat(2)}mutations: {},`,
+        '',
+        `${' '.repeat(2)}actions: {}`,
+        `});`,
+        '',
+      ];
       const config = fs
         .readFileSync('./client/src/main.js', 'utf8')
         .toString()
         .split('\n');
 
       // Creates a new store.js file within the client/src directory.
-      fs.writeFileSync('./client/src/store.js', vuexStoreTemplate);
+      fs.writeFileSync('./client/src/store.js', vuexStoreTemplate.join('\n'));
 
       // Fetch the index corresponding to the very first blank line
       const blankLineIndex = config.indexOf(config.find((line) => line === ''));
@@ -550,8 +562,8 @@ const addDeps = async (deps, { dev }) => {
 
       // Import Vuetify and minified css towards the top of the config file
       [
-        `import Vuetify from 'vuetify';`,
-        `import 'vuetify/dist/vuetify.min.css';`,
+        `import Vuetify from "vuetify";`,
+        `import "vuetify/dist/vuetify.min.css";`,
       ].forEach((item, i) => config.splice(i + 1, 0, item));
 
       // Fetch the index after which the respective config should come up
