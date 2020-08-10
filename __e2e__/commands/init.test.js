@@ -73,7 +73,10 @@ describe('mevn init', () => {
   });
 
   it('shows an appropriate warning if creating an application within a non-empty path', () => {
-    const { stdout } = run(['init', '.'], { cwd: genPath });
+    const { stdout } = run(['init', '.'], {
+      cwd: genPath,
+      reject: false,
+    });
     expect(stdout).toContain(`It seems the current directory isn't empty.`);
   });
 });
