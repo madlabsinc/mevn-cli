@@ -1,6 +1,7 @@
 import {
   runPromptWithAnswers,
   rmTempDir,
+  fetchProjectConfig,
   DOWN,
   ENTER,
 } from '../../jest/helpers';
@@ -36,6 +37,8 @@ describe('mevn generate', () => {
       tempDirPath,
     );
 
+    expect(fetchProjectConfig(genPath).isConfigured.client).toBe(false);
+
     // Invoke generate command
     await runPromptWithAnswers(
       ['generate'],
@@ -46,6 +49,9 @@ describe('mevn generate', () => {
       ],
       genPath,
     );
+
+    // Invoking the generate command updates the key
+    expect(fetchProjectConfig(genPath).isConfigured.client).toBe(true);
 
     // Check whether Navbar.vue is created within the respective path
     expect(
@@ -90,6 +96,9 @@ describe('mevn generate', () => {
       genPath,
     );
 
+    // .mevnrc
+    expect(fetchProjectConfig(genPath).isConfigured.server).toBe(true);
+
     // Assert for generated files
     const generatedFiles = [
       'controllers/user_controller.js',
@@ -104,5 +113,8 @@ describe('mevn generate', () => {
     // MongoDB URI path within .env
     const envDotFile = fs.readFileSync(path.join(serverPath, '.env'), 'utf8');
     expect(envDotFile).toBe('DB_URL=mongodb://localhost:27017');
+
+    // Delete generated directory
+    rmTempDir(tempDirPath);
   });
 });

@@ -3,6 +3,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import showBanner from 'node-banner';
+import path from 'path';
 
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
@@ -174,8 +175,9 @@ const addDeps = async (deps, { dev }) => {
     }
 
     // Read initial content from nuxt.config.js
+    const nuxtConfigPath = path.join('client', 'nuxt.config.js');
     const nuxtConfig = fs
-      .readFileSync('./client/nuxt.config.js', 'utf8')
+      .readFileSync(nuxtConfigPath, 'utf8')
       .toString()
       .split('\n');
 
@@ -204,11 +206,9 @@ const addDeps = async (deps, { dev }) => {
       ];
 
       // Navigate to the store directory and create a basic store template file
-      if (!fs.existsSync('./client/store/index.js')) {
-        fs.writeFileSync(
-          './client/store/index.js',
-          vuexNuxtStoreTemplate.join('\n'),
-        );
+      const storeFilePath = path.join('client', 'store', 'index.js');
+      if (!fs.existsSync(storeFilePath)) {
+        fs.writeFileSync(storeFilePath, vuexNuxtStoreTemplate.join('\n'));
       }
     };
 
@@ -414,26 +414,28 @@ const addDeps = async (deps, { dev }) => {
       );
 
       // Update .gitignore
+      const gitIgnorePath = path.join('client', '.gitignore');
       const gitIgnoreContent = fs
-        .readFileSync('./client/.gitignore', 'utf8')
+        .readFileSync(gitIgnorePath, 'utf8')
         .split('\n');
       gitIgnoreContent.push('.nuxt-storybook', 'storybook-static');
 
       // Write back the updated file content
-      fs.writeFileSync('./client/.gitignore', gitIgnoreContent.join('\n'));
+      fs.writeFileSync(gitIgnorePath, gitIgnoreContent.join('\n'));
 
       // Update .nuxtignore
-      if (fs.existsSync('./client/.nuxtignore')) {
+      const nuxtIgnorePath = path.join('client', '.nuxtignore');
+      if (fs.existsSync(nuxtIgnorePath)) {
         const nuxtIgnoreContent = fs
-          .readFileSync('./client/.nuxtignore', 'utf8')
+          .readFileSync(nuxtIgnorePath, 'utf8')
           .split('\n');
         nuxtIgnoreContent.push('**/*.stories.js');
 
         // Write back the updated file content
-        fs.writeFileSync('./client/.nuxtignore', nuxtIgnoreContent.join('\n'));
+        fs.writeFileSync(nuxtIgnorePath, nuxtIgnoreContent.join('\n'));
       } else {
         // Create.nuxtignore if it doesn't exist
-        fs.writeFileSync('./client/.nuxtignore', '**/*.stories.js');
+        fs.writeFileSync(nuxtIgnorePath, '**/*.stories.js');
       }
     }
 
@@ -502,8 +504,14 @@ const addDeps = async (deps, { dev }) => {
     fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
 
     // Write back the updated content
-    fs.writeFileSync('./client/nuxt.config.js', nuxtConfig.join('\n'));
+    fs.writeFileSync(nuxtConfigPath, nuxtConfig.join('\n'));
   } else {
+    const configFilePath = path.join('client', 'src', 'main.js');
+    const config = fs
+      .readFileSync(configFilePath, 'utf8')
+      .toString()
+      .split('\n');
+
     // Configure vuex-store
     if (deps.includes('vuex')) {
       // Content to be inserted
@@ -524,13 +532,9 @@ const addDeps = async (deps, { dev }) => {
         `});`,
         '',
       ];
-      const config = fs
-        .readFileSync('./client/src/main.js', 'utf8')
-        .toString()
-        .split('\n');
-
       // Creates a new store.js file within the client/src directory.
-      fs.writeFileSync('./client/src/store.js', vuexStoreTemplate.join('\n'));
+      const storeFilePath = path.join('client', 'src', 'store.js');
+      fs.writeFileSync(storeFilePath, vuexStoreTemplate.join('\n'));
 
       // Fetch the index corresponding to the very first blank line
       const blankLineIndex = config.indexOf(config.find((line) => line === ''));
@@ -550,16 +554,11 @@ const addDeps = async (deps, { dev }) => {
       if (deps.includes('vuetify')) config.splice(blankLineIndex + 1, 1);
 
       // Write back the updated config
-      fs.writeFileSync('./client/src/main.js', config.join('\n'));
+      fs.writeFileSync(configFilePath, config.join('\n'));
     }
 
     // Configure vuetify
     if (deps.includes('vuetify')) {
-      let config = fs
-        .readFileSync('./client/src/main.js', 'utf8')
-        .toString()
-        .split('\n');
-
       // Import Vuetify and minified css towards the top of the config file
       [
         `import Vuetify from "vuetify";`,
@@ -577,7 +576,7 @@ const addDeps = async (deps, { dev }) => {
       );
 
       // Write back the updated config
-      fs.writeFileSync('./client/src/main.js', config.join('\n'));
+      fs.writeFileSync(configFilePath, config.join('\n'));
     }
   }
 };

@@ -1,6 +1,13 @@
 'use strict';
 
-import { run, runPromptWithAnswers, DOWN, ENTER } from '../../jest/helpers';
+import {
+  run,
+  rmTempDir,
+  runPromptWithAnswers,
+  fetchProjectConfig,
+  DOWN,
+  ENTER,
+} from '../../jest/helpers';
 
 import fs from 'fs';
 import path from 'path';
@@ -11,10 +18,11 @@ fs.mkdirSync(tempDirPath);
 
 const genPath = path.join(tempDirPath, 'my-app');
 
+const clientPath = path.join(genPath, 'client');
+const serverPath = path.join(genPath, 'server');
+
 describe('mevn init', () => {
-  afterAll(() => {
-    fs.rmdirSync(tempDirPath, { recursive: true });
-  });
+  afterAll(() => rmTempDir(tempDirPath));
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {
     const { stdout } = run(['init', 'my-app', 'stray-arg']);
@@ -23,20 +31,17 @@ describe('mevn init', () => {
     );
   });
 
-  it('creates a new MEVN stack webapp with the Nuxt.js starter template', async () => {
+  it('creates a new MEVN stack webapp based on the Nuxt.js starter template', async () => {
     await runPromptWithAnswers(
       ['init', 'my-app'],
       [
-        `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js
+        `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js as the starter template
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
         `Y${ENTER}`, // Requires server directory
       ],
       tempDirPath,
     );
-
-    const clientPath = path.join(genPath, 'client');
-    const serverPath = path.join(genPath, 'server');
 
     // nuxt.config.js
     const nuxtConfig = require(path.join(clientPath, 'nuxt.config.js')).default;
@@ -57,11 +62,7 @@ describe('mevn init', () => {
         server: false,
       },
     };
-
-    const projectConfig = JSON.parse(
-      fs.readFileSync(path.join(genPath, '.mevnrc')),
-    );
-    expect(projectConfig).toStrictEqual(projectConfigContent);
+    expect(fetchProjectConfig(genPath)).toStrictEqual(projectConfigContent);
 
     // Check for the existence of server directory
     expect(fs.existsSync(serverPath)).toBeTruthy();
@@ -78,5 +79,62 @@ describe('mevn init', () => {
       reject: false,
     });
     expect(stdout).toContain(`It seems the current directory isn't empty.`);
+
+    // Delete the generated directory
+    rmTempDir(genPath);
+  });
+
+  it('creates a new MEVN stack webapp based on the Default starter template', async () => {
+    await runPromptWithAnswers(
+      ['init', 'my-app'],
+      [
+        ENTER, // Choose Default as the starter template
+        `Y${ENTER}`, // Requires server directory
+      ],
+      tempDirPath,
+    );
+
+    expect(fetchProjectConfig(genPath).template).toBe('Default');
+
+    // Rename .mevngitignore to .gitignore
+    expect(fs.existsSync(path.join(clientPath, '.mevngitignore'))).toBeFalsy();
+    expect(fs.existsSync(path.join(clientPath, '.gitignore'))).toBeTruthy();
+
+    // Check whether if the respective directories have been generated
+    expect(fs.existsSync(path.join(serverPath, 'routes'))).toBeTruthy();
+    expect(fs.existsSync(path.join(serverPath, 'views'))).toBeTruthy();
+
+    // Delete the generated directory
+    rmTempDir(genPath);
+  });
+
+  it('creates a new MEVN stack webapp based on the PWA starter template', async () => {
+    await runPromptWithAnswers(
+      ['init', 'my-app'],
+      [
+        `${DOWN}${ENTER}`, // Choose PWA as the starter template
+        `Y${ENTER}`, // Requires server directory
+      ],
+      tempDirPath,
+    );
+
+    expect(fetchProjectConfig(genPath).template).toBe('PWA');
+
+    // Delete the generated directory
+    rmTempDir(genPath);
+  });
+
+  it('creates a new MEVN stack webapp based on the GraphQL starter template', async () => {
+    await runPromptWithAnswers(
+      ['init', 'my-app'],
+      [
+        `${DOWN}${DOWN}${ENTER}`, // Choose GraphQL as the starter template
+        `Y${ENTER}`, // Requires server directory
+      ],
+      tempDirPath,
+    );
+
+    expect(fetchProjectConfig(genPath).template).toBe('GraphQL');
+    expect(fs.existsSync(path.join(serverPath, 'graphql'))).toBeTruthy();
   });
 });

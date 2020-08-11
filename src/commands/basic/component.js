@@ -43,7 +43,8 @@ const generateComponent = async () => {
   ]);
 
   // Fetch information specific to the project
-  const { template } = appData();
+  const projectConfig = appData();
+  const { template, isConfigured } = projectConfig;
 
   const { componentType } = await inquirer.prompt([
     {
@@ -105,7 +106,7 @@ const generateComponent = async () => {
   console.log();
 
   // Execute linter
-  if (!fs.existsSync('./client/node_modules')) {
+  if (!isConfigured.client) {
     await exec(
       'npm install',
       progressMsg,
@@ -113,6 +114,10 @@ const generateComponent = async () => {
       { cwd: 'client' },
     );
     progressMsg = 'Cleaning up';
+
+    // Update project specific dotfile
+    projectConfig.isConfigured.client = true;
+    fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig));
   }
 
   /**

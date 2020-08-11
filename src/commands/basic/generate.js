@@ -5,7 +5,6 @@ import inquirer from 'inquirer';
 import path from 'path';
 import showBanner from 'node-banner';
 
-// import appData from '../../utils/projectConfig';
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import copyDirSync from '../../utils/fs';
@@ -38,7 +37,10 @@ const generateFile = async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  if (!fs.existsSync('./server') || fs.existsSync('./server/models')) {
+  if (
+    !fs.existsSync('./server') ||
+    fs.existsSync(path.join('server', 'models'))
+  ) {
     return generateComponent();
   }
 
@@ -52,7 +54,8 @@ const generateFile = async () => {
   ]);
 
   // Fetch boilerplate template used from .mevnrc
-  const { template } = appData();
+  const projectConfig = appData();
+  const { template, isConfigured } = projectConfig;
 
   if (type.includes('Component')) {
     return generateComponent();
@@ -65,23 +68,11 @@ const generateFile = async () => {
       createDir('models');
     } else {
       // Set up routes for CRUD functionality
-      const routesFilePath = `server/routes/api.js`;
+      const routesFilePath = path.join('server', 'routes', 'api.js');
       fs.writeFileSync(
         routesFilePath,
         fs.readFileSync(path.join(templatePath, 'routes', 'index.js')),
       );
-
-      // Create .env file
-      const { uri } = await inquirer.prompt([
-        {
-          type: 'input',
-          name: 'uri',
-          message: 'Please provide the MongoDB URI path',
-          default: 'mongodb://localhost:27017',
-          validate: validateInput,
-        },
-      ]);
-      fs.writeFileSync('./server/.env', `DB_URL=${uri}`);
 
       // Create controllers directory
       createDir('controllers');
@@ -89,15 +80,34 @@ const generateFile = async () => {
       // Create models directory
       createDir('models');
     }
-    // Installing dependencies
-    await exec(
-      'npm install',
-      'Installing dependencies',
-      'Dependencies were successfully installed',
+
+    // Create .env file
+    const { uri } = await inquirer.prompt([
       {
-        cwd: 'server',
+        type: 'input',
+        name: 'uri',
+        message: 'Please provide the MongoDB URI path',
+        default: 'mongodb://localhost:27017',
+        validate: validateInput,
       },
-    );
+    ]);
+    fs.writeFileSync(path.join('server', '.env'), `DB_URL=${uri}`);
+
+    if (!isConfigured.server) {
+      // Installing dependencies
+      await exec(
+        'npm install',
+        'Installing dependencies',
+        'Dependencies were successfully installed',
+        {
+          cwd: 'server',
+        },
+      );
+      // .mevnrc
+      projectConfig.isConfigured.server = true;
+      fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
+    }
+
     // Install mongoose ORM
     await exec(
       'npm install --save mongoose',
@@ -111,24 +121,25 @@ const generateFile = async () => {
 
   copyDirSync(path.join(templatePath, 'helpers'), 'server');
 
-  const serverFile = fs
-    .readFileSync('./server/server.js', 'utf8')
+  const serverFilePath = path.join('server', 'server.js');
+  const serverFileContent = fs
+    .readFileSync(path.join('server', 'server.js'), 'utf8')
     .toString()
     .split('\n');
 
-  const postImportIndex = serverFile.findIndex((item) => item === '');
+  const postImportIndex = serverFileContent.findIndex((item) => item === '');
   // second occurrence
-  const requiredIndex = serverFile.indexOf('', postImportIndex + 1);
+  const requiredIndex = serverFileContent.indexOf('', postImportIndex + 1);
 
   // Include a new line to compensate the previous addition
-  serverFile.splice(
+  serverFileContent.splice(
     requiredIndex + 1,
     0,
     'require("./helpers/db/mongodb.js")();',
     '',
   );
 
-  fs.writeFileSync('./server/server.js', serverFile.join('\n'));
+  fs.writeFileSync(serverFilePath, serverFileContent.join('\n'));
 };
 
 module.exports = generateFile;

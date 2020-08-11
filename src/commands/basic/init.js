@@ -87,16 +87,26 @@ const fetchTemplate = async (template) => {
   // Copy the starter template to user's current working directory
   copyDirSync(path.join(templatePath, template), dest);
 
-  // rename the resultant directory to client
+  // Rename the resultant directory to client
   const renameFromPath = path.join(dest, template);
   const renameToPath = path.join(dest, 'client');
   fs.renameSync(renameFromPath, renameToPath);
-  fs.renameSync(`${renameToPath}/.mevngitignore`, `${renameToPath}/.gitignore`);
+
+  // Rename to .gitignore
+  fs.renameSync(
+    path.join(renameToPath, '.mevngitignore'),
+    path.join(renameToPath, '.gitignore'),
+  );
 
   // Prompt the user whether he/she requires pwa support
   if (template === 'Nuxt.js') {
+    const configFilePath = path.join(
+      projectPathRelative,
+      'client',
+      'nuxt.config.js',
+    );
     const configFile = fs
-      .readFileSync(`./${projectPathRelative}/client/nuxt.config.js`, 'utf8')
+      .readFileSync(configFilePath, 'utf8')
       .toString()
       .split('\n');
 
@@ -143,10 +153,7 @@ const fetchTemplate = async (template) => {
       : 'static';
 
     // Write back the updated config file (nuxt.config.js)
-    fs.writeFileSync(
-      `./${projectPathRelative}/client/nuxt.config.js`,
-      configFile.join('\n'),
-    );
+    fs.writeFileSync(configFilePath, configFile.join('\n'));
   }
 
   // Keep track whether dependencies are to be installed
@@ -164,7 +171,7 @@ const fetchTemplate = async (template) => {
   // Copy server side template files to the destination as required
   if (requireServer) {
     // Configure path
-    const serverDir = template === 'GraphQL' ? 'GraphQL' : 'basic';
+    const serverDir = template === 'GraphQL' ? 'GraphQL' : 'Default';
     const serverPath = ['templates', 'server', serverDir];
     const source = path.join(__dirname, '..', '..', ...serverPath);
     const dest = path.resolve(projectPathRelative);
@@ -183,12 +190,12 @@ const fetchTemplate = async (template) => {
     const renameToPath = path.join(dest, 'server');
     fs.renameSync(renameFromPath, renameToPath);
 
-    fs.writeFileSync(`${renameToPath}/.gitignore`, 'node_modules');
+    fs.writeFileSync(path.join(renameToPath, '.gitignore'), 'node_modules');
   }
 
   // Update project specific config file
   fs.writeFileSync(
-    `./${projectPathRelative}/.mevnrc`,
+    path.join(projectPathRelative, '.mevnrc'),
     JSON.stringify(projectConfig, null, 2),
   );
 
@@ -240,7 +247,7 @@ const initializeProject = async (appName) => {
     directoryExistsInPath(appName);
   }
 
-  if (fs.existsSync('./.mevnrc')) {
+  if (fs.existsSync('.mevnrc')) {
     console.log();
     console.log(
       chalk.cyan.bold(
@@ -257,7 +264,7 @@ const initializeProject = async (appName) => {
       name: 'template',
       type: 'list',
       message: 'Please select your template of choice',
-      choices: ['basic', 'pwa', 'GraphQL', 'Nuxt.js'],
+      choices: ['Default', 'PWA (Progressive Web App)', 'GraphQL', 'Nuxt.js'],
     },
   ]);
 
@@ -267,9 +274,9 @@ const initializeProject = async (appName) => {
   }
 
   projectConfig['name'] = appName;
-  projectConfig['template'] = template;
+  projectConfig['template'] = template.includes('PWA') ? 'PWA' : template;
 
-  fetchTemplate(template);
+  fetchTemplate(projectConfig.template);
 };
 
 module.exports = initializeProject;
