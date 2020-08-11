@@ -2,6 +2,7 @@
 
 import execa from 'execa';
 import fs from 'fs';
+import path from 'path';
 
 import appData from '../../utils/projectConfig';
 import exec from '../../utils/exec';
@@ -16,10 +17,11 @@ const deployToSurge = async () => {
   await validateInstallation('surge --help');
   console.log();
 
-  const { template } = appData();
+  const projectConfig = appData();
+  const { template, isConfigured } = projectConfig;
   const cmd = template === 'Nuxt.js' ? 'generate' : 'build';
 
-  if (!fs.existsSync('./client/node_modules')) {
+  if (!isConfigured.client) {
     await exec(
       `npm install`,
       'Installing dependencies',
@@ -28,6 +30,10 @@ const deployToSurge = async () => {
         cwd: 'client',
       },
     );
+
+    // Update .mevnrc
+    projectConfig.isConfigured.client = true;
+    fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
   }
 
   // Create a production build with npm run build
@@ -36,7 +42,7 @@ const deployToSurge = async () => {
   });
 
   // Fire up the surge CLI
-  await execa('surge', { cwd: 'client/dist', stdio: 'inherit' });
+  await execa('surge', { cwd: path.join('client', 'dist'), stdio: 'inherit' });
 };
 
 module.exports = deployToSurge;

@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
+import path from 'path';
 
 import appData from '../../utils/projectConfig';
 import { validateInput } from '../../utils/validate';
@@ -92,12 +93,12 @@ const deployToHeroku = async (templateDir) => {
   const projectConfig = appData();
   const { template } = projectConfig;
 
-  if (!fs.existsSync(`./${templateDir}/.git`)) {
+  if (!fs.existsSync(path.join(templateDir, '.git'))) {
     await execa.shell('git init', { cwd: templateDir });
-    const fileContent = fs.existsSync('./server/.env')
+    const fileContent = fs.existsSync(path.join('server', '.env'))
       ? 'node_modules\n.env'
       : 'node_modules';
-    fs.writeFileSync(`./${templateDir}/.gitignore`, fileContent);
+    fs.writeFileSync(path.join(templateDir, '.gitignore'), fileContent);
   } else {
     const { stdout } = await execa.shell('git status', { cwd: templateDir });
     if (stdout.includes('nothing to commit')) {
@@ -117,7 +118,10 @@ const deployToHeroku = async (templateDir) => {
   }
 
   // It depends on a DBAAS
-  if (templateDir === 'server' && fs.existsSync('./server/models')) {
+  if (
+    templateDir === 'server' &&
+    fs.existsSync(path.join('server', 'models'))
+  ) {
     await setConfigVar('DB_URL', templateDir);
   }
 
@@ -130,8 +134,9 @@ const deployToHeroku = async (templateDir) => {
       await setConfigVar('NODE_ENV', templateDir, 'production');
 
       // Create Procfile
-      if (!fs.existsSync('./client/Procfile')) {
-        fs.writeFileSync('./client/Procfile', 'web: nuxt start');
+      const procFilePath = path.join('client', 'Procfile');
+      if (!fs.existsSync(procFilePath)) {
+        fs.writeFileSync(procFilePath, 'web: nuxt start');
       }
     } else {
       const staticConfig = {
@@ -142,9 +147,10 @@ const deployToHeroku = async (templateDir) => {
         },
       };
 
-      if (!fs.existsSync('./client/static.json')) {
+      const staticConfigPath = path.join('client', 'static.json');
+      if (!fs.existsSync(staticConfigPath)) {
         fs.writeFileSync(
-          './client/static.json',
+          staticConfigPath,
           JSON.stringify(staticConfig, null, 2),
         );
       }
@@ -159,7 +165,9 @@ const deployToHeroku = async (templateDir) => {
         'app.listen(port);',
       ];
 
-      let pkgJson = JSON.parse(fs.readFileSync('./client/package.json'));
+      let pkgJson = JSON.parse(
+        fs.readFileSync(path.join('client', 'package.json')),
+      );
       const buildCmd = 'npm run build';
       const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then ${buildCmd} ; fi `; // eslint-disable-line
       pkgJson = {
@@ -171,8 +179,9 @@ const deployToHeroku = async (templateDir) => {
         },
       };
 
-      if (!fs.existsSync('./client/server.js')) {
-        fs.writeFileSync('./client/server.js', starterSource.join('\n'));
+      const serverFilePath = path.join('client', 'server.js');
+      if (!fs.existsSync(serverFilePath)) {
+        fs.writeFileSync(serverFilePath, starterSource.join('\n'));
         pkgJson.scripts['preinstall'] =
           'npm install --save express serve-static';
         fs.writeFileSync(
