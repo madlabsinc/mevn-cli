@@ -118,7 +118,7 @@ const generateComponent = async () => {
 
     // Update project specific dotfile
     projectConfig.isConfigured.client = true;
-    fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig));
+    fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
   }
 
   /**
