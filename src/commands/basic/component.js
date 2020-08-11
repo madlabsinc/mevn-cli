@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
+import path from 'path';
 
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
@@ -92,14 +93,14 @@ const generateComponent = async () => {
   }
 
   // Duplicate component
-  if (fs.existsSync(`./${componentPath}/${componentName}.vue`)) {
+  if (fs.existsSync(path.join(componentPath, `${componentName}.vue`))) {
     console.log();
     console.log(chalk.cyan.bold(` Info: ${componentName}.vue already exists`));
     return;
   }
 
   fs.writeFileSync(
-    `./${componentPath}/${componentName}.vue`,
+    path.join(componentPath, `${componentName}.vue`),
     componentTemplate.join('\n'),
   );
 
@@ -135,8 +136,9 @@ const generateComponent = async () => {
     );
   }
 
+  const routesConfigPath = path.join('client', 'src', 'router.js');
   const routesConfig = fs
-    .readFileSync('./client/src/router.js', 'utf8')
+    .readFileSync(routesConfigPath, 'utf8')
     .toString()
     .split('\n');
 
@@ -175,7 +177,7 @@ const generateComponent = async () => {
   );
 
   // Write back the updated config
-  fs.writeFileSync('./client/src/router.js', routesConfig.join('\n'));
+  fs.writeFileSync(routesConfigPath, routesConfig.join('\n'));
 
   // Execute linter
   await exec(

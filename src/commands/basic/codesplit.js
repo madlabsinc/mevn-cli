@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
+import path from 'path';
 
 import exec from '../../utils/exec';
 
@@ -25,8 +26,9 @@ const asyncRender = async () => {
   // Exit for the case of Nuxt.js boilerplate template
   checkIfTemplateIsNuxt();
 
+  const routesConfigPath = path.join('client', 'src', 'router.js');
   const routesConfig = fs
-    .readFileSync('./client/src/router.js', 'utf8')
+    .readFileSync(routesConfigPath, 'utf8')
     .toString()
     .split('\n');
 
@@ -85,7 +87,7 @@ const asyncRender = async () => {
   routesConfig.splice(regularImportIndex, 1);
 
   // Write back the updated route-config
-  fs.writeFileSync('./client/src/router.js', routesConfig.join('\n'));
+  fs.writeFileSync(routesConfigPath, routesConfig.join('\n'));
   console.log();
 
   // Execute linter

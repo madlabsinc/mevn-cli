@@ -37,9 +37,9 @@ const getFileContent = (configFile) => {
  * @returns {void}
  */
 const makeDataDir = () => {
-  fs.mkdirSync('./tmp/data', { recursive: true });
+  fs.mkdirSync(path.join('tmp', 'data'), { recursive: true });
 
-  let gitIgnoreContents = fs.readFileSync('./.gitignore');
+  let gitIgnoreContents = fs.readFileSync('.gitignore');
   const mongoGitIgnoreHeader = '# MEVN_GENERATED:MONGO';
 
   if (!new RegExp(mongoGitIgnoreHeader, 'g').test(gitIgnoreContents)) {
@@ -48,7 +48,7 @@ const makeDataDir = () => {
     );
   }
   // Write back the updated contents to .gitignore
-  fs.writeFileSync('./.gitignore', gitIgnoreContents);
+  fs.writeFileSync('.gitignore', gitIgnoreContents);
 };
 
 /**
@@ -67,27 +67,32 @@ const dockerize = async () => {
   const dockerFileTemplate = getFileContent('Dockerfile');
 
   // Create Dockerfile for client directory
-  if (!fs.existsSync('./client/Dockerfile')) {
-    fs.writeFileSync('./client/Dockerfile', dockerFileTemplate.join('\n'));
+  const clientDockerFilePath = path.join('client', 'Dockerfile');
+  if (!fs.existsSync(clientDockerFilePath)) {
+    fs.writeFileSync(clientDockerFilePath, dockerFileTemplate.join('\n'));
   }
 
   if (fs.existsSync('./server')) {
     // Create Dockerfile for the server directory
     dockerFileTemplate.splice(8, 0, 'RUN npm install -g nodemon');
     dockerFileTemplate.splice(9, 0, '');
-    if (!fs.existsSync('./server/Dockerfile')) {
-      fs.writeFileSync('./server/Dockerfile', dockerFileTemplate.join('\n'));
+
+    // Create Dockerfile for server directory
+    const serverDockerFilePath = path.join('server', 'Dockerfile');
+    if (!fs.existsSync(serverDockerFilePath)) {
+      fs.writeFileSync(serverDockerFilePath, dockerFileTemplate.join('\n'));
     }
 
-    // Create .dockerignore
-    if (!fs.existsSync('./server/.dockerignore')) {
-      fs.writeFileSync('./server/.dockerignore', 'node_modules');
+    // Create .dockerignore within server directory
+    const serverDockerIgnorePath = path.join('server', '.dockerignore');
+    if (!fs.existsSync(serverDockerIgnorePath)) {
+      fs.writeFileSync(serverDockerIgnorePath, 'node_modules');
     }
 
     // Configure env variables for CRUD boilerplate template
     // to be consumed within the Docker container
-    if (fs.existsSync('./server/models')) {
-      if (!fs.existsSync('./tmp/data')) {
+    if (fs.existsSync(path.join('server', 'models'))) {
+      if (!fs.existsSync(path.join('tmp', 'data'))) {
         makeDataDir();
         dockerComposeTemplate.splice(14, 0, `${' '.repeat(4)}environment:`);
         dockerComposeTemplate.splice(
@@ -105,9 +110,10 @@ const dockerize = async () => {
     }
   }
 
-  // Create .dockerignore
-  if (!fs.existsSync('./client/.dockerignore')) {
-    fs.writeFileSync('./client/.dockerignore', 'node_modules\ndist');
+  // Create .dockerignore within client directory
+  const clientDockerIgnorePath = path.join('client', '.dockerignore');
+  if (!fs.existsSync(clientDockerIgnorePath)) {
+    fs.writeFileSync(clientDockerIgnorePath, 'node_modules\ndist');
   }
 
   // docker-compose.yml should only include the necessary instructions
