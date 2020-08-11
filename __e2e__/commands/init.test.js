@@ -84,46 +84,6 @@ describe('mevn init', () => {
     rmTempDir(genPath);
   });
 
-  it('creates a new MEVN stack webapp based on the Default starter template', async () => {
-    await runPromptWithAnswers(
-      ['init', 'my-app'],
-      [
-        ENTER, // Choose Default as the starter template
-        `Y${ENTER}`, // Requires server directory
-      ],
-      tempDirPath,
-    );
-
-    expect(fetchProjectConfig(genPath).template).toBe('Default');
-
-    // Rename .mevngitignore to .gitignore
-    expect(fs.existsSync(path.join(clientPath, '.mevngitignore'))).toBeFalsy();
-    expect(fs.existsSync(path.join(clientPath, '.gitignore'))).toBeTruthy();
-
-    // Check whether if the respective directories have been generated
-    expect(fs.existsSync(path.join(serverPath, 'routes'))).toBeTruthy();
-    expect(fs.existsSync(path.join(serverPath, 'views'))).toBeTruthy();
-
-    // Delete the generated directory
-    rmTempDir(genPath);
-  });
-
-  it('creates a new MEVN stack webapp based on the PWA starter template', async () => {
-    await runPromptWithAnswers(
-      ['init', 'my-app'],
-      [
-        `${DOWN}${ENTER}`, // Choose PWA as the starter template
-        `Y${ENTER}`, // Requires server directory
-      ],
-      tempDirPath,
-    );
-
-    expect(fetchProjectConfig(genPath).template).toBe('PWA');
-
-    // Delete the generated directory
-    rmTempDir(genPath);
-  });
-
   it('creates a new MEVN stack webapp based on the GraphQL starter template', async () => {
     await runPromptWithAnswers(
       ['init', 'my-app'],
@@ -135,6 +95,12 @@ describe('mevn init', () => {
     );
 
     expect(fetchProjectConfig(genPath).template).toBe('GraphQL');
+
+    // Rename .mevngitignore to .gitignore
+    expect(fs.existsSync(path.join(clientPath, '.mevngitignore'))).toBeFalsy();
+    expect(fs.existsSync(path.join(clientPath, '.gitignore'))).toBeTruthy();
+
+    // Check whether if the respective directory have been generated
     expect(fs.existsSync(path.join(serverPath, 'graphql'))).toBeTruthy();
   });
 });
