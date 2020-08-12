@@ -2,7 +2,7 @@ version: '3'
 services:
   vue-client:
     build: ./client
-    command: npm run serve
+    command: bash -c "npm install && npm run serve"
     volumes:
       - /app/node_modules
       - ./client:/app
@@ -11,7 +11,7 @@ services:
 
   node-server:
     build: ./server
-    command: nodemon --watch views -e js,html server.js
+    command: bash -c "npm install && npm run serve"
     volumes:
       - /app/node_modules
       - ./server:/app

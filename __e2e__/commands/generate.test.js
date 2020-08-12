@@ -112,7 +112,7 @@ describe('mevn generate', () => {
 
     // MongoDB URI path within .env
     const envDotFile = fs.readFileSync(path.join(serverPath, '.env'), 'utf8');
-    expect(envDotFile).toBe('DB_URL=mongodb://localhost:27017');
+    expect(envDotFile).toBe('DB_URL=mongodb://localhost:27017/userdb');
 
     // Delete generated directory
     rmTempDir(tempDirPath);

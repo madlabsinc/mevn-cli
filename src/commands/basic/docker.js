@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import showBanner from 'node-banner';
 
+import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { validateInstallation } from '../../utils/validate';
 
@@ -39,15 +40,8 @@ const getFileContent = (configFile) => {
 const makeDataDir = () => {
   fs.mkdirSync(path.join('tmp', 'data'), { recursive: true });
 
-  let gitIgnoreContents = fs.readFileSync('.gitignore');
-  const mongoGitIgnoreHeader = '# MEVN_GENERATED:MONGO';
-
-  if (!new RegExp(mongoGitIgnoreHeader, 'g').test(gitIgnoreContents)) {
-    gitIgnoreContents += ['\n', '# MEVN_GENERATED:MONGO', '/tmp', '\n'].join(
-      '\n',
-    );
-  }
-  // Write back the updated contents to .gitignore
+  // Create .gitignore at project root
+  const gitIgnoreContents = ['# MEVN_GENERATED:MONGO', '/tmp', '\n'].join('\n');
   fs.writeFileSync('.gitignore', gitIgnoreContents);
 };
 
@@ -62,21 +56,29 @@ const dockerize = async () => {
   checkIfConfigFileExists();
   await validateInstallation('docker');
 
+  // .mevnrc
+  const { template } = appData();
+
   // Get the respective file contents
   let dockerComposeTemplate = getFileContent('docker-compose.yml');
-  const dockerFileTemplate = getFileContent('Dockerfile');
+  let dockerFileTemplate = getFileContent('Dockerfile');
 
   // Create Dockerfile for client directory
   const clientDockerFilePath = path.join('client', 'Dockerfile');
   if (!fs.existsSync(clientDockerFilePath)) {
+    if (template === 'Nuxt.js') {
+      // docker-compose.yml
+      dockerComposeTemplate[4] = `${' '.repeat(
+        4,
+      )}command: bash -c "npm install && npm run dev"`;
+      dockerComposeTemplate[9] = `${' '.repeat(6)}- "3000:3000"`;
+      dockerComposeTemplate.splice(10, 0, `${' '.repeat(4)}environment:`);
+      dockerComposeTemplate.splice(11, 0, `${' '.repeat(6)}HOST: 0.0.0.0`);
+    }
     fs.writeFileSync(clientDockerFilePath, dockerFileTemplate.join('\n'));
   }
 
-  if (fs.existsSync('./server')) {
-    // Create Dockerfile for the server directory
-    dockerFileTemplate.splice(8, 0, 'RUN npm install -g nodemon');
-    dockerFileTemplate.splice(9, 0, '');
-
+  if (fs.existsSync('server')) {
     // Create Dockerfile for server directory
     const serverDockerFilePath = path.join('server', 'Dockerfile');
     if (!fs.existsSync(serverDockerFilePath)) {
@@ -94,32 +96,59 @@ const dockerize = async () => {
     if (fs.existsSync(path.join('server', 'models'))) {
       if (!fs.existsSync(path.join('tmp', 'data'))) {
         makeDataDir();
-        dockerComposeTemplate.splice(14, 0, `${' '.repeat(4)}environment:`);
-        dockerComposeTemplate.splice(
-          15,
-          0,
-          `${' '.repeat(6)}- DB_URL=mongodb://mongo:27017`,
+
+        // dockerize command was invoked after creating the CRUD boilerplate
+        if (fs.existsSync('docker-compose.yml')) {
+          dockerComposeTemplate = fs
+            .readFileSync('docker-compose.yml', 'utf8')
+            .split('\n');
+        }
+        let startIdx = dockerComposeTemplate.findIndex(
+          (line) => line.trim() === '- ./server:/app',
         );
+
+        dockerComposeTemplate.splice(
+          startIdx + 1,
+          0,
+          `${' '.repeat(4)}environment:`,
+        );
+
+        dockerComposeTemplate.splice(
+          startIdx + 2,
+          0,
+          `${' '.repeat(6)}- DB_URL=mongodb://mongo:27017/userdb`,
+        );
+
+        // Write to docker-compose.yml
         fs.writeFileSync(
           'docker-compose.yml',
           dockerComposeTemplate.join('\n'),
         );
       }
     } else {
-      dockerComposeTemplate = dockerComposeTemplate.slice(0, 19);
+      const endIdx = template === 'Nuxt.js' ? 21 : 19;
+      dockerComposeTemplate = dockerComposeTemplate.slice(0, endIdx);
     }
   }
 
   // Create .dockerignore within client directory
   const clientDockerIgnorePath = path.join('client', '.dockerignore');
   if (!fs.existsSync(clientDockerIgnorePath)) {
-    fs.writeFileSync(clientDockerIgnorePath, 'node_modules\ndist');
+    const dockerIgnoreContent = 'node_modules\ndist';
+    fs.writeFileSync(
+      clientDockerIgnorePath,
+      `${
+        template === 'Nuxt.js'
+          ? dockerIgnoreContent + '\n.nuxt' // Add .nuxt to .dockerignore
+          : dockerIgnoreContent
+      }`,
+    );
   }
 
   // docker-compose.yml should only include the necessary instructions
   // for the client side
-  if (!fs.existsSync('./server')) {
-    dockerComposeTemplate = dockerComposeTemplate.slice(0, 10);
+  if (!fs.existsSync('server')) {
+    dockerComposeTemplate = dockerComposeTemplate.slice(0, 9);
   }
 
   // Create docker-compose.yml at project root
