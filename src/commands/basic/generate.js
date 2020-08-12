@@ -91,7 +91,7 @@ const generateFile = async () => {
         validate: validateInput,
       },
     ]);
-    fs.writeFileSync(path.join('server', '.env'), `DB_URL=${uri}`);
+    fs.writeFileSync(path.join('server', '.env'), `DB_URL=${uri}/userdb`);
 
     if (!isConfigured.server) {
       // Installing dependencies
