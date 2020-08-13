@@ -263,7 +263,7 @@ const initializeProject = async (appName) => {
     {
       name: 'template',
       type: 'list',
-      message: 'Please select your template of choice',
+      message: 'Please choose a starter template',
       choices: ['Default', 'PWA (Progressive Web App)', 'GraphQL', 'Nuxt.js'],
     },
   ]);

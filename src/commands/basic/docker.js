@@ -41,7 +41,19 @@ const makeDataDir = () => {
   fs.mkdirSync(path.join('tmp', 'data'), { recursive: true });
 
   // Create .gitignore at project root
-  const gitIgnoreContents = ['# MEVN_GENERATED:MONGO', '/tmp', '\n'].join('\n');
+  let gitIgnoreContents = ['# MEVN_GENERATED:MONGO', '/tmp', '\n'].join('\n');
+  if (fs.existsSync('.gitignore')) {
+    const mongoGitIgnoreHeader = '# MEVN_GENERATED:MONGO';
+    gitIgnoreContents = fs.readFileSync('.gitignore', 'utf8');
+
+    // Early return in case .gitignore includes the respective header
+    if (new RegExp(mongoGitIgnoreHeader, 'g').test(gitIgnoreContents)) {
+      return;
+    }
+    gitIgnoreContents += ['\n', '# MEVN_GENERATED:MONGO', '/tmp', '\n'].join(
+      '\n',
+    );
+  }
   fs.writeFileSync('.gitignore', gitIgnoreContents);
 };
 
@@ -97,13 +109,33 @@ const dockerize = async () => {
       if (!fs.existsSync(path.join('tmp', 'data'))) {
         makeDataDir();
 
-        // dockerize command was invoked after creating the CRUD boilerplate
+        // dockerize command was invoked after generating the CRUD boilerplate
         if (fs.existsSync('docker-compose.yml')) {
+          // Content to be inserted towards the end of docker-compose.yml
+          const mongoDBConfig = [
+            `${' '.repeat(4)}depends_on:`,
+            `${' '.repeat(6)}- mongo`,
+            '',
+            `${' '.repeat(2)}mongo:`,
+            `${' '.repeat(4)}image: mongo`,
+            `${' '.repeat(4)}volumes:`,
+            `${' '.repeat(6)}- ./tmp/data:/data/db`,
+            `${' '.repeat(4)}ports:`,
+            `${' '.repeat(6)}- "27017:27017"`,
+          ];
+
+          // Read existing file contents
           dockerComposeTemplate = fs
             .readFileSync('docker-compose.yml', 'utf8')
             .split('\n');
+
+          // Update docker-compose.yml file contents
+          dockerComposeTemplate = [].concat(
+            dockerComposeTemplate,
+            mongoDBConfig,
+          );
         }
-        let startIdx = dockerComposeTemplate.findIndex(
+        const startIdx = dockerComposeTemplate.findIndex(
           (line) => line.trim() === '- ./server:/app',
         );
 
@@ -148,7 +180,10 @@ const dockerize = async () => {
   // docker-compose.yml should only include the necessary instructions
   // for the client side
   if (!fs.existsSync('server')) {
-    dockerComposeTemplate = dockerComposeTemplate.slice(0, 9);
+    dockerComposeTemplate = dockerComposeTemplate.slice(
+      0,
+      template === 'Nuxt.js' ? 12 : 10,
+    );
   }
 
   // Create docker-compose.yml at project root
