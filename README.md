@@ -27,7 +27,7 @@
 
 **Donate: [PayPal](https://www.paypal.me/jamesgeorge007), _[Open Collective](https://www.opencollective.com/mevn-cli), [Patreon](https://www.patreon.com/jamesgeorge007)_**
 
-A CLI tool for getting started with the MEVN stack. The acronym “MEVN” stands for “MongoDB Express.js VueJS Node.js”. It offers a super simple boilerplate template and additional utilities for building a MEVN stack based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting out.
+A CLI tool for getting started with the MEVN stack. The acronym “MEVN” stands for “MongoDB Express.js VueJS Node.js”. It offers a super-simple boilerplate template and additional utilities for building a MEVN stack-based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting.
 
 - [Basic](http://github.com/madlabsinc/mevn-starter-templates/)
 - [Pwa](http://github.com/madlabsinc/mevn-starter-templates/tree/pwa)
@@ -57,7 +57,7 @@ mevn init <appname>
 | -------------- |  ---------------- |
 | mevn init &lt;appname&gt; | Scaffolds a MEVN stack project in the current path |
 | mevn serve | Serves the client/server side template locally |
-| mevn add &lt;deps&gt; | Adds additional dependencies as required on the go |
+| mevn add [deps] | Adds additional dependencies as required on the go |
 | mevn generate | Generates component files for the client and CRUD boilerplate template for the server based on MVC architecture |
 | mevn codesplit | Lazy load components as required |
 | mevn dockerize | Serves the webapp as multi-container Docker applications |
@@ -67,7 +67,6 @@ mevn init <appname>
 ## Features
 
 - It allows Developers to build webapps with ease in which all the local environment setup is being taken care of. All they have to do is to focus on writing actual code.
-- It uses ES6 syntax, which is developer-friendly and keeps the code simpler and smaller.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and leads to compact code.  
 - MEVN-CLI simplifies developer workflow by generating boilerplate code as required and automating redundant tasks.
 
