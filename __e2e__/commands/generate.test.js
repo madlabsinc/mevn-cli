@@ -31,7 +31,7 @@ describe('mevn generate', () => {
     await runPromptWithAnswers(
       ['init', 'my-app'],
       [
-        ENTER, // Choose basic template
+        ENTER, // Choose Default as the starter template
         `Y${ENTER}`, // Requires server directory
       ],
       tempDirPath,

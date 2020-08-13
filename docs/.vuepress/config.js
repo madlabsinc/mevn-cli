@@ -15,8 +15,8 @@ module.exports = {
                 title: 'Guide',
                 collapsable: false,
                 children: [
+                    'gettingstarted',
                     'installation',
-                    'commands',
                     'features',
                     'contributing'
                 ]

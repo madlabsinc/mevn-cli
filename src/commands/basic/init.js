@@ -204,7 +204,7 @@ const fetchTemplate = async (template) => {
 };
 
 /**
- * Bootstrap a basic MEVN stack based webapp
+ * Scaffolds a MEVN stack based webapp
  *
  * @param {String} appName - Name of the project
  * @returns {Promise<void>}

@@ -29,11 +29,6 @@
 
 A CLI tool for getting started with the MEVN stack. The acronym “MEVN” stands for “MongoDB Express.js VueJS Node.js”. It offers a super-simple boilerplate template and additional utilities for building a MEVN stack-based webapp. It takes away the hassle of setting up the local development environment which may become a nightmare especially for beginners who are just starting.
 
-- [Basic](http://github.com/madlabsinc/mevn-starter-templates/)
-- [Pwa](http://github.com/madlabsinc/mevn-starter-templates/tree/pwa)
-- [GraphQL](http://github.com/madlabsinc/mevn-starter-templates/tree/graphql)
-- [Nuxt.js](http://github.com/madlabsinc/mevn-starter-templates/tree/nuxt)
-
 ## Installation
 
 ### Prerequisites
@@ -68,7 +63,7 @@ mevn init <appname>
 
 - It allows Developers to build webapps with ease in which all the local environment setup is being taken care of. All they have to do is to focus on writing actual code.
 - The whole project is done in modules(thanks to ES6 syntax) which enhances user readability and leads to compact code.  
-- MEVN-CLI simplifies developer workflow by generating boilerplate code as required and automating redundant tasks.
+- MEVN-CLI simplifies developer workflow by generating the required boilerplate and automating redundant tasks.
 
 ## Contributing
 
