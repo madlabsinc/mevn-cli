@@ -8,7 +8,7 @@ title: 'Available Commands'
 
 - ### `mevn init <appname>`
 
-Choose between the four available starter templates to build on top of.
+Choose between the four available starter templates to build on top of. It creates a dotfile `.mevnrc` with information specific to the project.
 
 [![asciicast](https://asciinema.org/a/353232.svg)](https://asciinema.org/a/353232)
 
@@ -18,9 +18,9 @@ Serve the webapp locally.
 
 [![asciicast](https://asciinema.org/a/353239.svg)](https://asciinema.org/a/353239)
 
-- ### `mevn add [deps]`
+- ### `mevn add [deps] [--dev]`
 
-Add additional dependencies on the go.
+Add additional dependencies on the go. Specify the `--dev` flag to install `devDependencies`.
 
 [![asciicast](https://asciinema.org/a/353241.svg)](https://asciinema.org/a/353241)
 
