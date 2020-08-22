@@ -112,7 +112,7 @@ describe('mevn add', () => {
   });
 
   it('shows a warning if no args were passed in for server directory', async () => {
-    const stdout = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       ['add'],
       [`${DOWN}${ENTER}`], // opts for server directory
       genPath,
@@ -134,7 +134,7 @@ describe('mevn add', () => {
     );
 
     // Invoke the add command
-    const stdout = await runPromptWithAnswers(
+    const { stdout } = await runPromptWithAnswers(
       ['add'],
       [ENTER], // opts for client directory
       genPath,

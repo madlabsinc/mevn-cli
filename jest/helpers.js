@@ -1,7 +1,7 @@
 'use strict';
 
 import 'babel-polyfill';
-import concat from 'concat-stream';
+import runTest from 'cli-prompts-test';
 import execa from 'execa';
 import fs from 'fs';
 import path from 'path';
@@ -13,31 +13,9 @@ export const run = (args, options = {}) => execa.sync(CLI_PATH, args, options);
 
 // Test cases that require simulating user input
 export const runPromptWithAnswers = (args, answers, testPath) => {
-  args = [CLI_PATH].concat(args);
-
-  const process = execa('node', args, { cwd: testPath });
-  process.stdin.setEncoding('utf-8');
-
-  const writeToStdin = (answers) => {
-    if (answers.length > 0) {
-      setTimeout(() => {
-        process.stdin.write(answers[0]);
-        writeToStdin(answers.slice(1));
-      }, 3000);
-    } else {
-      process.stdin.end();
-    }
-  };
-
-  // Simulate user input
-  writeToStdin(answers);
-
-  return new Promise((resolve) => {
-    process.stdout.pipe(
-      concat((result) => {
-        resolve(result.toString());
-      }),
-    );
+  return runTest([CLI_PATH].concat(args), answers, {
+    testPath,
+    timeout: 2000,
   });
 };
 
