@@ -67,7 +67,7 @@ const setConfigVar = async (configVar, dir, value) => {
     if (configVar === 'DB_URL') {
       const { uri } = await inquirer.prompt({
         type: 'password',
-        name: 'value',
+        name: 'uri',
         message: 'Please provide the path to a cloud based MongoDB URI',
         validate: validateInput,
       });
