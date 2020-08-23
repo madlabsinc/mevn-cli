@@ -3,6 +3,7 @@ os:
   - linux
   - osx
 node_js:
+ - 14
  - 13
  - 12
 install:
