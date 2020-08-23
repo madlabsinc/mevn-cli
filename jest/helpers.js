@@ -19,10 +19,6 @@ export const runPromptWithAnswers = (args, answers, testPath) => {
   });
 };
 
-// async version
-export const runAsync = async (args, options = {}) =>
-  await execa(CLI_PATH, args, options);
-
 // Cleanup
 export const rmTempDir = (tempDirPath) =>
   fs.rmdirSync(tempDirPath, { recursive: true });
