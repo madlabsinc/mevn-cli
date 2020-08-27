@@ -1,11 +1,6 @@
-import {
-  run,
-  runPromptWithAnswers,
-  rmTempDir,
-  DOWN,
-  ENTER,
-} from '../../jest/helpers';
+import { run, runPromptWithAnswers, rmTempDir } from '../../jest/helpers';
 
+import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 

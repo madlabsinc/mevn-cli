@@ -26,8 +26,3 @@ export const rmTempDir = (tempDirPath) =>
 // .mevnrc
 export const fetchProjectConfig = (genPath) =>
   JSON.parse(fs.readFileSync(path.join(genPath, '.mevnrc'), 'utf8'));
-
-// Espace sequence
-export const DOWN = '\x1B\x5B\x42';
-export const ENTER = '\x0D';
-export const SPACE = '\x20';

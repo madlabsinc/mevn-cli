@@ -5,10 +5,9 @@ import {
   rmTempDir,
   runPromptWithAnswers,
   fetchProjectConfig,
-  DOWN,
-  ENTER,
 } from '../../jest/helpers';
 
+import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
