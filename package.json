@@ -59,7 +59,7 @@
     "chalk": "^2.4.2",
     "commander": "^2.20.3",
     "envinfo": "^7.7.2",
-    "execa": "^1.0.0",
+    "execa": "^4.0.3",
     "inquirer": "^6.5.2",
     "leven": "^3.1.0",
     "node-banner": "^1.4.0",
