@@ -1,0 +1,23 @@
+{
+  "name": "hapi-server-template",
+  "version": "1.0.0",
+  "description": "Hapi.js template",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "serve": "nodemon server.js",
+    "format": "prettier server.js **/*.js --write"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^20.0.1",
+    "@hapi/inert": "^6.0.3",
+    "@hapi/vision": "^6.0.1",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2"
+  }
+}

@@ -162,16 +162,49 @@ const fetchTemplate = async (template) => {
   };
 
   // Show up a suitable prompt whether if the user requires a Full stack application (Express.js)
-  const { requireServer } = await inquirer.prompt({
-    name: 'requireServer',
-    type: 'confirm',
+  const { requireServerOption } = await inquirer.prompt({
+    type: 'expand',
     message: 'Do you require server side template (Express.js)',
+    name: 'requireServerOption',
+    default: 'y',
+    choices: [
+      {
+        key: 'y',
+        name: 'Yes',
+        value: 1,
+      },
+      {
+        key: 'n',
+        name: 'No',
+        value: 0,
+      },
+      {
+        key: 'm',
+        name: 'More',
+        value: 2,
+      },
+    ],
   });
 
   // Copy server side template files to the destination as required
-  if (requireServer) {
+  if (requireServerOption) {
     // Configure path
-    const serverDir = template === 'GraphQL' ? 'GraphQL' : 'Default';
+    let serverDir = '';
+    if (template === 'GraphQL') serverDir = 'GraphQL';
+    else {
+      if (requireServerOption === 1) serverDir = 'Express';
+      else {
+        const { serverName } = await inquirer.prompt([
+          {
+            name: 'serverName',
+            type: 'list',
+            message: 'Please choose a server side template',
+            choices: ['Express', 'Hapi'],
+          },
+        ]);
+        serverDir = serverName;
+      }
+    }
     const serverPath = ['templates', 'server', serverDir];
     const source = path.join(__dirname, '..', '..', ...serverPath);
     const dest = path.resolve(projectPathRelative);
