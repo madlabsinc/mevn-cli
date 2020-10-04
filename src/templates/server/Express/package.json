@@ -1,5 +1,5 @@
 {
-  "name": "server-template",
+  "name": "express-server-template",
   "version": "1.0.0",
   "description": "Express.js template",
   "main": "server.js",
