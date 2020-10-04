@@ -37,7 +37,7 @@ describe('mevn init', () => {
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js as the starter template
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
-        `Y${ENTER}`, // Requires server directory
+        ENTER, // Requires server directory
       ],
       tempDirPath,
     );
@@ -88,7 +88,7 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${ENTER}`, // Choose GraphQL as the starter template
-        `Y${ENTER}`, // Requires server directory
+        ENTER, // Requires server directory
       ],
       tempDirPath,
     );

@@ -31,7 +31,7 @@ describe('mevn generate', () => {
       ['init', 'my-app'],
       [
         ENTER, // Choose Default as the starter template
-        `Y${ENTER}`, // Requires server directory
+        ENTER, // Requires server directory
       ],
       tempDirPath,
     );
