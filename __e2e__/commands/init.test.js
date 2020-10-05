@@ -102,4 +102,57 @@ describe('mevn init', () => {
     // Check whether if the respective directory have been generated
     expect(fs.existsSync(path.join(serverPath, 'graphql'))).toBeTruthy();
   });
+
+  it('creates webapp based on the Default starter template with Hapi server template', async () => {
+    const appGenPath = path.join(tempDirPath, 'default-hapi');
+    await runPromptWithAnswers(
+      ['init', 'default-hapi'],
+      [
+        ENTER, // Choose Default as the starter template
+        `${DOWN}${DOWN}${ENTER}`, // Choose More option when server required
+        `${DOWN}${ENTER}`, // Choose Hapi as server template
+      ],
+      tempDirPath,
+    );
+    // Check Hapi dependencies in package.json
+    const appServerPath = path.join(appGenPath, 'server');
+    const pkgJson = JSON.parse(
+      fs.readFileSync(path.join(appServerPath, 'package.json')),
+    );
+    expect(pkgJson.dependencies['@hapi/hapi']).toBeTruthy();
+  });
+
+  it('creates a new MEVN stack webapp based on the Default starter template with Express server template', async () => {
+    const appGenPath = path.join(tempDirPath, 'default-express');
+    await runPromptWithAnswers(
+      ['init', 'default-express'],
+      [
+        ENTER, // Choose Default as the starter template
+        `${DOWN}${DOWN}${ENTER}`, // Choose More option when server required
+        ENTER, // Choose Express as server template
+      ],
+      tempDirPath,
+    );
+    // Check Express dependencies in package.json
+    const appServerPath = path.join(appGenPath, 'server');
+    const pkgJson = JSON.parse(
+      fs.readFileSync(path.join(appServerPath, 'package.json')),
+    );
+    expect(pkgJson.dependencies['express']).toBeTruthy();
+  });
+
+  it('creates webapp based on the Default starter template with no server template', async () => {
+    const appGenPath = path.join(tempDirPath, 'default-no-server');
+    await runPromptWithAnswers(
+      ['init', 'default-no-server'],
+      [
+        ENTER, // Choose Default as the starter template
+        `${DOWN}${ENTER}`, // Server is not required
+      ],
+      tempDirPath,
+    );
+    // project config for server should be undefiend
+    expect(fetchProjectConfig(appGenPath).isConfigured.server).toBe(undefined);
+    expect(fetchProjectConfig(appGenPath).isConfigured.client).toBe(false);
+  });
 });
