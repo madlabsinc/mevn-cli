@@ -1,0 +1,19 @@
+name: CI
+on: push
+jobs:
+  job:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest']
+        node: ['12', '13', '14']
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node }}
+    - name: Install packages
+      run: npm ci
+    - name: Run e2e tests
+      run: npm run test
