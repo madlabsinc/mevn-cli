@@ -6,12 +6,9 @@
 import '@babel/polyfill';
 import program from 'commander';
 import chalk from 'chalk';
-import didYouMean from 'didyoumean';
+import leven from 'leven';
 import envinfo from 'envinfo';
 import updateNotifier from 'update-notifier';
-
-// Setting edit distance to 60% of the input string's length.
-didYouMean.threshold = 0.6;
 
 // Defining action handlers for respective commands.
 import initializeProject from './commands/basic/init';
@@ -28,7 +25,9 @@ updateNotifier({ pkg }).notify();
 const suggestCommands = (cmd) => {
   const availableCommands = program.commands.map((c) => c._name);
 
-  const suggestion = didYouMean(cmd, availableCommands);
+  const suggestion = availableCommands.find(
+    (c) => leven(c, cmd) < c.length * 0.4,
+  );
   if (suggestion) {
     console.log(`  ` + chalk.red(`Did you mean ${chalk.yellow(suggestion)}?`));
   }
