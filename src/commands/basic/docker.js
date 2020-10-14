@@ -192,7 +192,7 @@ const dockerize = async () => {
   }
 
   try {
-    await execa.shell('docker-compose up', {
+    await execa.command('docker-compose up', {
       stdio: 'inherit',
     });
   } catch (err) {

@@ -20,7 +20,7 @@ const spinner = new Spinner();
 
 const dependencyIsInstalled = async (dependency) => {
   try {
-    await execa.shell(dependency);
+    await execa.command(dependency);
     return true;
   } catch (err) {
     return false;

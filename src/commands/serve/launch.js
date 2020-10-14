@@ -42,7 +42,7 @@ const serveProject = async (projectConfig, templateDir) => {
   if (projectTemplate === 'Nuxt.js') {
     cmd = 'dev';
   }
-  execa.shell(`npm run ${cmd} -- --port ${port} --open`, {
+  execa.command(`npm run ${cmd} -- --port ${port} --open`, {
     stdio: 'inherit',
     cwd: templateDir,
   });
