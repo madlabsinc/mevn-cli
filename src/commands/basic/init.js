@@ -9,7 +9,6 @@ import showBanner from 'node-banner';
 import validate from 'validate-npm-package-name';
 
 import copyDirSync from '../../utils/fs';
-import { isWin } from '../../utils/constants';
 import {
   directoryExistsInPath,
   hasStrayArgs,
@@ -58,8 +57,6 @@ const showInstructions = () => {
   console.log(chalk.cyan.bold(`You're all set`));
   console.log(chalk.cyan.bold(`Now, just type in ${userCommandInstruction}`));
 
-  let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
-  execa.commandSync(`${removeCmd} ${path.join(projectPathRelative, '.git')}`);
   makeInitialCommit();
 };
 
