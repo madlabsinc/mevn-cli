@@ -9,7 +9,6 @@ import showBanner from 'node-banner';
 import validate from 'validate-npm-package-name';
 
 import copyDirSync from '../../utils/fs';
-import { isWin } from '../../utils/constants';
 import {
   directoryExistsInPath,
   hasStrayArgs,
