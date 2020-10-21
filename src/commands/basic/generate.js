@@ -11,6 +11,7 @@ import copyDirSync from '../../utils/fs';
 import exec from '../../utils/exec';
 import generateComponent from './component';
 import { validateInput } from '../../utils/validate';
+import readFileContent from '../../utils/helpers';
 
 // Holds reference to the path where the boilerplate files reside
 const templatePath = path.join(__dirname, '..', '..', 'templates');
@@ -122,10 +123,7 @@ const generateFile = async () => {
   copyDirSync(path.join(templatePath, 'helpers'), 'server');
 
   const serverFilePath = path.join('server', 'server.js');
-  const serverFileContent = fs
-    .readFileSync(path.join('server', 'server.js'), 'utf8')
-    .toString()
-    .split('\n');
+  const serverFileContent = readFileContent(serverFilePath);
 
   const postImportIndex = serverFileContent.findIndex((item) => item === '');
   // second occurrence

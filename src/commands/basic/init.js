@@ -16,6 +16,7 @@ import {
   invalidProjectName,
 } from '../../utils/messages';
 import { validateInstallation } from '../../utils/validate';
+import readFileContent from '../../utils/helpers';
 
 let projectPathRelative;
 let projectConfig = {};
@@ -105,10 +106,7 @@ const fetchTemplate = async (template) => {
       'client',
       'nuxt.config.js',
     );
-    const configFile = fs
-      .readFileSync(configFilePath, 'utf8')
-      .toString()
-      .split('\n');
+    const configFile = readFileContent(configFilePath);
 
     // Choose the rendering mode
     const { mode } = await inquirer.prompt([
