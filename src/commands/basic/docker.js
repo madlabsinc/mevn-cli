@@ -8,6 +8,7 @@ import showBanner from 'node-banner';
 import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import { validateInstallation } from '../../utils/validate';
+import readFileContent from '../../utils/helpers';
 
 /**
  * Returns the respective file content as an array
@@ -24,11 +25,9 @@ const getFileContent = (configFile) => {
     '..',
     'templates',
     'docker',
+    configFile,
   );
-  return fs
-    .readFileSync(path.join(dockerConfigTemplatePath, configFile))
-    .toString()
-    .split('\n');
+  return readFileContent(dockerConfigTemplatePath);
 };
 
 /**

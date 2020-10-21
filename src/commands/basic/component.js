@@ -10,6 +10,7 @@ import appData from '../../utils/projectConfig';
 import { checkIfConfigFileExists } from '../../utils/messages';
 import exec from '../../utils/exec';
 import { validateInput } from '../../utils/validate';
+import readFileContent from '../../utils/helpers';
 
 /**
  * Converts a given string into lower camel case
@@ -137,10 +138,7 @@ const generateComponent = async () => {
   }
 
   const routesConfigPath = path.join('client', 'src', 'router.js');
-  const routesConfig = fs
-    .readFileSync(routesConfigPath, 'utf8')
-    .toString()
-    .split('\n');
+  const routesConfig = readFileContent(routesConfigPath);
 
   const postImportIndex = routesConfig.indexOf(
     routesConfig.find((item) => item === ''),
