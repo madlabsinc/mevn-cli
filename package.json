@@ -58,7 +58,7 @@
     "@babel/polyfill": "^7.10.4",
     "chalk": "^2.4.2",
     "commander": "^2.20.3",
-    "envinfo": "^7.7.2",
+    "envinfo": "^7.7.3",
     "execa": "^4.0.3",
     "inquirer": "^6.5.2",
     "leven": "^3.1.0",
