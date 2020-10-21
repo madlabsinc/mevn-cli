@@ -5,6 +5,7 @@ import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import path from 'path';
+import readFileContent from '../../utils/helpers';
 
 import appData from '../../utils/projectConfig';
 import { validateInput } from '../../utils/validate';
@@ -166,7 +167,7 @@ const deployToHeroku = async (templateDir) => {
       ];
 
       let pkgJson = JSON.parse(
-        fs.readFileSync(path.join('client', 'package.json')),
+        readFileContent(path.join('client', 'package.json')),
       );
       const buildCmd = 'npm run build';
       const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then ${buildCmd} ; fi `; // eslint-disable-line

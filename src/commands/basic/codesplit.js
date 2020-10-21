@@ -7,11 +7,11 @@ import showBanner from 'node-banner';
 import path from 'path';
 
 import exec from '../../utils/exec';
-
 import {
   checkIfConfigFileExists,
   checkIfTemplateIsNuxt,
 } from '../../utils/messages';
+import readFileContent from '../../utils/helpers';
 
 /**
  * Lazy load components
@@ -27,10 +27,7 @@ const asyncRender = async () => {
   checkIfTemplateIsNuxt();
 
   const routesConfigPath = path.join('client', 'src', 'router.js');
-  const routesConfig = fs
-    .readFileSync(routesConfigPath, 'utf8')
-    .toString()
-    .split('\n');
+  const routesConfig = readFileContent(routesConfigPath);
 
   // Keep hold of regular imported components
   const availableComponents = [];

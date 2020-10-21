@@ -10,6 +10,7 @@ import { checkIfConfigFileExists } from '../../utils/messages';
 import dirOfChoice from '../../utils/directoryPrompt';
 import exec from '../../utils/exec';
 import inquirer from 'inquirer';
+import readFileContent from '../../utils/helpers';
 
 /**
  * Choose additional deps to install on the go
@@ -176,10 +177,7 @@ const addDeps = async (deps, { dev }) => {
 
     // Read initial content from nuxt.config.js
     const nuxtConfigPath = path.join('client', 'nuxt.config.js');
-    const nuxtConfig = fs
-      .readFileSync(nuxtConfigPath, 'utf8')
-      .toString()
-      .split('\n');
+    const nuxtConfig = readFileContent(nuxtConfigPath);
 
     // Add 2 so that the content gets inserted at the right position
     const buildModulesIdx =
@@ -415,9 +413,7 @@ const addDeps = async (deps, { dev }) => {
 
       // Update .gitignore
       const gitIgnorePath = path.join('client', '.gitignore');
-      const gitIgnoreContent = fs
-        .readFileSync(gitIgnorePath, 'utf8')
-        .split('\n');
+      const gitIgnoreContent = readFileContent(gitIgnorePath);
       gitIgnoreContent.push('.nuxt-storybook', 'storybook-static');
 
       // Write back the updated file content
@@ -426,9 +422,7 @@ const addDeps = async (deps, { dev }) => {
       // Update .nuxtignore
       const nuxtIgnorePath = path.join('client', '.nuxtignore');
       if (fs.existsSync(nuxtIgnorePath)) {
-        const nuxtIgnoreContent = fs
-          .readFileSync(nuxtIgnorePath, 'utf8')
-          .split('\n');
+        const nuxtIgnoreContent = readFileContent(nuxtIgnorePath);
         nuxtIgnoreContent.push('**/*.stories.js');
 
         // Write back the updated file content
@@ -507,10 +501,7 @@ const addDeps = async (deps, { dev }) => {
     fs.writeFileSync(nuxtConfigPath, nuxtConfig.join('\n'));
   } else {
     const configFilePath = path.join('client', 'src', 'main.js');
-    const config = fs
-      .readFileSync(configFilePath, 'utf8')
-      .toString()
-      .split('\n');
+    const config = readFileContent(configFilePath);
 
     // Configure vuex-store
     if (deps.includes('vuex')) {
