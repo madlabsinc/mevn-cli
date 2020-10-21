@@ -74,9 +74,8 @@ Before contributing a change to this repository, please first discuss the change
 2. Fork and clone our repository.
 3. Make your life-changing changes.
 4. Run `npm run build` which generates a `lib` directory with the transpiled `es5` code.
-5. Fire in `npm link` to test everything works fine.
-6. Run tests locally before commiting `npm test`
-	- If issues running tests locally, then you can commit and use github actions ci in your own fork. All tests should pass.
+5. Type in `npm link` to test everything works fine. (Now you've access to the `mevn` root-command.)
+6. Run tests locally before commiting with `npm test`. (If you're having issues running tests locally, then you can commit and use GitHub actions ci in your own fork. All tests should pass.)
 7. Commit and push your changes.
 8. Make a detailed pull request.
 
