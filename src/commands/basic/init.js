@@ -9,13 +9,13 @@ import showBanner from 'node-banner';
 import validate from 'validate-npm-package-name';
 
 import copyDirSync from '../../utils/fs';
-import { isWin } from '../../utils/constants';
 import {
   directoryExistsInPath,
   hasStrayArgs,
   invalidProjectName,
 } from '../../utils/messages';
 import { validateInstallation } from '../../utils/validate';
+import readFileContent from '../../utils/helpers';
 
 let projectPathRelative;
 let projectConfig = {};
@@ -57,8 +57,6 @@ const showInstructions = () => {
   console.log(chalk.cyan.bold(`You're all set`));
   console.log(chalk.cyan.bold(`Now, just type in ${userCommandInstruction}`));
 
-  let removeCmd = isWin ? 'rmdir /s /q' : 'rm -rf';
-  execa.shellSync(`${removeCmd} ${path.join(projectPathRelative, '.git')}`);
   makeInitialCommit();
 };
 
@@ -105,10 +103,7 @@ const fetchTemplate = async (template) => {
       'client',
       'nuxt.config.js',
     );
-    const configFile = fs
-      .readFileSync(configFilePath, 'utf8')
-      .toString()
-      .split('\n');
+    const configFile = readFileContent(configFilePath);
 
     // Choose the rendering mode
     const { mode } = await inquirer.prompt([

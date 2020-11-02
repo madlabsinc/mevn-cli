@@ -5,6 +5,7 @@ import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import path from 'path';
+import readFileContent from '../../utils/helpers';
 
 import appData from '../../utils/projectConfig';
 import { validateInput } from '../../utils/validate';
@@ -26,7 +27,7 @@ const createHerokuApp = async (dir) => {
   });
 
   try {
-    await execa.shell(`heroku create ${appName}`, { cwd: dir });
+    await execa.command(`heroku create ${appName}`, { cwd: dir });
   } catch ({ stderr }) {
     console.log();
     console.log(chalk.red(stderr));
@@ -43,7 +44,7 @@ const createHerokuApp = async (dir) => {
 
 const isLoggedIn = async () => {
   try {
-    await execa.shell('heroku whoami');
+    await execa.command('heroku whoami');
     return true;
   } catch (err) {
     return false;
@@ -60,7 +61,7 @@ const isLoggedIn = async () => {
  */
 
 const setConfigVar = async (configVar, dir, value) => {
-  const { stdout } = await execa.shell('heroku config', {
+  const { stdout } = await execa.command('heroku config', {
     cwd: dir,
   });
   if (!stdout.includes(configVar)) {
@@ -73,7 +74,7 @@ const setConfigVar = async (configVar, dir, value) => {
       });
       value = uri;
     }
-    await execa.shell(`heroku config:set ${configVar}=${value}`, {
+    await execa.command(`heroku config:set ${configVar}=${value}`, {
       cwd: dir,
     });
   }
@@ -94,13 +95,13 @@ const deployToHeroku = async (templateDir) => {
   const { template } = projectConfig;
 
   if (!fs.existsSync(path.join(templateDir, '.git'))) {
-    await execa.shell('git init', { cwd: templateDir });
+    await execa.command('git init', { cwd: templateDir });
     const fileContent = fs.existsSync(path.join('server', '.env'))
       ? 'node_modules\n.env'
       : 'node_modules';
     fs.writeFileSync(path.join(templateDir, '.gitignore'), fileContent);
   } else {
-    const { stdout } = await execa.shell('git status', { cwd: templateDir });
+    const { stdout } = await execa.command('git status', { cwd: templateDir });
     if (stdout.includes('nothing to commit')) {
       console.error('No changes detected!');
       process.exit(1);
@@ -108,11 +109,11 @@ const deployToHeroku = async (templateDir) => {
   }
   // Show up the login prompt if not logged in
   if (!(await isLoggedIn())) {
-    await execa.shell('heroku login', { stdio: 'inherit', cwd: templateDir });
+    await execa.command('heroku login', { stdio: 'inherit', cwd: templateDir });
   }
 
   // Create a new Heroku app
-  const { stdout } = await execa.shell('git remote', { cwd: templateDir });
+  const { stdout } = await execa.command('git remote', { cwd: templateDir });
   if (!stdout.includes('heroku')) {
     await createHerokuApp(templateDir);
   }
@@ -166,7 +167,7 @@ const deployToHeroku = async (templateDir) => {
       ];
 
       let pkgJson = JSON.parse(
-        fs.readFileSync(path.join('client', 'package.json')),
+        readFileContent(path.join('client', 'package.json')),
       );
       const buildCmd = 'npm run build';
       const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then ${buildCmd} ; fi `; // eslint-disable-line
@@ -192,14 +193,14 @@ const deployToHeroku = async (templateDir) => {
     }
   }
 
-  await execa.shell('git add .', { cwd: templateDir });
-  await execa.shell(`git commit -m "Add files"`, { cwd: templateDir });
+  await execa.command('git add .', { cwd: templateDir });
+  await execa.command(`git commit -m "Add files"`, { cwd: templateDir });
 
-  await execa.shell('git push heroku master', {
+  await execa.command('git push heroku master', {
     stdio: 'inherit',
     cwd: templateDir,
   });
-  await execa.shell('heroku open', { cwd: templateDir });
+  await execa.command('heroku open', { cwd: templateDir });
 };
 
 module.exports = deployToHeroku;
