@@ -130,7 +130,11 @@ describe('mevn init', () => {
 
     // Assert for files specific to the starter template
     expect(fs.existsSync(path.join(clientPath, 'public', 'img'))).toBeTruthy();
-    expect(fs.existsSync(path.join(clientPath, 'public', 'manifest.json'))).toBeTruthy();
-    expect(fs.existsSync(path.join(clientPath, 'src', 'registerServiceWorker.js'))).toBeTruthy();
+    expect(
+      fs.existsSync(path.join(clientPath, 'public', 'manifest.json')),
+    ).toBeTruthy();
+    expect(
+      fs.existsSync(path.join(clientPath, 'src', 'registerServiceWorker.js')),
+    ).toBeTruthy();
   });
 });
