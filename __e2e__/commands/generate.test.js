@@ -8,10 +8,7 @@ import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
-// Create a temp directory
 const tempDirPath = path.join(__dirname, 'generate-cmd');
-fs.mkdirSync(tempDirPath);
-
 const genPath = path.join(tempDirPath, 'my-app');
 
 // The client directory
@@ -23,7 +20,8 @@ const pageComponentPath = path.join(clientPath, 'src', 'views');
 const serverPath = path.join(genPath, 'server');
 
 describe('mevn generate', () => {
-  // cleanup
+  // Cleanup
+  beforeAll(() => fs.mkdirSync(tempDirPath));
   afterAll(() => rmTempDir(tempDirPath));
 
   it('generates a UI component', async () => {

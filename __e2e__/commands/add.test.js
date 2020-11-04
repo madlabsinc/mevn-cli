@@ -4,10 +4,7 @@ import { DOWN, ENTER, SPACE } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
-// Create a temp directory
 const tempDirPath = path.join(__dirname, 'add-cmd');
-fs.mkdirSync(tempDirPath);
-
 const genPath = path.join(tempDirPath, 'my-app');
 
 // The client directory
@@ -18,6 +15,7 @@ const serverPath = path.join(genPath, 'server');
 
 describe('mevn add', () => {
   // cleanup
+  beforeAll(() => fs.mkdirSync(tempDirPath));
   afterAll(() => rmTempDir(tempDirPath));
 
   it('installs Nuxt.js modules if no args were passed in', async () => {

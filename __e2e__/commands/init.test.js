@@ -11,16 +11,15 @@ import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
-// Create a temp directory
 const tempDirPath = path.join(__dirname, 'init-cmd');
-fs.mkdirSync(tempDirPath);
-
 const genPath = path.join(tempDirPath, 'my-app');
 
 const clientPath = path.join(genPath, 'client');
 const serverPath = path.join(genPath, 'server');
 
 describe('mevn init', () => {
+  // Cleanup
+  beforeAll(() => fs.mkdirSync(tempDirPath));
   afterAll(() => rmTempDir(tempDirPath));
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {
