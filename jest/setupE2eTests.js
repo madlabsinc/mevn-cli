@@ -1,1 +1,1 @@
-jest.setTimeout(350000);
+jest.setTimeout(500000);
