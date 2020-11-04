@@ -12,7 +12,11 @@ const clientPath = path.join(genPath, 'client');
 
 describe('mevn codesplit', () => {
   // Cleanup
-  beforeAll(() => fs.mkdirSync(tempDirPath));
+  beforeAll(() => {
+    rmTempDir(tempDirPath);
+    fs.mkdirSync(tempDirPath);
+  });
+
   afterAll(() => rmTempDir(tempDirPath));
 
   it('dynamically imports a component', async () => {

@@ -21,7 +21,11 @@ const serverPath = path.join(genPath, 'server');
 
 describe('mevn generate', () => {
   // Cleanup
-  beforeAll(() => fs.mkdirSync(tempDirPath));
+  beforeAll(() => {
+    rmTempDir(tempDirPath);
+    fs.mkdirSync(tempDirPath);
+  });
+
   afterAll(() => rmTempDir(tempDirPath));
 
   it('generates a UI component', async () => {

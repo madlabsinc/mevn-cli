@@ -20,8 +20,11 @@ export const runPromptWithAnswers = (args, answers, testPath) => {
 };
 
 // Cleanup
-export const rmTempDir = (tempDirPath) =>
-  fs.rmdirSync(tempDirPath, { recursive: true });
+export const rmTempDir = (tempDirPath) => {
+  if (fs.existsSync(tempDirPath)) {
+    fs.rmdirSync(tempDirPath, { recursive: true });
+  }
+}
 
 // .mevnrc
 export const fetchProjectConfig = (genPath) =>
