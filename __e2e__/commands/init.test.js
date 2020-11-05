@@ -19,7 +19,11 @@ const serverPath = path.join(genPath, 'server');
 
 describe('mevn init', () => {
   // Cleanup
-  beforeAll(() => fs.mkdirSync(tempDirPath));
+  beforeAll(() => {
+    rmTempDir(tempDirPath);
+    fs.mkdirSync(tempDirPath);
+  });
+
   afterAll(() => rmTempDir(tempDirPath));
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {

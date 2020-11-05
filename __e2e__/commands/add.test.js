@@ -14,8 +14,12 @@ const clientPath = path.join(genPath, 'client');
 const serverPath = path.join(genPath, 'server');
 
 describe('mevn add', () => {
-  // cleanup
-  beforeAll(() => fs.mkdirSync(tempDirPath));
+  // Cleanup
+  beforeAll(() => {
+    rmTempDir(tempDirPath);
+    fs.mkdirSync(tempDirPath);
+  });
+
   afterAll(() => rmTempDir(tempDirPath));
 
   it('installs Nuxt.js modules if no args were passed in', async () => {
