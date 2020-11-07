@@ -37,7 +37,8 @@ describe('mevn init', () => {
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js as the starter template
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
-        ENTER, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
@@ -88,7 +89,7 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${ENTER}`, // Choose GraphQL as the starter template
-        ENTER, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
       ],
       tempDirPath,
     );
@@ -109,8 +110,8 @@ describe('mevn init', () => {
       ['init', 'default-hapi'],
       [
         ENTER, // Choose Default as the starter template
-        `${DOWN}${DOWN}${ENTER}`, // Choose More option when server required
-        `${DOWN}${ENTER}`, // Choose Hapi as server template
+        `Y${ENTER}`, // Requires server directory
+        `${DOWN}${ENTER}`, // Choose Hapi.js as server template
       ],
       tempDirPath,
     );
@@ -128,8 +129,8 @@ describe('mevn init', () => {
       ['init', 'default-express'],
       [
         ENTER, // Choose Default as the starter template
-        `${DOWN}${DOWN}${ENTER}`, // Choose More option when server required
-        ENTER, // Choose Express as server template
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js as server template
       ],
       tempDirPath,
     );
@@ -147,7 +148,7 @@ describe('mevn init', () => {
       ['init', 'default-no-server'],
       [
         ENTER, // Choose Default as the starter template
-        `${DOWN}${ENTER}`, // Server is not required
+        `N${ENTER}`, // Server is not required
       ],
       tempDirPath,
     );

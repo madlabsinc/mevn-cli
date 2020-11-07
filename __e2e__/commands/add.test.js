@@ -27,7 +27,8 @@ describe('mevn add', () => {
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js
         ENTER, // Choose universal as the rendering mode
         ENTER, // Choose server as the deploy target
-        ENTER, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
@@ -123,7 +124,8 @@ describe('mevn add', () => {
       ['init', 'my-app'],
       [
         ENTER, // Choose Default as the starter template
-        ENTER, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );

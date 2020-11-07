@@ -21,7 +21,8 @@ describe('mevn codesplit', () => {
       ['init', 'my-app'],
       [
         ENTER, // Choose basic template
-        ENTER, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
@@ -62,7 +63,8 @@ describe('mevn codesplit', () => {
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
-        ENTER, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
