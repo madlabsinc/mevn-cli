@@ -11,16 +11,19 @@ import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
-// Create a temp directory
 const tempDirPath = path.join(__dirname, 'init-cmd');
-fs.mkdirSync(tempDirPath);
-
 const genPath = path.join(tempDirPath, 'my-app');
 
 const clientPath = path.join(genPath, 'client');
 const serverPath = path.join(genPath, 'server');
 
 describe('mevn init', () => {
+  // Cleanup
+  beforeAll(() => {
+    rmTempDir(tempDirPath);
+    fs.mkdirSync(tempDirPath);
+  });
+
   afterAll(() => rmTempDir(tempDirPath));
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {
@@ -89,12 +92,14 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${ENTER}`, // Choose GraphQL as the starter template
-        `Y${ENTER}`, // Requires server directory
+        `${ENTER}`, // Requires server directory
       ],
       tempDirPath,
     );
 
     expect(fetchProjectConfig(genPath).template).toBe('GraphQL');
+    expect(fetchProjectConfig(genPath).isConfigured.client).toBe(false);
+    expect(fetchProjectConfig(genPath).isConfigured.server).toBe(false);
 
     // Rename .mevngitignore to .gitignore
     expect(fs.existsSync(path.join(clientPath, '.mevngitignore'))).toBeFalsy();
@@ -102,6 +107,40 @@ describe('mevn init', () => {
 
     // Check whether if the respective directory have been generated
     expect(fs.existsSync(path.join(serverPath, 'graphql'))).toBeTruthy();
+
+    // Delete the generated directory
+    rmTempDir(genPath);
+  });
+
+  it('creates a new MEVN stack webapp based on the PWA starter template', async () => {
+    await runPromptWithAnswers(
+      ['init', 'my-app'],
+      [
+        `${DOWN}${ENTER}`, // Choose PWA as the starter template
+        `${ENTER}`, // Requires server directory
+      ],
+      tempDirPath,
+    );
+
+    expect(fetchProjectConfig(genPath).template).toBe('PWA');
+    expect(fetchProjectConfig(genPath).isConfigured.client).toBe(false);
+    expect(fetchProjectConfig(genPath).isConfigured.server).toBe(false);
+
+    // Rename .mevngitignore to .gitignore
+    expect(fs.existsSync(path.join(clientPath, '.mevngitignore'))).toBeFalsy();
+    expect(fs.existsSync(path.join(clientPath, '.gitignore'))).toBeTruthy();
+
+    // Check whether if the respective directory have been generated
+    expect(fs.existsSync(path.join(serverPath))).toBeTruthy();
+
+    // Assert for files specific to the starter template
+    expect(fs.existsSync(path.join(clientPath, 'public', 'img'))).toBeTruthy();
+    expect(
+      fs.existsSync(path.join(clientPath, 'public', 'manifest.json')),
+    ).toBeTruthy();
+    expect(
+      fs.existsSync(path.join(clientPath, 'src', 'registerServiceWorker.js')),
+    ).toBeTruthy();
   });
 
   it('creates webapp based on the Default starter template with Hapi server template', async () => {
