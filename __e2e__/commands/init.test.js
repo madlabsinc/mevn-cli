@@ -117,7 +117,8 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${ENTER}`, // Choose PWA as the starter template
-        `${ENTER}`, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
