@@ -16,7 +16,7 @@
     "lint": "eslint ./src __e2e__",
     "lint:fix": "eslint --fix ./src __e2e__",
     "pretest": "npm run lint",
-    "test": "jest",
+    "test": "jest --no-color",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "postinstall": "opencollective-postinstall || true"
