@@ -11,7 +11,8 @@ const CLI_PATH = path.resolve('bin', 'mevn.js');
 const env = { FORCE_COLOR: '0' }; // Disables chalk's colors for testing
 
 // sync version
-export const run = (args, options = {}) => execa.sync(CLI_PATH, args, {...options, env});
+export const run = (args, options = {}) =>
+  execa.sync(CLI_PATH, args, { ...options, env });
 
 // Test cases that require simulating user input
 export const runPromptWithAnswers = (args, answers, testPath) => {
