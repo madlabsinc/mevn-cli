@@ -8,18 +8,18 @@ import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
-const tempDirPath = path.join(__dirname, 'generate-cmd');
-const genPath = path.join(tempDirPath, 'my-app');
-
-// The client directory
-const clientPath = path.join(genPath, 'client');
-const uiComponentPath = path.join(clientPath, 'src', 'components');
-const pageComponentPath = path.join(clientPath, 'src', 'views');
-
-// The server directory
-const serverPath = path.join(genPath, 'server');
-
 describe('mevn generate', () => {
+  const tempDirPath = path.join(__dirname, 'generate-cmd');
+  const genPath = path.join(tempDirPath, 'my-app');
+
+  // The client directory
+  const clientPath = path.join(genPath, 'client');
+  const uiComponentPath = path.join(clientPath, 'src', 'components');
+  const pageComponentPath = path.join(clientPath, 'src', 'views');
+
+  // The server directory
+  const serverPath = path.join(genPath, 'server');
+
   // Cleanup
   beforeAll(() => {
     rmTempDir(tempDirPath);

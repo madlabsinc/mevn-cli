@@ -11,13 +11,13 @@ import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
-const tempDirPath = path.join(__dirname, 'init-cmd');
-const genPath = path.join(tempDirPath, 'my-app');
-
-const clientPath = path.join(genPath, 'client');
-const serverPath = path.join(genPath, 'server');
-
 describe('mevn init', () => {
+  const tempDirPath = path.join(__dirname, 'init-cmd');
+  const genPath = path.join(tempDirPath, 'my-app');
+
+  const clientPath = path.join(genPath, 'client');
+  const serverPath = path.join(genPath, 'server');
+
   // Cleanup
   beforeAll(() => {
     rmTempDir(tempDirPath);
@@ -140,5 +140,33 @@ describe('mevn init', () => {
     expect(
       fs.existsSync(path.join(clientPath, 'src', 'registerServiceWorker.js')),
     ).toBeTruthy();
+
+    // Delete the generated directory
+    rmTempDir(genPath);
+  });
+
+  it('creates a new MEVN stack webapp based on the Default starter template in current directory', async () => {
+    // Create my-app directory
+    fs.mkdirSync(genPath);
+
+    await runPromptWithAnswers(
+      ['init', '.'],
+      [
+        ENTER, // Choose Default as the starter template
+        ENTER, // Requires server directory
+      ],
+      genPath,
+    );
+
+    expect(fetchProjectConfig(genPath).template).toBe('Default');
+    expect(fetchProjectConfig(genPath).isConfigured.client).toBe(false);
+    expect(fetchProjectConfig(genPath).isConfigured.server).toBe(false);
+
+    // Rename .mevngitignore to .gitignore
+    expect(fs.existsSync(path.join(clientPath, '.mevngitignore'))).toBeFalsy();
+    expect(fs.existsSync(path.join(clientPath, '.gitignore'))).toBeTruthy();
+
+    // Check whether if the respective directory have been generated
+    expect(fs.existsSync(path.join(serverPath))).toBeTruthy();
   });
 });

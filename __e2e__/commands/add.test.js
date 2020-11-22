@@ -4,16 +4,16 @@ import { DOWN, ENTER, SPACE } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
-const tempDirPath = path.join(__dirname, 'add-cmd');
-const genPath = path.join(tempDirPath, 'my-app');
-
-// The client directory
-const clientPath = path.join(genPath, 'client');
-
-// The server directory
-const serverPath = path.join(genPath, 'server');
-
 describe('mevn add', () => {
+  const tempDirPath = path.join(__dirname, 'add-cmd');
+  const genPath = path.join(tempDirPath, 'my-app');
+
+  // The client directory
+  const clientPath = path.join(genPath, 'client');
+
+  // The server directory
+  const serverPath = path.join(genPath, 'server');
+
   // Cleanup
   beforeAll(() => {
     rmTempDir(tempDirPath);
@@ -114,7 +114,7 @@ describe('mevn add', () => {
       [`${DOWN}${ENTER}`], // opts for server directory
       genPath,
     );
-    expect(stdout).toContain(' Please specify the dependencies to install');
+    expect(stdout).toContain('Please specify the dependencies to install');
 
     // Delete generated directory
     rmTempDir(genPath);
@@ -136,6 +136,6 @@ describe('mevn add', () => {
       [ENTER], // opts for client directory
       genPath,
     );
-    expect(stdout).toContain(' Please specify the dependencies to install');
+    expect(stdout).toContain('Please specify the dependencies to install');
   });
 });
