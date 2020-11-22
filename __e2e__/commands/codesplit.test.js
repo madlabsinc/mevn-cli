@@ -4,13 +4,13 @@ import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
-const tempDirPath = path.join(__dirname, 'codesplit-cmd');
-const genPath = path.join(tempDirPath, 'my-app');
-
-// The client directory
-const clientPath = path.join(genPath, 'client');
-
 describe('mevn codesplit', () => {
+  const tempDirPath = path.join(__dirname, 'codesplit-cmd');
+  const genPath = path.join(tempDirPath, 'my-app');
+
+  // The client directory
+  const clientPath = path.join(genPath, 'client');
+
   // Cleanup
   beforeAll(() => {
     rmTempDir(tempDirPath);
