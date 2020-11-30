@@ -178,6 +178,8 @@ const fetchTemplate = async (template) => {
         },
       ]);
       serverDir = serverName;
+      // To keep track of server template
+      projectConfig.serverTemplate = serverName;
     }
     const serverPath = ['templates', 'server', serverDir];
     const source = path.join(__dirname, '..', '..', ...serverPath);

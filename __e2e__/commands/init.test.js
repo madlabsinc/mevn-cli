@@ -64,6 +64,7 @@ describe('mevn init', () => {
         client: false,
         server: false,
       },
+      serverTemplate: 'Express',
     };
     expect(fetchProjectConfig(genPath)).toStrictEqual(projectConfigContent);
 

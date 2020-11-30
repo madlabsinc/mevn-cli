@@ -1,5 +1,4 @@
 'use strict';
-
 const path = require('path');
 const hapi = require('@hapi/hapi');
 
