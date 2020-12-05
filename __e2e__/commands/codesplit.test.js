@@ -25,6 +25,7 @@ describe('mevn codesplit', () => {
       [
         ENTER, // Choose basic template
         `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
@@ -66,6 +67,7 @@ describe('mevn codesplit', () => {
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
         `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );

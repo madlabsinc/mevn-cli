@@ -56,7 +56,7 @@ const generateFile = async () => {
 
   // Fetch boilerplate template used from .mevnrc
   const projectConfig = appData();
-  const { template, isConfigured } = projectConfig;
+  const { template, isConfigured, serverTemplate } = projectConfig;
 
   if (type.includes('Component')) {
     return generateComponent();
@@ -72,11 +72,13 @@ const generateFile = async () => {
       const routesFilePath = path.join('server', 'routes', 'api.js');
       fs.writeFileSync(
         routesFilePath,
-        fs.readFileSync(path.join(templatePath, 'routes', 'index.js')),
+        fs.readFileSync(
+          path.join(templatePath, serverTemplate, 'routes', 'index.js'),
+        ),
       );
 
       // Create controllers directory
-      createDir('controllers');
+      createDir(`${serverTemplate}/controllers`);
 
       // Create models directory
       createDir('models');

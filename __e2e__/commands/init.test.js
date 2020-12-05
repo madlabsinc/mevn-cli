@@ -40,7 +40,8 @@ describe('mevn init', () => {
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js as the starter template
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
-        `${ENTER}`, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
@@ -63,6 +64,7 @@ describe('mevn init', () => {
         client: false,
         server: false,
       },
+      serverTemplate: 'Express',
     };
     expect(fetchProjectConfig(genPath)).toStrictEqual(projectConfigContent);
 
@@ -116,7 +118,8 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${ENTER}`, // Choose PWA as the starter template
-        `${ENTER}`, // Requires server directory
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
@@ -140,5 +143,58 @@ describe('mevn init', () => {
     expect(
       fs.existsSync(path.join(clientPath, 'src', 'registerServiceWorker.js')),
     ).toBeTruthy();
+  });
+
+  it('creates webapp based on the Default starter template with Hapi server template', async () => {
+    const appGenPath = path.join(tempDirPath, 'default-hapi');
+    await runPromptWithAnswers(
+      ['init', 'default-hapi'],
+      [
+        ENTER, // Choose Default as the starter template
+        `Y${ENTER}`, // Requires server directory
+        `${DOWN}${ENTER}`, // Choose Hapi.js as server template
+      ],
+      tempDirPath,
+    );
+    // Check Hapi dependencies in package.json
+    const appServerPath = path.join(appGenPath, 'server');
+    const pkgJson = JSON.parse(
+      fs.readFileSync(path.join(appServerPath, 'package.json')),
+    );
+    expect(pkgJson.dependencies['@hapi/hapi']).toBeTruthy();
+  });
+
+  it('creates a new MEVN stack webapp based on the Default starter template with Express server template', async () => {
+    const appGenPath = path.join(tempDirPath, 'default-express');
+    await runPromptWithAnswers(
+      ['init', 'default-express'],
+      [
+        ENTER, // Choose Default as the starter template
+        `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js as server template
+      ],
+      tempDirPath,
+    );
+    // Check Express dependencies in package.json
+    const appServerPath = path.join(appGenPath, 'server');
+    const pkgJson = JSON.parse(
+      fs.readFileSync(path.join(appServerPath, 'package.json')),
+    );
+    expect(pkgJson.dependencies['express']).toBeTruthy();
+  });
+
+  it('creates webapp based on the Default starter template with no server template', async () => {
+    const appGenPath = path.join(tempDirPath, 'default-no-server');
+    await runPromptWithAnswers(
+      ['init', 'default-no-server'],
+      [
+        ENTER, // Choose Default as the starter template
+        `N${ENTER}`, // Server is not required
+      ],
+      tempDirPath,
+    );
+    // project config for server should be undefiend
+    expect(fetchProjectConfig(appGenPath).isConfigured.server).toBe(undefined);
+    expect(fetchProjectConfig(appGenPath).isConfigured.client).toBe(false);
   });
 });

@@ -30,6 +30,7 @@ describe('mevn add', () => {
         ENTER, // Choose universal as the rendering mode
         ENTER, // Choose server as the deploy target
         `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
@@ -126,6 +127,7 @@ describe('mevn add', () => {
       [
         ENTER, // Choose Default as the starter template
         `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );

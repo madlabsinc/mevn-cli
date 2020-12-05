@@ -34,6 +34,7 @@ describe('mevn generate', () => {
       [
         ENTER, // Choose Default as the starter template
         `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose Express.js
       ],
       tempDirPath,
     );
@@ -87,7 +88,7 @@ describe('mevn generate', () => {
     );
   });
 
-  it('generates CRUD Boilerplate within the server directory', async () => {
+  it('generates CRUD Boilerplate within the server(express) directory', async () => {
     await runPromptWithAnswers(
       ['generate'],
       [
@@ -98,7 +99,52 @@ describe('mevn generate', () => {
     );
 
     // .mevnrc
-    expect(fetchProjectConfig(genPath).isConfigured.server).toBe(true);
+    const projectConfig = fetchProjectConfig(genPath);
+    expect(projectConfig.isConfigured.server).toBe(true);
+    expect(projectConfig.serverTemplate).toBe('Express');
+
+    // Assert for generated files
+    const generatedFiles = [
+      'controllers/user_controller.js',
+      'models/user_schema.js',
+      'helpers/db/mongodb.js',
+      '.env',
+    ];
+    generatedFiles.forEach((file) => {
+      expect(fs.existsSync(path.join(serverPath, file))).toBeTruthy();
+    });
+
+    // MongoDB URI path within .env
+    const envDotFile = fs.readFileSync(path.join(serverPath, '.env'), 'utf8');
+    expect(envDotFile).toBe('DB_URL=mongodb://localhost:27017/userdb');
+  });
+
+  it('generates CRUD Boilerplate within the server(hapi) directory', async () => {
+    await runPromptWithAnswers(
+      ['init', 'my-hapi-app'],
+      [
+        ENTER, // Choose Default as the starter template
+        `Y${ENTER}`, // Requires server directory
+        `${DOWN}${ENTER}`, // Choose Hapi.js
+      ],
+      tempDirPath,
+    );
+    const genPath = path.join(tempDirPath, 'my-hapi-app');
+    // The server directory
+    const serverPath = path.join(genPath, 'server');
+    await runPromptWithAnswers(
+      ['generate'],
+      [
+        `${DOWN}${ENTER}`, // Choose CRUD Boilerplate
+        ENTER, // Default value for MongoDB URI
+      ],
+      genPath,
+    );
+
+    // .mevnrc
+    const projectConfig = fetchProjectConfig(genPath);
+    expect(projectConfig.isConfigured.server).toBe(true);
+    expect(projectConfig.serverTemplate).toBe('Hapi');
 
     // Assert for generated files
     const generatedFiles = [
