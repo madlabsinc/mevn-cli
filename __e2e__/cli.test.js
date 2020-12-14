@@ -4,7 +4,8 @@ import { run } from '../jest/helpers';
 
 describe('Default behavior', () => {
   it('warns the user if an unknown option is passed in', () => {
-    const { stderr } = run(['--invalid'], { reject: false });
+    const { stderr, exitCode } = run(['--invalid'], { reject: false });
+    expect(exitCode).toBe(1);
     expect(stderr).toContain(`error: unknown option`);
   });
 

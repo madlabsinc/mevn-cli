@@ -41,7 +41,7 @@ describe('mevn generate', () => {
     expect(fetchProjectConfig(genPath).isConfigured.client).toBe(false);
 
     // Invoke generate command
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['generate'],
       [
         ENTER, // Generate new component
@@ -50,6 +50,8 @@ describe('mevn generate', () => {
       ],
       genPath,
     );
+
+    expect(exitCode).toBe(0);
 
     // Invoking the generate command updates the key
     expect(fetchProjectConfig(genPath).isConfigured.client).toBe(true);
@@ -61,7 +63,7 @@ describe('mevn generate', () => {
   });
 
   it('generates a Page component', async () => {
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['generate'],
       [
         ENTER, // Generate new component
@@ -70,6 +72,8 @@ describe('mevn generate', () => {
       ],
       genPath,
     );
+
+    expect(exitCode).toBe(0);
 
     // Check whether Dashboard.vue is created within the respective path
     expect(
@@ -88,7 +92,7 @@ describe('mevn generate', () => {
   });
 
   it('generates CRUD Boilerplate within the server directory', async () => {
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['generate'],
       [
         `${DOWN}${ENTER}`, // Choose CRUD Boilerplate
@@ -96,6 +100,8 @@ describe('mevn generate', () => {
       ],
       genPath,
     );
+
+    expect(exitCode).toBe(0);
 
     // .mevnrc
     expect(fetchProjectConfig(genPath).isConfigured.server).toBe(true);
