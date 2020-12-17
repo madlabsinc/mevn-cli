@@ -89,9 +89,11 @@ program
       .then(console.log);
   });
 
-program.arguments('<command>').action((cmd) => {
+// Validation for unknown commands
+program.on('command:*', ([cmd]) => {
   program.outputHelp();
-  console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
+  console.log();
+  console.error(` Unknown command ${chalk.yellow(cmd)}.`);
   console.log();
   suggestCommands(cmd);
 });
