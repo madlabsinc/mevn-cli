@@ -9,8 +9,8 @@ describe('Default behavior', () => {
   });
 
   it('warns the user if an unknown command is passed in', () => {
-    const { stdout } = run(['create']);
-    expect(stdout).toContain('Unknown command create');
+    const { stderr } = run(['create']);
+    expect(stderr).toContain('Unknown command create');
   });
 
   it('suggests the closest match for an unknown command', () => {
