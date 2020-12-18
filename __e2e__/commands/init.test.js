@@ -27,15 +27,14 @@ describe('mevn init', () => {
   afterAll(() => rmTempDir(tempDirPath));
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {
-    try {
-      run(['init', 'my-app', 'stray-arg']);
-    } catch (err) {
-      const { exitCode, stdout } = err;
-      expect(exitCode).toBe(1);
-      expect(stdout).toContain(
-        'Error: Kindly provide only one argument as the directory name!!',
-      );
-    }
+    const { exitCode, stdout } = run(['init', 'my-app', 'stray-arg'], {
+      reject: false,
+    });
+
+    expect(exitCode).toBe(1);
+    expect(stdout).toContain(
+      'Error: Kindly provide only one argument as the directory name!!',
+    );
   });
 
   it('creates a new MEVN stack webapp based on the Nuxt.js starter template', async () => {
@@ -78,15 +77,13 @@ describe('mevn init', () => {
   });
 
   it('shows an appropriate warning if the specified directory already exists in path', () => {
-    try {
-      run(['init', 'my-app'], { cwd: tempDirPath });
-    } catch (err) {
-      const { exitCode, stdout } = err;
-      expect(exitCode).toBe(1);
-      expect(stdout).toContain(
-        'Error: Directory my-app already exists in path!',
-      );
-    }
+    const { exitCode, stdout } = run(['init', 'my-app'], {
+      cwd: tempDirPath,
+      reject: false,
+    });
+
+    expect(exitCode).toBe(1);
+    expect(stdout).toContain('Error: Directory my-app already exists in path!');
   });
 
   it('shows an appropriate warning if creating an application within a non-empty path', () => {

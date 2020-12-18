@@ -76,14 +76,12 @@ describe('mevn codesplit', () => {
     );
 
     // Invoke codesplit command
-    try {
-      run(['codesplit'], { cwd: genPath });
-    } catch (err) {
-      const { exitCode, stdout } = err;
-      expect(exitCode).toBe(1);
-      expect(stdout).toContain(
-        `You're having the Nuxt.js boilerplate template`,
-      );
-    }
+    const { exitCode, stdout } = run(['codesplit'], {
+      cwd: genPath,
+      reject: false,
+    });
+
+    expect(exitCode).toBe(1);
+    expect(stdout).toContain(`You're having the Nuxt.js boilerplate template`);
   });
 });

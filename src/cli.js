@@ -94,6 +94,7 @@ program.arguments('<command>').action((cmd) => {
   console.log(`  ` + chalk.red(`\n  Unknown command ${chalk.yellow(cmd)}.`));
   console.log();
   suggestCommands(cmd);
+  process.exitCode = 1;
 });
 
 program.parse(process.argv);

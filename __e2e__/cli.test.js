@@ -10,12 +10,14 @@ describe('Default behavior', () => {
   });
 
   it('warns the user if an unknown command is passed in', () => {
-    const { stdout } = run(['create']);
+    const { exitCode, stdout } = run(['create'], { reject: false });
+    expect(exitCode).toBe(1);
     expect(stdout).toContain('Unknown command create');
   });
 
   it('suggests the closest match for an unknown command', () => {
-    const { stdout } = run(['ini']);
+    const { exitCode, stdout } = run(['ini'], { reject: false });
+    expect(exitCode).toBe(1);
     expect(stdout).toContain('Did you mean init?');
   });
 });
