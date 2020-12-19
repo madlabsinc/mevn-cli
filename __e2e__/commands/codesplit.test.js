@@ -41,7 +41,12 @@ describe('mevn codesplit', () => {
     );
 
     // Invoke codesplit command
-    await runPromptWithAnswers(['codesplit'], [`${DOWN}${ENTER}`], genPath);
+    const { exitCode } = await runPromptWithAnswers(
+      ['codesplit'],
+      [`${DOWN}${ENTER}`],
+      genPath,
+    );
+    expect(exitCode).toBe(0);
 
     // router.js
     const routerConfig = fs
@@ -71,7 +76,12 @@ describe('mevn codesplit', () => {
     );
 
     // Invoke codesplit command
-    const { stdout } = run(['codesplit'], { cwd: genPath });
+    const { exitCode, stdout } = run(['codesplit'], {
+      cwd: genPath,
+      reject: false,
+    });
+
+    expect(exitCode).toBe(1);
     expect(stdout).toContain(`You're having the Nuxt.js boilerplate template`);
   });
 });

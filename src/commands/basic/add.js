@@ -38,9 +38,8 @@ const addDeps = async (deps, { dev }) => {
     (templateDir === 'server' ||
       (templateDir === 'client' && template !== 'Nuxt.js'))
   ) {
-    return console.log(
-      chalk.yellow(' Please specify the dependencies to install'),
-    );
+    console.log(chalk.yellow(' Please specify the dependencies to install'));
+    process.exit(1);
   }
 
   const installFlag = dev ? '--save-dev' : '--save';
@@ -109,9 +108,8 @@ const addDeps = async (deps, { dev }) => {
       .filter((dep) => !configuredModules.includes(dep));
 
     if (!nuxtDeps.length) {
-      return console.log(
-        chalk.yellow(' Please specify the dependencies to install'),
-      );
+      console.log(chalk.yellow(' Please specify the dependencies to install'));
+      process.exit(1);
     }
 
     const { installCandidate } = await inquirer.prompt([

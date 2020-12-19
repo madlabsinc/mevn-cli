@@ -36,7 +36,7 @@ export const checkIfTemplateIsNuxt = async () => {
     console.log(
       chalk.red.bold(` You're having the Nuxt.js boilerplate template`),
     );
-    process.exit(0);
+    process.exit(1);
   }
 };
 
@@ -54,7 +54,7 @@ export const dependencyNotInstalled = (dependency) => {
     )}
     `),
   );
-  process.exit(0);
+  process.exit(1);
 };
 
 /**
@@ -86,7 +86,7 @@ export const invalidProjectName = (projectName) => {
       )} because of npm naming restrictions:`,
     ),
   );
-  process.exit(0);
+  process.exit(1);
 };
 
 /**
@@ -104,7 +104,7 @@ export const directoryExistsInPath = (projectName) => {
       )} already exists in path!`,
     ),
   );
-  process.exit(0);
+  process.exit(1);
 };
 
 /**
@@ -119,5 +119,5 @@ export const hasStrayArgs = () => {
       '\n Error: Kindly provide only one argument as the directory name!!',
     ),
   );
-  process.exit(0);
+  process.exit(1);
 };

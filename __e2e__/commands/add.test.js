@@ -35,7 +35,7 @@ describe('mevn add', () => {
     );
 
     // Invoke the add command
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['add'],
       [
         ENTER,
@@ -43,6 +43,8 @@ describe('mevn add', () => {
       ], // Choose @nuxtjs/pwa, nuxt-oauth and @nuxtjs/storybook modules
       genPath,
     );
+
+    expect(exitCode).toBe(0);
 
     // nuxt.config.js
     const nuxtConfig = require(path.join(clientPath, 'nuxt.config.js')).default;
@@ -85,8 +87,12 @@ describe('mevn add', () => {
   });
 
   it('installs the respective dependency passed as an arg', async () => {
-    await runPromptWithAnswers(['add', 'v-tooltip'], [ENTER], genPath);
-
+    const { exitCode } = await runPromptWithAnswers(
+      ['add', 'v-tooltip'],
+      [ENTER],
+      genPath,
+    );
+    expect(exitCode).toBe(0);
     // package.json
     const pkgJson = JSON.parse(
       fs.readFileSync(path.join(clientPath, 'package.json')),
@@ -95,11 +101,13 @@ describe('mevn add', () => {
   });
 
   it('installs the respective devDependency passed as an arg for the server directory', async () => {
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['add', 'husky', '--dev'],
       [`${DOWN}${ENTER}`],
       genPath,
     );
+
+    expect(exitCode).toBe(0);
 
     // package.json
     const pkgJson = JSON.parse(
@@ -109,11 +117,12 @@ describe('mevn add', () => {
   });
 
   it('shows a warning if no args were passed in for server directory', async () => {
-    const { stdout } = await runPromptWithAnswers(
+    const { exitCode, stdout } = await runPromptWithAnswers(
       ['add'],
       [`${DOWN}${ENTER}`], // opts for server directory
       genPath,
     );
+    expect(exitCode).toBe(1);
     expect(stdout).toContain('Please specify the dependencies to install');
 
     // Delete generated directory
@@ -131,11 +140,12 @@ describe('mevn add', () => {
     );
 
     // Invoke the add command
-    const { stdout } = await runPromptWithAnswers(
+    const { exitCode, stdout } = await runPromptWithAnswers(
       ['add'],
       [ENTER], // opts for client directory
       genPath,
     );
+    expect(exitCode).toBe(1);
     expect(stdout).toContain('Please specify the dependencies to install');
   });
 });

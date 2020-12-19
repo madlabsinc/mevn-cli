@@ -249,7 +249,7 @@ const initializeProject = async (appName) => {
         ` It seems that you're already within a valid MEVN stack based project`,
       ),
     );
-    process.exit(0);
+    process.exit(1);
   }
 
   projectPathRelative = isCurrentDir ? '.' : appName;

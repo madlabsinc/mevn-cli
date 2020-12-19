@@ -27,14 +27,18 @@ describe('mevn init', () => {
   afterAll(() => rmTempDir(tempDirPath));
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {
-    const { stdout } = run(['init', 'my-app', 'stray-arg']);
+    const { exitCode, stdout } = run(['init', 'my-app', 'stray-arg'], {
+      reject: false,
+    });
+
+    expect(exitCode).toBe(1);
     expect(stdout).toContain(
       'Error: Kindly provide only one argument as the directory name!!',
     );
   });
 
   it('creates a new MEVN stack webapp based on the Nuxt.js starter template', async () => {
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js as the starter template
@@ -44,6 +48,8 @@ describe('mevn init', () => {
       ],
       tempDirPath,
     );
+
+    expect(exitCode).toBe(0);
 
     // nuxt.config.js
     const nuxtConfig = require(path.join(clientPath, 'nuxt.config.js')).default;
@@ -71,15 +77,21 @@ describe('mevn init', () => {
   });
 
   it('shows an appropriate warning if the specified directory already exists in path', () => {
-    const { stdout } = run(['init', 'my-app'], { cwd: tempDirPath });
+    const { exitCode, stdout } = run(['init', 'my-app'], {
+      cwd: tempDirPath,
+      reject: false,
+    });
+
+    expect(exitCode).toBe(1);
     expect(stdout).toContain('Error: Directory my-app already exists in path!');
   });
 
   it('shows an appropriate warning if creating an application within a non-empty path', () => {
-    const { stdout } = run(['init', '.'], {
+    const { exitCode, stdout } = run(['init', '.'], {
       cwd: genPath,
       reject: false,
     });
+    expect(exitCode).toBe(1);
     expect(stdout).toContain(`It seems the current directory isn't empty.`);
 
     // Delete the generated directory
@@ -87,7 +99,7 @@ describe('mevn init', () => {
   });
 
   it('creates a new MEVN stack webapp based on the GraphQL starter template', async () => {
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${ENTER}`, // Choose GraphQL as the starter template
@@ -96,6 +108,7 @@ describe('mevn init', () => {
       tempDirPath,
     );
 
+    expect(exitCode).toBe(0);
     expect(fetchProjectConfig(genPath).template).toBe('GraphQL');
     expect(fetchProjectConfig(genPath).isConfigured.client).toBe(false);
     expect(fetchProjectConfig(genPath).isConfigured.server).toBe(false);
@@ -112,7 +125,7 @@ describe('mevn init', () => {
   });
 
   it('creates a new MEVN stack webapp based on the PWA starter template', async () => {
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
       [
         `${DOWN}${ENTER}`, // Choose PWA as the starter template
@@ -121,6 +134,7 @@ describe('mevn init', () => {
       tempDirPath,
     );
 
+    expect(exitCode).toBe(0);
     expect(fetchProjectConfig(genPath).template).toBe('PWA');
     expect(fetchProjectConfig(genPath).isConfigured.client).toBe(false);
     expect(fetchProjectConfig(genPath).isConfigured.server).toBe(false);
@@ -149,7 +163,7 @@ describe('mevn init', () => {
     // Create my-app directory
     fs.mkdirSync(genPath);
 
-    await runPromptWithAnswers(
+    const { exitCode } = await runPromptWithAnswers(
       ['init', '.'],
       [
         ENTER, // Choose Default as the starter template
@@ -158,6 +172,7 @@ describe('mevn init', () => {
       genPath,
     );
 
+    expect(exitCode).toBe(0);
     expect(fetchProjectConfig(genPath).template).toBe('Default');
     expect(fetchProjectConfig(genPath).isConfigured.client).toBe(false);
     expect(fetchProjectConfig(genPath).isConfigured.server).toBe(false);
