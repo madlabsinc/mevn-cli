@@ -8,8 +8,7 @@ import path from 'path';
 import readFileContent from '../../utils/helpers';
 
 import appData from '../../utils/projectConfig';
-import { validateInput } from '../../utils/validate';
-import { validateInstallation } from '../../utils/validate';
+import { validateInput, validateInstallation } from '../../utils/validate';
 
 /**
  * Creates a new Heroku app

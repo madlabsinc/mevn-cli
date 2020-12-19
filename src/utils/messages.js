@@ -41,37 +41,6 @@ export const checkIfTemplateIsNuxt = async () => {
 };
 
 /**
- * Warns appropriately if the respective dependency wasn't installed
- *
- * @param {String} dependency - The dependency to be installed
- * @returns {Void}
- */
-
-export const dependencyNotInstalled = (dependency) => {
-  console.log(
-    chalk.yellow.bold(` Warning:- ${chalk.cyan.bold(
-      `${dependency} is required to be installed`,
-    )}
-    `),
-  );
-  process.exit(1);
-};
-
-/**
- * Shows installation information
- *
- * @param {String} depCandidate - The repective package to be installed
- * @param {String} url - Official downloads page url
- * @returns {any}
- */
-
-export const showInstallationInfo = (depCandidate, url) => {
-  const msg = ` You need to download ${depCandidate} from the official downloads page: ${url}`;
-  console.log(chalk.cyan.bold(msg));
-  process.exit(0);
-};
-
-/**
  * Warns appropriately if the project name is invalid
  *
  * @param {String} projectName - Name of the project

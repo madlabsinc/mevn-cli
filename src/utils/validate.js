@@ -1,9 +1,9 @@
 'use strict';
 
+import chalk from 'chalk';
 import execa from 'execa';
 import inquirer from 'inquirer';
 
-import { dependencyNotInstalled, showInstallationInfo } from './messages';
 import exec from './exec';
 import { isWin, isLinux } from './constants';
 import Spinner from './spinner';
@@ -11,14 +11,30 @@ import Spinner from './spinner';
 // Initialize the spinner.
 const spinner = new Spinner();
 
+// Helpers
+
 /**
- * Helper method to validate installation.
+ * Shows installation information
+ *
+ * @param {String} depCandidate - The repective package to be installed
+ * @param {String} url - Official downloads page url
+ * @returns {Void}
+ */
+
+const showInstallationInfo = (depCandidate, url) => {
+  const msg = ` You need to download ${depCandidate} from the official downloads page: ${url}`;
+  console.log(chalk.cyan.bold(msg));
+  process.exit(0);
+};
+
+/**
+ * Helper method to validate installation
  *
  * @param {String} dependency
  * @returns {Promise<boolean>}
  */
 
-const dependencyIsInstalled = async (dependency) => {
+const checkInstallationStatus = async (dependency) => {
   try {
     await execa.command(dependency);
     return true;
@@ -28,116 +44,99 @@ const dependencyIsInstalled = async (dependency) => {
 };
 
 /**
- * Validates user input
- *
- * @param {String} componentName
- * @returns {Boolean}
- */
-
-const validateInput = (componentName) => {
-  if (!componentName) {
-    console.log(`Can't be empty!`);
-    return false;
-  } else {
-    return true;
-  }
-};
-
-/**
- * Executes respective shell command
- *
- * @param {String} cmd
- * @returns {Promise<any>}
- */
-
-/**
- * Triggers Git installation specific to the platform
+ * Install Git for supported platforms, else show installation instructions
  *
  * @returns{Promise<void>}
  */
 
-const installGit = async () => {
+const installGit = () => {
   const url = 'https://git-scm.com/download/win';
+
   if (isWin) {
-    showInstallationInfo('git', url);
-  } else {
-    const packageMgr = isLinux ? 'apt' : 'brew';
-    await exec(`${packageMgr} install git`);
+    return showInstallationInfo('git', url);
   }
+  const packageMgr = isLinux ? 'apt' : 'brew';
+  return exec(`${packageMgr} install git`);
 };
 
 /**
- * Triggers Docker installation specific to the platform
+ * Install Docker for Linux platform, else show installation instructions
  *
  * @returns{Promise<void>}
  */
 
-const installDocker = async () => {
+const installDocker = () => {
   const urlMap = {
     win32:
       'https://hub.docker.com/editions/community/docker-ce-desktop-windows',
     darwin: 'https://docs.docker.com/docker-for-mac/install/',
   };
 
-  if (isLinux) {
-    await exec('apt install docker.io');
-  } else {
-    showInstallationInfo('docker', urlMap[process.platform]);
+  if (!isLinux) {
+    return showInstallationInfo('docker', urlMap[process.platform]);
   }
+  return exec('apt install docker.io');
 };
 
+// Exported methods
+
 /**
- * Installs respective package from the npm registry
+ * Validates user input for input prompts
  *
- * @returns{Promise<void>}
+ * @param {String} userInput
+ * @returns {Boolean}
  */
 
-const installNpmPackage = async (dependency) => {
-  await exec(`npm install -g ${dependency}`);
+export const validateInput = (userInput) => {
+  if (!userInput) {
+    return `Can't be empty!`;
+  }
+  return true;
 };
 
 /**
- * Validates installation
+ * Checks if a necessary dependency is installed
  *
  * @param {String} dependency
- * @returns {Promise<boolean>}
+ * @returns {Promise<Void>}
  */
 
-const validateInstallation = async (dependency) => {
-  const status = await dependencyIsInstalled(dependency);
+export const validateInstallation = async (dependency) => {
+  const isDepInstalled = await checkInstallationStatus(dependency);
 
   if (dependency.includes(' ')) {
     const sep = dependency.includes('-') ? '-' : '';
     dependency = dependency.split(sep)[0];
   }
 
-  if (!status) {
-    const { depToInstall } = await inquirer.prompt([
+  if (!isDepInstalled) {
+    const { shouldInstallDep } = await inquirer.prompt([
       {
         type: 'confirm',
-        name: 'depToInstall',
+        name: 'shouldInstallDep',
         message: `Sorry, ${dependency} is not installed on your system, Do you want to install it?`,
       },
     ]);
 
-    if (depToInstall) {
-      spinner.text = `Installing ${dependency}`;
-      spinner.start();
-
-      if (dependency === 'git') {
-        await installGit();
-      } else if (dependency === 'docker') {
-        await installDocker();
-      } else {
-        await installNpmPackage(dependency);
-      }
-    } else {
-      dependencyNotInstalled(dependency);
+    if (!shouldInstallDep) {
+      console.warn(
+        chalk.yellow.bold(` Warning:- ${chalk.cyan.bold(
+          `${dependency} is required to be installed`,
+        )}
+        `),
+      );
+      process.exit(1);
     }
-  }
-};
 
-module.exports = {
-  validateInstallation,
-  validateInput,
+    spinner.text = `Installing ${dependency}`;
+    spinner.start();
+
+    if (dependency === 'git') {
+      return installGit();
+    }
+    if (dependency === 'docker') {
+      return installDocker();
+    }
+    await exec(`npm install -g ${dependency}`);
+  }
 };
