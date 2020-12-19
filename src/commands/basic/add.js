@@ -39,7 +39,7 @@ const addDeps = async (deps, { dev }) => {
       (templateDir === 'client' && template !== 'Nuxt.js'))
   ) {
     console.log(chalk.yellow(' Please specify the dependencies to install'));
-    return process.exit(1);
+    process.exit(1);
   }
 
   const installFlag = dev ? '--save-dev' : '--save';
@@ -109,7 +109,7 @@ const addDeps = async (deps, { dev }) => {
 
     if (!nuxtDeps.length) {
       console.log(chalk.yellow(' Please specify the dependencies to install'));
-      return process.exit(1);
+      process.exit(1);
     }
 
     const { installCandidate } = await inquirer.prompt([

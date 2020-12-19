@@ -96,7 +96,7 @@ program.on('command:*', ([cmd]) => {
   console.error(` Unknown command ${chalk.yellow(cmd)}.`);
   console.log();
   suggestCommands(cmd);
-  process.exit(1);
+  process.exitCode = 1;
 });
 
 program.parse(process.argv);
