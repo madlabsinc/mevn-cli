@@ -8,6 +8,7 @@ import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 import validate from 'validate-npm-package-name';
 
+import * as logger from '../../utils/logger';
 import { copyDirSync, readFileContent } from '../../utils/helpers';
 import { validateInstallation } from '../../utils/validate';
 
@@ -48,8 +49,8 @@ const showInstructions = () => {
 
   console.log();
   console.log();
-  console.log(chalk.cyan.bold(`You're all set`));
-  console.log(chalk.cyan.bold(`Now, just type in ${userCommandInstruction}`));
+  logger.info(`You're all set`);
+  logger.info(`Now, just type in ${userCommandInstruction}`);
 
   makeInitialCommit();
 };
@@ -199,7 +200,7 @@ const fetchTemplate = async (template) => {
  * @returns {Promise<void>}
  */
 
-const initializeProject = async (appName) => {
+export default async (appName) => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
 
   const hasMultipleProjectNameArgs =
@@ -213,54 +214,39 @@ const initializeProject = async (appName) => {
 
   // Validation for multiple directory names
   if (hasMultipleProjectNameArgs) {
-    console.log(
-      chalk.red.bold(
-        '\n Error: Kindly provide only one argument as the directory name!!',
-      ),
+    logger.error(
+      '\n Error: Kindly provide only one argument as the directory name!!',
     );
     process.exit(1);
   }
 
   const { validForNewPackages } = validate(appName);
   if (!validForNewPackages) {
-    console.log(
-      chalk.red.bold(
-        ` Error: Could not create a project called ${chalk.red(
-          `"${chalk.cyan.bold(appName)}"`,
-        )} because of npm naming restrictions:`,
-      ),
+    logger.error(
+      ` Error: Could not create a project called "${chalk.cyan.bold(
+        appName,
+      )}" because of npm naming restrictions:`,
     );
     process.exit(1);
   }
 
   if (isCurrentDir) {
     if (fs.readdirSync('.').length) {
-      console.log();
-      console.log(
-        chalk.red.bold(`It seems the current directory isn't empty.`),
-      );
-      console.log();
+      logger.error(`\n It seems the current directory isn't empty.\n`);
       process.exit(1);
     }
   }
 
   if (!isCurrentDir && fs.existsSync(appName)) {
-    console.log(
-      chalk.red.bold(
-        `\n Error: Directory ${chalk.cyan.bold(
-          appName,
-        )} already exists in path!`,
-      ),
+    logger.error(
+      `\n Error: Directory ${chalk.cyan.bold(appName)} already exists in path!`,
     );
     process.exit(1);
   }
 
   if (fs.existsSync('.mevnrc')) {
-    console.log();
-    console.log(
-      chalk.cyan.bold(
-        ` It seems that you're already within a valid MEVN stack based project`,
-      ),
+    logger.error(
+      `\n It seems that you're already within a valid MEVN stack based project`,
     );
     process.exit(1);
   }
@@ -286,5 +272,3 @@ const initializeProject = async (appName) => {
 
   fetchTemplate(projectConfig.template);
 };
-
-module.exports = initializeProject;

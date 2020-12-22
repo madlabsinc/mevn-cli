@@ -5,12 +5,12 @@ import fs from 'fs';
 import path from 'path';
 import showBanner from 'node-banner';
 
-import { validateInstallation } from '../../utils/validate';
 import {
   checkIfConfigFileExists,
   fetchProjectConfig,
   readFileContent,
 } from '../../utils/helpers';
+import { validateInstallation } from '../../utils/validate';
 
 /**
  * Returns the respective file content as an array

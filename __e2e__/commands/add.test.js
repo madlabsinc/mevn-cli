@@ -117,13 +117,13 @@ describe('mevn add', () => {
   });
 
   it('shows a warning if no args were passed in for server directory', async () => {
-    const { exitCode, stdout } = await runPromptWithAnswers(
+    const { exitCode, stderr } = await runPromptWithAnswers(
       ['add'],
       [`${DOWN}${ENTER}`], // opts for server directory
       genPath,
     );
     expect(exitCode).toBe(1);
-    expect(stdout).toContain('Please specify the dependencies to install');
+    expect(stderr).toContain('Please specify the dependencies to install');
 
     // Delete generated directory
     rmTempDir(genPath);
@@ -140,12 +140,12 @@ describe('mevn add', () => {
     );
 
     // Invoke the add command
-    const { exitCode, stdout } = await runPromptWithAnswers(
+    const { exitCode, stderr } = await runPromptWithAnswers(
       ['add'],
       [ENTER], // opts for client directory
       genPath,
     );
     expect(exitCode).toBe(1);
-    expect(stdout).toContain('Please specify the dependencies to install');
+    expect(stderr).toContain('Please specify the dependencies to install');
   });
 });

@@ -1,12 +1,12 @@
 'use strict';
 
-import chalk from 'chalk';
 import fs from 'fs';
 import showBanner from 'node-banner';
 import path from 'path';
 import inquirer from 'inquirer';
 
 import exec from '../../utils/exec';
+import * as logger from '../../utils/logger';
 import {
   checkIfConfigFileExists,
   dirOfChoice,
@@ -40,7 +40,7 @@ export default async (deps, { dev }) => {
     (templateDir === 'server' ||
       (templateDir === 'client' && template !== 'Nuxt.js'))
   ) {
-    console.log(chalk.yellow(' Please specify the dependencies to install'));
+    logger.warn(' Please specify the dependencies to install');
     process.exit(1);
   }
 
@@ -110,7 +110,7 @@ export default async (deps, { dev }) => {
       .filter((dep) => !configuredModules.includes(dep));
 
     if (!nuxtDeps.length) {
-      console.log(chalk.yellow(' Please specify the dependencies to install'));
+      logger.warn(' Please specify the dependencies to install');
       process.exit(1);
     }
 

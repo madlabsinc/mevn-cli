@@ -1,12 +1,12 @@
 'use strict';
 
-import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 import path from 'path';
 
 import exec from '../../utils/exec';
+import * as logger from '../../utils/logger';
 import {
   checkIfConfigFileExists,
   fetchProjectConfig,
@@ -97,8 +97,7 @@ export default async () => {
 
   // Duplicate component
   if (fs.existsSync(path.join(componentPath, `${componentName}.vue`))) {
-    console.log();
-    console.log(chalk.cyan.bold(` Info: ${componentName}.vue already exists`));
+    logger.info(`\n Info: ${componentName}.vue already exists`);
     return;
   }
 

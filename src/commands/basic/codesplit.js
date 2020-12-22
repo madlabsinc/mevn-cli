@@ -1,12 +1,12 @@
 'use strict';
 
-import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 import path from 'path';
 
 import exec from '../../utils/exec';
+import * as logger from '../../utils/logger';
 import {
   checkIfConfigFileExists,
   fetchProjectConfig,
@@ -26,10 +26,7 @@ export default async () => {
   // Exit for the case of Nuxt.js boilerplate template
   const { template } = fetchProjectConfig();
   if (template === 'Nuxt.js') {
-    console.log();
-    console.log(
-      chalk.red.bold(` You're having the Nuxt.js boilerplate template`),
-    );
+    logger.error(`\n You're having the Nuxt.js boilerplate template`);
     process.exit(1);
   }
 
@@ -49,11 +46,8 @@ export default async () => {
 
   // Warns the user if the list is empty
   if (!availableComponents.length) {
-    console.log();
-    console.log(
-      chalk.cyan.bold(
-        ' Info: All of the available components are dynamically imported',
-      ),
+    logger.info(
+      '\n Info: All of the available components are dynamically imported',
     );
     return;
   }

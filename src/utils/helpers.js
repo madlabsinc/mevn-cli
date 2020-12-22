@@ -13,7 +13,7 @@ import { isWin } from './constants';
 
 export const checkIfConfigFileExists = () => {
   if (!fs.existsSync('./.mevnrc')) {
-    console.log(
+    console.error(
       chalk.cyan.bold(`\n\n Make sure that you're within a valid MEVN project
       \n${chalk.red.bold(' Error:')} No .mevnrc file found
     `),

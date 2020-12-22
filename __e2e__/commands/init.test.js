@@ -27,12 +27,12 @@ describe('mevn init', () => {
   afterAll(() => rmTempDir(tempDirPath));
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {
-    const { exitCode, stdout } = run(['init', 'my-app', 'stray-arg'], {
+    const { exitCode, stderr } = run(['init', 'my-app', 'stray-arg'], {
       reject: false,
     });
 
     expect(exitCode).toBe(1);
-    expect(stdout).toContain(
+    expect(stderr).toContain(
       'Error: Kindly provide only one argument as the directory name!!',
     );
   });
@@ -77,22 +77,22 @@ describe('mevn init', () => {
   });
 
   it('shows an appropriate warning if the specified directory already exists in path', () => {
-    const { exitCode, stdout } = run(['init', 'my-app'], {
+    const { exitCode, stderr } = run(['init', 'my-app'], {
       cwd: tempDirPath,
       reject: false,
     });
 
     expect(exitCode).toBe(1);
-    expect(stdout).toContain('Error: Directory my-app already exists in path!');
+    expect(stderr).toContain('Error: Directory my-app already exists in path!');
   });
 
   it('shows an appropriate warning if creating an application within a non-empty path', () => {
-    const { exitCode, stdout } = run(['init', '.'], {
+    const { exitCode, stderr } = run(['init', '.'], {
       cwd: genPath,
       reject: false,
     });
     expect(exitCode).toBe(1);
-    expect(stdout).toContain(`It seems the current directory isn't empty.`);
+    expect(stderr).toContain(`It seems the current directory isn't empty.`);
 
     // Delete the generated directory
     rmTempDir(genPath);

@@ -1,11 +1,11 @@
 'use strict';
 
-import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import path from 'path';
 
+import * as logger from '../../utils/logger';
 import { fetchProjectConfig, readFileContent } from '../../utils/helpers';
 import { validateInput, validateInstallation } from '../../utils/validate';
 
@@ -27,9 +27,7 @@ const createHerokuApp = async (dir) => {
   try {
     await execa.command(`heroku create ${appName}`, { cwd: dir });
   } catch ({ stderr }) {
-    console.log();
-    console.log(chalk.red(stderr));
-    console.log();
+    logger.error(`\n${stderr}\n`);
     await createHerokuApp(dir);
   }
 };
