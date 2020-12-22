@@ -3,9 +3,11 @@
 import fs from 'fs';
 import showBanner from 'node-banner';
 
-import appData from '../../utils/projectConfig';
-import { checkIfConfigFileExists } from '../../utils/messages';
-import dirOfChoice from '../../utils/directoryPrompt';
+import {
+  checkIfConfigFileExists,
+  dirOfChoice,
+  fetchProjectConfig,
+} from '../../utils/helpers';
 import serveProject from './launch';
 
 /**
@@ -14,13 +16,13 @@ import serveProject from './launch';
  * @returns {Promise<void>}
  */
 
-const setupProject = async () => {
+export default async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
   let templateDir;
 
-  const projectConfig = appData();
+  const projectConfig = fetchProjectConfig();
 
   if (fs.existsSync('./server')) {
     ({ dir: templateDir } = await dirOfChoice());
@@ -31,5 +33,3 @@ const setupProject = async () => {
   // Proceed with further installation
   serveProject(projectConfig, templateDir);
 };
-
-module.exports = setupProject;

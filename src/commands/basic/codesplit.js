@@ -9,9 +9,9 @@ import path from 'path';
 import exec from '../../utils/exec';
 import {
   checkIfConfigFileExists,
-  checkIfTemplateIsNuxt,
-} from '../../utils/messages';
-import readFileContent from '../../utils/helpers';
+  fetchProjectConfig,
+  readFileContent,
+} from '../../utils/helpers';
 
 /**
  * Lazy load components
@@ -19,12 +19,19 @@ import readFileContent from '../../utils/helpers';
  * @returns {Promise<void>}
  */
 
-const asyncRender = async () => {
+export default async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   await checkIfConfigFileExists();
 
   // Exit for the case of Nuxt.js boilerplate template
-  checkIfTemplateIsNuxt();
+  const { template } = fetchProjectConfig();
+  if (template === 'Nuxt.js') {
+    console.log();
+    console.log(
+      chalk.red.bold(` You're having the Nuxt.js boilerplate template`),
+    );
+    process.exit(1);
+  }
 
   const routesConfigPath = path.join('client', 'src', 'router.js');
   const routesConfig = readFileContent(routesConfigPath);
@@ -97,5 +104,3 @@ const asyncRender = async () => {
     },
   );
 };
-
-module.exports = asyncRender;

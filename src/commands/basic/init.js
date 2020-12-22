@@ -8,14 +8,8 @@ import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 import validate from 'validate-npm-package-name';
 
-import copyDirSync from '../../utils/fs';
-import {
-  directoryExistsInPath,
-  hasStrayArgs,
-  invalidProjectName,
-} from '../../utils/messages';
+import { copyDirSync, readFileContent } from '../../utils/helpers';
 import { validateInstallation } from '../../utils/validate';
-import readFileContent from '../../utils/helpers';
 
 let projectPathRelative;
 let projectConfig = {};
@@ -219,12 +213,24 @@ const initializeProject = async (appName) => {
 
   // Validation for multiple directory names
   if (hasMultipleProjectNameArgs) {
-    hasStrayArgs();
+    console.log(
+      chalk.red.bold(
+        '\n Error: Kindly provide only one argument as the directory name!!',
+      ),
+    );
+    process.exit(1);
   }
 
-  const validationResult = validate(appName);
-  if (!validationResult.validForNewPackages) {
-    invalidProjectName(appName);
+  const { validForNewPackages } = validate(appName);
+  if (!validForNewPackages) {
+    console.log(
+      chalk.red.bold(
+        ` Error: Could not create a project called ${chalk.red(
+          `"${chalk.cyan.bold(appName)}"`,
+        )} because of npm naming restrictions:`,
+      ),
+    );
+    process.exit(1);
   }
 
   if (isCurrentDir) {
@@ -239,7 +245,14 @@ const initializeProject = async (appName) => {
   }
 
   if (!isCurrentDir && fs.existsSync(appName)) {
-    directoryExistsInPath(appName);
+    console.log(
+      chalk.red.bold(
+        `\n Error: Directory ${chalk.cyan.bold(
+          appName,
+        )} already exists in path!`,
+      ),
+    );
+    process.exit(1);
   }
 
   if (fs.existsSync('.mevnrc')) {

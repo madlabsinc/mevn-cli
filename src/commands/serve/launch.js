@@ -13,7 +13,7 @@ import exec from '../../utils/exec';
  * @returns {Promise<void>}
  */
 
-const serveProject = async (projectConfig, templateDir) => {
+export default async (projectConfig, templateDir) => {
   let port;
   const { template: projectTemplate, isConfigured } = projectConfig;
 
@@ -38,14 +38,9 @@ const serveProject = async (projectConfig, templateDir) => {
     fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
   }
 
-  let cmd = 'serve';
-  if (projectTemplate === 'Nuxt.js') {
-    cmd = 'dev';
-  }
+  const cmd = projectTemplate === 'Nuxt.js' ? 'dev' : 'serve';
   execa.command(`npm run ${cmd} -- --port ${port} --open`, {
     stdio: 'inherit',
     cwd: templateDir,
   });
 };
-
-module.exports = serveProject;

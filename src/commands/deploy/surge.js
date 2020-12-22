@@ -4,8 +4,8 @@ import execa from 'execa';
 import fs from 'fs';
 import path from 'path';
 
-import appData from '../../utils/projectConfig';
 import exec from '../../utils/exec';
+import { fetchProjectConfig } from '../../utils/helpers';
 import { validateInstallation } from '../../utils/validate';
 
 /**
@@ -13,11 +13,11 @@ import { validateInstallation } from '../../utils/validate';
  * @returns {Promise<void>}
  */
 
-const deployToSurge = async () => {
+export default async () => {
   await validateInstallation('surge --help');
   console.log();
 
-  const projectConfig = appData();
+  const projectConfig = fetchProjectConfig();
   const { template, isConfigured } = projectConfig;
   const cmd = template === 'Nuxt.js' ? 'generate' : 'build';
 
@@ -44,5 +44,3 @@ const deployToSurge = async () => {
   // Fire up the surge CLI
   await execa('surge', { cwd: path.join('client', 'dist'), stdio: 'inherit' });
 };
-
-module.exports = deployToSurge;
