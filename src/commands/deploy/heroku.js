@@ -1,15 +1,13 @@
 'use strict';
 
-import chalk from 'chalk';
 import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import path from 'path';
-import readFileContent from '../../utils/helpers';
 
-import appData from '../../utils/projectConfig';
-import { validateInput } from '../../utils/validate';
-import { validateInstallation } from '../../utils/validate';
+import * as logger from '../../utils/logger';
+import { fetchProjectConfig, readFileContent } from '../../utils/helpers';
+import { validateInput, validateInstallation } from '../../utils/validate';
 
 /**
  * Creates a new Heroku app
@@ -29,9 +27,7 @@ const createHerokuApp = async (dir) => {
   try {
     await execa.command(`heroku create ${appName}`, { cwd: dir });
   } catch ({ stderr }) {
-    console.log();
-    console.log(chalk.red(stderr));
-    console.log();
+    logger.error(`\n${stderr}\n`);
     await createHerokuApp(dir);
   }
 };
@@ -87,11 +83,11 @@ const setConfigVar = async (configVar, dir, value) => {
  * @returns {Promise<void>}
  */
 
-const deployToHeroku = async (templateDir) => {
+export default async (templateDir) => {
   await validateInstallation('heroku');
   await validateInstallation('git help -g');
 
-  const projectConfig = appData();
+  const projectConfig = fetchProjectConfig();
   const { template } = projectConfig;
 
   if (!fs.existsSync(path.join(templateDir, '.git'))) {
@@ -183,8 +179,11 @@ const deployToHeroku = async (templateDir) => {
       const serverFilePath = path.join('client', 'server.js');
       if (!fs.existsSync(serverFilePath)) {
         fs.writeFileSync(serverFilePath, starterSource.join('\n'));
+
+        // Add preinstall script
         pkgJson.scripts['preinstall'] =
           'npm install --save express serve-static';
+
         fs.writeFileSync(
           './client/package.json',
           JSON.stringify(pkgJson, null, 2),
@@ -202,5 +201,3 @@ const deployToHeroku = async (templateDir) => {
   });
   await execa.command('heroku open', { cwd: templateDir });
 };
-
-module.exports = deployToHeroku;

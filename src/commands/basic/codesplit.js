@@ -1,17 +1,17 @@
 'use strict';
 
-import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 import path from 'path';
 
 import exec from '../../utils/exec';
+import * as logger from '../../utils/logger';
 import {
   checkIfConfigFileExists,
-  checkIfTemplateIsNuxt,
-} from '../../utils/messages';
-import readFileContent from '../../utils/helpers';
+  fetchProjectConfig,
+  readFileContent,
+} from '../../utils/helpers';
 
 /**
  * Lazy load components
@@ -19,12 +19,16 @@ import readFileContent from '../../utils/helpers';
  * @returns {Promise<void>}
  */
 
-const asyncRender = async () => {
+export default async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   await checkIfConfigFileExists();
 
   // Exit for the case of Nuxt.js boilerplate template
-  checkIfTemplateIsNuxt();
+  const { template } = fetchProjectConfig();
+  if (template === 'Nuxt.js') {
+    logger.error(`\n You're having the Nuxt.js boilerplate template`);
+    process.exit(1);
+  }
 
   const routesConfigPath = path.join('client', 'src', 'router.js');
   const routesConfig = readFileContent(routesConfigPath);
@@ -42,11 +46,8 @@ const asyncRender = async () => {
 
   // Warns the user if the list is empty
   if (!availableComponents.length) {
-    console.log();
-    console.log(
-      chalk.cyan.bold(
-        ' Info: All of the available components are dynamically imported',
-      ),
+    logger.info(
+      '\n Info: All of the available components are dynamically imported',
     );
     return;
   }
@@ -97,5 +98,3 @@ const asyncRender = async () => {
     },
   );
 };
-
-module.exports = asyncRender;

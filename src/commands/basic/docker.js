@@ -5,10 +5,12 @@ import fs from 'fs';
 import path from 'path';
 import showBanner from 'node-banner';
 
-import appData from '../../utils/projectConfig';
-import { checkIfConfigFileExists } from '../../utils/messages';
+import {
+  checkIfConfigFileExists,
+  fetchProjectConfig,
+  readFileContent,
+} from '../../utils/helpers';
 import { validateInstallation } from '../../utils/validate';
-import readFileContent from '../../utils/helpers';
 
 /**
  * Returns the respective file content as an array
@@ -62,13 +64,13 @@ const makeDataDir = () => {
  * @returns {Promise<void>}
  */
 
-const dockerize = async () => {
+export default async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
   await validateInstallation('docker');
 
   // .mevnrc
-  const { template } = appData();
+  const { template } = fetchProjectConfig();
 
   // Get the respective file contents
   let dockerComposeTemplate = getFileContent('docker-compose.yml');
@@ -166,6 +168,7 @@ const dockerize = async () => {
   const clientDockerIgnorePath = path.join('client', '.dockerignore');
   if (!fs.existsSync(clientDockerIgnorePath)) {
     const dockerIgnoreContent = 'node_modules\ndist';
+
     fs.writeFileSync(
       clientDockerIgnorePath,
       `${
@@ -198,5 +201,3 @@ const dockerize = async () => {
     process.exit(1);
   }
 };
-
-module.exports = dockerize;

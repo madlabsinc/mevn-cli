@@ -1,16 +1,18 @@
 'use strict';
 
-import chalk from 'chalk';
 import fs from 'fs';
 import showBanner from 'node-banner';
 import path from 'path';
-
-import appData from '../../utils/projectConfig';
-import { checkIfConfigFileExists } from '../../utils/messages';
-import dirOfChoice from '../../utils/directoryPrompt';
-import exec from '../../utils/exec';
 import inquirer from 'inquirer';
-import readFileContent from '../../utils/helpers';
+
+import exec from '../../utils/exec';
+import * as logger from '../../utils/logger';
+import {
+  checkIfConfigFileExists,
+  dirOfChoice,
+  fetchProjectConfig,
+  readFileContent,
+} from '../../utils/helpers';
 
 /**
  * Choose additional deps to install on the go
@@ -18,7 +20,7 @@ import readFileContent from '../../utils/helpers';
  * @returns {Promise<void>}
  */
 
-const addDeps = async (deps, { dev }) => {
+export default async (deps, { dev }) => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
@@ -30,7 +32,7 @@ const addDeps = async (deps, { dev }) => {
     ({ dir: templateDir } = await dirOfChoice());
   }
 
-  const { template, isConfigured } = appData();
+  const { template, isConfigured } = fetchProjectConfig();
 
   // Do not proceed if the deps were not supplied
   if (
@@ -38,7 +40,7 @@ const addDeps = async (deps, { dev }) => {
     (templateDir === 'server' ||
       (templateDir === 'client' && template !== 'Nuxt.js'))
   ) {
-    console.log(chalk.yellow(' Please specify the dependencies to install'));
+    logger.warn(' Please specify the dependencies to install');
     process.exit(1);
   }
 
@@ -62,7 +64,7 @@ const addDeps = async (deps, { dev }) => {
   // Nuxt.js modules are installed via multiselect prompt
   if (template === 'Nuxt.js' && !deps.length) {
     // Holds reference to the project specific config (.mevnrc)
-    const projectConfig = appData();
+    const projectConfig = fetchProjectConfig();
 
     // Nuxt.js modules that are already installed and configured (.mevnrc)
     const { modules: configuredModules, renderingMode } = projectConfig;
@@ -108,7 +110,7 @@ const addDeps = async (deps, { dev }) => {
       .filter((dep) => !configuredModules.includes(dep));
 
     if (!nuxtDeps.length) {
-      console.log(chalk.yellow(' Please specify the dependencies to install'));
+      logger.warn(' Please specify the dependencies to install');
       process.exit(1);
     }
 
@@ -569,5 +571,3 @@ const addDeps = async (deps, { dev }) => {
     }
   }
 };
-
-module.exports = addDeps;

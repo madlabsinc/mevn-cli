@@ -3,18 +3,20 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 
-import appData from '../../utils/projectConfig';
-import { checkIfConfigFileExists } from '../../utils/messages';
 import deployToSurge from './surge';
 import deployToHeroku from './heroku';
-import dirOfChoice from '../../utils/directoryPrompt';
+import {
+  checkIfConfigFileExists,
+  dirOfChoice,
+  fetchProjectConfig,
+} from '../../utils/helpers';
 
 /**
  * Deploy the webapp to a cloud solution of choice
  * @returns {Promise<void>}
  */
 
-const deployConfig = async () => {
+export default async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
@@ -26,11 +28,11 @@ const deployConfig = async () => {
 
   // List the various options for client side
   if (templateDir === 'client') {
-    const { template } = appData();
+    const { template } = fetchProjectConfig();
 
     // Choose platform based on deploy-target for Nuxt.js
     if (template === 'Nuxt.js') {
-      const { deployTarget } = appData();
+      const { deployTarget } = fetchProjectConfig();
 
       // static deployment
       if (deployTarget === 'static') {
@@ -55,5 +57,3 @@ const deployConfig = async () => {
 
   deployToHeroku(templateDir);
 };
-
-module.exports = deployConfig;

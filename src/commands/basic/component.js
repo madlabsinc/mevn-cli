@@ -1,16 +1,18 @@
 'use strict';
 
-import chalk from 'chalk';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import showBanner from 'node-banner';
 import path from 'path';
 
-import appData from '../../utils/projectConfig';
-import { checkIfConfigFileExists } from '../../utils/messages';
 import exec from '../../utils/exec';
+import * as logger from '../../utils/logger';
+import {
+  checkIfConfigFileExists,
+  fetchProjectConfig,
+  readFileContent,
+} from '../../utils/helpers';
 import { validateInput } from '../../utils/validate';
-import readFileContent from '../../utils/helpers';
 
 /**
  * Converts a given string into lower camel case
@@ -28,7 +30,7 @@ const toLowerCamelCase = (str) =>
  * @returns {Promise<void>}
  */
 
-const generateComponent = async () => {
+export default async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
@@ -45,7 +47,7 @@ const generateComponent = async () => {
   ]);
 
   // Fetch information specific to the project
-  const projectConfig = appData();
+  const projectConfig = fetchProjectConfig();
   const { template, isConfigured } = projectConfig;
 
   const { componentType } = await inquirer.prompt([
@@ -95,8 +97,7 @@ const generateComponent = async () => {
 
   // Duplicate component
   if (fs.existsSync(path.join(componentPath, `${componentName}.vue`))) {
-    console.log();
-    console.log(chalk.cyan.bold(` Info: ${componentName}.vue already exists`));
+    logger.info(`\n Info: ${componentName}.vue already exists`);
     return;
   }
 
@@ -187,5 +188,3 @@ const generateComponent = async () => {
     },
   );
 };
-
-module.exports = generateComponent;
