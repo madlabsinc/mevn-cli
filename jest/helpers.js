@@ -28,7 +28,3 @@ export const rmTempDir = (tempDirPath) => {
     fs.rmdirSync(tempDirPath, { recursive: true });
   }
 };
-
-// .mevnrc
-export const fetchProjectConfig = (genPath) =>
-  JSON.parse(fs.readFileSync(path.join(genPath, '.mevnrc'), 'utf8'));

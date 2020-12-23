@@ -11,7 +11,7 @@
     "mevn": "./bin/mevn.js"
   },
   "scripts": {
-    "build": "gulp clean && babel src --out-dir lib --copy-files --include-dotfiles && gulp copy",
+    "build": "gulp",
     "build:watch": "babel --watch src --out-dir lib --copy-files --include-dotfiles",
     "lint": "eslint ./src __e2e__ jest",
     "lint:fix": "eslint --fix ./src __e2e__ jest",

@@ -1,11 +1,7 @@
 'use strict';
 
-import {
-  run,
-  rmTempDir,
-  runPromptWithAnswers,
-  fetchProjectConfig,
-} from '../../jest/helpers';
+import { run, rmTempDir, runPromptWithAnswers } from '../../jest/helpers';
+import { fetchProjectConfig } from '../../src/utils/helpers';
 
 import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
