@@ -4,20 +4,22 @@
 
 // Require Modules.
 import '@babel/polyfill';
-import program from 'commander';
 import chalk from 'chalk';
-import leven from 'leven';
 import envinfo from 'envinfo';
+import leven from 'leven';
+import program from 'commander';
 import updateNotifier from 'update-notifier';
 
 // Defining action handlers for respective commands.
-import initializeProject from './commands/basic/init';
-import generateFile from './commands/basic/generate';
-import asyncRender from './commands/basic/codesplit';
-import addDeps from './commands/basic/add';
-import setupProject from './commands/serve/setup';
-import dockerize from './commands/basic/docker';
-import deployConfig from './commands/deploy/deploy';
+import add from './commands/add';
+import codesplit from './commands/codesplit';
+import deploy from './commands/deploy/';
+import dockerize from './commands/dockerize';
+import generate from './commands/generate';
+import init from './commands/init';
+import serve from './commands/serve';
+
+import * as logger from './utils/logger';
 import pkg from '../package';
 
 updateNotifier({ pkg }).notify();
@@ -29,7 +31,7 @@ const suggestCommands = (cmd) => {
     (c) => leven(c, cmd) < c.length * 0.4,
   );
   if (suggestion) {
-    console.log(`  ` + chalk.red(`Did you mean ${chalk.yellow(suggestion)}?`));
+    logger.error(` Did you mean ${chalk.yellow(suggestion)}?`);
   }
 };
 
@@ -39,30 +41,30 @@ program.version(pkg.version).usage('<command> [options]');
 program
   .command('init <appname>')
   .description('Scaffolds a MEVN stack project in the current path')
-  .action(initializeProject);
+  .action(init);
 
 program
   .command('codesplit')
   .description('Lazy load components as required')
-  .action(asyncRender);
+  .action(codesplit);
 
 program
   .command('generate')
   .description(
     'Generates client side component files and server side CRUD boilerplate template',
   )
-  .action(generateFile);
+  .action(generate);
 
 program
   .command('add [deps...]')
   .option('-d, --dev', 'install dev-dependencies')
   .description('Install dependencies on the go')
-  .action(addDeps);
+  .action(add);
 
 program
   .command('serve')
   .description('Serves client/server locally')
-  .action(setupProject);
+  .action(serve);
 
 program
   .command('dockerize')
@@ -72,7 +74,7 @@ program
 program
   .command('deploy')
   .description('Deploys the webapp to a cloud solution of choice')
-  .action(deployConfig);
+  .action(deploy);
 
 program
   .command('info')
@@ -92,9 +94,7 @@ program
 // Validation for unknown commands
 program.on('command:*', ([cmd]) => {
   program.outputHelp();
-  console.log();
-  console.error(` Unknown command ${chalk.yellow(cmd)}.`);
-  console.log();
+  logger.error(`\n Unknown command ${chalk.yellow(cmd)}.\n`);
   suggestCommands(cmd);
   process.exitCode = 1;
 });

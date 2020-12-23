@@ -3,12 +3,12 @@
 import fs from 'fs';
 import showBanner from 'node-banner';
 
+import serveProject from './launch';
 import {
   checkIfConfigFileExists,
   dirOfChoice,
   fetchProjectConfig,
 } from '../../utils/helpers';
-import serveProject from './launch';
 
 /**
  * Prompts the user to choose between client/server side to be served locally
@@ -20,14 +20,12 @@ export default async () => {
   await showBanner('MEVN CLI', 'Light speed setup for MEVN stack based apps.');
   checkIfConfigFileExists();
 
-  let templateDir;
+  let templateDir = 'client';
 
   const projectConfig = fetchProjectConfig();
 
   if (fs.existsSync('./server')) {
     ({ dir: templateDir } = await dirOfChoice());
-  } else {
-    templateDir = 'client';
   }
 
   // Proceed with further installation
