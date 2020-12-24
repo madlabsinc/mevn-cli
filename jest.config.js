@@ -12,5 +12,14 @@ module.exports = {
         '<rootDir>/lib/*',
       ],
     },
+    {
+      ...common,
+      displayName: 'unit',
+      testMatch: ['<rootDir>/**/__tests__/*.test.js'],
+      modulePathIgnorePatterns: [
+        '<rootDir>/my-app/*/package.json',
+        '<rootDir>/lib/*',
+      ],
+    },
   ],
 };

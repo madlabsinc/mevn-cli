@@ -28,8 +28,13 @@ export const checkIfConfigFileExists = () => {
  * @returns {Object}
  */
 
-export const fetchProjectConfig = () =>
-  JSON.parse(fs.readFileSync('.mevnrc', 'utf8'));
+export const fetchProjectConfig = (genPath) => {
+  const configFilePath = genPath ? path.join(genPath, '.mevnrc') : '.mevnrc';
+  if (!fs.existsSync(configFilePath)) {
+    return;
+  }
+  return JSON.parse(fs.readFileSync(configFilePath, 'utf8'));
+};
 
 /**
  * Copy files
@@ -66,8 +71,8 @@ export const copyDirSync = (source, target) => {
 
   // copy
   if (fs.lstatSync(source).isDirectory()) {
-    fs.readdirSync(source).forEach(function (file) {
-      var curSource = path.join(source, file);
+    fs.readdirSync(source).forEach((file) => {
+      const curSource = path.join(source, file);
       if (fs.lstatSync(curSource).isDirectory()) {
         copyDirSync(curSource, targetFolder);
       } else {
@@ -111,6 +116,9 @@ const stripChar = (fileContent) =>
  */
 
 export const readFileContent = (filePath) => {
+  if (!filePath) {
+    return;
+  }
   const fileContent = fs.readFileSync(filePath, 'utf8').split('\n');
 
   // Check if the host OS is windows

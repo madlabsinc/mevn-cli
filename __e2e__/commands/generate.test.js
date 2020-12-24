@@ -1,8 +1,5 @@
-import {
-  runPromptWithAnswers,
-  rmTempDir,
-  fetchProjectConfig,
-} from '../../jest/helpers';
+import { runPromptWithAnswers, rmTempDir } from '../../jest/helpers';
+import { fetchProjectConfig } from '../../src/utils/helpers';
 
 import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';

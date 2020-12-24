@@ -1,21 +1,19 @@
-const gulp = require('gulp');
 const del = require('del');
+const execa = require('execa');
+const gulp = require('gulp');
 
-gulp.task('clean', () => del('lib/**', { force: true }));
+gulp.task('clean', () => del('lib/**'));
 
-gulp.task('copy server templates', () =>
-  gulp
-    .src('./src/templates/server/**/*')
-    .pipe(gulp.dest('./lib/templates/server')),
-);
+gulp.task('build', async () => {
+  const {
+    exitCode,
+  } = await execa.command(
+    'babel src --out-dir lib --copy-files --include-dotfiles',
+    { stdio: 'inherit' },
+  );
+  console.log(`The process exited with code ${exitCode}`);
+});
 
-gulp.task('copy starter templates', () =>
-  gulp
-    .src('./src/templates/starter-templates/**/*')
-    .pipe(gulp.dest('./lib/templates/starter-templates')),
-);
+gulp.task('cleanup', () => del('lib/**/__tests__'));
 
-gulp.task(
-  'copy',
-  gulp.series('copy server templates', 'copy starter templates'),
-);
+gulp.task('default', gulp.series('clean', 'build', 'cleanup'));
