@@ -72,8 +72,8 @@
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/cli": "^12.0.0",
+    "@commitlint/config-conventional": "^12.0.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^24.9.0",
     "cli-prompts-test": "^0.3.0",
@@ -86,7 +86,7 @@
     "jest": "^24.9.0",
     "lint-staged": "^8.2.1",
     "prettier": "^2.0.5",
-    "vuepress": "^0.14.11"
+    "vuepress": "^1.8.0"
   },
   "collective": {
     "type": "opencollective",
