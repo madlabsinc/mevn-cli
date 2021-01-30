@@ -1,6 +1,6 @@
 'use strict';
 
-import 'babel-polyfill';
+import '@babel/polyfill';
 import runTest from 'cli-prompts-test';
 import execa from 'execa';
 import fs from 'fs';
