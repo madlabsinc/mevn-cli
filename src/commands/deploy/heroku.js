@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import path from 'path';
 
 import * as logger from '../../utils/logger';
-import { fetchProjectConfig, readFileContent } from '../../utils/helpers';
+import { fetchProjectConfig } from '../../utils/helpers';
 import { validateInput, validateInstallation } from '../../utils/validate';
 
 /**
@@ -163,7 +163,7 @@ export default async (templateDir) => {
       ];
 
       let pkgJson = JSON.parse(
-        readFileContent(path.join('client', 'package.json')),
+        fs.readFileSync(path.join('client', 'package.json'), 'utf8'),
       );
       const buildCmd = 'npm run build';
       const postInstallScript = `if test \"$NODE_ENV\" = \"production\" ; then ${buildCmd} ; fi `; // eslint-disable-line
@@ -193,7 +193,7 @@ export default async (templateDir) => {
   }
 
   await execa.command('git add .', { cwd: templateDir });
-  await execa.command(`git commit -m "Add files"`, { cwd: templateDir });
+  await execa('git', ['commit', '-m', 'Add files'], { cwd: templateDir });
 
   await execa.command('git push heroku master', {
     stdio: 'inherit',
