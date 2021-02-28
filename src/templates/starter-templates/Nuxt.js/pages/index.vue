@@ -2,9 +2,7 @@
   <div class="container">
     <div>
       <Logo />
-      <h2 class="subtitle">
-        MEVN starter template based on Nuxt-js
-      </h2>
+      <h2 class="subtitle">MEVN starter template based on Nuxt-js</h2>
       <div class="links">
         <a
           href="https://mevn.madlabs.xyz"
