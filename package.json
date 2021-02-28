@@ -1,6 +1,6 @@
 {
   "name": "mevn-cli",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "Light Speed setup for MEVN stack based apps.",
   "main": "./bin/mevn.js",
   "files": [
@@ -8,7 +8,7 @@
     "lib"
   ],
   "bin": {
-    "mevn": "./bin/mevn.js"
+    "mevn": "bin/mevn.js"
   },
   "scripts": {
     "build": "gulp",
