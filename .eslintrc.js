@@ -1,16 +1,12 @@
 module.exports = {
-  extends: [
-    'eslint:recommended',
-    'prettier',
-    'plugin:prettier/recommended'
-  ],
+  extends: ['eslint:recommended', 'prettier', 'plugin:prettier/recommended'],
   plugins: ['prettier'], // activating esling-plugin-prettier (--fix stuff)
-  parser: 'babel-eslint',
+  parser: '@babel/eslint-parser',
   env: {
-    'browser': true,
-    'es6': true,
-    'node': true,
-    'jest': true
+    browser: true,
+    es6: true,
+    node: true,
+    jest: true,
   },
   parserOptions: {
     sourceType: 'module',
@@ -18,13 +14,11 @@ module.exports = {
     ecmaFeatures: {
       globalReturn: false,
     },
-    babelOptions: {
-      configFile: '.babelrc',
-    },
   },
   rules: {
     'no-console': 0,
-    'prettier/prettier': [ // customizing prettier rules (unfortunately not many of them are customizable)
+    'prettier/prettier': [
+      // customizing prettier rules (unfortunately not many of them are customizable)
       'error',
       {
         endOfLine: 'auto',
