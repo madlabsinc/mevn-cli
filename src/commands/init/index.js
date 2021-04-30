@@ -111,9 +111,9 @@ const fetchTemplate = async (template) => {
     ]);
 
     // Update the config file (nuxt.config.js)
-    if (mode.includes('Universal')) {
-      const modeIdx = configFile.findIndex((line) => line.includes('mode:'));
-      configFile[modeIdx] = ` mode: 'universal',`;
+    if (mode === 'Single Page App') {
+      const modeIdx = configFile.findIndex((line) => line.includes('ssr:'));
+      configFile[modeIdx] = `${' '.repeat(2)}ssr: false,`;
     }
 
     // Choose the Deployment target

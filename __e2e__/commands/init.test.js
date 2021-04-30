@@ -51,7 +51,7 @@ describe('mevn init', () => {
     const nuxtConfig = require(path.join(clientPath, 'nuxt.config.js')).default;
 
     // Check for rendering mode and deploy target config
-    expect(nuxtConfig.mode).toBe('spa');
+    expect(nuxtConfig.ssr).toBe(false);
     expect(nuxtConfig.target).toBe('static');
 
     // .mevnrc
