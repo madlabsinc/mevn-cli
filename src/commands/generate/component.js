@@ -155,7 +155,7 @@ export default async () => {
 
   // Fetch the index corresponding to route-config array closing bracket
   const routesArrayEndsWithIndex = routesConfig.indexOf(
-    routesConfig.find((item) => item.trim() === ']'),
+    routesConfig.find((item) => item.replace(',', '').trim() === ']'),
   );
 
   // Append a comma (},) to the previous component route-config delimiter

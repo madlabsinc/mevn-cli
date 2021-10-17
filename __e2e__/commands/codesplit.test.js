@@ -55,7 +55,8 @@ describe('mevn codesplit', () => {
     expect(
       routerConfig.some(
         (config) =>
-          config.trim() === `component: () => import("./views/Dashboard.vue")`,
+          config.replace(',', '').trim() ===
+          `component: () => import("./views/Dashboard.vue")`,
       ),
     ).toBeTruthy();
 
