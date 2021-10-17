@@ -10,17 +10,17 @@ Vue.config.productionTip = false;
 
 const httpLink = new HttpLink({
   // URL to graphql server, you should use an absolute URL here
-  uri: "http://localhost:5000/graphql"
+  uri: "http://localhost:5000/graphql",
 });
 
 // create the apollo client
 const apolloClient = new ApolloClient({
   link: httpLink,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
+  defaultClient: apolloClient,
 });
 
 // install the vue plugin
@@ -28,6 +28,6 @@ Vue.use(VueApollo);
 
 new Vue({
   router,
-  render: h => h(App),
-  apolloProvider
+  render: (h) => h(App),
+  apolloProvider,
 }).$mount("#app");
