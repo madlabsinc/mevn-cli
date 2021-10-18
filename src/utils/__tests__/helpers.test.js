@@ -5,6 +5,8 @@ import path from 'path';
 import { copyDirSync, fetchProjectConfig, readFileContent } from '../helpers';
 import { runPromptWithAnswers } from '../../../jest/helpers';
 
+jest.setTimeout(10000);
+
 const srcPath = path.join(__dirname, 'test-dir');
 const destPath = path.join(__dirname, 'dest-path');
 const genPath = path.join(__dirname, 'my-app');
@@ -48,17 +50,19 @@ test('fetchProjectConfig()', async () => {
     [
       ENTER, // Choose Default as the starter template
       ENTER, // Requires server directory
+      ENTER, // Choose npm as the package manager
     ],
     __dirname,
   );
 
   const projectConfig = {
-    name: 'my-app',
-    template: 'Default',
     isConfigured: {
       client: false,
       server: false,
     },
+    name: 'my-app',
+    packageManager: 'npm',
+    template: 'Default',
   };
   expect(fetchProjectConfig(genPath)).toEqual(projectConfig);
 });

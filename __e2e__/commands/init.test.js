@@ -40,7 +40,8 @@ describe('mevn init', () => {
         `${DOWN}${DOWN}${DOWN}${ENTER}`, // Choose Nuxt.js as the starter template
         `${DOWN}${ENTER}`, // Choose spa as the rendering mode
         `${DOWN}${ENTER}`, // Choose static as the deploy target
-        `${ENTER}`, // Requires server directory
+        ENTER, // Requires server directory
+        ENTER, // Choose npm as the package manager
       ],
       tempDirPath,
     );
@@ -56,15 +57,16 @@ describe('mevn init', () => {
 
     // .mevnrc
     const projectConfigContent = {
-      name: 'my-app',
-      renderingMode: 'spa',
-      template: 'Nuxt.js',
-      modules: [],
       deployTarget: 'static',
       isConfigured: {
         client: false,
         server: false,
       },
+      modules: [],
+      name: 'my-app',
+      packageManager: 'npm',
+      renderingMode: 'spa',
+      template: 'Nuxt.js',
     };
     expect(fetchProjectConfig(genPath)).toStrictEqual(projectConfigContent);
 
@@ -99,7 +101,8 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${ENTER}`, // Choose GraphQL as the starter template
-        `${ENTER}`, // Requires server directory
+        ENTER, // Requires server directory,
+        ENTER, // Choose npm as the package manager
       ],
       tempDirPath,
     );
@@ -125,7 +128,8 @@ describe('mevn init', () => {
       ['init', 'my-app'],
       [
         `${DOWN}${ENTER}`, // Choose PWA as the starter template
-        `${ENTER}`, // Requires server directory
+        ENTER, // Requires server directory
+        ENTER, // Choose npm as the package manager
       ],
       tempDirPath,
     );
@@ -164,6 +168,7 @@ describe('mevn init', () => {
       [
         ENTER, // Choose Default as the starter template
         ENTER, // Requires server directory
+        ENTER, // Choose npm as the package manager
       ],
       genPath,
     );

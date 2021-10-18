@@ -1,9 +1,11 @@
 import chalk from 'chalk';
+import execa from 'execa';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import path from 'path';
 
 import { isWin } from './constants';
+import * as logger from './logger';
 
 /**
  * Warns appropriately if the config file doesn't exist
@@ -62,6 +64,7 @@ const copyFileSync = (source, target) => {
  * @param {any} target - path to the destination directory
  * @returns {Void}
  */
+
 export const copyDirSync = (source, target) => {
   // check if folder needs to be created or integrated
   const targetFolder = path.join(target, path.basename(source));
@@ -98,6 +101,42 @@ export const dirOfChoice = () => {
 };
 
 /**
+ * Check if a package manager is installed
+ *
+ * @param {String} packageManager - The package manager
+ * @returns {Boolean}
+ */
+
+const hasPackageManagerInstalled = (packageManager) => {
+  try {
+    execa.sync(packageManager, ['--version']);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+/**
+ * Returns the available package managers
+ *
+ * @returns {String[]}
+ */
+
+export const getAvailablePackageManagers = () => {
+  const installers = ['npm', 'yarn', 'pnpm'];
+  const availableInstallers = installers.filter((installer) =>
+    hasPackageManagerInstalled(installer),
+  );
+
+  if (!availableInstallers.length) {
+    logger.error('No package manager found.');
+    process.exit(1);
+  }
+
+  return availableInstallers;
+};
+
+/**
  * Strips \r character from the file content if the host OS is windows
  *
  * @param {String[]} fileContent - The file content
@@ -108,6 +147,7 @@ const stripChar = (fileContent) =>
   fileContent.map((content) =>
     content.includes('\r') ? content.substr(0, content.indexOf('\r')) : content,
   );
+
 /**
  * Returns the file content as an arrray
  *
