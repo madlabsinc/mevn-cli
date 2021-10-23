@@ -18,12 +18,12 @@ export default async () => {
   console.log();
 
   const projectConfig = fetchProjectConfig();
-  const { template, isConfigured } = projectConfig;
+  const { isConfigured, packageManager, template } = projectConfig;
   const cmd = template === 'Nuxt.js' ? 'generate' : 'build';
 
   if (!isConfigured.client) {
     await exec(
-      `npm install`,
+      `${packageManager} install`,
       'Installing dependencies',
       'Dependencies were successfully installed',
       {
@@ -36,10 +36,15 @@ export default async () => {
     fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
   }
 
-  // Create a production build with npm run build
-  await exec(`npm run ${cmd}`, 'Creating a production level build', 'Done', {
-    cwd: 'client',
-  });
+  // Create a production build
+  await exec(
+    `${packageManager} run ${cmd}`,
+    'Creating a production level build',
+    'Done',
+    {
+      cwd: 'client',
+    },
+  );
 
   // Fire up the surge CLI
   await execa('surge', { cwd: path.join('client', 'dist'), stdio: 'inherit' });

@@ -9,11 +9,15 @@ import showBanner from 'node-banner';
 import validate from 'validate-npm-package-name';
 
 import * as logger from '../../utils/logger';
-import { copyDirSync, readFileContent } from '../../utils/helpers';
+import {
+  copyDirSync,
+  getAvailablePackageManagers,
+  readFileContent,
+} from '../../utils/helpers';
 import { validateInstallation } from '../../utils/validate';
 
 let projectPathRelative;
-let projectConfig = {};
+const projectConfig = {};
 
 /**
  * Creates an initial local commit
@@ -181,6 +185,24 @@ const fetchTemplate = async (template) => {
     fs.renameSync(renameFromPath, renameToPath);
 
     fs.writeFileSync(path.join(renameToPath, '.gitignore'), 'node_modules');
+  }
+
+  const availablePackageManagers = getAvailablePackageManagers();
+
+  // Default package manager
+  projectConfig.packageManager = availablePackageManagers[0];
+
+  // Check if multiple package managers are available
+  if (availablePackageManagers.length > 1) {
+    const { packageManager } = await inquirer.prompt({
+      name: 'packageManager',
+      type: 'list',
+      message: 'Pick a package manager',
+      choices: availablePackageManagers,
+    });
+
+    // Keep track of the package manager of choice
+    projectConfig.packageManager = packageManager;
   }
 
   // Update project specific config file

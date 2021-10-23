@@ -48,7 +48,7 @@ export default async () => {
 
   // Fetch information specific to the project
   const projectConfig = fetchProjectConfig();
-  const { template, isConfigured } = projectConfig;
+  const { isConfigured, packageManager, template } = projectConfig;
 
   const { componentType } = await inquirer.prompt([
     {
@@ -111,7 +111,7 @@ export default async () => {
   // Execute linter
   if (!isConfigured.client) {
     await exec(
-      'npm install',
+      `${packageManager} install`,
       progressMsg,
       'Successfully installed the dependencies',
       { cwd: 'client' },
@@ -123,13 +123,15 @@ export default async () => {
     fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
   }
 
+  const args = packageManager === 'yarn' ? ['--fix'] : ['--', '--fix'];
+
   /**
    * Nuxt.js automatically sets up the routing configurations
    * only page components require adding a new entry in the route config
    */
   if (template === 'Nuxt.js' || componentType === 'UI Component') {
     return await exec(
-      'npm run lint -- --fix',
+      `${packageManager} run lint ${args.join(' ')}`,
       progressMsg,
       `Successfully created ${componentName}.vue file in ${componentPath}`,
       {
@@ -180,7 +182,7 @@ export default async () => {
 
   // Execute linter
   await exec(
-    'npm run lint -- --fix',
+    `${packageManager} run lint ${args.join(' ')}`,
     progressMsg,
     `Successfully created ${componentName}.vue file in ${componentPath}`,
     {

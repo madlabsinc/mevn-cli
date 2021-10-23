@@ -24,7 +24,7 @@ export default async () => {
   await checkIfConfigFileExists();
 
   // Exit for the case of Nuxt.js boilerplate template
-  const { template } = fetchProjectConfig();
+  const { packageManager, template } = fetchProjectConfig();
   if (template === 'Nuxt.js') {
     logger.error(`\n You're having the Nuxt.js boilerplate template`);
     process.exit(1);
@@ -89,8 +89,10 @@ export default async () => {
   console.log();
 
   // Execute linter
+  const args = packageManager === 'yarn' ? ['--fix'] : ['--', '--fix'];
+
   await exec(
-    'npm run lint -- --fix',
+    `${packageManager} run lint ${args.join(' ')}`,
     'Cleaning up',
     ` From now on ${componentName} will be rendered asynchronously`,
     {

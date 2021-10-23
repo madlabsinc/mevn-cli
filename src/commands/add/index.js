@@ -32,7 +32,7 @@ export default async (deps, { dev }) => {
     ({ dir: templateDir } = await dirOfChoice());
   }
 
-  const { template, isConfigured } = fetchProjectConfig();
+  const { isConfigured, template, packageManager } = fetchProjectConfig();
 
   // Do not proceed if the deps were not supplied
   if (
@@ -44,12 +44,15 @@ export default async (deps, { dev }) => {
     process.exit(1);
   }
 
-  const installFlag = dev ? '--save-dev' : '--save';
+  const installCmd =
+    packageManager === 'npm'
+      ? ['install', dev ? '--save-dev' : '--save']
+      : ['add', dev && '--dev'].filter(Boolean);
 
   // Install dependencies
   if (deps.length) {
     await exec(
-      `npm install ${installFlag} ${deps.join(' ')}`,
+      `${packageManager} ${installCmd.join(' ')} ${deps.join(' ')}`,
       `Installing ${deps.join(', ')}`,
       'Dependencies were successfully installed',
       {
@@ -143,7 +146,7 @@ export default async (deps, { dev }) => {
     // If the user opted for atleast a Nuxt.js module
     if (modules.length) {
       await exec(
-        `npm install --save ${modulesWithPrefix.join(' ')}`,
+        `${packageManager} install --save ${modulesWithPrefix.join(' ')}`,
         `Installing Nuxt.js modules`,
         'Successfully installed the opted Nuxt.js modules',
         {
@@ -164,9 +167,14 @@ export default async (deps, { dev }) => {
         (buildModule) => `@nuxtjs/${buildModule}`,
       );
 
+      const installCmd =
+        packageManager === 'npm' ? ['install', '--save-dev'] : ['add', '--dev'];
+
       // Install buildModules as a devDep
       await exec(
-        `npm install --save-dev ${buildModulesWithPrefix.join(' ')}`,
+        `${packageManager} ${installCmd.join(
+          ' ',
+        )} ${buildModulesWithPrefix.join(' ')}`,
         `Installing Nuxt.js buildModules`,
         'Successfully installed the opted Nuxt.js buildModules',
         {
@@ -477,7 +485,7 @@ export default async (deps, { dev }) => {
     if (!isConfigured[templateDir]) {
       // Additional dependencies were installed before invoking serve
       await exec(
-        'npm install',
+        `${packageManager} install`,
         'Installing dependencies in the background. Hold on...',
         'Dependencies were successfully installed',
         {
@@ -491,9 +499,15 @@ export default async (deps, { dev }) => {
     }
 
     // Eslint
-    await exec('npm run lint -- --fix', 'Cleaning up', 'Fixed lint errors', {
-      cwd: templateDir,
-    });
+    const args = packageManager === 'yarn' ? ['--fix'] : ['--', '--fix'];
+    await exec(
+      `${packageManager} run lint ${args.join(' ')}`,
+      'Cleaning up',
+      'Fixed lint errors',
+      {
+        cwd: templateDir,
+      },
+    );
 
     fs.writeFileSync('.mevnrc', JSON.stringify(projectConfig, null, 2));
 

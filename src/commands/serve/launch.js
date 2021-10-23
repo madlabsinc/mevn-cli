@@ -15,7 +15,11 @@ import exec from '../../utils/exec';
 
 export default async (projectConfig, templateDir) => {
   let port;
-  const { template: projectTemplate, isConfigured } = projectConfig;
+  const {
+    isConfigured,
+    packageManager,
+    template: projectTemplate,
+  } = projectConfig;
 
   if (templateDir === 'client') {
     port = projectTemplate === 'Nuxt.js' ? '3000' : '3002';
@@ -25,7 +29,7 @@ export default async (projectConfig, templateDir) => {
 
   if (!isConfigured[templateDir]) {
     await exec(
-      'npm install',
+      `${packageManager} install`,
       'Installing dependencies in the background. Hold on...',
       'Dependencies were successfully installed',
       {

@@ -31,6 +31,7 @@ describe('mevn generate', () => {
       [
         ENTER, // Choose Default as the starter template
         `Y${ENTER}`, // Requires server directory
+        ENTER, // Choose npm as the package manager
       ],
       tempDirPath,
     );
