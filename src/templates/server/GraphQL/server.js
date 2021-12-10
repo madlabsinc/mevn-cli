@@ -1,6 +1,7 @@
 const express = require('express');
 const graphQLHttp = require('express-graphql');
 const schema = require('./graphql/schema');
+const depthLimit = require('graphql-depth-limit');
 const cors = require('cors');
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(
   graphQLHttp({
     schema,
     graphiql: true,
+    validationRules: [depthLimit(10)],    
   }),
 );
 
