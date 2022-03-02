@@ -1,5 +1,5 @@
 version = 1
 
 [[analyzers]]
-name = "javascript"
+name = "javascript
 enabled = true
