@@ -24,6 +24,7 @@ import pkg from '../package';
 
 updateNotifier({ pkg }).notify();
 
+// Suggest matching commands
 const suggestCommands = (cmd) => {
   const availableCommands = program.commands.map((c) => c._name);
 
