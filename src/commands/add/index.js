@@ -34,11 +34,13 @@ export default async (deps, { dev }) => {
 
   const { isConfigured, template, packageManager } = fetchProjectConfig();
 
+  const templateIsNuxt = template === 'Nuxt.js';
+
   // Do not proceed if the deps were not supplied
+  // Nuxt.js template is the only exception
   if (
     !deps.length &&
-    (templateDir === 'server' ||
-      (templateDir === 'client' && template !== 'Nuxt.js'))
+    (templateDir === 'server' || (templateDir === 'client' && !templateIsNuxt))
   ) {
     logger.warn(' Please specify the dependencies to install');
     process.exit(1);
@@ -61,11 +63,16 @@ export default async (deps, { dev }) => {
     );
   }
 
-  // No need for further config
-  if (dev) return;
+  // Further confifuration is not required for the following
+  // 1. Dev dependencies
+  // 2. Dependencies installed in the server directory
+  // Nuxt.js template with dependencies specified as arguments
+  if (dev || templateDir === 'server' || (templateIsNuxt && deps.length)) {
+    return;
+  }
 
   // Nuxt.js modules are installed via multiselect prompt
-  if (template === 'Nuxt.js' && !deps.length) {
+  if (templateIsNuxt) {
     // Holds reference to the project specific config (.mevnrc)
     const projectConfig = fetchProjectConfig();
 
