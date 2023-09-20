@@ -97,7 +97,7 @@ describe('mevn init', () => {
   });
 
   it('creates a new MEVN stack webapp based on the GraphQL starter template', async () => {
-    const { exitCode } = await runPromptWithAnswers(
+    const { exitCode, stderr } = await runPromptWithAnswers(
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${ENTER}`, // Choose GraphQL as the starter template
@@ -106,6 +106,8 @@ describe('mevn init', () => {
       ],
       tempDirPath,
     );
+
+    console.error(stderr);
 
     expect(exitCode).toBe(0);
     expect(fetchProjectConfig(genPath).template).toBe('GraphQL');
@@ -124,7 +126,7 @@ describe('mevn init', () => {
   });
 
   it('creates a new MEVN stack webapp based on the PWA starter template', async () => {
-    const { exitCode } = await runPromptWithAnswers(
+    const { exitCode, stderr } = await runPromptWithAnswers(
       ['init', 'my-app'],
       [
         `${DOWN}${ENTER}`, // Choose PWA as the starter template
@@ -133,6 +135,8 @@ describe('mevn init', () => {
       ],
       tempDirPath,
     );
+
+    console.error(stderr);
 
     expect(exitCode).toBe(0);
     expect(fetchProjectConfig(genPath).template).toBe('PWA');
@@ -160,10 +164,9 @@ describe('mevn init', () => {
   });
 
   it('creates a new MEVN stack webapp based on the Default starter template in current directory', async () => {
-    // Create my-app directory
     fs.mkdirSync(genPath);
 
-    const { exitCode } = await runPromptWithAnswers(
+    const { exitCode, stderr } = await runPromptWithAnswers(
       ['init', '.'],
       [
         ENTER, // Choose Default as the starter template
@@ -172,6 +175,8 @@ describe('mevn init', () => {
       ],
       genPath,
     );
+
+    console.error(stderr);
 
     expect(exitCode).toBe(0);
     expect(fetchProjectConfig(genPath).template).toBe('Default');

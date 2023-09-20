@@ -25,6 +25,6 @@ export const runPromptWithAnswers = (args, answers, testPath) => {
 // Cleanup
 export const rmTempDir = (tempDirPath) => {
   if (fs.existsSync(tempDirPath)) {
-    fs.rmdirSync(tempDirPath, { recursive: true });
+    fs.rmSync(tempDirPath, { recursive: true });
   }
 };

@@ -23,11 +23,11 @@ beforeAll(() => {
 
 afterAll(() => {
   // copyDirSync()
-  fs.rmdirSync(srcPath, { recursive: true });
-  fs.rmdirSync(destPath, { recursive: true });
+  fs.rm(srcPath, { recursive: true });
+  fs.rm(destPath, { recursive: true });
 
   // fetchProjectConfig()
-  fs.rmdirSync(genPath, { recursive: true });
+  fs.rm(genPath, { recursive: true });
 });
 
 test('copyDirSync()', () => {
