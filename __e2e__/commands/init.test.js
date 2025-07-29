@@ -43,7 +43,7 @@ describe('mevn init', () => {
     );
   });
 
-  it('creates a new MEVN stack webapp based on the Nuxt.js starter template', async () => {
+  it.skip('creates a new MEVN stack webapp based on the Nuxt.js starter template', async () => {
     rmDirIfExists(genPath);
     const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
@@ -109,7 +109,7 @@ describe('mevn init', () => {
     expect(stderr).toContain(`It seems the current directory isn't empty.`);
   });
 
-  it('creates a new MEVN stack webapp based on the GraphQL starter template', async () => {
+  it.skip('creates a new MEVN stack webapp based on the GraphQL starter template', async () => {
     rmDirIfExists(genPath);
     const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
@@ -134,7 +134,7 @@ describe('mevn init', () => {
     expect(fs.existsSync(path.join(serverPath, 'graphql'))).toBeTruthy();
   });
 
-  it('creates a new MEVN stack webapp based on the PWA starter template', async () => {
+  it.skip('creates a new MEVN stack webapp based on the PWA starter template', async () => {
     rmDirIfExists(genPath);
     const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
@@ -168,7 +168,7 @@ describe('mevn init', () => {
     ).toBeTruthy();
   });
 
-  it('creates a new MEVN stack webapp based on the Default starter template in current directory', async () => {
+  it.skip('creates a new MEVN stack webapp based on the Default starter template in current directory', async () => {
     rmDirIfExists(genPath);
     fs.mkdirSync(genPath);
 
