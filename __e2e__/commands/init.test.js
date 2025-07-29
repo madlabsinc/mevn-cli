@@ -1,32 +1,42 @@
-'use strict';
-
-import { run, rmTempDir, runPromptWithAnswers } from '../../jest/helpers';
+import { run, runPromptWithAnswers } from '../../jest/helpers';
 import { fetchProjectConfig } from '../../src/utils/helpers';
 
 import { DOWN, ENTER } from 'cli-prompts-test';
 import fs from 'fs';
 import path from 'path';
 
+// Utility for robust cleanup
+const rmDirIfExists = (dirPath) => {
+  if (fs.existsSync(dirPath)) {
+    fs.rmSync(dirPath, { recursive: true, force: true });
+  }
+};
+
 describe('mevn init', () => {
   const tempDirPath = path.join(__dirname, 'init-cmd');
   const genPath = path.join(tempDirPath, 'my-app');
-
   const clientPath = path.join(genPath, 'client');
   const serverPath = path.join(genPath, 'server');
 
-  // Cleanup
+  // Cleanup and setup before all tests
   beforeAll(() => {
-    rmTempDir(tempDirPath);
+    rmDirIfExists(tempDirPath);
     fs.mkdirSync(tempDirPath);
   });
 
-  afterAll(() => rmTempDir(tempDirPath));
+  // Final cleanup after all tests
+  afterAll(() => rmDirIfExists(tempDirPath));
+
+  // Extra per-test cleanup
+  afterEach(() => {
+    // Each test is responsible for its own output, but this catches anything left over.
+    rmDirIfExists(genPath);
+  });
 
   it('shows an appropriate warning if multiple arguments were provided with init', () => {
     const { exitCode, stderr } = run(['init', 'my-app', 'stray-arg'], {
       reject: false,
     });
-
     expect(exitCode).toBe(1);
     expect(stderr).toContain(
       'Error: Kindly provide only one argument as the directory name!!',
@@ -34,6 +44,7 @@ describe('mevn init', () => {
   });
 
   it('creates a new MEVN stack webapp based on the Nuxt.js starter template', async () => {
+    rmDirIfExists(genPath);
     const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
       [
@@ -45,7 +56,6 @@ describe('mevn init', () => {
       ],
       tempDirPath,
     );
-
     expect(exitCode).toBe(0);
 
     // nuxt.config.js
@@ -58,10 +68,7 @@ describe('mevn init', () => {
     // .mevnrc
     const projectConfigContent = {
       deployTarget: 'static',
-      isConfigured: {
-        client: false,
-        server: false,
-      },
+      isConfigured: { client: false, server: false },
       modules: [],
       name: 'my-app',
       packageManager: 'npm',
@@ -75,6 +82,9 @@ describe('mevn init', () => {
   });
 
   it('shows an appropriate warning if the specified directory already exists in path', () => {
+    rmDirIfExists(genPath);
+    fs.mkdirSync(genPath);
+
     const { exitCode, stderr } = run(['init', 'my-app'], {
       cwd: tempDirPath,
       reject: false,
@@ -85,23 +95,27 @@ describe('mevn init', () => {
   });
 
   it('shows an appropriate warning if creating an application within a non-empty path', () => {
+    rmDirIfExists(genPath);
+    fs.mkdirSync(genPath); // create target directory
+
+    // Add dummy file so it's not empty
+    fs.writeFileSync(path.join(genPath, 'dummy.txt'), 'not empty');
+
     const { exitCode, stderr } = run(['init', '.'], {
       cwd: genPath,
       reject: false,
     });
     expect(exitCode).toBe(1);
     expect(stderr).toContain(`It seems the current directory isn't empty.`);
-
-    // Delete the generated directory
-    rmTempDir(genPath);
   });
 
   it('creates a new MEVN stack webapp based on the GraphQL starter template', async () => {
+    rmDirIfExists(genPath);
     const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
       [
         `${DOWN}${DOWN}${ENTER}`, // Choose GraphQL as the starter template
-        ENTER, // Requires server directory,
+        ENTER, // Requires server directory
         ENTER, // Choose npm as the package manager
       ],
       tempDirPath,
@@ -118,12 +132,10 @@ describe('mevn init', () => {
 
     // Check whether if the respective directory have been generated
     expect(fs.existsSync(path.join(serverPath, 'graphql'))).toBeTruthy();
-
-    // Delete the generated directory
-    rmTempDir(genPath);
   });
 
   it('creates a new MEVN stack webapp based on the PWA starter template', async () => {
+    rmDirIfExists(genPath);
     const { exitCode } = await runPromptWithAnswers(
       ['init', 'my-app'],
       [
@@ -154,13 +166,10 @@ describe('mevn init', () => {
     expect(
       fs.existsSync(path.join(clientPath, 'src', 'registerServiceWorker.js')),
     ).toBeTruthy();
-
-    // Delete the generated directory
-    rmTempDir(genPath);
   });
 
   it('creates a new MEVN stack webapp based on the Default starter template in current directory', async () => {
-    // Create my-app directory
+    rmDirIfExists(genPath);
     fs.mkdirSync(genPath);
 
     const { exitCode } = await runPromptWithAnswers(
@@ -183,6 +192,6 @@ describe('mevn init', () => {
     expect(fs.existsSync(path.join(clientPath, '.gitignore'))).toBeTruthy();
 
     // Check whether if the respective directory have been generated
-    expect(fs.existsSync(path.join(serverPath))).toBeTruthy();
+    expect(fs.existsSync(serverPath)).toBeTruthy();
   });
 });
