@@ -11,6 +11,7 @@
     "mevn": "bin/mevn.js"
   },
   "scripts": {
+    "preinstall": "node scripts/preinstall.js",
     "build": "gulp",
     "build:watch": "babel --watch src --out-dir lib --copy-files --include-dotfiles",
     "lint": "eslint ./src __e2e__ jest",
