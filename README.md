@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-	<a href="https://travis-ci.com/madlabsinc/mevn-cli"><img src="https://travis-ci.com/madlabsinc/mevn-cli.svg?branch=master" alt="Build Status" /></a>
+	<a href="https://github.com/madlabsinc/mevn-cli/actions/workflows/ci.yaml"><img src="https://github.com/madlabsinc/mevn-cli/actions/workflows/ci.yaml/badge.svg?branch=develop&amp;event=push" alt="CI" /></a>
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/v/mevn-cli" alt="npm version" /></a>
 	<a href="https://www.npmjs.com/package/mevn-cli"><img src="https://badgen.net/npm/dm/mevn-cli" alt="Downloads" /></a>
 	<a href="https://github.com/madlabsinc/mevn-cli/pull/new"><a href="https://opencollective.com/mevn-cli" alt="Financial Contributors on Open Collective"><img src="https://opencollective.com/mevn-cli/all/badge.svg?label=financial+contributors" /></a>
