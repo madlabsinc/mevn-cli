@@ -92,5 +92,8 @@
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/mevn-cli"
+  },
+  "overrides": {
+    "tmp": "0.2.7"
   }
 }
