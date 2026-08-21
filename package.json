@@ -66,6 +66,7 @@
     "node-banner": "^1.4.0",
     "opencollective-postinstall": "^2.0.3",
     "ora": "^3.4.0",
+    "tmp": "0.2.7",
     "update-notifier": "^3.0.1",
     "validate-npm-package-name": "^3.0.0"
   },
@@ -92,5 +93,8 @@
   "collective": {
     "type": "opencollective",
     "url": "https://opencollective.com/mevn-cli"
+  },
+  "overrides": {
+    "tmp": "0.2.7"
   }
 }
